@@ -10,14 +10,16 @@ package com.microsoft.azure.management.graphrbac;
 
 import java.util.List;
 import com.microsoft.azure.management.graphrbac.implementation.KeyCredentialInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for  KeyCredentials update operation.
+ * Request parameters for a KeyCredentials update operation.
  */
 public class KeyCredentialsUpdateParameters {
     /**
-     * KeyCredential list.
+     * A collection of KeyCredentials.
      */
+    @JsonProperty(required = true)
     private List<KeyCredentialInner> value;
 
     /**

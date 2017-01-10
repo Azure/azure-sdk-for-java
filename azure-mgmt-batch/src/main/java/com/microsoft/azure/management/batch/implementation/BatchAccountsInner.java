@@ -11,16 +11,16 @@ package com.microsoft.azure.management.batch.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.BatchAccountRegenerateKeyParameters;
+import com.microsoft.azure.management.batch.ErrorBodyException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +35,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -65,57 +66,57 @@ public final class BatchAccountsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface BatchAccountsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body BatchAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body BatchAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body BatchAccountUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts synchronizeAutoStorageKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/syncAutoStorageKeys")
         Observable<Response<ResponseBody>> synchronizeAutoStorageKeys(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts regenerateKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/regenerateKeys")
         Observable<Response<ResponseBody>> regenerateKey(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BatchAccountRegenerateKeyParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts getKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/listKeys")
         Observable<Response<ResponseBody>> getKeys(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -141,7 +142,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -153,9 +154,9 @@ public final class BatchAccountsInner {
      * @return the observable for the request
      */
     public Observable<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>, BatchAccountInner>() {
             @Override
-            public BatchAccountInner call(ServiceResponse<BatchAccountInner> response) {
+            public BatchAccountInner call(ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> response) {
                 return response.getBody();
             }
         });
@@ -169,7 +170,7 @@ public final class BatchAccountsInner {
      * @param parameters Additional parameters for account creation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<BatchAccountInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+    public Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -187,7 +188,7 @@ public final class BatchAccountsInner {
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<BatchAccountInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<BatchAccountInner>() { }.getType(), BatchAccountCreateHeadersInner.class);
     }
 
     /**
@@ -212,7 +213,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -224,9 +225,9 @@ public final class BatchAccountsInner {
      * @return the observable to the BatchAccountInner object
      */
     public Observable<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>, BatchAccountInner>() {
             @Override
-            public BatchAccountInner call(ServiceResponse<BatchAccountInner> response) {
+            public BatchAccountInner call(ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> response) {
                 return response.getBody();
             }
         });
@@ -240,7 +241,7 @@ public final class BatchAccountsInner {
      * @param parameters Additional parameters for account creation.
      * @return the observable to the BatchAccountInner object
      */
-    public Observable<ServiceResponse<BatchAccountInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+    public Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -258,11 +259,11 @@ public final class BatchAccountsInner {
         }
         Validator.validate(parameters);
         return service.beginCreate(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BatchAccountInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponse<BatchAccountInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<BatchAccountInner> clientResponse = beginCreateDelegate(response);
+                        ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> clientResponse = beginCreateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -271,12 +272,12 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchAccountInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
+    private ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorBodyException.class)
+                .buildWithHeaders(response, BatchAccountCreateHeadersInner.class);
     }
 
     /**
@@ -301,7 +302,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -360,10 +361,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchAccountInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<BatchAccountInner> updateDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -386,7 +387,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -397,9 +398,9 @@ public final class BatchAccountsInner {
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public Void call(ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> response) {
                 return response.getBody();
             }
         });
@@ -412,7 +413,7 @@ public final class BatchAccountsInner {
      * @param accountName The name of the account to be deleted.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -426,7 +427,7 @@ public final class BatchAccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), BatchAccountDeleteHeadersInner.class);
     }
 
     /**
@@ -448,7 +449,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.fromHeaderResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -456,12 +457,12 @@ public final class BatchAccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String accountName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public Void call(ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> response) {
                 return response.getBody();
             }
         });
@@ -472,9 +473,9 @@ public final class BatchAccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -488,11 +489,11 @@ public final class BatchAccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginDelete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -501,12 +502,12 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+    private ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .build(response);
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorBodyException.class)
+                .buildWithHeaders(response, BatchAccountDeleteHeadersInner.class);
     }
 
     /**
@@ -529,7 +530,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountInner> getAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -582,10 +583,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchAccountInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<BatchAccountInner> getDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -611,7 +612,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BatchAccountInner>> listAsync(final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -682,10 +683,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BatchAccountInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -713,7 +714,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BatchAccountInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -790,10 +791,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BatchAccountInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -816,7 +817,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.fromResponse(synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -869,14 +870,15 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<Void> synchronizeAutoStorageKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<Void> synchronizeAutoStorageKeysDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
     /**
-     * Regenerates the specified account key for the specified Batch account.
+     * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
@@ -888,7 +890,7 @@ public final class BatchAccountsInner {
     }
 
     /**
-     * Regenerates the specified account key for the specified Batch account.
+     * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
@@ -897,11 +899,11 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
-        return ServiceCall.create(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
+        return ServiceCall.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
     }
 
     /**
-     * Regenerates the specified account key for the specified Batch account.
+     * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
@@ -918,7 +920,7 @@ public final class BatchAccountsInner {
     }
 
     /**
-     * Regenerates the specified account key for the specified Batch account.
+     * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
@@ -957,10 +959,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchAccountKeysInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<BatchAccountKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountKeysInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -984,7 +986,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
-        return ServiceCall.create(getKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.fromResponse(getKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -1037,10 +1039,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountKeysInner> getKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchAccountKeysInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<BatchAccountKeysInner> getKeysDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountKeysInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -1069,7 +1071,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BatchAccountInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<BatchAccountInner>> serviceCall, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -1126,7 +1128,8 @@ public final class BatchAccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
@@ -1140,10 +1143,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BatchAccountInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 
@@ -1172,7 +1175,7 @@ public final class BatchAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BatchAccountInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<BatchAccountInner>> serviceCall, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -1229,7 +1232,8 @@ public final class BatchAccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
@@ -1243,10 +1247,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BatchAccountInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 

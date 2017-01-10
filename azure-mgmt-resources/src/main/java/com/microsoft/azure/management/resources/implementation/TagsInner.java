@@ -11,7 +11,6 @@ package com.microsoft.azure.management.resources.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -29,6 +28,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -59,59 +59,59 @@ public final class TagsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TagsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags deleteValue" })
         @HTTP(path = "subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags createOrUpdateValue" })
         @PUT("subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         Observable<Response<ResponseBody>> createOrUpdateValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/tagNames/{tagName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/tagNames/{tagName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags list" })
         @GET("subscriptions/{subscriptionId}/tagNames")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tags listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Delete a subscription resource tag value.
+     * Deletes a tag value.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to delete.
      */
     public void deleteValue(String tagName, String tagValue) {
         deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
     }
 
     /**
-     * Delete a subscription resource tag value.
+     * Deletes a tag value.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+        return ServiceCall.fromResponse(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
-     * Delete a subscription resource tag value.
+     * Deletes a tag value.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteValueAsync(String tagName, String tagValue) {
@@ -124,10 +124,10 @@ public final class TagsInner {
     }
 
     /**
-     * Delete a subscription resource tag value.
+     * Deletes a tag value.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteValueWithServiceResponseAsync(String tagName, String tagValue) {
@@ -158,17 +158,17 @@ public final class TagsInner {
     }
 
     private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Create a subscription resource tag value.
+     * Creates a tag value. The name of the tag must already exist.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to create.
      * @return the TagValueInner object if successful.
      */
     public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
@@ -176,22 +176,22 @@ public final class TagsInner {
     }
 
     /**
-     * Create a subscription resource tag value.
+     * Creates a tag value. The name of the tag must already exist.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
-     * Create a subscription resource tag value.
+     * Creates a tag value. The name of the tag must already exist.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to create.
      * @return the observable to the TagValueInner object
      */
     public Observable<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
@@ -204,10 +204,10 @@ public final class TagsInner {
     }
 
     /**
-     * Create a subscription resource tag value.
+     * Creates a tag value. The name of the tag must already exist.
      *
      * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
+     * @param tagValue The value of the tag to create.
      * @return the observable to the TagValueInner object
      */
     public Observable<ServiceResponse<TagValueInner>> createOrUpdateValueWithServiceResponseAsync(String tagName, String tagValue) {
@@ -238,7 +238,7 @@ public final class TagsInner {
     }
 
     private ServiceResponse<TagValueInner> createOrUpdateValueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TagValueInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<TagValueInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TagValueInner>() { }.getType())
                 .register(201, new TypeToken<TagValueInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -246,9 +246,10 @@ public final class TagsInner {
     }
 
     /**
-     * Create a subscription resource tag.
+     * Creates a tag in the subscription.
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
-     * @param tagName The name of the tag.
+     * @param tagName The name of the tag to create.
      * @return the TagDetailsInner object if successful.
      */
     public TagDetailsInner createOrUpdate(String tagName) {
@@ -256,20 +257,22 @@ public final class TagsInner {
     }
 
     /**
-     * Create a subscription resource tag.
+     * Creates a tag in the subscription.
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
-     * @param tagName The name of the tag.
+     * @param tagName The name of the tag to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TagDetailsInner> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
-     * Create a subscription resource tag.
+     * Creates a tag in the subscription.
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
-     * @param tagName The name of the tag.
+     * @param tagName The name of the tag to create.
      * @return the observable to the TagDetailsInner object
      */
     public Observable<TagDetailsInner> createOrUpdateAsync(String tagName) {
@@ -282,9 +285,10 @@ public final class TagsInner {
     }
 
     /**
-     * Create a subscription resource tag.
+     * Creates a tag in the subscription.
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
-     * @param tagName The name of the tag.
+     * @param tagName The name of the tag to create.
      * @return the observable to the TagDetailsInner object
      */
     public Observable<ServiceResponse<TagDetailsInner>> createOrUpdateWithServiceResponseAsync(String tagName) {
@@ -312,7 +316,7 @@ public final class TagsInner {
     }
 
     private ServiceResponse<TagDetailsInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TagDetailsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<TagDetailsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TagDetailsInner>() { }.getType())
                 .register(201, new TypeToken<TagDetailsInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -320,7 +324,8 @@ public final class TagsInner {
     }
 
     /**
-     * Delete a subscription resource tag.
+     * Deletes a tag from the subscription.
+     * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
      */
@@ -329,18 +334,20 @@ public final class TagsInner {
     }
 
     /**
-     * Delete a subscription resource tag.
+     * Deletes a tag from the subscription.
+     * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(tagName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
-     * Delete a subscription resource tag.
+     * Deletes a tag from the subscription.
+     * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
      * @return the {@link ServiceResponse} object if successful.
@@ -355,7 +362,8 @@ public final class TagsInner {
     }
 
     /**
-     * Delete a subscription resource tag.
+     * Deletes a tag from the subscription.
+     * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
      * @return the {@link ServiceResponse} object if successful.
@@ -385,14 +393,14 @@ public final class TagsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
@@ -407,13 +415,13 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
@@ -425,7 +433,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
      */
@@ -440,7 +448,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
      */
@@ -459,7 +467,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -485,14 +493,14 @@ public final class TagsInner {
     }
 
     private ServiceResponse<PageImpl<TagDetailsInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetailsInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TagDetailsInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TagDetailsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
@@ -508,7 +516,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -516,7 +524,7 @@ public final class TagsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TagDetailsInner>> serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
@@ -528,7 +536,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
@@ -544,7 +552,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
@@ -564,7 +572,7 @@ public final class TagsInner {
     }
 
     /**
-     * Get a list of subscription resource tags.
+     * Gets the names and values of all resource tags that are defined in a subscription.
      *
     ServiceResponse<PageImpl<TagDetailsInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -573,7 +581,8 @@ public final class TagsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(Response<ResponseBody> response) {
@@ -588,7 +597,7 @@ public final class TagsInner {
     }
 
     private ServiceResponse<PageImpl<TagDetailsInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetailsInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TagDetailsInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TagDetailsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

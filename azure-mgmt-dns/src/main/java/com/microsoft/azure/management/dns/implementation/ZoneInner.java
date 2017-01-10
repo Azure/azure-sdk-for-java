@@ -19,27 +19,28 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ZoneInner extends Resource {
     /**
-     * Gets or sets the ETag of the zone that is being updated, as received
-     * from a Get operation.
+     * The etag of the zone.
      */
     private String etag;
 
     /**
-     * Gets or sets the maximum number of record sets that can be created in
-     * this zone.
+     * The maximum number of record sets that can be created in this DNS zone.
+     * This is a read-only property and any attempt to set this value will be
+     * ignored.
      */
     @JsonProperty(value = "properties.maxNumberOfRecordSets")
     private Long maxNumberOfRecordSets;
 
     /**
-     * Gets or sets the current number of record sets in this zone.
+     * The current number of record sets in this DNS zone.  This is a read-only
+     * property and any attempt to set this value will be ignored.
      */
     @JsonProperty(value = "properties.numberOfRecordSets")
     private Long numberOfRecordSets;
 
     /**
-     * Gets the name servers populated for this zone. This is a read-only
-     * property and any attempt to set this value will be ignored.
+     * The name servers for this DNS zone. This is a read-only property and any
+     * attempt to set this value will be ignored.
      */
     @JsonProperty(value = "properties.nameServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nameServers;

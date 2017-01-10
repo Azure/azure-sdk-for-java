@@ -21,13 +21,14 @@ public class StorageAccountKey {
     private String keyName;
 
     /**
-     * Base 64 encoded value of the key.
+     * Base 64-encoded value of the key.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
-     * Permissions for the key. Possible values include: 'READ', 'FULL'.
+     * Permissions for the key -- read-only or full permissions. Possible
+     * values include: 'READ', 'FULL'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private KeyPermission permissions;

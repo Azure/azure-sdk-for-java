@@ -11,7 +11,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.TopLevelDomainAgreementOption;
@@ -30,6 +29,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -60,25 +60,25 @@ public final class TopLevelDomainsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TopLevelDomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
         Observable<Response<ResponseBody>> get(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains listAgreements" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
         Observable<Response<ResponseBody>> listAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listAgreementsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains listAgreementsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAgreementsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -106,7 +106,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TopLevelDomainInner>> listAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
@@ -179,7 +179,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<PageImpl<TopLevelDomainInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TopLevelDomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TopLevelDomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TopLevelDomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -205,7 +205,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TopLevelDomainInner> getAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -254,7 +254,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<TopLevelDomainInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TopLevelDomainInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<TopLevelDomainInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TopLevelDomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -286,7 +286,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAgreementsSinglePageAsync(name),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
@@ -395,7 +395,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAgreementsSinglePageAsync(name, includePrivacy),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
@@ -479,7 +479,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<PageImpl<TldLegalAgreementInner>> listAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TldLegalAgreementInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TldLegalAgreementInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TldLegalAgreementInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -512,7 +512,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TopLevelDomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
@@ -572,7 +572,8 @@ public final class TopLevelDomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(Response<ResponseBody> response) {
@@ -587,7 +588,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<PageImpl<TopLevelDomainInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TopLevelDomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TopLevelDomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TopLevelDomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -620,7 +621,7 @@ public final class TopLevelDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink, final ServiceCall<List<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAgreementsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
@@ -680,7 +681,8 @@ public final class TopLevelDomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAgreementsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAgreementsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
@@ -695,7 +697,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<PageImpl<TldLegalAgreementInner>> listAgreementsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TldLegalAgreementInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TldLegalAgreementInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TldLegalAgreementInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

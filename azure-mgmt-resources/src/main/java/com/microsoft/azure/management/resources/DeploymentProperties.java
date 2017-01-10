@@ -15,29 +15,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentProperties {
     /**
-     * The template content. It can be a JObject or a well formed JSON string.
-     * Use only one of Template or TemplateLink.
+     * The template content. You use this element when you want to pass the
+     * template syntax directly in the request rather than link to an existing
+     * template. It can be a JObject or well-formed JSON string. Use either the
+     * templateLink property or the template property, but not both.
      */
     private Object template;
 
     /**
-     * The template URI. Use only one of Template or TemplateLink.
+     * The URI of the template. Use either the templateLink property or the
+     * template property, but not both.
      */
     private TemplateLink templateLink;
 
     /**
-     * Deployment parameters. It can be a JObject or a well formed JSON
-     * string. Use only one of Parameters or ParametersLink.
+     * Name and value pairs that define the deployment parameters for the
+     * template. You use this element when you want to provide the parameter
+     * values directly in the request rather than link to an existing parameter
+     * file. Use either the parametersLink property or the parameters property,
+     * but not both. It can be a JObject or a well formed JSON string.
      */
     private Object parameters;
 
     /**
-     * The parameters URI. Use only one of Parameters or ParametersLink.
+     * The URI of parameters file. You use this element to link to an existing
+     * parameters file. Use either the parametersLink property or the
+     * parameters property, but not both.
      */
     private ParametersLink parametersLink;
 
     /**
-     * The deployment mode. Possible values include: 'Incremental', 'Complete'.
+     * The mode that is used to deploy resources. This value can be either
+     * Incremental or Complete. In Incremental mode, resources are deployed
+     * without deleting existing resources that are not included in the
+     * template. In Complete mode, resources are deployed and existing
+     * resources in the resource group that are not included in the template
+     * are deleted. Be careful when using Complete mode as you may
+     * unintentionally delete resources. Possible values include:
+     * 'Incremental', 'Complete'.
      */
     @JsonProperty(required = true)
     private DeploymentMode mode;

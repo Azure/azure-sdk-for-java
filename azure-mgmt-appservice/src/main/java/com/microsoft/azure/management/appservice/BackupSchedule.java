@@ -25,8 +25,8 @@ public class BackupSchedule {
 
     /**
      * How often should be the backup executed (e.g. for weekly backup, this
-     * should be set to Day and FrequencyInterval should be set to 7).
-     * Possible values include: 'Day', 'Hour'.
+     * should be set to Day and FrequencyInterval should be set to 7). Possible
+     * values include: 'Day', 'Hour'.
      */
     @JsonProperty(required = true)
     private FrequencyUnit frequencyUnit;

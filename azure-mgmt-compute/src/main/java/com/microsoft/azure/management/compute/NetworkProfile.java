@@ -16,7 +16,8 @@ import com.microsoft.azure.management.compute.implementation.NetworkInterfaceRef
  */
 public class NetworkProfile {
     /**
-     * the network interfaces.
+     * Specifies the list of resource IDs for the network interfaces associated
+     * with the virtual machine.
      */
     private List<NetworkInterfaceReferenceInner> networkInterfaces;
 

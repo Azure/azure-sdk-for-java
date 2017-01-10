@@ -29,8 +29,8 @@ public class CloningInfo {
     private Boolean overwrite;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source
-     * app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source app;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean cloneCustomHostNames;
 
@@ -64,8 +64,8 @@ public class CloningInfo {
     private Map<String, String> appSettingsOverrides;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; to configure load balancing for source
-     * and destination app.
+     * &lt;code&gt;true&lt;/code&gt; to configure load balancing for source and
+     * destination app.
      */
     private Boolean configureLoadBalancing;
 

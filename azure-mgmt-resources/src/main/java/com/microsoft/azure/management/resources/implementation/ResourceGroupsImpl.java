@@ -59,7 +59,7 @@ final class ResourceGroupsImpl
 
     @Override
     public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(client.deleteWithServiceResponseAsync(name), callback);
+        return ServiceCall.fromResponse(client.deleteWithServiceResponseAsync(name), callback);
     }
 
     @Override
@@ -99,13 +99,7 @@ final class ResourceGroupsImpl
 
     @Override
     public ServiceCall<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(beginDeleteByNameAsync(name)
-                .flatMap(new Func1<Void, Observable<ServiceResponse<Void>>>() {
-                    @Override
-                    public Observable<ServiceResponse<Void>> call(Void aVoid) {
-                        return null;
-                    }
-                }), callback);
+        return ServiceCall.fromBody(beginDeleteByNameAsync(name), callback);
     }
 
     @Override

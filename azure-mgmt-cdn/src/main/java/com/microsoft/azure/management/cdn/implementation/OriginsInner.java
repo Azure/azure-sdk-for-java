@@ -11,7 +11,6 @@ package com.microsoft.azure.management.cdn.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.Page;
@@ -30,6 +29,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -60,30 +60,30 @@ public final class OriginsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface OriginsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Origins listByEndpoint" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins")
         Observable<Response<ResponseBody>> listByEndpoint(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Origins get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins/{originName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("originName") String originName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Origins update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins/{originName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("originName") String originName, @Path("subscriptionId") String subscriptionId, @Body OriginUpdateParametersInner originUpdateProperties, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Origins beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins/{originName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("originName") String originName, @Path("subscriptionId") String subscriptionId, @Body OriginUpdateParametersInner originUpdateProperties, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByEndpointNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Origins listByEndpointNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByEndpointNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -101,7 +101,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -110,7 +110,7 @@ public final class OriginsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<OriginInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<OriginInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
             new Func1<String, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
@@ -122,7 +122,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -140,7 +140,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -162,7 +162,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
     ServiceResponse<PageImpl<OriginInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<OriginInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -200,14 +200,14 @@ public final class OriginsInner {
     }
 
     private ServiceResponse<PageImpl<OriginInner>> listByEndpointDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<OriginInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<OriginInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<OriginInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Gets an existing CDN origin within an endpoint.
+     * Gets an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -220,7 +220,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Gets an existing CDN origin within an endpoint.
+     * Gets an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -230,11 +230,11 @@ public final class OriginsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<OriginInner> getAsync(String resourceGroupName, String profileName, String endpointName, String originName, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName), serviceCallback);
     }
 
     /**
-     * Gets an existing CDN origin within an endpoint.
+     * Gets an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -252,7 +252,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Gets an existing CDN origin within an endpoint.
+     * Gets an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -294,14 +294,14 @@ public final class OriginsInner {
     }
 
     private ServiceResponse<OriginInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<OriginInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<OriginInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OriginInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -315,7 +315,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -326,11 +326,11 @@ public final class OriginsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -349,7 +349,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -386,7 +386,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -400,7 +400,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -411,11 +411,11 @@ public final class OriginsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<OriginInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.create(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
+        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -434,7 +434,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Updates an existing CDN origin within an endpoint.
+     * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -481,7 +481,7 @@ public final class OriginsInner {
     }
 
     private ServiceResponse<OriginInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<OriginInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<OriginInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OriginInner>() { }.getType())
                 .register(202, new TypeToken<OriginInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -489,7 +489,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;OriginInner&gt; object if successful.
@@ -505,7 +505,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -513,7 +513,7 @@ public final class OriginsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<OriginInner>> listByEndpointNextAsync(final String nextPageLink, final ServiceCall<List<OriginInner>> serviceCall, final ListOperationCallback<OriginInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByEndpointNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
@@ -525,7 +525,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;OriginInner&gt; object
@@ -541,7 +541,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;OriginInner&gt; object
@@ -561,7 +561,7 @@ public final class OriginsInner {
     }
 
     /**
-     * Lists the existing CDN origins within an endpoint.
+     * Lists all of the existing origins within an endpoint.
      *
     ServiceResponse<PageImpl<OriginInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;OriginInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -570,7 +570,8 @@ public final class OriginsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByEndpointNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByEndpointNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OriginInner>>> call(Response<ResponseBody> response) {
@@ -585,7 +586,7 @@ public final class OriginsInner {
     }
 
     private ServiceResponse<PageImpl<OriginInner>> listByEndpointNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<OriginInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<OriginInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<OriginInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);

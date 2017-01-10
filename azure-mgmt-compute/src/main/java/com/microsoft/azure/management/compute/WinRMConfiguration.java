@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class WinRMConfiguration {
     /**
-     * the list of Windows Remote Management listeners.
+     * The list of Windows Remote Management listeners.
      */
     private List<WinRMListener> listeners;
 

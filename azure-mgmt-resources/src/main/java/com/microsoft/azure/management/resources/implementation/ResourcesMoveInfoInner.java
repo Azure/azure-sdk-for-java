@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ResourcesMoveInfoInner {
     /**
-     * The ids of the resources.
+     * The IDs of the resources.
      */
     private List<String> resources;
 

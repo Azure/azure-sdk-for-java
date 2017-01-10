@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetInstanceViewStatusesSummary {
     /**
-     * the extensions information.
+     * The extensions information.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;

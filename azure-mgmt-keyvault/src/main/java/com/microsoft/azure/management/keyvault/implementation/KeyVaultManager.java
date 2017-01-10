@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.Vaults;

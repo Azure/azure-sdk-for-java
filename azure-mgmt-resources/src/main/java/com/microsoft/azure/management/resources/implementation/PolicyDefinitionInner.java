@@ -18,37 +18,39 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class PolicyDefinitionInner {
     /**
-     * Gets or sets policy definition policy type. Possible values include:
-     * 'NotSpecified', 'BuiltIn', 'Custom'.
+     * The type of policy definition. Possible values are NotSpecified,
+     * BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn',
+     * 'Custom'.
      */
     @JsonProperty(value = "properties.policyType")
     private PolicyType policyType;
 
     /**
-     * Gets or sets the policy definition display name.
+     * The display name of the policy definition.
      */
     @JsonProperty(value = "properties.displayName")
     private String displayName;
 
     /**
-     * Gets or sets the policy definition description.
+     * The policy definition description.
      */
     @JsonProperty(value = "properties.description")
     private String description;
 
     /**
-     * Gets or sets the policy rule.
+     * The policy rule.
      */
     @JsonProperty(value = "properties.policyRule")
     private Object policyRule;
 
     /**
-     * Gets or sets the Id of the policy definition.
+     * The ID of the policy definition.
      */
     private String id;
 
     /**
-     * Gets or sets the name of the policy definition.
+     * The name of the policy definition. If you do not specify a value for
+     * name, the value is inferred from the name value in the request URI.
      */
     private String name;
 

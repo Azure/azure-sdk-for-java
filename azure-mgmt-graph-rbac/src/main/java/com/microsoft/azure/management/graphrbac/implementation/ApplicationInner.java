@@ -11,51 +11,51 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import java.util.List;
 
 /**
- * Active Directory user information.
+ * Active Directory application information.
  */
 public class ApplicationInner {
     /**
-     * object Id.
+     * The object ID.
      */
     private String objectId;
 
     /**
-     * object type.
+     * The object type.
      */
     private String objectType;
 
     /**
-     * application Id.
+     * The application ID.
      */
     private String appId;
 
     /**
-     * application permissions.
+     * The application permissions.
      */
     private List<String> appPermissions;
 
     /**
-     * Indicates if the application will be available to other tenants.
+     * Whether the application is be available to other tenants.
      */
     private Boolean availableToOtherTenants;
 
     /**
-     * the displayName.
+     * The display name of the application.
      */
     private String displayName;
 
     /**
-     * the application identifier Uris.
+     * A collection of URIs for the application.
      */
     private List<String> identifierUris;
 
     /**
-     * the application reply Urls.
+     * A collection of reply URLs for the application.
      */
     private List<String> replyUrls;
 
     /**
-     * Application homepage.
+     * The home page of the application.
      */
     private String homepage;
 

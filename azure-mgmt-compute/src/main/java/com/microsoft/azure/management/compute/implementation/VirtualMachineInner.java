@@ -27,74 +27,78 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineInner extends Resource {
     /**
-     * the purchase plan when deploying virtual machine from VM Marketplace
+     * The purchase plan when deploying virtual machine from VM Marketplace
      * images.
      */
     private Plan plan;
 
     /**
-     * the hardware profile.
+     * The hardware profile.
      */
     @JsonProperty(value = "properties.hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /**
-     * the storage profile.
+     * The storage profile.
      */
     @JsonProperty(value = "properties.storageProfile")
     private StorageProfile storageProfile;
 
     /**
-     * the OS profile.
+     * The OS profile.
      */
     @JsonProperty(value = "properties.osProfile")
     private OSProfile osProfile;
 
     /**
-     * the network profile.
+     * The network profile.
      */
     @JsonProperty(value = "properties.networkProfile")
     private NetworkProfile networkProfile;
 
     /**
-     * the diagnostics profile.
+     * The diagnostics profile.
      */
     @JsonProperty(value = "properties.diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /**
-     * the reference Id of the availability set to which this virtual machine
+     * The reference Id of the availability set to which the virtual machine
      * belongs.
      */
     @JsonProperty(value = "properties.availabilitySet")
     private SubResource availabilitySet;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * the virtual machine instance view.
+     * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceView instanceView;
 
     /**
-     * the license type, which is for bring your own license scenario.
+     * Specifies that the image or disk that is being used was licensed
+     * on-premises. This element is only used for images that contain the
+     * Windows Server operating system.
      */
     @JsonProperty(value = "properties.licenseType")
     private String licenseType;
 
     /**
-     * the virtual machine unique id.
+     * Specifies the VM unique ID which is a 128-bits identifier that is
+     * encoded and stored in all Azure IaaS VMs SMBIOS and can be read using
+     * platform BIOS commands.
      */
     @JsonProperty(value = "properties.vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /**
-     * the virtual machine child extension resources.
+     * The virtual machine child extension resources.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;

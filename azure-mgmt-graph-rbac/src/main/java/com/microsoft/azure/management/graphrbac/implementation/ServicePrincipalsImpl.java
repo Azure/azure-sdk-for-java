@@ -76,14 +76,7 @@ class ServicePrincipalsImpl
 
     @Override
     public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
-        return ServiceCall.create(
-                getByServicePrincipalNameAsync(spn).map(new Func1<ServicePrincipal, ServiceResponse<ServicePrincipal>>() {
-                    @Override
-                    public ServiceResponse<ServicePrincipal> call(ServicePrincipal fluentModelT) {
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
+        return ServiceCall.fromBody(getByServicePrincipalNameAsync(spn), callback);
     }
 
     @Override

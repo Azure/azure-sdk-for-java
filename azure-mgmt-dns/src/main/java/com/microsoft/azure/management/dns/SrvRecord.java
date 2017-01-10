@@ -14,23 +14,22 @@ package com.microsoft.azure.management.dns;
  */
 public class SrvRecord {
     /**
-     * Gets or sets the priority metric for this record.
+     * The priority value for this SRV record.
      */
     private Integer priority;
 
     /**
-     * Gets or sets the weight metric for this this record.
+     * The weight value for this SRV record.
      */
     private Integer weight;
 
     /**
-     * Gets or sets the port of the service for this record.
+     * The port value for this SRV record.
      */
     private Integer port;
 
     /**
-     * Gets or sets the domain name of the target for this record, without a
-     * terminating dot.
+     * The target domain name for this SRV record.
      */
     private String target;
 

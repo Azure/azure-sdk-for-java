@@ -11,7 +11,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -33,6 +32,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -63,77 +63,77 @@ public final class DomainsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains checkAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
         Observable<Response<ResponseBody>> checkAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifierInner identifier, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains getControlCenterSsoRequest" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
         Observable<Response<ResponseBody>> getControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listRecommendations" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         Observable<Response<ResponseBody>> listRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body DomainInner domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body DomainInner domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("forceHardDeleteDomain") Boolean forceHardDeleteDomain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listOwnershipIdentifiers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers")
         Observable<Response<ResponseBody>> listOwnershipIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains getOwnershipIdentifier" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> getOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains createOrUpdateOwnershipIdentifier" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> createOrUpdateOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DomainOwnershipIdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains deleteOwnershipIdentifier" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains updateOwnershipIdentifier" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> updateOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DomainOwnershipIdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listRecommendationsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listRecommendationsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listRecommendationsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listOwnershipIdentifiersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listOwnershipIdentifiersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listOwnershipIdentifiersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -155,7 +155,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -221,7 +221,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
+        return ServiceCall.fromResponse(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -269,7 +269,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainAvailablilityCheckResultInner> checkAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainAvailablilityCheckResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainAvailablilityCheckResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -299,7 +299,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainInner>> listAsync(final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -372,7 +372,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -396,7 +396,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
-        return ServiceCall.create(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -440,7 +440,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainControlCenterSsoRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainControlCenterSsoRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -472,7 +472,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listRecommendationsSinglePageAsync(parameters),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -552,7 +552,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<NameIdentifierInner>> listRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NameIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -584,7 +584,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -663,7 +663,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -691,7 +691,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> getAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -745,7 +745,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -775,7 +775,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -848,7 +848,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -908,7 +908,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<DomainInner>() { }.getType())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -936,7 +936,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -1013,7 +1013,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
     }
 
     /**
@@ -1069,7 +1069,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1103,7 +1103,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
@@ -1188,7 +1188,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainOwnershipIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainOwnershipIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainOwnershipIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1218,7 +1218,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+        return ServiceCall.fromResponse(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1277,7 +1277,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> getOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1309,7 +1309,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1374,7 +1374,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1403,7 +1403,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1462,7 +1462,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<Void> deleteOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1494,7 +1494,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1559,7 +1559,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> updateOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1592,7 +1592,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1652,7 +1652,8 @@ public final class DomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
@@ -1667,7 +1668,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1700,7 +1701,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink, final ServiceCall<List<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listRecommendationsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -1760,7 +1761,8 @@ public final class DomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listRecommendationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listRecommendationsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
@@ -1775,7 +1777,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<NameIdentifierInner>> listRecommendationsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NameIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1808,7 +1810,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1868,7 +1870,8 @@ public final class DomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
@@ -1883,7 +1886,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1916,7 +1919,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<DomainOwnershipIdentifierInner>> serviceCall, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listOwnershipIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
@@ -1976,7 +1979,8 @@ public final class DomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listOwnershipIdentifiersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listOwnershipIdentifiersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(Response<ResponseBody> response) {
@@ -1991,7 +1995,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainOwnershipIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainOwnershipIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainOwnershipIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

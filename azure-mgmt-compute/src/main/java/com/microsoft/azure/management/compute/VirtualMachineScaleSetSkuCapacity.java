@@ -15,25 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetSkuCapacity {
     /**
-     * the minimum capacity.
+     * The minimum capacity.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long minimum;
 
     /**
-     * the maximum capacity that can be set.
+     * The maximum capacity that can be set.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long maximum;
 
     /**
-     * the default capacity.
+     * The default capacity.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultCapacity;
 
     /**
-     * the scale type applicable to the sku. Possible values include:
+     * The scale type applicable to the sku. Possible values include:
      * 'Automatic', 'None'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

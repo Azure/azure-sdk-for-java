@@ -78,12 +78,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public ServiceCall<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByParentAsync(groupName, parentName, name).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByParentAsync(groupName, parentName, name), callback);
     }
 
     @Override

@@ -69,24 +69,12 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
-        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
-            @Override
-            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
-                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
-                return new ServiceResponse<>(ts, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(createAsyncNonStream(creatables), callback);
     }
 
     @Override
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, List<Creatable<T>> creatables) {
-        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
-            @Override
-            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
-                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
-                return new ServiceResponse<>(ts, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(createAsyncNonStream(creatables), callback);
     }
 
 

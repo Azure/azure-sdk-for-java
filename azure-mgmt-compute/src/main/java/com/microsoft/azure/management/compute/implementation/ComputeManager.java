@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;

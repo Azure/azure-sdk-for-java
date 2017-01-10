@@ -10,8 +10,9 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the ComputeManagementClientImpl class.
@@ -28,11 +29,11 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** Subscription credentials that uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets Subscription credentials that uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +42,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets Subscription credentials that uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +52,11 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client Api Version. */
+    /** Client API Version. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets Client API Version.
      *
      * @return the apiVersion value.
      */
@@ -265,10 +266,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public ComputeManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

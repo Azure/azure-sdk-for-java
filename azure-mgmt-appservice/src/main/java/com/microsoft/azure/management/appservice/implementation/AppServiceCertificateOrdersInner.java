@@ -11,7 +11,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -32,6 +31,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -62,89 +62,89 @@ public final class AppServiceCertificateOrdersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AppServiceCertificateOrdersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders validatePurchaseInformation" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation")
         Observable<Response<ResponseBody>> validatePurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner appServiceCertificateOrder, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listCertificates" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
         Observable<Response<ResponseBody>> listCertificates(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders getCertificate" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
         Observable<Response<ResponseBody>> getCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders createOrUpdateCertificate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
         Observable<Response<ResponseBody>> createOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders beginCreateOrUpdateCertificate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
         Observable<Response<ResponseBody>> beginCreateOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders deleteCertificate" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders deleteCertificateOrder" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteCertificateOrder(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders reissue" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/reissue")
         Observable<Response<ResponseBody>> reissue(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders renew" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/renew")
         Observable<Response<ResponseBody>> renew(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RenewCertificateOrderRequestInner renewCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders resendEmail" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/resendEmail")
         Observable<Response<ResponseBody>> resendEmail(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders retrieveCertificateActions" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
         Observable<Response<ResponseBody>> retrieveCertificateActions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders retrieveCertificateEmailHistory" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory")
         Observable<Response<ResponseBody>> retrieveCertificateEmailHistory(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders verifyDomainOwnership" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/verifyDomainOwnership")
         Observable<Response<ResponseBody>> verifyDomainOwnership(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listCertificatesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listCertificatesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listCertificatesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -172,7 +172,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateOrderInner>> listAsync(final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -245,7 +245,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -270,7 +270,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
+        return ServiceCall.fromResponse(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
     }
 
     /**
@@ -320,7 +320,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> validatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -351,7 +351,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -430,7 +430,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -464,7 +464,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override
@@ -549,7 +549,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateInner>> listCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -579,7 +579,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+        return ServiceCall.fromResponse(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -638,7 +638,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<AppServiceCertificateInner> getCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServiceCertificateInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -670,7 +670,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -750,7 +750,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -815,7 +815,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<AppServiceCertificateInner> beginCreateOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServiceCertificateInner>() { }.getType())
                 .register(201, new TypeToken<AppServiceCertificateInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -845,7 +845,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -904,7 +904,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -932,7 +932,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -986,7 +986,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<AppServiceCertificateOrderInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateOrderInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateOrderInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1016,7 +1016,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -1089,7 +1089,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -1149,7 +1149,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<AppServiceCertificateOrderInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateOrderInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateOrderInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
                 .register(201, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -1177,7 +1177,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1231,7 +1231,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> deleteCertificateOrderDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1260,7 +1260,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
+        return ServiceCall.fromResponse(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1320,7 +1320,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> reissueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1348,7 +1348,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
+        return ServiceCall.fromResponse(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1408,7 +1408,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> renewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1434,7 +1434,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> resendEmailAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1488,7 +1488,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> resendEmailDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1515,7 +1515,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1569,7 +1569,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<List<CertificateOrderActionInner>> retrieveCertificateActionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CertificateOrderActionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CertificateOrderActionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CertificateOrderActionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1597,7 +1597,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1651,7 +1651,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<List<CertificateEmailInner>> retrieveCertificateEmailHistoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CertificateEmailInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CertificateEmailInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CertificateEmailInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1678,7 +1678,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1732,7 +1732,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> verifyDomainOwnershipDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1764,7 +1764,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1824,7 +1824,8 @@ public final class AppServiceCertificateOrdersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
@@ -1839,7 +1840,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1872,7 +1873,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1932,7 +1933,8 @@ public final class AppServiceCertificateOrdersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
@@ -1947,7 +1949,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1980,7 +1982,7 @@ public final class AppServiceCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServiceCertificateInner>> listCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateInner>> serviceCall, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override
@@ -2040,7 +2042,8 @@ public final class AppServiceCertificateOrdersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listCertificatesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listCertificatesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(Response<ResponseBody> response) {
@@ -2055,7 +2058,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateInner>> listCertificatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

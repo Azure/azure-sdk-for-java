@@ -15,9 +15,9 @@ package com.microsoft.azure.management.trafficmanager;
 public class DnsConfig {
     /**
      * Gets or sets the relative DNS name provided by this Traffic Manager
-     * profile.  This value is combined with the DNS domain name used by
-     * Azure Traffic Manager to form the fully-qualified domain name (FQDN)
-     * of the profile.
+     * profile.  This value is combined with the DNS domain name used by Azure
+     * Traffic Manager to form the fully-qualified domain name (FQDN) of the
+     * profile.
      */
     private String relativeName;
 

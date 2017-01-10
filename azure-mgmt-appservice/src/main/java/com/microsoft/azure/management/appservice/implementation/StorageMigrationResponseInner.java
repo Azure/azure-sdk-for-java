@@ -18,8 +18,8 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class StorageMigrationResponseInner extends Resource {
     /**
-     * When server starts the migration process, it will return an operation
-     * ID identifying that particular migration operation.
+     * When server starts the migration process, it will return an operation ID
+     * identifying that particular migration operation.
      */
     @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;

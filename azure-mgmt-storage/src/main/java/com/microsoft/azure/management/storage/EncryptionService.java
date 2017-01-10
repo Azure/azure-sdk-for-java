@@ -12,20 +12,20 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An encrypted service.
+ * A service that allows server-side encryption to be used.
  */
 public class EncryptionService {
     /**
-     * A boolean indicating whether or not the service is encrypted.
+     * A boolean indicating whether or not the service encrypts the data as it
+     * is stored.
      */
     private Boolean enabled;
 
     /**
-     * Gets a time value indicating when was the encryption enabled by the
-     * user last time. We return this value only when encryption is enabled.
-     * There might be some unencrypted blobs which were written after this
-     * time. This time is just to give a rough estimate of when encryption
-     * was enabled.
+     * Gets a rough estimate of the date/time when the encryption was last
+     * enabled by the user. Only returned when encryption is enabled. There
+     * might be some unencrypted blobs which were written after this time, as
+     * it is just a rough estimate.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastEnabledTime;

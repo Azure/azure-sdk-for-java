@@ -36,11 +36,6 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
 
     @Override
     public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByIdAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByIdAsync(id), callback);
     }
 }

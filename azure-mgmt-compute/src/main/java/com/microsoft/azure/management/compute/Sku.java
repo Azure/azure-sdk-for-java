@@ -14,17 +14,17 @@ package com.microsoft.azure.management.compute;
  */
 public class Sku {
     /**
-     * the sku name.
+     * The sku name.
      */
     private String name;
 
     /**
-     * the sku tier.
+     * The sku tier.
      */
     private String tier;
 
     /**
-     * the sku capacity.
+     * The sku capacity.
      */
     private Long capacity;
 

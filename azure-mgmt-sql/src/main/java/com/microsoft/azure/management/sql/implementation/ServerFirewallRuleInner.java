@@ -30,8 +30,8 @@ public class ServerFirewallRuleInner extends SqlSubResource {
     private String location;
 
     /**
-     * The start IP address of the Azure SQL server firewall rule. Must be
-     * IPv4 format.
+     * The start IP address of the Azure SQL server firewall rule. Must be IPv4
+     * format.
      */
     @JsonProperty(value = "properties.startIpAddress")
     private String startIpAddress;

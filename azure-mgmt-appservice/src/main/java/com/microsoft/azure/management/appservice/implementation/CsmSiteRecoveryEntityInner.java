@@ -26,8 +26,8 @@ public class CsmSiteRecoveryEntityInner {
     private Boolean recoverConfig;
 
     /**
-     * [Optional] Destination app name into which app should be recovered.
-     * This is case when new app should be created instead.
+     * [Optional] Destination app name into which app should be recovered. This
+     * is case when new app should be created instead.
      */
     private String siteName;
 

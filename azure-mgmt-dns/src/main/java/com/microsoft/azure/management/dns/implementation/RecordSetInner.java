@@ -23,93 +23,93 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Describes a DNS RecordSet (a set of DNS records with the same name and
- * type).
+ * Describes a DNS record set (a collection of DNS records with the same name
+ * and type).
  */
 @JsonFlatten
 public class RecordSetInner {
     /**
-     * Gets or sets the ID of the resource.
+     * The ID of the record set.
      */
     private String id;
 
     /**
-     * Gets or sets the name of the resource.
+     * The name of the record set.
      */
     private String name;
 
     /**
-     * Gets or sets the type of the resource.
+     * The type of the record set.
      */
     private String type;
 
     /**
-     * Gets or sets the ETag of the RecordSet.
+     * The etag of the record set.
      */
     private String etag;
 
     /**
-     * Gets or sets the metadata attached to the resource.
+     * The metadata attached to the record set.
      */
     @JsonProperty(value = "properties.metadata")
     private Map<String, String> metadata;
 
     /**
-     * Gets or sets the TTL of the records in the RecordSet.
+     * The TTL (time-to-live) of the records in the record set.
      */
     @JsonProperty(value = "properties.TTL")
     private Long tTL;
 
     /**
-     * Gets or sets the list of A records in the RecordSet.
+     * The list of A records in the record set.
      */
     @JsonProperty(value = "properties.ARecords")
     private List<ARecord> aRecords;
 
     /**
-     * Gets or sets the list of AAAA records in the RecordSet.
+     * The list of AAAA records in the record set.
      */
     @JsonProperty(value = "properties.AAAARecords")
     private List<AaaaRecord> aaaaRecords;
 
     /**
-     * Gets or sets the list of MX records in the RecordSet.
+     * The list of MX records in the record set.
      */
     @JsonProperty(value = "properties.MXRecords")
     private List<MxRecord> mxRecords;
 
     /**
-     * Gets or sets the list of NS records in the RecordSet.
+     * The list of NS records in the record set.
      */
     @JsonProperty(value = "properties.NSRecords")
     private List<NsRecord> nsRecords;
 
     /**
-     * Gets or sets the list of PTR records in the RecordSet.
+     * The list of PTR records in the record set.
      */
     @JsonProperty(value = "properties.PTRRecords")
     private List<PtrRecord> ptrRecords;
 
     /**
-     * Gets or sets the list of SRV records in the RecordSet.
+     * The list of SRV records in the record set.
      */
     @JsonProperty(value = "properties.SRVRecords")
     private List<SrvRecord> srvRecords;
 
     /**
-     * Gets or sets the list of TXT records in the RecordSet.
+     * The list of TXT records in the record set.
      */
     @JsonProperty(value = "properties.TXTRecords")
     private List<TxtRecord> txtRecords;
 
     /**
-     * Gets or sets the CNAME record in the RecordSet.
+     * The CNAME record in the  record set.
      */
     @JsonProperty(value = "properties.CNAMERecord")
     private CnameRecord cnameRecord;
 
     /**
-     * Gets or sets the SOA record in the RecordSet.
+     * The SOA record in the record set.
      */
     @JsonProperty(value = "properties.SOARecord")
     private SoaRecord soaRecord;

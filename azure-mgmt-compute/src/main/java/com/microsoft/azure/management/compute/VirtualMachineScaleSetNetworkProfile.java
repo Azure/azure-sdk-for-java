@@ -16,7 +16,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineScale
  */
 public class VirtualMachineScaleSetNetworkProfile {
     /**
-     * the list of network configurations.
+     * The list of network configurations.
      */
     private List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations;
 

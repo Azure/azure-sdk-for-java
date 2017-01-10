@@ -37,8 +37,8 @@ public class UpgradeRecommendedElasticPoolProperties {
     private Integer dtu;
 
     /**
-     * The storage limit in MB for the Azure SQL Recommended Elastic Pool
-     * being upgraded.
+     * The storage limit in MB for the Azure SQL Recommended Elastic Pool being
+     * upgraded.
      */
     @JsonProperty(value = "StorageMb")
     private Integer storageMb;

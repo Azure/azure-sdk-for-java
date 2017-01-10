@@ -7,15 +7,15 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,12 +39,7 @@ public abstract class AppServiceTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String s) {
-                        System.out.println(s);
-                    }
-                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .withLogLevel(LogLevel.BASIC)
                 .withReadTimeout(1, TimeUnit.MINUTES)
                 .build();
 

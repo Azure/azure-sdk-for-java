@@ -73,10 +73,10 @@ public class DatabaseInner extends Resource {
 
     /**
      * Conditional. Specifies the resource ID of the source database. If
-     * createMode is not set to Default, then this value must be specified.
-     * The name of the source database must be the same. NOTE: Collation,
-     * Edition, and MaxSizeBytes must remain the same while the link is
-     * active. Values specified for these parameters will be ignored.
+     * createMode is not set to Default, then this value must be specified. The
+     * name of the source database must be the same. NOTE: Collation, Edition,
+     * and MaxSizeBytes must remain the same while the link is active. Values
+     * specified for these parameters will be ignored.
      */
     @JsonProperty(value = "properties.sourceDatabaseId")
     private String sourceDatabaseId;
@@ -93,8 +93,8 @@ public class DatabaseInner extends Resource {
     /**
      * The max size of the Azure SQL database expressed in bytes. Note: Only
      * the following sizes are supported (in addition to limitations being
-     * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
-     * GB | 30 GB … 150 GB | 200 GB … 500 GB }.
+     * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20 GB
+     * | 30 GB … 150 GB | 200 GB … 500 GB }.
      */
     @JsonProperty(value = "properties.maxSizeBytes")
     private String maxSizeBytes;
@@ -110,10 +110,10 @@ public class DatabaseInner extends Resource {
 
     /**
      * The name of the configured Service Level Objective of the Azure SQL
-     * database. This is the Service Level Objective that is in the process
-     * of being applied to the Azure SQL database. Once successfully updated,
-     * it will match the value of serviceLevelObjective property. Possible
-     * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
+     * database. This is the Service Level Objective that is in the process of
+     * being applied to the Azure SQL database. Once successfully updated, it
+     * will match the value of serviceLevelObjective property. Possible values
+     * include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveName")
     private ServiceObjectiveName requestedServiceObjectiveName;

@@ -15,37 +15,37 @@ import java.util.List;
  */
 public class VirtualMachineScaleSetOSProfile {
     /**
-     * the computer name prefix.
+     * The computer name prefix.
      */
     private String computerNamePrefix;
 
     /**
-     * the admin user name.
+     * The admin user name.
      */
     private String adminUsername;
 
     /**
-     * the admin user password.
+     * The admin user password.
      */
     private String adminPassword;
 
     /**
-     * a base-64 encoded string of custom data.
+     * A base-64 encoded string of custom data.
      */
     private String customData;
 
     /**
-     * the Windows Configuration of the OS profile.
+     * The Windows Configuration of the OS profile.
      */
     private WindowsConfiguration windowsConfiguration;
 
     /**
-     * the Linux Configuration of the OS profile.
+     * The Linux Configuration of the OS profile.
      */
     private LinuxConfiguration linuxConfiguration;
 
     /**
-     * the List of certificates for addition to the VM.
+     * The List of certificates for addition to the VM.
      */
     private List<VaultSecretGroup> secrets;
 

@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentOperationInner {
     /**
-     * Full deployment operation id.
+     * Full deployment operation ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Deployment operation id.
+     * Deployment operation ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;

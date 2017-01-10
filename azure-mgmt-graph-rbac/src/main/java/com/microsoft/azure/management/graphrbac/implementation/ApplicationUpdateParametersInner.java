@@ -15,37 +15,37 @@ import java.util.List;
  */
 public class ApplicationUpdateParametersInner {
     /**
-     * Indicates if the application will be available to other tenants.
+     * Whether the application is available to other tenants.
      */
     private Boolean availableToOtherTenants;
 
     /**
-     * Application display name.
+     * The display name of the application.
      */
     private String displayName;
 
     /**
-     * Application homepage.
+     * The home page of the application.
      */
     private String homepage;
 
     /**
-     * Application Uris.
+     * A collection of URIs for the application.
      */
     private List<String> identifierUris;
 
     /**
-     * Application reply Urls.
+     * A collection of reply URLs for the application.
      */
     private List<String> replyUrls;
 
     /**
-     * the list of KeyCredential objects.
+     * The list of KeyCredential objects.
      */
     private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * the list of PasswordCredential objects.
+     * The list of PasswordCredential objects.
      */
     private List<PasswordCredentialInner> passwordCredentials;
 

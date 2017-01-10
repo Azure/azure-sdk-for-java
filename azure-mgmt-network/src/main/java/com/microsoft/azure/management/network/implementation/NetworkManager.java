@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.network.ApplicationGateways;

@@ -20,7 +20,6 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vaults extends
-        SupportsListing<Vault>,
         SupportsCreating<Vault.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<Vault>,

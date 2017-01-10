@@ -37,8 +37,8 @@ public class StorageMigrationOptionsInner extends Resource {
     private Boolean switchSiteAfterMigration;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; if the app should be read only during
-     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
+     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.blockWriteAccessToSite")
     private Boolean blockWriteAccessToSite;

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -26,6 +25,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -56,20 +56,20 @@ public final class UsagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Usages list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages")
         Observable<Response<ResponseBody>> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Usages listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location for which resource usage is queried.
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> list(final String location) {
@@ -83,14 +83,14 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location for which resource usage is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UsageInner>> listAsync(final String location, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(location),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -102,9 +102,9 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location for which resource usage is queried.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listAsync(final String location) {
@@ -118,9 +118,9 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location for which resource usage is queried.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWithServiceResponseAsync(final String location) {
@@ -138,9 +138,9 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-    ServiceResponse<PageImpl1<UsageInner>> * @param location The location upon which resource usage is queried.
+    ServiceResponse<PageImpl1<UsageInner>> * @param location The location for which resource usage is queried.
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listSinglePageAsync(final String location) {
@@ -168,14 +168,14 @@ public final class UsagesInner {
     }
 
     private ServiceResponse<PageImpl1<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;UsageInner&gt; object if successful.
@@ -191,7 +191,7 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -199,7 +199,7 @@ public final class UsagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UsageInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -211,7 +211,7 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
@@ -227,7 +227,7 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
@@ -247,7 +247,7 @@ public final class UsagesInner {
     }
 
     /**
-     * Lists compute usages for a subscription.
+     * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
     ServiceResponse<PageImpl1<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -256,7 +256,8 @@ public final class UsagesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
@@ -271,7 +272,7 @@ public final class UsagesInner {
     }
 
     private ServiceResponse<PageImpl1<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

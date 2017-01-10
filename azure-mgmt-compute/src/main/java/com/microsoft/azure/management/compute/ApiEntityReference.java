@@ -14,7 +14,7 @@ package com.microsoft.azure.management.compute;
  */
 public class ApiEntityReference {
     /**
-     * the ARM resource id in the form of
+     * The ARM resource id in the form of
      * /subscriptions/{SubcriptionId}/resourceGroups/{ResourceGroupName}/...
      */
     private String id;

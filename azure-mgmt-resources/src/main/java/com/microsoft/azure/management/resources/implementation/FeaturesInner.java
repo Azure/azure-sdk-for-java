@@ -11,7 +11,6 @@ package com.microsoft.azure.management.resources.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -28,6 +27,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -58,34 +58,34 @@ public final class FeaturesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface FeaturesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
         Observable<Response<ResponseBody>> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
         Observable<Response<ResponseBody>> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features register" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
         Observable<Response<ResponseBody>> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features listAllNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Features listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
@@ -100,13 +100,13 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -118,7 +118,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
@@ -133,7 +133,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
@@ -152,7 +152,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -178,16 +178,16 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FeatureResultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
-     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
     public PagedList<FeatureResultInner> list(final String resourceProviderNamespace) {
@@ -201,14 +201,14 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
-     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceProviderNamespace),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -220,9 +220,9 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
-     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<Page<FeatureResultInner>> listAsync(final String resourceProviderNamespace) {
@@ -236,9 +236,9 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
-     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listWithServiceResponseAsync(final String resourceProviderNamespace) {
@@ -256,9 +256,9 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
-    ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider.
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listSinglePageAsync(final String resourceProviderNamespace) {
@@ -286,17 +286,17 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FeatureResultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get all features under the subscription.
+     * Gets the preview feature with the specified name.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
@@ -304,22 +304,22 @@ public final class FeaturesInner {
     }
 
     /**
-     * Get all features under the subscription.
+     * Gets the preview feature with the specified name.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
-     * Get all features under the subscription.
+     * Gets the preview feature with the specified name.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
      * @return the observable to the FeatureResultInner object
      */
     public Observable<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
@@ -332,10 +332,10 @@ public final class FeaturesInner {
     }
 
     /**
-     * Get all features under the subscription.
+     * Gets the preview feature with the specified name.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
      * @return the observable to the FeatureResultInner object
      */
     public Observable<ServiceResponse<FeatureResultInner>> getWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
@@ -366,17 +366,17 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<FeatureResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Registers for a previewed feature of a resource provider.
+     * Registers the preview feature for the subscription.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
@@ -384,22 +384,22 @@ public final class FeaturesInner {
     }
 
     /**
-     * Registers for a previewed feature of a resource provider.
+     * Registers the preview feature for the subscription.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.create(registerWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
+        return ServiceCall.fromResponse(registerWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
-     * Registers for a previewed feature of a resource provider.
+     * Registers the preview feature for the subscription.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
      * @return the observable to the FeatureResultInner object
      */
     public Observable<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
@@ -412,10 +412,10 @@ public final class FeaturesInner {
     }
 
     /**
-     * Registers for a previewed feature of a resource provider.
+     * Registers the preview feature for the subscription.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider.
-     * @param featureName Previewed feature name in the resource provider.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
      * @return the observable to the FeatureResultInner object
      */
     public Observable<ServiceResponse<FeatureResultInner>> registerWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
@@ -446,14 +446,14 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<FeatureResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
@@ -469,7 +469,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -477,7 +477,7 @@ public final class FeaturesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -489,7 +489,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
@@ -505,7 +505,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
@@ -525,7 +525,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features for all the providers in the current subscription.
+     * Gets all the preview features that are available through AFEC for the subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -534,7 +534,8 @@ public final class FeaturesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
@@ -549,14 +550,14 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FeatureResultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
@@ -572,7 +573,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -580,7 +581,7 @@ public final class FeaturesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -592,7 +593,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
@@ -608,7 +609,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
@@ -628,7 +629,7 @@ public final class FeaturesInner {
     }
 
     /**
-     * Gets a list of previewed features of a resource provider.
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -637,7 +638,8 @@ public final class FeaturesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
@@ -652,7 +654,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FeatureResultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

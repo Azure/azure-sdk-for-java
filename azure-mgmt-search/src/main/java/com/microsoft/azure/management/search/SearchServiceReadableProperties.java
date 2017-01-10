@@ -29,8 +29,7 @@ public class SearchServiceReadableProperties {
 
     /**
      * The state of the last provisioning operation performed on the Search
-     * service. Possible values include: 'succeeded', 'provisioning',
-     * 'failed'.
+     * service. Possible values include: 'succeeded', 'provisioning', 'failed'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -42,8 +41,8 @@ public class SearchServiceReadableProperties {
     private Sku sku;
 
     /**
-     * The number of replicas in the Search service. If specified, it must be
-     * a value between 1 and 6 inclusive.
+     * The number of replicas in the Search service. If specified, it must be a
+     * value between 1 and 6 inclusive.
      */
     private Integer replicaCount;
 

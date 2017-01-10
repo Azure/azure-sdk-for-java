@@ -10,36 +10,36 @@ package com.microsoft.azure.management.resources;
 
 
 /**
- * Sku for the resource.
+ * SKU for the resource.
  */
 public class Sku {
     /**
-     * The sku name.
+     * The SKU name.
      */
     private String name;
 
     /**
-     * The sku tier.
+     * The SKU tier.
      */
     private String tier;
 
     /**
-     * The sku size.
+     * The SKU size.
      */
     private String size;
 
     /**
-     * The sku family.
+     * The SKU family.
      */
     private String family;
 
     /**
-     * The sku model.
+     * The SKU model.
      */
     private String model;
 
     /**
-     * The sku capacity.
+     * The SKU capacity.
      */
     private Integer capacity;
 

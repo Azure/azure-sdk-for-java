@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 
 /**
  * Generic base class for Azure resource managers.

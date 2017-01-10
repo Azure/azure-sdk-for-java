@@ -10,7 +10,6 @@ package com.microsoft.azure.management.sql.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -57,51 +56,51 @@ public final class ServersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ServersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers createOrUpdateFirewallRule" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> createOrUpdateFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Body ServerFirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers deleteFirewallRule" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers getFirewallRule" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> getFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers listFirewallRules" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules")
         Observable<Response<ResponseBody>> listFirewallRules(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers listUsages" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/usages")
         Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers getServiceObjective" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives/{serviceObjectiveName}")
         Observable<Response<ResponseBody>> getServiceObjective(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("serviceObjectiveName") String serviceObjectiveName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers listServiceObjectives" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives")
         Observable<Response<ResponseBody>> listServiceObjectives(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -131,7 +130,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
     }
 
     /**
@@ -194,7 +193,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<ServerFirewallRuleInner> createOrUpdateFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFirewallRuleInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ServerFirewallRuleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
                 .register(201, new TypeToken<ServerFirewallRuleInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -222,7 +221,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
+        return ServiceCall.fromResponse(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -279,7 +278,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<Void> deleteFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -307,7 +306,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceCall.create(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
+        return ServiceCall.fromResponse(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -364,7 +363,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<ServerFirewallRuleInner> getFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFirewallRuleInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ServerFirewallRuleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -390,7 +389,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerFirewallRuleInner>> serviceCallback) {
-        return ServiceCall.create(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -443,7 +442,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<PageImpl<ServerFirewallRuleInner>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ServerFirewallRuleInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ServerFirewallRuleInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServerFirewallRuleInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -465,7 +464,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServerInner>> listAsync(final ServiceCallback<List<ServerInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -508,7 +507,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<PageImpl<ServerInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ServerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ServerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -536,7 +535,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters, final ServiceCallback<ServerInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
     }
 
     /**
@@ -594,7 +593,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<ServerInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ServerInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServerInner>() { }.getType())
                 .register(201, new TypeToken<ServerInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -620,7 +619,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -672,7 +671,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -698,7 +697,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerInner> serviceCallback) {
-        return ServiceCall.create(getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -750,7 +749,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<ServerInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ServerInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServerInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -774,7 +773,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServerInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ServerInner>> serviceCallback) {
-        return ServiceCall.create(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -822,7 +821,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<PageImpl<ServerInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ServerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ServerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -848,7 +847,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerMetricInner>> serviceCallback) {
-        return ServiceCall.create(listUsagesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -901,7 +900,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<PageImpl<ServerMetricInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ServerMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ServerMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServerMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -929,7 +928,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServiceObjectiveInner> getServiceObjectiveAsync(String resourceGroupName, String serverName, String serviceObjectiveName, final ServiceCallback<ServiceObjectiveInner> serviceCallback) {
-        return ServiceCall.create(getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName), serviceCallback);
+        return ServiceCall.fromResponse(getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName), serviceCallback);
     }
 
     /**
@@ -986,7 +985,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<ServiceObjectiveInner> getServiceObjectiveDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServiceObjectiveInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ServiceObjectiveInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServiceObjectiveInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1012,7 +1011,7 @@ public final class ServersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServiceObjectiveInner>> listServiceObjectivesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServiceObjectiveInner>> serviceCallback) {
-        return ServiceCall.create(listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -1065,7 +1064,7 @@ public final class ServersInner {
     }
 
     private ServiceResponse<PageImpl<ServiceObjectiveInner>> listServiceObjectivesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ServiceObjectiveInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ServiceObjectiveInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServiceObjectiveInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

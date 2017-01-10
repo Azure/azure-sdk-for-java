@@ -12,7 +12,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.CheckNameResourceTypes;
@@ -20,8 +19,9 @@ import com.microsoft.azure.management.appservice.ResourceNameAvailabilityRequest
 import com.microsoft.azure.management.appservice.SkuName;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -37,6 +37,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -283,10 +284,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public WebSiteManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -337,61 +336,61 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface WebSiteManagementClientService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSourceControls" })
         @GET("providers/Microsoft.Web/sourcecontrols")
         Observable<Response<ResponseBody>> listSourceControls(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient updateSourceControl" })
         @PUT("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         Observable<Response<ResponseBody>> updateSourceControl(@Path("sourceControlType") String sourceControlType, @Body SourceControlInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
         Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceNameAvailabilityRequest request, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listGeoRegions" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
         Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listPremierAddOnOffers" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
         Observable<Response<ResponseBody>> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient getPublishingCredentials" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Observable<Response<ResponseBody>> getPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient updatePublishingCredentials" })
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Observable<Response<ResponseBody>> updatePublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSkus" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/skus")
         Observable<Response<ResponseBody>> listSkus(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient move" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
         Observable<Response<ResponseBody>> move(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient validate" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validate")
         Observable<Response<ResponseBody>> validate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ValidateRequestInner validateRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient validateMove" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/validateMoveResources")
         Observable<Response<ResponseBody>> validateMove(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSourceControlsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSourceControlsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSourceControlsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listGeoRegionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listGeoRegionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listGeoRegionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listPremierAddOnOffersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listPremierAddOnOffersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPremierAddOnOffersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -419,7 +418,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SourceControlInner>> listSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSourceControlsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -489,7 +488,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<SourceControlInner>> listSourceControlsDelegate(Response<ResponseBody> response) throws CloudException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<SourceControlInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<SourceControlInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SourceControlInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -517,7 +516,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
-        return ServiceCall.create(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
+        return ServiceCall.fromResponse(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
     }
 
     /**
@@ -569,7 +568,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<SourceControlInner> updateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<SourceControlInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<SourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -597,7 +596,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
+        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
     }
 
     /**
@@ -679,7 +678,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, Boolean isFqdn, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
+        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
     }
 
     /**
@@ -739,7 +738,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceNameAvailabilityInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<ResourceNameAvailabilityInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ResourceNameAvailabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -769,7 +768,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -868,7 +867,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsSinglePageAsync(sku),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -944,7 +943,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<GeoRegionInner>> listGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<GeoRegionInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -974,7 +973,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersAsync(final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPremierAddOnOffersSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
@@ -1047,7 +1046,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<PremierAddOnOfferInner>> listPremierAddOnOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PremierAddOnOfferInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<PremierAddOnOfferInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PremierAddOnOfferInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1071,7 +1070,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1115,7 +1114,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<UserInner> getPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1141,7 +1140,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> updatePublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
+        return ServiceCall.fromResponse(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
     }
 
     /**
@@ -1191,7 +1190,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<UserInner> updatePublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1215,7 +1214,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SkuInfosInner> listSkusAsync(final ServiceCallback<SkuInfosInner> serviceCallback) {
-        return ServiceCall.create(listSkusWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1259,7 +1258,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<SkuInfosInner> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfosInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<SkuInfosInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<SkuInfosInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1286,7 +1285,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1341,7 +1340,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<Void> moveDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1368,7 +1367,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest, final ServiceCallback<ValidateResponseInner> serviceCallback) {
-        return ServiceCall.create(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
+        return ServiceCall.fromResponse(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
     }
 
     /**
@@ -1423,7 +1422,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<ValidateResponseInner> validateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ValidateResponseInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<ValidateResponseInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ValidateResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1450,7 +1449,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1505,7 +1504,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<Void> validateMoveDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1537,7 +1536,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SourceControlInner>> listSourceControlsNextAsync(final String nextPageLink, final ServiceCall<List<SourceControlInner>> serviceCall, final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSourceControlsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -1597,7 +1596,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSourceControlsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSourceControlsNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(Response<ResponseBody> response) {
@@ -1612,7 +1612,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<SourceControlInner>> listSourceControlsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SourceControlInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<SourceControlInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SourceControlInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1645,7 +1645,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<List<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -1705,7 +1705,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listGeoRegionsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listGeoRegionsNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
@@ -1720,7 +1721,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<GeoRegionInner>> listGeoRegionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<GeoRegionInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1753,7 +1754,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersNextAsync(final String nextPageLink, final ServiceCall<List<PremierAddOnOfferInner>> serviceCall, final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPremierAddOnOffersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
@@ -1813,7 +1814,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listPremierAddOnOffersNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPremierAddOnOffersNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PremierAddOnOfferInner>>> call(Response<ResponseBody> response) {
@@ -1828,7 +1830,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<PremierAddOnOfferInner>> listPremierAddOnOffersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PremierAddOnOfferInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<PremierAddOnOfferInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PremierAddOnOfferInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -51,9 +51,9 @@ public class DomainInner extends Resource {
     /**
      * Domain registration status. Possible values include: 'Active',
      * 'Awaiting', 'Cancelled', 'Confiscated', 'Disabled', 'Excluded',
-     * 'Expired', 'Failed', 'Held', 'Locked', 'Parked', 'Pending',
-     * 'Reserved', 'Reverted', 'Suspended', 'Transferred', 'Unknown',
-     * 'Unlocked', 'Unparked', 'Updated', 'JsonConverterFailed'.
+     * 'Expired', 'Failed', 'Held', 'Locked', 'Parked', 'Pending', 'Reserved',
+     * 'Reverted', 'Suspended', 'Transferred', 'Unknown', 'Unlocked',
+     * 'Unparked', 'Updated', 'JsonConverterFailed'.
      */
     @JsonProperty(value = "properties.registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DomainStatus registrationStatus;
@@ -105,9 +105,9 @@ public class DomainInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if Azure can assign this domain to App
-     * Service apps; otherwise, &lt;code&gt;false&lt;/code&gt;. This value
-     * will be &lt;code&gt;true&lt;/code&gt; if domain registration status is
-     * active and
+     * Service apps; otherwise, &lt;code&gt;false&lt;/code&gt;. This value will
+     * be &lt;code&gt;true&lt;/code&gt; if domain registration status is active
+     * and
      * it is hosted on name servers Azure has programmatic access to.
      */
     @JsonProperty(value = "properties.readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)

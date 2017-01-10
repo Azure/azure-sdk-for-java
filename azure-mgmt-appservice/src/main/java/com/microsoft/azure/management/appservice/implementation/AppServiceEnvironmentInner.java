@@ -76,9 +76,9 @@ public class AppServiceEnvironmentInner extends Resource {
     private VirtualNetworkProfile virtualNetwork;
 
     /**
-     * Specifies which endpoints to serve internally in the Virtual Network
-     * for the App Service Environment. Possible values include: 'None',
-     * 'Web', 'Publishing'.
+     * Specifies which endpoints to serve internally in the Virtual Network for
+     * the App Service Environment. Possible values include: 'None', 'Web',
+     * 'Publishing'.
      */
     @JsonProperty(value = "properties.internalLoadBalancingMode")
     private InternalLoadBalancingMode internalLoadBalancingMode;
@@ -198,8 +198,8 @@ public class AppServiceEnvironmentInner extends Resource {
     private Boolean environmentIsHealthy;
 
     /**
-     * Detailed message about with results of the last check of the App
-     * Service Environment.
+     * Detailed message about with results of the last check of the App Service
+     * Environment.
      */
     @JsonProperty(value = "properties.environmentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String environmentStatus;
@@ -240,8 +240,8 @@ public class AppServiceEnvironmentInner extends Resource {
 
     /**
      * True/false indicating whether the App Service Environment is suspended.
-     * The environment can be suspended e.g. when the management endpoint is
-     * no longer available
+     * The environment can be suspended e.g. when the management endpoint is no
+     * longer available
      * (most likely because NSG blocked the incoming traffic).
      */
     @JsonProperty(value = "properties.dynamicCacheEnabled")

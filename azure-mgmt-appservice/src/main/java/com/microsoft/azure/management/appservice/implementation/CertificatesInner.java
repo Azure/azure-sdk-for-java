@@ -11,7 +11,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -32,6 +31,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -62,61 +62,61 @@ public final class CertificatesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface CertificatesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CertificateInner certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CertificateInner certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listSigningRequestByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs")
         Observable<Response<ResponseBody>> listSigningRequestByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates getSigningRequest" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
         Observable<Response<ResponseBody>> getSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates createOrUpdateSigningRequest" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
         Observable<Response<ResponseBody>> createOrUpdateSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsrInner csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates deleteSigningRequest" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates updateSigningRequest" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
         Observable<Response<ResponseBody>> updateSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsrInner csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSigningRequestByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listSigningRequestByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSigningRequestByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -144,7 +144,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateInner>> listAsync(final ListOperationCallback<CertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
@@ -217,7 +217,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CertificateInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -249,7 +249,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<CertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
@@ -328,7 +328,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CertificateInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -356,7 +356,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateInner> getAsync(String resourceGroupName, String name, final ServiceCallback<CertificateInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -410,7 +410,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CertificateInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -440,7 +440,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateInner> createOrUpdateAsync(String resourceGroupName, String name, CertificateInner certificateEnvelope, final ServiceCallback<CertificateInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope), serviceCallback);
     }
 
     /**
@@ -500,7 +500,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CertificateInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -527,7 +527,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -581,7 +581,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -611,7 +611,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateInner> updateAsync(String resourceGroupName, String name, CertificateInner certificateEnvelope, final ServiceCallback<CertificateInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope), serviceCallback);
     }
 
     /**
@@ -671,7 +671,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CertificateInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -703,7 +703,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsrInner>> listSigningRequestByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<CsrInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSigningRequestByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<CsrInner>>>>() {
                 @Override
@@ -782,7 +782,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CsrInner>> listSigningRequestByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsrInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsrInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsrInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -810,7 +810,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CsrInner> getSigningRequestAsync(String resourceGroupName, String name, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceCall.create(getSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -864,7 +864,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CsrInner> getSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsrInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CsrInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -894,7 +894,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CsrInner> createOrUpdateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
     }
 
     /**
@@ -954,7 +954,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CsrInner> createOrUpdateSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsrInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CsrInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -981,7 +981,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteSigningRequestAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1035,7 +1035,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<Void> deleteSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1065,7 +1065,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CsrInner> updateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceCall.create(updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
     }
 
     /**
@@ -1125,7 +1125,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<CsrInner> updateSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsrInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CsrInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1158,7 +1158,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
@@ -1218,7 +1218,8 @@ public final class CertificatesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
@@ -1233,7 +1234,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CertificateInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1266,7 +1267,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
@@ -1326,7 +1327,8 @@ public final class CertificatesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
@@ -1341,7 +1343,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CertificateInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1374,7 +1376,7 @@ public final class CertificatesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsrInner>> listSigningRequestByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<CsrInner>> serviceCall, final ListOperationCallback<CsrInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsrInner>>>>() {
                 @Override
@@ -1434,7 +1436,8 @@ public final class CertificatesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSigningRequestByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSigningRequestByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsrInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsrInner>>> call(Response<ResponseBody> response) {
@@ -1449,7 +1452,7 @@ public final class CertificatesInner {
     }
 
     private ServiceResponse<PageImpl<CsrInner>> listSigningRequestByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsrInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsrInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsrInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

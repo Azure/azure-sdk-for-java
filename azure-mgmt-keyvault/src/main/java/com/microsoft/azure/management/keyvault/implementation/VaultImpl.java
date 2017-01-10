@@ -209,7 +209,7 @@ class VaultImpl
                             .doOnNext(new Action1<User>() {
                                 @Override
                                 public void call(User user) {
-                                    accessPolicy.forObjectId(UUID.fromString(user.objectId()));
+                                    accessPolicy.forObjectId(user.objectId());
                                 }
                             }));
                 } else if (accessPolicy.servicePrincipalName() != null) {
@@ -218,7 +218,7 @@ class VaultImpl
                             .doOnNext(new Action1<ServicePrincipal>() {
                                 @Override
                                 public void call(ServicePrincipal sp) {
-                                    accessPolicy.forObjectId(UUID.fromString(sp.objectId()));
+                                    accessPolicy.forObjectId(sp.objectId());
                                 }
                             }));
                 } else {

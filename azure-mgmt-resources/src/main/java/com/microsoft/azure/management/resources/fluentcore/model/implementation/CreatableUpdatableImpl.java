@@ -143,7 +143,7 @@ public abstract class CreatableUpdatableImpl<
      * @return a handle to cancel the request
      */
     public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(Utils.<FluentModelT>rootResource(createAsync()), callback);
+        return ServiceCall.fromBody(Utils.<FluentModelT>rootResource(createAsync()), callback);
     }
 
     /**
@@ -174,7 +174,7 @@ public abstract class CreatableUpdatableImpl<
      */
     @Override
     public ServiceCall<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(applyAsync(), callback);
+        return ServiceCall.fromBody(applyAsync(), callback);
     }
 
     /**
@@ -232,19 +232,5 @@ public abstract class CreatableUpdatableImpl<
                 return (FluentModelT) fluentModelImplT;
             }
         };
-    }
-
-    protected ServiceCall<FluentModelT> observableToFuture(
-            Observable<FluentModelT> observable,
-            final ServiceCallback<FluentModelT> callback) {
-        return ServiceCall.create(
-                observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
-                    @Override
-                    public ServiceResponse<FluentModelT> call(FluentModelT fluentModelT) {
-                        // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map (and this method) can be removed
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
     }
 }

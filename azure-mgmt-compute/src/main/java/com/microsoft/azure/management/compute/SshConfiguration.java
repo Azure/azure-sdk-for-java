@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class SshConfiguration {
     /**
-     * the list of SSH public keys used to authenticate with linux based VMs.
+     * The list of SSH public keys used to authenticate with linux based VMs.
      */
     private List<SshPublicKey> publicKeys;
 

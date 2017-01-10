@@ -156,13 +156,7 @@ class HostNameBindingImpl<
     @Override
     public ServiceCall<HostNameBinding> createAsync(ServiceCallback<HostNameBinding> callback) {
         Observable<Indexable> indexableObservable = createAsync();
-        return ServiceCall.create(Utils.<HostNameBinding>rootResource(indexableObservable)
-                .map(new Func1<HostNameBinding, ServiceResponse<HostNameBinding>>() {
-                    @Override
-                    public ServiceResponse<HostNameBinding> call(HostNameBinding hostNameBinding) {
-                        return new ServiceResponse<>(hostNameBinding, null);
-                    }
-                }), callback);
+        return ServiceCall.fromBody(Utils.<HostNameBinding>rootResource(indexableObservable), callback);
     }
 
     @Override

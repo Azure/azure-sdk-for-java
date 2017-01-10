@@ -11,7 +11,7 @@ package com.microsoft.azure.management.storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Usage Names.
+ * The usage names that can be used; currently limited to StorageAccount.
  */
 public class UsageName {
     /**

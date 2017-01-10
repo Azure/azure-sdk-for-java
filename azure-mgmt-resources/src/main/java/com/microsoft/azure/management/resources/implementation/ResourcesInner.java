@@ -11,7 +11,6 @@ package com.microsoft.azure.management.resources.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -33,8 +32,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.Response;
 import retrofit2.http.Url;
+import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -64,99 +63,102 @@ public final class ResourcesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourcesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources moveResources" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         Observable<Response<ResponseBody>> moveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources beginMoveResources" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         Observable<Response<ResponseBody>> beginMoveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources list" })
         @GET("subscriptions/{subscriptionId}/resources")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$expand") String expand, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources checkExistence" })
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<Void>> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources get" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources checkExistenceById" })
         @HEAD("{resourceId}")
         Observable<Response<Void>> checkExistenceById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources deleteById" })
         @HTTP(path = "{resourceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources beginDeleteById" })
         @HTTP(path = "{resourceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources createOrUpdateById" })
         @PUT("{resourceId}")
         Observable<Response<ResponseBody>> createOrUpdateById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources beginCreateOrUpdateById" })
         @PUT("{resourceId}")
         Observable<Response<ResponseBody>> beginCreateOrUpdateById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources getById" })
         @GET("{resourceId}")
         Observable<Response<ResponseBody>> getById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Resources listNext" })
         @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      */
     public void moveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
         moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().last().getBody();
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters), serviceCallback);
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @return the observable for the request
      */
     public Observable<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -169,10 +171,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> moveResourcesWithServiceResponseAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -194,32 +197,35 @@ public final class ResourcesInner {
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      */
     public void beginMoveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
         beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().single().getBody();
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters), serviceCallback);
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -232,10 +238,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
+     * Moves resources from one resource group to another resource group.
+     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName Source resource group name.
-     * @param parameters move resources' parameters.
+     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param parameters Parameters for moving resources.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginMoveResourcesWithServiceResponseAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -267,14 +274,14 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<Void> beginMoveResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
@@ -289,13 +296,13 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GenericResourceInner>> listAsync(final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -307,7 +314,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
@@ -322,7 +329,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
@@ -341,7 +348,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -370,11 +377,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
     public PagedList<GenericResourceInner> list(final String filter, final String expand, final Integer top) {
@@ -388,16 +395,16 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(filter, expand, top),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -409,11 +416,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<Page<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top) {
@@ -427,11 +434,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listWithServiceResponseAsync(final String filter, final String expand, final Integer top) {
@@ -449,11 +456,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
     ServiceResponse<PageImpl<GenericResourceInner>> * @param filter The filter to apply on the operation.
     ServiceResponse<PageImpl<GenericResourceInner>> * @param expand The $expand query parameter.
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param top Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param top The number of results to return. If null is passed, returns all resource groups.
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listSinglePageAsync(final String filter, final String expand, final Integer top) {
@@ -478,21 +485,21 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<PageImpl<GenericResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks whether a resource exists.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -500,31 +507,31 @@ public final class ResourcesInner {
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks whether a resource exists.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.create(checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks whether a resource exists.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @return the observable to the boolean object
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
@@ -536,15 +543,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks whether a resource exists.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @return the observable to the boolean object
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         if (resourceGroupName == null) {
@@ -583,7 +590,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -593,12 +600,12 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      */
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().last().getBody();
@@ -607,28 +614,28 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
     }
 
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -643,12 +650,12 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -680,12 +687,12 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      */
     public void beginDelete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
@@ -694,28 +701,28 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
     }
 
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -730,12 +737,12 @@ public final class ResourcesInner {
     /**
      * Deletes a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -775,7 +782,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -783,15 +790,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -799,32 +806,32 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters), serviceCallback);
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the observable for the request
      */
     public Observable<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -837,15 +844,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<GenericResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -879,15 +886,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner beginCreateOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -895,32 +902,32 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters), serviceCallback);
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -933,15 +940,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Creates a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
-     * @param parameters Create or update resource parameters.
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Parameters for creating or updating the resource.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -985,7 +992,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<GenericResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<GenericResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<GenericResourceInner>() { }.getType())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -994,14 +1001,14 @@ public final class ResourcesInner {
     }
 
     /**
-     * Returns a resource belonging to a resource group.
+     * Gets a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1009,30 +1016,30 @@ public final class ResourcesInner {
     }
 
     /**
-     * Returns a resource belonging to a resource group.
+     * Gets a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
     }
 
     /**
-     * Returns a resource belonging to a resource group.
+     * Gets a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1045,14 +1052,14 @@ public final class ResourcesInner {
     }
 
     /**
-     * Returns a resource belonging to a resource group.
+     * Gets a resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace Resource identity.
-     * @param parentResourcePath Resource identity.
-     * @param resourceType Resource identity.
-     * @param resourceName Resource identity.
-     * @param apiVersion Api version to use.
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1092,17 +1099,17 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<GenericResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<GenericResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks by ID whether a resource exists.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the boolean object if successful.
      */
     public boolean checkExistenceById(String resourceId, String apiVersion) {
@@ -1110,23 +1117,23 @@ public final class ResourcesInner {
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks by ID whether a resource exists.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.create(checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks by ID whether a resource exists.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
-     * @return the observable to the boolean object
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
+     * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
@@ -1138,11 +1145,11 @@ public final class ResourcesInner {
     }
 
     /**
-     * Checks whether resource exists.
+     * Checks by ID whether a resource exists.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
-     * @return the observable to the boolean object
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
+     * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
         if (resourceId == null) {
@@ -1166,7 +1173,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<Boolean> checkExistenceByIdDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1174,32 +1181,32 @@ public final class ResourcesInner {
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      */
     public void deleteById(String resourceId, String apiVersion) {
         deleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().last().getBody();
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(deleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the observable for the request
      */
     public Observable<Void> deleteByIdAsync(String resourceId, String apiVersion) {
@@ -1212,10 +1219,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1230,32 +1237,32 @@ public final class ResourcesInner {
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      */
     public void beginDeleteById(String resourceId, String apiVersion) {
         beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
@@ -1268,10 +1275,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Deletes a resource.
+     * Deletes a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1296,7 +1303,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<Void> beginDeleteByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -1304,10 +1311,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the GenericResourceInner object if successful.
      */
@@ -1316,23 +1323,23 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the observable for the request
      */
@@ -1346,10 +1353,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the observable for the request
      */
@@ -1369,10 +1376,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the GenericResourceInner object if successful.
      */
@@ -1381,23 +1388,23 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the observable to the GenericResourceInner object
      */
@@ -1411,10 +1418,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Create a resource.
+     * Create a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @return the observable to the GenericResourceInner object
      */
@@ -1444,7 +1451,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<GenericResourceInner> beginCreateOrUpdateByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<GenericResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<GenericResourceInner>() { }.getType())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -1453,10 +1460,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Gets a resource.
+     * Gets a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner getById(String resourceId, String apiVersion) {
@@ -1464,22 +1471,22 @@ public final class ResourcesInner {
     }
 
     /**
-     * Gets a resource.
+     * Gets a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, final ServiceCallback<GenericResourceInner> serviceCallback) {
-        return ServiceCall.create(getByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+        return ServiceCall.fromResponse(getByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
     }
 
     /**
-     * Gets a resource.
+     * Gets a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
@@ -1492,10 +1499,10 @@ public final class ResourcesInner {
     }
 
     /**
-     * Gets a resource.
+     * Gets a resource by ID.
      *
-     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
-     * @param apiVersion Api version to use.
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
+     * @param apiVersion The API version to use for the operation.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> getByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1520,14 +1527,14 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<GenericResourceInner> getByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<GenericResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
@@ -1543,7 +1550,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1551,7 +1558,7 @@ public final class ResourcesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GenericResourceInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<GenericResourceInner>> serviceCall, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -1563,7 +1570,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
@@ -1579,7 +1586,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
@@ -1599,7 +1606,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources in a subscription.
      *
     ServiceResponse<PageImpl<GenericResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1608,7 +1615,8 @@ public final class ResourcesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
@@ -1623,7 +1631,7 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<PageImpl<GenericResourceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -20,8 +20,8 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VnetRouteInner extends Resource {
     /**
-     * The name of this route. This is only returned by the server and does
-     * not need to be set by the client.
+     * The name of this route. This is only returned by the server and does not
+     * need to be set by the client.
      */
     @JsonProperty(value = "properties.name")
     private String vnetRouteName;
@@ -46,9 +46,9 @@ public class VnetRouteInner extends Resource {
      * specified by RFC1918
      * INHERITED - Routes inherited from the real Virtual Network routes
      * STATIC - Static route set on the app only
-     * 
-     * These values will be used for syncing an app's routes with those from
-     * a Virtual Network. Possible values include: 'DEFAULT', 'INHERITED',
+     *
+     * These values will be used for syncing an app's routes with those from a
+     * Virtual Network. Possible values include: 'DEFAULT', 'INHERITED',
      * 'STATIC'.
      */
     @JsonProperty(value = "properties.routeType")

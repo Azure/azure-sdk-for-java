@@ -62,14 +62,7 @@ class UsersImpl
 
     @Override
     public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
-        return ServiceCall.create(
-                getByUserPrincipalNameAsync(upn).map(new Func1<User, ServiceResponse<User>>() {
-                    @Override
-                    public ServiceResponse<User> call(User fluentModelT) {
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
+        return ServiceCall.fromBody(getByUserPrincipalNameAsync(upn), callback);
     }
 
     @Override

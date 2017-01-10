@@ -11,7 +11,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for create a new group.
+ * Request parameters for creating a new group.
  */
 public class GroupCreateParametersInner {
     /**
@@ -21,21 +21,21 @@ public class GroupCreateParametersInner {
     private String displayName;
 
     /**
-     * Specifies whether the group is mail-enabled. Must be false. This is
-     * because only pure security groups can be created using the Graph API.
+     * Whether the group is mail-enabled. Must be false. This is because only
+     * pure security groups can be created using the Graph API.
      */
     @JsonProperty(required = true)
     private boolean mailEnabled;
 
     /**
-     * Mail nick name.
+     * Mail nickname.
      */
     @JsonProperty(required = true)
     private String mailNickname;
 
     /**
-     * Specifies whether the group is a security group. Must be true. This is
-     * because only pure security groups can be created using the Graph API.
+     * Whether the group is a security group. Must be true. This is because
+     * only pure security groups can be created using the Graph API.
      */
     @JsonProperty(required = true)
     private boolean securityEnabled;

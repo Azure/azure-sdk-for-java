@@ -11,7 +11,6 @@ package com.microsoft.azure.management.cdn.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
@@ -35,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -65,58 +65,66 @@ public final class ProfilesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ProfilesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Body ProfileInner profile, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Body ProfileInner profile, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ProfileUpdateParameters profileUpdateParameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ProfileUpdateParameters profileUpdateParameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles generateSsoUri" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/generateSsoUri")
         Observable<Response<ResponseBody>> generateSsoUri(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles listResourceUsage" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkResourceUsage")
+        Observable<Response<ResponseBody>> listResourceUsage(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles listResourceUsageNext" })
+        @GET
+        Observable<Response<ResponseBody>> listResourceUsageNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
      */
@@ -131,13 +139,13 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listAsync(final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -149,7 +157,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
@@ -164,7 +172,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
@@ -183,7 +191,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -209,14 +217,14 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
@@ -232,14 +240,14 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -251,7 +259,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -267,7 +275,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -287,7 +295,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -317,7 +325,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
@@ -343,7 +351,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -397,7 +405,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
@@ -425,7 +433,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
     }
 
     /**
@@ -496,7 +504,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> beginCreateAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
     }
 
     /**
@@ -556,7 +564,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .register(201, new TypeToken<ProfileInner>() { }.getType())
                 .register(202, new TypeToken<ProfileInner>() { }.getType())
@@ -586,7 +594,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
     }
 
     /**
@@ -659,7 +667,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> beginUpdateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
+        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
     }
 
     /**
@@ -721,7 +729,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .register(202, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -729,7 +737,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -739,7 +747,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -747,11 +755,11 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -767,7 +775,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -791,7 +799,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -801,7 +809,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -809,11 +817,11 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -829,7 +837,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all subresources including endpoints, origins and custom domains.
+     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -863,7 +871,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -890,7 +898,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName, final ServiceCallback<SsoUriInner> serviceCallback) {
-        return ServiceCall.create(generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -944,14 +952,130 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<SsoUriInner> generateSsoUriDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SsoUriInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SsoUriInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SsoUriInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
+     */
+    public PagedList<ResourceUsageInner> listResourceUsage(final String resourceGroupName, final String profileName) {
+        ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageSinglePageAsync(resourceGroupName, profileName).toBlocking().single();
+        return new PagedList<ResourceUsageInner>(response.getBody()) {
+            @Override
+            public Page<ResourceUsageInner> nextPage(String nextPageLink) {
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
+            listResourceUsageSinglePageAsync(resourceGroupName, profileName),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(String nextPageLink) {
+                    return listResourceUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<Page<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName) {
+        return listResourceUsageWithServiceResponseAsync(resourceGroupName, profileName)
+            .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
+                @Override
+                public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageWithServiceResponseAsync(final String resourceGroupName, final String profileName) {
+        return listResourceUsageSinglePageAsync(resourceGroupName, profileName)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listResourceUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageSinglePageAsync(final String resourceGroupName, final String profileName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (profileName == null) {
+            throw new IllegalArgumentException("Parameter profileName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listResourceUsage(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceUsageInner>> listResourceUsageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceUsageInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceUsageInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
@@ -967,7 +1091,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -975,7 +1099,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ProfileInner>> serviceCall, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -987,7 +1111,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -1003,7 +1127,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -1023,7 +1147,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within an Azure subscription.
+     * Lists all of the CDN profiles within an Azure subscription.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1032,7 +1156,8 @@ public final class ProfilesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
@@ -1047,14 +1172,14 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
@@ -1070,7 +1195,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1078,7 +1203,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ProfileInner>> serviceCall, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -1090,7 +1215,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -1106,7 +1231,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
@@ -1126,7 +1251,7 @@ public final class ProfilesInner {
     }
 
     /**
-     * Lists all the CDN profiles within a resource group.
+     * Lists all of the CDN profiles within a resource group.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1135,7 +1260,8 @@ public final class ProfilesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
@@ -1150,8 +1276,112 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
+     */
+    public PagedList<ResourceUsageInner> listResourceUsageNext(final String nextPageLink) {
+        ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ResourceUsageInner>(response.getBody()) {
+            @Override
+            public Page<ResourceUsageInner> nextPage(String nextPageLink) {
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceCall<List<ResourceUsageInner>> serviceCall, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
+            listResourceUsageNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(String nextPageLink) {
+                    return listResourceUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<Page<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink) {
+        return listResourceUsageNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
+                @Override
+                public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextWithServiceResponseAsync(final String nextPageLink) {
+        return listResourceUsageNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listResourceUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     *
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listResourceUsageNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceUsageInner>> listResourceUsageNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceUsageInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceUsageInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

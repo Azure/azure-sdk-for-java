@@ -35,12 +35,12 @@ class DnsZonesImpl extends GroupableResourcesImpl<
 
     @Override
     public PagedList<DnsZone> list() {
-        return wrapList(this.innerCollection.listInSubscription());
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
     public PagedList<DnsZone> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listInResourceGroup(groupName));
+        return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override

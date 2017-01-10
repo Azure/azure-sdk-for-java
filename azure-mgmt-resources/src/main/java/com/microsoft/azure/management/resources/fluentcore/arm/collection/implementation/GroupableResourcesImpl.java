@@ -69,12 +69,7 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name), callback);
     }
 
     @Override

@@ -7,15 +7,14 @@
 
 package com.microsoft.azure.management.resources.samples;
 
-import java.io.File;
-
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.rest.LogLevel;
 
-import okhttp3.logging.HttpLoggingInterceptor;
+import java.io.File;
 
 /**
  * Azure Resource sample for managing resources -
@@ -48,7 +47,7 @@ public final class ManageResource {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                    .withLogLevel(LogLevel.NONE)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
