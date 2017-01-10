@@ -7,7 +7,6 @@
 
 package com.microsoft.rest.protocol;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import retrofit2.Converter;
 
 import java.io.IOException;
@@ -60,13 +59,13 @@ public interface SerializerAdapter<T> {
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
-     * Deserializes a string into a {@link T} object using the current {@link ObjectMapper}.
+     * Deserializes a string into a {@link U} object using the current {@link T}.
      *
      * @param value the string value to deserialize.
-     * @param <T> the type of the deserialized object.
+     * @param <U> the type of the deserialized object.
      * @param type the type to deserialize.
      * @return the deserialized object.
      * @throws IOException exception in deserialization
      */
-    <T> T deserialize(String value, final Type type) throws IOException;
+    <U> U deserialize(String value, final Type type) throws IOException;
 }

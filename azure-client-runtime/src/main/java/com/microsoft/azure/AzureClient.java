@@ -13,7 +13,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.Url;
 import rx.Observable;
 import rx.functions.Func1;
@@ -514,7 +513,7 @@ public class AzureClient extends AzureServiceClient {
                     if (response.body() != null) {
                         try {
                             bodyString = response.body().string();
-                            body = restClient().mapperAdapter().deserialize(bodyString, AzureAsyncOperation.class);
+                            body = restClient().serializerAdapter().deserialize(bodyString, AzureAsyncOperation.class);
                         } catch (IOException e) {
                             // null body will be handled later
                         } finally {
@@ -532,7 +531,7 @@ public class AzureClient extends AzureServiceClient {
                     pollingState.setResponse(response);
                     T resource = null;
                     try {
-                        resource = restClient().mapperAdapter().deserialize(bodyString, pollingState.getResourceType());
+                        resource = restClient().serializerAdapter().deserialize(bodyString, pollingState.getResourceType());
                     } catch (IOException e) {
                         // Ignore and let resource be null
                     }

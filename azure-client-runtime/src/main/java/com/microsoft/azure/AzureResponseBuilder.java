@@ -20,8 +20,6 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The builder for building a {@link ServiceResponse} customized for Azure.

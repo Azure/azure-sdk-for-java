@@ -72,8 +72,6 @@ public final class RestClient {
     }
 
     /**
-     * Get the headers interceptor.
-     *
      * @return the headers interceptor.
      */
     public CustomHeadersInterceptor headers() {
@@ -81,56 +79,54 @@ public final class RestClient {
     }
 
     /**
-     * Get the adapter to {@link com.fasterxml.jackson.databind.ObjectMapper}.
-     *
-     * @return the Jackson mapper adapter.
+     * @return the current serializer adapter.
      */
     public SerializerAdapter<?> serializerAdapter() {
         return serializerAdapter;
     }
 
+    /**
+     * @return the current respnose builder factory.
+     */
     public ResponseBuilder.Factory responseBuilderFactory() {
         return responseBuilderFactory;
     }
 
     /**
-     * Get the http client.
-     *
-     * @return the {@link OkHttpClient} object.
+     * @return the {@link OkHttpClient} instance
      */
     public OkHttpClient httpClient() {
         return httpClient;
     }
 
     /**
-     * Get the retrofit instance.
-     *
-     * @return the {@link Retrofit} object.
+     * @return the {@link Retrofit} instance
      */
     public Retrofit retrofit() {
         return retrofit;
     }
 
     /**
-     * Get the credentials attached to this REST client.
-     *
-     * @return the credentials.
+     * @return the credentials attached to this REST client
      */
     public ServiceClientCredentials credentials() {
         return this.credentials;
     }
 
     /**
-     * Get the current HTTP logging level for INFO SLF4J configuration.
-     *
-     * @return the logging level
+     * @return the current HTTP traffic logging level
      */
     public LogLevel logLevel() {
         return loggingInterceptor.logLevel();
     }
 
+    /**
+     * Set the current HTTP traffic logging level.
+     * @param logLevel the logging level enum
+     * @return the RestClient itself
+     */
     public RestClient withLogLevel(LogLevel logLevel) {
-        this.loggingInterceptor.withlogLevel(logLevel);
+        this.loggingInterceptor.withLogLevel(logLevel);
         return this;
     }
 
@@ -276,7 +272,7 @@ public final class RestClient {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            this.loggingInterceptor.withlogLevel(logLevel);
+            this.loggingInterceptor.withLogLevel(logLevel);
             return this;
         }
 

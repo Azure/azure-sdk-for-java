@@ -33,15 +33,27 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
+/**
+ * An OkHttp interceptor that handles logging of HTTP requests and responses.
+ */
 public class LoggingInterceptor implements Interceptor {
     private static final String LOGGING_HEADER = "x-ms-logging-context";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private LogLevel logLevel;
 
+    /**
+     * Creates an interceptor with a LogLevel enum.
+     * @param logLevel the level of traffic to log
+     */
     public LoggingInterceptor(LogLevel logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * Process the log using an SLF4j logger and an HTTP message.
+     * @param logger the SLF4j logger with the context of the request
+     * @param s the message for logging
+     */
     protected void log(Logger logger, String s) {
         logger.info(s);
     }
@@ -171,11 +183,19 @@ public class LoggingInterceptor implements Interceptor {
         return response;
     }
 
+    /**
+     * @return the current logging level.
+     */
     public LogLevel logLevel() {
         return logLevel;
     }
 
-    public LoggingInterceptor withlogLevel(LogLevel logLevel) {
+    /**
+     * Sets the current logging level.
+     * @param logLevel the new logging level
+     * @return the interceptor
+     */
+    public LoggingInterceptor withLogLevel(LogLevel logLevel) {
         this.logLevel = logLevel;
         return this;
     }

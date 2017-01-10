@@ -9,8 +9,6 @@ package com.microsoft.azure.serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.serializer.FlatteningDeserializer;
-import com.microsoft.rest.serializer.FlatteningSerializer;
 import com.microsoft.rest.serializer.JacksonAdapter;
 
 /**

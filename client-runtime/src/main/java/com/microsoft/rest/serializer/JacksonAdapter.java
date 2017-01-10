@@ -44,6 +44,9 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
      */
     private JacksonConverterFactory converterFactory;
 
+    /**
+     * Creates a new JacksonAdapter instance with default mapper settings.
+     */
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
         mapper = initializeObjectMapper(new ObjectMapper())
@@ -60,26 +63,17 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         return simpleMapper;
     }
 
+    @Override
     public ObjectMapper serializer() {
         return mapper;
     }
 
-    /**
-     * Gets a static instance of JacksonConverter factory.
-     *
-     * @return an instance of JacksonConverter factory.
-     */
+    @Override
     public JacksonConverterFactory converterFactory() {
         return JacksonConverterFactory.create(serializer());
     }
 
-    /**
-     * Serializes an object into a JSON string using the current {@link ObjectMapper}.
-     *
-     * @param object the object to serialize.
-     * @return the serialized string. Null if the object to serialize is null.
-     * @throws IOException exception from serialization.
-     */
+    @Override
     public String serialize(Object object) throws IOException {
         if (object == null) {
             return null;
@@ -89,13 +83,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         return writer.toString();
     }
 
-    /**
-     * Serializes an object into a raw string using the current {@link ObjectMapper}.
-     * The leading and trailing quotes will be trimmed.
-     *
-     * @param object the object to serialize.
-     * @return the serialized string. Null if the object to serialize is null.
-     */
+    @Override
     public String serializeRaw(Object object) {
         if (object == null) {
             return null;
@@ -107,15 +95,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         }
     }
 
-    /**
-     * Serializes a list into a string with the delimiter specified with the
-     * Swagger collection format joining each individual serialized items in
-     * the list.
-     *
-     * @param list the list to serialize.
-     * @param format the Swagger collection format.
-     * @return the serialized string
-     */
+    @Override
     public String serializeList(List<?> list, CollectionFormat format) {
         if (list == null) {
             return null;
@@ -128,15 +108,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         return Joiner.on(format.getDelimiter()).join(serialized);
     }
 
-    /**
-     * Deserializes a string into a {@link T} object using the current {@link ObjectMapper}.
-     *
-     * @param value the string value to deserialize.
-     * @param <T> the type of the deserialized object.
-     * @param type the type to deserialize.
-     * @return the deserialized object.
-     * @throws IOException exception in deserialization
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type) throws IOException {
         if (value == null || value.isEmpty()) {
