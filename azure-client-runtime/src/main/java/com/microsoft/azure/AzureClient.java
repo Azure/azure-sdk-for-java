@@ -13,9 +13,11 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Url;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,6 +33,8 @@ import java.util.concurrent.TimeUnit;
  * retrying for long running operations when accessing Azure resources.
  */
 public class AzureClient extends AzureServiceClient {
+    private static final String LOGGING_HEADER = "x-ms-logging-context";
+
     /**
      * The interval time between two long running operation polls. Default is
      * used if null.
@@ -140,6 +144,7 @@ public class AzureClient extends AzureServiceClient {
 
                         // Task runner will take it from here
                         return Observable.just(pollingState)
+                            .subscribeOn(Schedulers.io())
                             // Emit a polling task intermittently
                             .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
                                 @Override
@@ -285,6 +290,7 @@ public class AzureClient extends AzureServiceClient {
                     try {
                         final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
                         return Observable.just(pollingState)
+                            .subscribeOn(Schedulers.io())
                             // Emit a polling task intermittently
                             .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
                                 @Override
@@ -365,7 +371,7 @@ public class AzureClient extends AzureServiceClient {
      * @param <T> the return type of the caller.
      */
     private <T> Observable<PollingState<T>> updateStateFromLocationHeaderOnPutAsync(final PollingState<T> pollingState) {
-        return pollAsync(pollingState.getLocationHeaderLink())
+        return pollAsync(pollingState.getLocationHeaderLink(), pollingState.getResponse().raw().request().header(LOGGING_HEADER))
             .flatMap(new Func1<Response<ResponseBody>, Observable<PollingState<T>>>() {
                 @Override
                 public Observable<PollingState<T>> call(Response<ResponseBody> response) {
@@ -393,7 +399,7 @@ public class AzureClient extends AzureServiceClient {
      * @param <T> the return type of the caller.
      */
     private <T> Observable<PollingState<T>> updateStateFromLocationHeaderOnPostOrDeleteAsync(final PollingState<T> pollingState) {
-        return pollAsync(pollingState.getLocationHeaderLink())
+        return pollAsync(pollingState.getLocationHeaderLink(), pollingState.getResponse().raw().request().header(LOGGING_HEADER))
             .flatMap(new Func1<Response<ResponseBody>, Observable<PollingState<T>>>() {
                 @Override
                 public Observable<PollingState<T>> call(Response<ResponseBody> response) {
@@ -422,7 +428,7 @@ public class AzureClient extends AzureServiceClient {
      * @param <T> the return type of the caller.
      */
     private <T> Observable<PollingState<T>> updateStateFromGetResourceOperationAsync(final PollingState<T> pollingState, String url) {
-        return pollAsync(url)
+        return pollAsync(url, pollingState.getResponse().raw().request().header(LOGGING_HEADER))
             .flatMap(new Func1<Response<ResponseBody>, Observable<PollingState<T>>>() {
                 @Override
                 public Observable<PollingState<T>> call(Response<ResponseBody> response) {
@@ -444,7 +450,7 @@ public class AzureClient extends AzureServiceClient {
      * @param <T> the return type of the caller.
      */
     private <T> Observable<PollingState<T>> updateStateFromAzureAsyncOperationHeaderAsync(final PollingState<T> pollingState) {
-        return pollAsync(pollingState.getAzureAsyncOperationHeaderLink())
+        return pollAsync(pollingState.getAzureAsyncOperationHeaderLink(), pollingState.getResponse().raw().request().header(LOGGING_HEADER))
             .flatMap(new Func1<Response<ResponseBody>, Observable<PollingState<T>>>() {
                 @Override
                 public Observable<PollingState<T>> call(Response<ResponseBody> response) {
@@ -481,7 +487,7 @@ public class AzureClient extends AzureServiceClient {
      * @param url the URL to poll from.
      * @return the raw response.
      */
-    private Observable<Response<ResponseBody>> pollAsync(String url) {
+    private Observable<Response<ResponseBody>> pollAsync(String url, String loggingContext) {
         URL endpoint;
         try {
             endpoint = new URL(url);
@@ -493,7 +499,10 @@ public class AzureClient extends AzureServiceClient {
             port = endpoint.getDefaultPort();
         }
         AsyncService service = restClient().retrofit().create(AsyncService.class);
-        return service.get(endpoint.getFile(), serviceClientUserAgent)
+        if (!loggingContext.endsWith(" (poll)")) {
+            loggingContext += " (poll)";
+        }
+        return service.get(endpoint.getFile(), serviceClientUserAgent, loggingContext)
             .flatMap(new Func1<Response<ResponseBody>, Observable<Response<ResponseBody>>>() {
                 @Override
                 public Observable<Response<ResponseBody>> call(Response<ResponseBody> response) {
@@ -568,6 +577,6 @@ public class AzureClient extends AzureServiceClient {
      */
     private interface AsyncService {
         @GET
-        Observable<Response<ResponseBody>> get(@Url String url, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Url String url, @Header("User-Agent") String userAgent, @Header("x-ms-logging-context") String loggingHeader);
     }
 }

@@ -14,18 +14,7 @@ public enum LogLevel {
     BODY,
     BODY_AND_HEADERS;
 
-    private int contentLengthThreshold = 5000;
-
     private boolean prettyJson = false;
-
-    public LogLevel withContentLengthThreshold(int contentLengthThreshold) {
-        this.contentLengthThreshold = contentLengthThreshold;
-        return this;
-    }
-
-    public int contentLengthThreshold() {
-        return contentLengthThreshold;
-    }
 
     public boolean isPrettyJson() {
         return prettyJson;
