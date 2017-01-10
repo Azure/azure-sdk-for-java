@@ -161,6 +161,12 @@ public class PollingState<T> {
         return status;
     }
 
+    /**
+     * @return the resource type
+     */
+    public Type getResourceType() {
+        return resourceType;
+    }
 
     /**
      * Sets the polling status.
