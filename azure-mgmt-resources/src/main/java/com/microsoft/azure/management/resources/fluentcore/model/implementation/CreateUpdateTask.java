@@ -11,7 +11,13 @@ import rx.schedulers.Schedulers;
  * @param <ResourceT> the type of the resource that this task creates or update
  */
 public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
-    private CreateUpdateTaskGroup.ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator;
+    /**
+     * the underlying instance that can create and update the resource.
+     */
+    private ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator;
+    /**
+     * created or updated resource.
+     */
     private ResourceT resource;
 
     /**
@@ -19,7 +25,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
      *
      * @param resourceCreatorUpdator the resource creator and updator
      */
-    public CreateUpdateTask(CreateUpdateTaskGroup.ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
+    public CreateUpdateTask(ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
         this.resourceCreatorUpdator = resourceCreatorUpdator;
     }
 
@@ -31,6 +37,11 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     @Override
     public void prepare() {
         this.resourceCreatorUpdator.prepare();
+    }
+
+    @Override
+    public boolean isHot() {
+        return this.resourceCreatorUpdator.isHot();
     }
 
     @Override
@@ -54,5 +65,42 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
                         }
                     });
         }
+    }
+
+    /**
+     * Represents a type that know how to create or update a resource of type {@link ResultT}.
+     *
+     * @param <ResultT> the resource type
+     */
+    public interface ResourceCreatorUpdator<ResultT> {
+        /**
+         * @return true if this creatorUpdator is in create mode.
+         */
+        boolean isInCreateMode();
+
+        /**
+         * prepare for create or update.
+         */
+        void prepare();
+
+        /**
+         * @return true if the observable returned by {@link this#createResourceAsync()} and
+         * {@link this#updateResourceAsync()} are hot observables, false if they are cold observables.
+         */
+        boolean isHot();
+
+        /**
+         * Creates the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<ResultT> createResourceAsync();
+
+        /**
+         * Update the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<ResultT> updateResourceAsync();
     }
 }

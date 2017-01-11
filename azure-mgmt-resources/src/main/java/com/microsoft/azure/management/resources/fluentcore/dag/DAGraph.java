@@ -15,20 +15,29 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * <p>
  * each node in a DAG is represented by {@link DAGNode}
  *
- * @param <T> the type of the data stored in the graph nodes
- * @param <U> the type of the nodes in the graph
+ * @param <DataT> the type of the data stored in the graph nodes
+ * @param <NodeT> the type of the nodes in the graph
  */
-public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
+public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<DataT, NodeT> {
+    /**
+     * to perform topological sort on the graph.
+     */
     private ConcurrentLinkedQueue<String> queue;
+    /**
+     * indicates this graph has a parent graph.
+     */
     private boolean hasParent;
-    private U rootNode;
+    /**
+     * the root node in the graph.
+     */
+    private NodeT rootNode;
 
     /**
      * Creates a new DAG.
      *
      * @param rootNode the root node of this DAG
      */
-    public DAGraph(U rootNode) {
+    public DAGraph(NodeT rootNode) {
         this.rootNode = rootNode;
         this.queue = new ConcurrentLinkedQueue<>();
         this.rootNode.setPreparer(true);
@@ -48,7 +57,7 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      * @param node the node {@link DAGNode} to be checked
      * @return <tt>true</tt> if the given node is root node
      */
-    public boolean isRootNode(U node) {
+    public boolean isRootNode(NodeT node) {
         return this.rootNode == node;
     }
 
@@ -68,10 +77,10 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      *
      * @param parent the parent DAG
      */
-    public void merge(DAGraph<T, U> parent) {
+    public void merge(DAGraph<DataT, NodeT> parent) {
         this.hasParent = true;
         parent.rootNode.addDependency(this.rootNode.key());
-        for (Map.Entry<String, U> entry: graph.entrySet()) {
+        for (Map.Entry<String, NodeT> entry: graph.entrySet()) {
             String key = entry.getKey();
             if (!parent.graph.containsKey(key)) {
                 parent.graph.put(key, entry.getValue());
@@ -86,11 +95,11 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      * @param parentKey the key of the parent node
      * @param childNode the child node
      */
-    public void mergeChildToParent(String parentKey, U childNode) {
-        U parentNode = this.graph.get(parentKey);
-        Map<String, U> parentGraph = parentNode.owner().graph;
-        Map<String, U> childGraph = childNode.owner().graph;
-        for (Map.Entry<String, U> entry : childGraph.entrySet()) {
+    public void mergeChildToParent(String parentKey, NodeT childNode) {
+        NodeT parentNode = this.graph.get(parentKey);
+        Map<String, NodeT> parentGraph = parentNode.owner().graph;
+        Map<String, NodeT> childGraph = childNode.owner().graph;
+        for (Map.Entry<String, NodeT> entry : childGraph.entrySet()) {
             String key = entry.getKey();
             if (!parentGraph.containsKey(key)) {
                 parentGraph.put(key, entry.getValue());
@@ -104,7 +113,7 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      */
     public void prepare() {
         if (isPreparer()) {
-            for (U node : graph.values()) {
+            for (NodeT node : graph.values()) {
                 // Prepare each node for traversal
                 node.initialize();
                 if (!this.isRootNode(node)) {
@@ -123,7 +132,7 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      *
      * @return next node or null if all the nodes have been explored or no node is available at this moment.
      */
-    public U getNext() {
+    public NodeT getNext() {
         String nextItemKey = queue.poll();
         if (nextItemKey == null) {
             return null;
@@ -132,21 +141,11 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
     }
 
     /**
-     * Gets the data stored in a graph node with a given key.
-     *
-     * @param key the key of the node
-     * @return the value stored in the node
-     */
-    public T getNodeData(String key) {
-       return graph.get(key).data();
-    }
-
-    /**
      * Gets a node from the graph with the given key.
      * @param key the key of the node
      * @return the node
      */
-    public U getNode(String key) {
+    public NodeT getNode(String key) {
         return graph.get(key);
     }
 
@@ -155,14 +154,37 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      *
      * @param completed the node ready to be consumed
      */
-    public void reportedCompleted(U completed) {
+    public void reportCompletion(NodeT completed) {
         completed.setPreparer(true);
         String dependency = completed.key();
         for (String dependentKey : graph.get(dependency).dependentKeys()) {
-            DAGNode<T, U> dependent = graph.get(dependentKey);
+            DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
             dependent.lock().lock();
             try {
-                dependent.reportResolved(dependency);
+                dependent.onSuccessfulResolution(dependency);
+                if (dependent.hasAllResolved()) {
+                    queue.add(dependent.key());
+                }
+            } finally {
+                dependent.lock().unlock();
+            }
+        }
+    }
+
+    /**
+     * Reports that a node is faulted.
+     *
+     * @param faulted the node faulted
+     * @param throwable the reason for fault
+     */
+    public void reportError(NodeT faulted, Throwable throwable) {
+        faulted.setPreparer(true);
+        String dependency = faulted.key();
+        for (String dependentKey : graph.get(dependency).dependentKeys()) {
+            DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
+            dependent.lock().lock();
+            try {
+                dependent.onFaultedResolution(dependency, throwable);
                 if (dependent.hasAllResolved()) {
                     queue.add(dependent.key());
                 }
@@ -180,9 +202,9 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      * in the DAG with no dependencies.
      */
     private void initializeDependentKeys() {
-        visit(new Visitor<U>() {
+        visit(new Visitor<NodeT>() {
             @Override
-            public void visitNode(U node) {
+            public void visitNode(NodeT node) {
                 if (node.dependencyKeys().isEmpty()) {
                     return;
                 }
@@ -209,13 +231,13 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
      */
     private void initializeQueue() {
         this.queue.clear();
-        for (Map.Entry<String, U> entry: graph.entrySet()) {
+        for (Map.Entry<String, NodeT> entry: graph.entrySet()) {
             if (!entry.getValue().hasDependencies()) {
                 this.queue.add(entry.getKey());
             }
         }
         if (queue.isEmpty()) {
-            throw new RuntimeException("Found circular dependency");
+            throw new IllegalStateException("Detected circular dependency");
         }
     }
 }
