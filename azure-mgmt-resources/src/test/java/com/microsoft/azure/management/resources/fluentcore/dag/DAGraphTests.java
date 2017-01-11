@@ -76,7 +76,7 @@ public class DAGraphTests {
         int i = 0;
         while (nextNode != null) {
             Assert.assertEquals(nextNode.key(), expectedOrder.get(i));
-            dag.reportedCompleted(nextNode);
+            dag.reportCompletion(nextNode);
             nextNode = dag.getNext();
             i++;
         }
@@ -138,7 +138,7 @@ public class DAGraphTests {
         while (nextNode != null) {
             Assert.assertEquals(expectedOrder.get(i), nextNode.key());
             // Process the node
-            dag.reportedCompleted(nextNode);
+            dag.reportCompletion(nextNode);
             nextNode = dag.getNext();
             i++;
         }

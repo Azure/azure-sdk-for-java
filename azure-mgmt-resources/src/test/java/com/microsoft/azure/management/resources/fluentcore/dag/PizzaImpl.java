@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTaskGroup;
 import org.junit.Assert;
 import rx.Observable;
 import rx.functions.Func1;
@@ -22,13 +21,13 @@ import java.util.concurrent.TimeUnit;
  * Implementation of {@link IPizza}
  */
 class PizzaImpl
-        extends CreatableUpdatableImpl<IPizza, PizaInner, PizzaImpl>
+        extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl>
         implements IPizza {
     final List<Creatable<IPizza>> delayedPizzas;
     boolean prepareCalled = false;
 
     public PizzaImpl(String name) {
-        super(name, new PizaInner());
+        super(name, new PizzaInner());
         delayedPizzas = new ArrayList<>();
     }
 
@@ -46,7 +45,7 @@ class PizzaImpl
 
     /**
      * a pizza specified via this wither will not be added immediately as a dependency, will be added only
-     * inside prepare {@link CreateUpdateTaskGroup.ResourceCreatorUpdator#prepare()}
+     * inside prepare {@link com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask.ResourceCreatorUpdator#prepare()}
      *
      * @param pizza the pizza
      * @return the next stage of pizza
@@ -74,11 +73,11 @@ class PizzaImpl
     public void prepare() {
         Assert.assertFalse("PizzaImpl::prepare() should not be called multiple times", this.prepareCalled);
         prepareCalled = true;
-        int oldCount = this.createUpdateTaskGroup.dag().getNode(this.key()).dependencyKeys().size();
+        int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for(Creatable<IPizza> pizza : this.delayedPizzas) {
             this.addCreatableDependency(pizza);
         }
-        int newCount = this.createUpdateTaskGroup.dag().getNode(this.key()).dependencyKeys().size();
+        int newCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         System.out.println("Pizza(" + this.name() + ")::prepare() 'delayedSize':" + this.delayedPizzas.size()
                 + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
     }
