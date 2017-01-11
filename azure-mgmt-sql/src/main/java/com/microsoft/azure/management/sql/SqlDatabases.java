@@ -11,9 +11,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
 
@@ -26,7 +28,8 @@ public interface SqlDatabases extends
         SupportsDeletingById,
         SupportsGettingById<SqlDatabase>,
         SupportsBatchCreation<SqlDatabase>,
-        SupportsDeletingByParent {
+        SupportsDeletingByParent,
+        HasManager<SqlServerManager> {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and SQLDatabase name.

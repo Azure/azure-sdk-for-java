@@ -11,10 +11,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 /**
  *  Entry point to SQL Server management API.
@@ -28,5 +30,6 @@ public interface SqlServers extends
         SupportsGettingById<SqlServer>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
-        SupportsBatchCreation<SqlServer> {
+        SupportsBatchCreation<SqlServer>,
+        HasManager<SqlServerManager> {
 }
