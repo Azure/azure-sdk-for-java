@@ -67,7 +67,7 @@ public final class Validator {
                 int mod = field.getModifiers();
                 // Skip static fields since we don't have any, skip final fields since users can't modify them
                 if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-                    return;
+                    continue;
                 }
                 JsonProperty annotation = field.getAnnotation(JsonProperty.class);
                 Object property;

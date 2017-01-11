@@ -99,9 +99,7 @@ public class PollingState<T> {
         }
 
         if (responseContent == null || responseContent.isEmpty()) {
-            CloudException exception = new CloudException("polling response does not contain a valid body");
-            exception.setResponse(response);
-            throw exception;
+            throw new CloudException("polling response does not contain a valid body", response);
         }
 
         PollingResource resource = serializerAdapter.deserialize(responseContent, PollingResource.class);
@@ -113,8 +111,8 @@ public class PollingState<T> {
 
         CloudError error = new CloudError();
         this.setError(error);
-        error.setCode(this.getStatus());
-        error.setMessage("Long running operation failed");
+        error.withCode(this.getStatus());
+        error.withMessage("Long running operation failed");
         this.setResponse(response);
         this.setResource(serializerAdapter.<T>deserialize(responseContent, resourceType));
     }

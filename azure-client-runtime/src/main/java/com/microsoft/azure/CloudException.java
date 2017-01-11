@@ -8,6 +8,7 @@
 package com.microsoft.azure;
 
 import com.microsoft.rest.RestException;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
@@ -15,89 +16,36 @@ import retrofit2.Response;
  */
 public class CloudException extends RestException {
     /**
-     * Information about the associated HTTP response.
-     */
-    private Response response;
-
-    /**
-     * The HTTP response body.
-     */
-    private CloudError body;
-
-    /**
-     * Initializes a new instance of the ServiceException class.
-     */
-    public CloudException() { }
-
-    /**
-     * Initializes a new instance of the ServiceException class.
+     * Initializes a new instance of the CloudException class.
      *
-     * @param message The exception message.
-     */
-    public CloudException(final String message) {
-        super(message);
-    }
-
-    /**
-     * Initializes a new instance of the ServiceException class.
-     *
-     * @param message the exception message
-     * @param cause   exception that caused this exception to occur
-     */
-    public CloudException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Initializes a new instance of the ServiceException class.
-     *
-     * @param cause exception that caused this exception to occur
-     */
-    public CloudException(final Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Gets information about the associated HTTP response.
-     *
-     * @return the HTTP response
-     */
-    public Response getResponse() {
-        return response;
-    }
-
-    /**
-     * Gets the HTTP response body.
-     *
-     * @return the response body
-     */
-    public CloudError getBody() {
-        return body;
-    }
-
-    /**
-     * Sets the HTTP response.
-     *
+     * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public void setResponse(Response response) {
-        this.response = response;
+    public CloudException(final String message, final Response<ResponseBody> response) {
+        super(message, response);
     }
 
     /**
-     * Sets the HTTP response body.
+     * Initializes a new instance of the CloudException class.
      *
-     * @param body the response object
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param body the deserialized response body
      */
-    public void setBody(CloudError body) {
-        this.body = body;
+    public CloudException(final String message, Response<ResponseBody> response, CloudError body) {
+        super(message, response, body);
+    }
+
+    @Override
+    public CloudError body() {
+        return (CloudError) super.body();
     }
 
     @Override
     public String toString() {
         String message = super.toString();
-        if (body != null && body.getMessage() != null) {
-            message = message + ": " + body.getMessage();
+        if (body() != null && body().message() != null) {
+            message = message + ": " + body().message();
         }
         return message;
     }

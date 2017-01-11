@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
     private ServiceResponseBuilder(SerializerAdapter<?> serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         this.responseTypes = new HashMap<>();
-        this.exceptionType = ServiceException.class;
+        this.exceptionType = RestException.class;
         this.responseTypes.put(0, Object.class);
     }
 
@@ -66,9 +67,9 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
     public ServiceResponseBuilder<T, E> registerError(final Class<? extends RestException> type) {
         this.exceptionType = type;
         try {
-            Field f = type.getDeclaredField("body");
-            this.responseTypes.put(0, f.getType());
-        } catch (NoSuchFieldException e) {
+            Method f = type.getDeclaredMethod("body");
+            this.responseTypes.put(0, f.getReturnType());
+        } catch (NoSuchMethodException e) {
             // AutoRestException always has a body. Register Object as a fallback plan.
             this.responseTypes.put(0, Object.class);
         }
@@ -112,12 +113,10 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
             try {
                 String responseContent = responseBody.string();
                 responseBody = ResponseBody.create(responseBody.contentType(), responseContent);
-                E exception = (E) exceptionType.getConstructor(String.class).newInstance(responseContent);
-                exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
-                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, buildBody(statusCode, responseBody));
-                throw exception;
+                throw exceptionType.getConstructor(String.class, Response.class, (Class<?>) responseTypes.get(0))
+                        .newInstance("Status code " + statusCode + ", " + responseContent, response, buildBody(statusCode, responseBody));
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
+                throw new IOException("Status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
                     + " cannot be created.", e);
             }
         }
@@ -133,12 +132,10 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
             return new ServiceResponse<>(response);
         } else {
             try {
-                E exception = (E) exceptionType.getConstructor(String.class).newInstance("Invalid status code " + statusCode);
-                exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
-                response.errorBody().close();
-                throw exception;
+                throw exceptionType.getConstructor(String.class, Response.class)
+                        .newInstance("Status code " + statusCode, response);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
+                throw new IOException("Status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
                         + " cannot be created.", e);
             }
         }
@@ -193,8 +190,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         }
         // Return raw response if InputStream is the target type
         else if (type == InputStream.class) {
-            InputStream stream = responseBody.byteStream();
-            return stream;
+            return responseBody.byteStream();
         }
         // Deserialize
         else {

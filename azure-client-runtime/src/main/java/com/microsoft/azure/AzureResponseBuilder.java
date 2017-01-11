@@ -71,9 +71,8 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
             }
         } else {
             try {
-                E exception = (E) baseBuilder.exceptionType().getConstructor(String.class).newInstance("Invalid status code " + statusCode);
-                baseBuilder.exceptionType().getMethod("setResponse", response.getClass()).invoke(exception, response);
-                throw exception;
+                throw baseBuilder.exceptionType().getConstructor(String.class, Response.class)
+                        .newInstance("Status code " + statusCode, response);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IOException("Invalid status code " + statusCode + ", but an instance of " + baseBuilder.exceptionType().getCanonicalName()
                         + " cannot be created.", e);

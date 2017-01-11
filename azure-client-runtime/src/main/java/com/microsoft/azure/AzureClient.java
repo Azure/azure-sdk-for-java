@@ -132,7 +132,7 @@ public class AzureClient extends AzureServiceClient {
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<T>>>() {
                 @Override
                 public Observable<ServiceResponse<T>> call(Response<ResponseBody> response) {
-                    CloudException exception = createExceptionFromResponse(response, 200, 201, 202);
+                    RuntimeException exception = createExceptionFromResponse(response, 200, 201, 202);
                     if (exception != null) {
                         return Observable.error(exception);
                     }
@@ -185,7 +185,7 @@ public class AzureClient extends AzureServiceClient {
                                     }
                                     for (String failedStatus : AzureAsyncOperation.getFailedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.getStatus())) {
-                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.getStatus()));
+                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.getStatus(), pollingState.getResponse()));
                                         }
                                     }
                                     return Observable.just(pollingState);
@@ -289,7 +289,7 @@ public class AzureClient extends AzureServiceClient {
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<T>>>() {
                 @Override
                 public Observable<ServiceResponse<T>> call(Response<ResponseBody> response) {
-                    CloudException exception = createExceptionFromResponse(response, 200, 202, 204);
+                    RuntimeException exception = createExceptionFromResponse(response, 200, 202, 204);
                     if (exception != null) {
                         return Observable.error(exception);
                     }
@@ -335,7 +335,7 @@ public class AzureClient extends AzureServiceClient {
                                 public Observable<ServiceResponse<T>> call(PollingState<T> pollingState) {
                                     for (String failedStatus : AzureAsyncOperation.getFailedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.getStatus())) {
-                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.getStatus()));
+                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.getStatus(), pollingState.getResponse()));
                                         }
                                     }
                                     return Observable.just(new ServiceResponse<>(pollingState.getResource(), pollingState.getResponse()));
@@ -483,8 +483,7 @@ public class AzureClient extends AzureServiceClient {
                     }
 
                     if (body == null || body.getStatus() == null) {
-                        CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString);
-                        exception.setResponse(response);
+                        CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString, response);
                         return Observable.error(exception);
                     }
 
@@ -522,8 +521,7 @@ public class AzureClient extends AzureServiceClient {
                     }
 
                     if (body == null || body.getStatus() == null) {
-                        CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString);
-                        exception.setResponse(response);
+                        CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString, response);
                         return Observable.error(exception);
                     }
 
@@ -566,7 +564,7 @@ public class AzureClient extends AzureServiceClient {
             .flatMap(new Func1<Response<ResponseBody>, Observable<Response<ResponseBody>>>() {
                 @Override
                 public Observable<Response<ResponseBody>> call(Response<ResponseBody> response) {
-                    CloudException exception = createExceptionFromResponse(response, 200, 201, 202, 204);
+                    RuntimeException exception = createExceptionFromResponse(response, 200, 201, 202, 204);
                     if (exception != null) {
                         return Observable.error(exception);
                     } else {
@@ -576,7 +574,7 @@ public class AzureClient extends AzureServiceClient {
             });
     }
 
-    private CloudException createExceptionFromResponse(Response<ResponseBody> response, Integer... allowedStatusCodes) {
+    private RuntimeException createExceptionFromResponse(Response<ResponseBody> response, Integer... allowedStatusCodes) {
         int statusCode = response.code();
         ResponseBody responseBody;
         if (response.isSuccessful()) {
@@ -590,16 +588,14 @@ public class AzureClient extends AzureServiceClient {
                 String bodyString = responseBody.string();
                 CloudError errorBody = restClient().serializerAdapter().deserialize(bodyString, CloudError.class);
                 if (errorBody != null) {
-                    exception = new CloudException(errorBody.getMessage());
+                    exception = new CloudException(errorBody.message(), response, errorBody);
                 } else {
-                    exception = new CloudException("Unknown error with status code " + statusCode + " and body " + bodyString);
+                    exception = new CloudException("Unknown error with status code " + statusCode + " and body " + bodyString, response, errorBody);
                 }
-                exception.setBody(errorBody);
-                exception.setResponse(response);
                 return exception;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 /* ignore serialization errors on top of service errors */
-                return new CloudException("Unknown error with status code " + statusCode, e);
+                return new RuntimeException("Unknown error with status code " + statusCode, e);
             }
         }
         return null;
@@ -625,9 +621,7 @@ public class AzureClient extends AzureServiceClient {
             && !pollingState.getLocationHeaderLink().isEmpty()) {
             return updateStateFromLocationHeaderOnPostOrDeleteAsync(pollingState);
         } else {
-            CloudException exception = new CloudException("Response does not contain an Azure-AsyncOperation or Location header.");
-            exception.setBody(pollingState.getError());
-            exception.setResponse(pollingState.getResponse());
+            CloudException exception = new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", pollingState.getResponse(), pollingState.getError());
             return Observable.error(exception);
         }
     }
