@@ -402,7 +402,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			int msgSize = delivery.pending();
 			byte[] buffer = new byte[msgSize];
 			
-			int read = receiveLink.recv(buffer, 0, msgSize);;			
+			int read = receiveLink.recv(buffer, 0, msgSize);
 			
 			message = Proton.message();
 			message.decode(buffer, 0, read);

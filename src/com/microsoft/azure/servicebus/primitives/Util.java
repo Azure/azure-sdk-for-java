@@ -10,7 +10,12 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.message.Message;
 
 public class Util
 {
@@ -131,5 +136,72 @@ public class Util
 			long mostSignificantBits = buffer.getLong();
 			long leastSignificantBits = buffer.getLong();
 			return new UUID(mostSignificantBits, leastSignificantBits);
+		}
+		
+		private static int getPayloadSize(Message msg)
+		{
+			if (msg == null || msg.getBody() == null)
+			{
+				return 0;
+			}
+
+			Data payloadSection = (Data) msg.getBody();
+			if (payloadSection == null)
+			{
+				return 0;
+			}
+
+			Binary payloadBytes = payloadSection.getValue();
+			if (payloadBytes == null)
+			{
+				return 0;
+			}
+
+			return payloadBytes.getLength();
+		}
+
+		public static int getDataSerializedSize(Message amqpMessage)
+		{
+			if (amqpMessage == null)
+			{
+				return 0;
+			}
+
+			int payloadSize = getPayloadSize(amqpMessage);
+
+			// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
+			MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+			ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
+			
+			int annotationsSize = 0;
+			int applicationPropertiesSize = 0;
+
+			if (messageAnnotations != null)
+			{
+				for(Symbol value: messageAnnotations.getValue().keySet())
+				{
+					annotationsSize += Util.sizeof(value);
+				}
+				
+				for(Object value: messageAnnotations.getValue().values())
+				{
+					annotationsSize += Util.sizeof(value);
+				}
+			}
+			
+			if (applicationProperties != null)
+			{
+				for(Object value: applicationProperties.getValue().keySet())
+				{
+					applicationPropertiesSize += Util.sizeof(value);
+				}
+				
+				for(Object value: applicationProperties.getValue().values())
+				{
+					applicationPropertiesSize += Util.sizeof(value);
+				}
+			}
+			
+			return annotationsSize + applicationPropertiesSize + payloadSize;
 		}
 }

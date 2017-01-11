@@ -218,72 +218,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return onSendFuture;
 	}	
 
-	private int getPayloadSize(Message msg)
-	{
-		if (msg == null || msg.getBody() == null)
-		{
-			return 0;
-		}
-
-		Data payloadSection = (Data) msg.getBody();
-		if (payloadSection == null)
-		{
-			return 0;
-		}
-
-		Binary payloadBytes = payloadSection.getValue();
-		if (payloadBytes == null)
-		{
-			return 0;
-		}
-
-		return payloadBytes.getLength();
-	}
-
-	private int getDataSerializedSize(Message amqpMessage)
-	{
-		if (amqpMessage == null)
-		{
-			return 0;
-		}
-
-		int payloadSize = this.getPayloadSize(amqpMessage);
-
-		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
-		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-		
-		int annotationsSize = 0;
-		int applicationPropertiesSize = 0;
-
-		if (messageAnnotations != null)
-		{
-			for(Symbol value: messageAnnotations.getValue().keySet())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-			
-			for(Object value: messageAnnotations.getValue().values())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-		}
-		
-		if (applicationProperties != null)
-		{
-			for(Object value: applicationProperties.getValue().keySet())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-			
-			for(Object value: applicationProperties.getValue().values())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-		}
-		
-		return annotationsSize + applicationPropertiesSize + payloadSize;
-	}
+	
 
 	public CompletableFuture<Void> sendAsync(final Iterable<Message> messages)
 	{
@@ -311,7 +246,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			Message messageWrappedByData = Proton.message();
 
-			int payloadSize = this.getDataSerializedSize(amqpMessage);
+			int payloadSize = Util.getDataSerializedSize(amqpMessage);
 			int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 
 			byte[] messageBytes = new byte[allocationSize];
@@ -337,7 +272,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 	public CompletableFuture<Void> sendAsync(Message msg)
 	{
-		int payloadSize = this.getDataSerializedSize(msg);
+		int payloadSize = Util.getDataSerializedSize(msg);
 		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 
 		byte[] bytes = new byte[allocationSize];
