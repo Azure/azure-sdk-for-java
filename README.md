@@ -169,9 +169,6 @@ Then, you can create a SQL database instance by using another `define() … crea
 
 ```java
 SqlDatabase database = sqlServer.databases().define("myNewDatabase")
-    .withoutElasticPool()
-    .withoutSourceDatabaseId()
-    .withEdition(DatabaseEditions.BASIC)
     .create();
 ```
 
