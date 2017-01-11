@@ -180,7 +180,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetWithNatRule(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -193,7 +194,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetWithNatPool(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -206,7 +208,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
             .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
@@ -218,7 +221,8 @@ public class AzureTests {
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 

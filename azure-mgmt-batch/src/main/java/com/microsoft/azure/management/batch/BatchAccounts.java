@@ -7,11 +7,13 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
@@ -29,7 +31,8 @@ public interface BatchAccounts extends
         SupportsGettingById<BatchAccount>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
-        SupportsBatchCreation<BatchAccount> {
+        SupportsBatchCreation<BatchAccount>,
+        HasManager<BatchManager> {
     /**
      * Queries the number of the batch account can be created in specified region`.
      *
