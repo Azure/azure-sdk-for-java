@@ -28,7 +28,6 @@ public abstract class IndexableWrapperImpl<InnerT>
         return this.innerObject;
     }
 
-    @Override
     public void setInner(InnerT innerObject) {
         this.innerObject = innerObject;
     }

@@ -465,7 +465,7 @@ class RedisCacheImpl
 
     @Override
     public Observable<RedisCache> updateResourceAsync() {
-        final RedisCache self = this;
+        final RedisCacheImpl self = this;
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this))
                 .doOnNext(new Action1<RedisCache>() {
@@ -479,7 +479,7 @@ class RedisCacheImpl
                                 break;
                             }
                             innerResource = client.get(resourceGroupName(), name());
-                            redisCache.setInner(innerResource);
+                            ((RedisCacheImpl)redisCache).setInner(innerResource);
                         }
                         self.setInner(innerResource);
                         updatePatchSchedules();

@@ -101,7 +101,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
             }
         }
         Assert.assertTrue(found);
-        Assert.assertEquals(3, redisCaches.size());
+        Assert.assertTrue(redisCaches.size() >= 3);
 
         // Get
         RedisCache redisCacheGet = redisManager.redisCaches().getByGroup(RG_NAME, RR_NAME);

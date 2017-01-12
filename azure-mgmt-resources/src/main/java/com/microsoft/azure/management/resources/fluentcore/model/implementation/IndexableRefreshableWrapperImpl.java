@@ -36,7 +36,6 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
      *
      * @param inner the new inner model
      */
-    @Override
     public void setInner(InnerModelT inner) {
         this.innerObject = inner;
     }
