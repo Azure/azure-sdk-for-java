@@ -42,9 +42,7 @@ public class CloudError {
     }
 
     /**
-     * Gets the error code parsed from the body of the http error response.
-     *
-     * @return the error code.
+     * @return the error code parsed from the body of the http error response
      */
     public String code() {
         return code;
@@ -53,7 +51,8 @@ public class CloudError {
     /**
      * Sets the error code parsed from the body of the http error response.
      *
-     * @param code the error code.
+     * @param code the error code
+     * @return the CloudError object itself
      */
     public CloudError withCode(String code) {
         this.code = code;
@@ -61,9 +60,7 @@ public class CloudError {
     }
 
     /**
-     * Gets the error message parsed from the body of the http error response.
-     *
-     * @return the error message.
+     * @return the error message
      */
     public String message() {
         return message;
@@ -72,7 +69,8 @@ public class CloudError {
     /**
      * Sets the error message parsed from the body of the http error response.
      *
-     * @param message the error message.
+     * @param message the error message
+     * @return the CloudError object itself
      */
     public CloudError withMessage(String message) {
         this.message = message;
@@ -80,9 +78,7 @@ public class CloudError {
     }
 
     /**
-     * Gets the target of the error.
-     *
-     * @return the target of the error.
+     * @return the target of the error
      */
     public String target() {
         return target;
@@ -91,7 +87,8 @@ public class CloudError {
     /**
      * Sets the target of the error.
      *
-     * @param target the target of the error.
+     * @param target the target of the error
+     * @return the CloudError object itself
      */
     public CloudError withTarget(String target) {
         this.target = target;
@@ -99,9 +96,7 @@ public class CloudError {
     }
 
     /**
-     * Gets the details for the error.
-     *
-     * @return the details for the error.
+     * @return the details for the error
      */
     public List<CloudError> details() {
         return details;

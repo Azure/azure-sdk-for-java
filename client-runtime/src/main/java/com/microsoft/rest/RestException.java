@@ -26,6 +26,9 @@ public class RestException extends RuntimeException {
 
     /**
      * Initializes a new instance of the RestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
      */
     public RestException(String message, Response<ResponseBody> response) {
         super(message);
@@ -35,7 +38,9 @@ public class RestException extends RuntimeException {
     /**
      * Initializes a new instance of the RestException class.
      *
-     * @param message The exception message.
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param body the deserialized response body
      */
     public RestException(String message, Response<ResponseBody> response, Object body) {
         super(message);
