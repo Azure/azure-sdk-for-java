@@ -39,7 +39,7 @@ public final class ManageSimpleTrafficManager {
      */
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgCOPD", 24);
+        final String rgName = ResourceNamer.randomResourceName("rg", 9);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         final int vmCountPerRegion = 2;
@@ -117,10 +117,12 @@ public final class ManageSimpleTrafficManager {
                         .withPerformanceBasedRouting();
 
                 TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
+                int i = 1;
                 for (VirtualMachine vm : virtualMachines) {
                     String endpointName = ResourceNamer.randomResourceName("ep", 15);
                     profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
                             .toResourceId(vm.getPrimaryPublicIpAddressId())
+                            .withRoutingPriority(i++)
                             .attach();
                 }
 
