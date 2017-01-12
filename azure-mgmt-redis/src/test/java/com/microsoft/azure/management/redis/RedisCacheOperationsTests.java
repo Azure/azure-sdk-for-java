@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import org.joda.time.Period;
@@ -22,12 +23,12 @@ import java.util.List;
 import static org.junit.Assert.fail;
 
 public class RedisCacheOperationsTests extends RedisManagementTestBase {
-    private static final String RG_NAME = "javacsmrg3751";
-    private static final String RG_NAME_SECOND = "javacsmrg3751Second";
-    private static final String RR_NAME = "javacsmrc3751";
-    private static final String RR_NAME_SECOND = "javacsmrc3751Second";
-    private static final String RR_NAME_THIRD = "javacsmrc3751Third";
-    private static final String SA_NAME = "javacsmsa3751";
+    private static final String RG_NAME = ResourceNamer.randomResourceName("rg", 15);
+    private static final String RG_NAME_SECOND = ResourceNamer.randomResourceName("rgB", 15);
+    private static final String RR_NAME = ResourceNamer.randomResourceName("red", 15);
+    private static final String RR_NAME_SECOND = ResourceNamer.randomResourceName("redB", 15);
+    private static final String RR_NAME_THIRD = ResourceNamer.randomResourceName("redC", 15);
+    private static final String SA_NAME = ResourceNamer.randomResourceName("stg", 15);
 
     @BeforeClass
     public static void setup() throws Exception {
