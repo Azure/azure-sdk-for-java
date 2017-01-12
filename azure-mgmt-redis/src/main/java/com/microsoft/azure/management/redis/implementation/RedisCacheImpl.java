@@ -479,7 +479,7 @@ class RedisCacheImpl
                                 break;
                             }
                             innerResource = client.get(resourceGroupName(), name());
-                            ((RedisCacheImpl)redisCache).setInner(innerResource);
+                            ((RedisCacheImpl) redisCache).setInner(innerResource);
                         }
                         self.setInner(innerResource);
                         updatePatchSchedules();
