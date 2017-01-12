@@ -176,7 +176,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
      * @return the tenant or domain the containing the application.
      */
     @Override
-    public String getDomain() {
+    public String domain() {
         return domain;
     }
 
@@ -199,14 +199,14 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
     }
 
     @Override
-    public AzureEnvironment getEnvironment() {
+    public AzureEnvironment environment() {
         return this.environment;
     }
 
     private AuthenticationResult acquireAccessToken(String resource) throws IOException {
-        String authorityUrl = this.getEnvironment().authenticationEndpoint() + this.getDomain();
+        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
+        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
             AuthenticationResult result = context.acquireToken(
                     resource,

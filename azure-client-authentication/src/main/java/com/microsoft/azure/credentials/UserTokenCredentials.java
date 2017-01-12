@@ -72,7 +72,7 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      * @return the tenant or domain the containing the application.
      */
     @Override
-    public String getDomain() {
+    public String domain() {
         return domain;
     }
 
@@ -108,14 +108,14 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *
      * @return the Azure environment to authenticate with.
      */
-    public AzureEnvironment getEnvironment() {
+    public AzureEnvironment environment() {
         return environment;
     }
 
     private AuthenticationResult acquireAccessToken(String resource) throws IOException {
-        String authorityUrl = this.getEnvironment().authenticationEndpoint() + this.getDomain();
+        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
+        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
             AuthenticationResult result = context.acquireToken(
                     resource,
@@ -134,9 +134,9 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
     private AuthenticationResult acquireAccessTokenFromRefreshToken(String resource) throws IOException {
-        String authorityUrl = this.getEnvironment().authenticationEndpoint() + this.getDomain();
+        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
+        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
             AuthenticationResult result = context.acquireTokenByRefreshToken(
                     tokens.get(resource).getRefreshToken(),

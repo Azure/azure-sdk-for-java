@@ -34,10 +34,10 @@ public class AzureTokenCredentialsInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String resource = credentials.getEnvironment().managementEndpoint();
+        String resource = credentials.environment().managementEndpoint();
         // Use graph resource if the host if graph endpoint
-        if (credentials.getEnvironment().graphEndpoint().contains(chain.request().url().host())) {
-            resource = credentials.getEnvironment().graphEndpoint();
+        if (credentials.environment().graphEndpoint().contains(chain.request().url().host())) {
+            resource = credentials.environment().graphEndpoint();
         }
         Request newRequest = chain.request().newBuilder()
                 .header("Authorization", "Bearer " + credentials.getToken(resource))
@@ -46,10 +46,10 @@ public class AzureTokenCredentialsInterceptor implements Interceptor {
     }
 
     private Response sendRequestWithToken(Chain chain) throws IOException {
-        String resource = credentials.getEnvironment().managementEndpoint();
+        String resource = credentials.environment().managementEndpoint();
         // Use graph resource if the host if graph endpoint
-        if (chain.request().url().host().equals(credentials.getEnvironment().graphEndpoint())) {
-            resource = credentials.getEnvironment().graphEndpoint();
+        if (chain.request().url().host().equals(credentials.environment().graphEndpoint())) {
+            resource = credentials.environment().graphEndpoint();
         }
         Request newRequest = chain.request().newBuilder()
                 .header("Authorization", "Bearer " + credentials.getToken(resource))
