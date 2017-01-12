@@ -63,9 +63,7 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
         int statusCode = response.code();
         if (baseBuilder.isSuccessful(statusCode)) {
             if (new TypeToken<T>(getClass()) { }.getRawType().isAssignableFrom(Boolean.class)) {
-                ServiceResponse<T> serviceResponse =  new ServiceResponse<>(response);
-                serviceResponse.setBody((T) (Object) (statusCode / 100 == 2));
-                return serviceResponse;
+                return new ServiceResponse<T>(response).withBody((T) (Object) (statusCode / 100 == 2));
             } else {
                 return new ServiceResponse<>(response);
             }

@@ -15,7 +15,6 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -147,7 +146,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         THeader headers = serializerAdapter.deserialize(
                 serializerAdapter.serialize(response.headers()),
                 headerType);
-        return new ServiceResponseWithHeaders<>(bodyResponse.getBody(), headers, bodyResponse.getResponse());
+        return new ServiceResponseWithHeaders<>(bodyResponse.body(), headers, bodyResponse.response());
     }
 
     @Override
@@ -156,8 +155,8 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         THeader headers = serializerAdapter.deserialize(
                 serializerAdapter.serialize(response.headers()),
                 headerType);
-        ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(headers, bodyResponse.getHeadResponse());
-        serviceResponse.setBody(bodyResponse.getBody());
+        ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(headers, bodyResponse.headResponse());
+        serviceResponse.withBody(bodyResponse.body());
         return serviceResponse;
     }
 

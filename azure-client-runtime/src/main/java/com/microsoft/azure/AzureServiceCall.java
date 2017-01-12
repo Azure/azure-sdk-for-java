@@ -110,15 +110,15 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
             lastResponse = serviceResponse;
             ListOperationCallback.PagingBehavior behavior = ListOperationCallback.PagingBehavior.CONTINUE;
             if (callback != null) {
-                behavior = callback.progress(serviceResponse.getBody().getItems());
-                if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.getBody().getNextPageLink() == null) {
+                behavior = callback.progress(serviceResponse.body().items());
+                if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.body().nextPageLink() == null) {
                     callback.success();
                 }
             }
-            if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.getBody().getNextPageLink() == null) {
-                serviceCall.set(lastResponse.getBody().getItems());
+            if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.body().nextPageLink() == null) {
+                serviceCall.set(lastResponse.body().items());
             } else {
-                serviceCall.setSubscription(next.call(serviceResponse.getBody().getNextPageLink()).single().subscribe(this));
+                serviceCall.setSubscription(next.call(serviceResponse.body().nextPageLink()).single().subscribe(this));
             }
         }
     }

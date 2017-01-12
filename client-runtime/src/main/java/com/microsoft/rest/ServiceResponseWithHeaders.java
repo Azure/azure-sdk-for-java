@@ -49,7 +49,7 @@ public class ServiceResponseWithHeaders<TBody, THeader> extends ServiceResponse<
      * Gets the response headers.
      * @return the response headers. Null if there isn't one.
      */
-    public THeader getHeaders() {
+    public THeader headers() {
         return this.headers;
     }
 }

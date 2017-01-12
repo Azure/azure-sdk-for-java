@@ -49,7 +49,6 @@ public final class RestClient {
     private final CustomHeadersInterceptor customHeadersInterceptor;
     /** The adapter for a serializer. */
     private final SerializerAdapter<?> serializerAdapter;
-
     /** The builder factory for response builders. */
     private final ResponseBuilder.Factory responseBuilderFactory;
     /** The logging interceptor to use. */

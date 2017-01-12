@@ -52,7 +52,7 @@ public final class Base64Url {
      *
      * @return The underlying encoded byte array.
      */
-    public byte[] getEncodedBytes() {
+    public byte[] encodedBytes() {
         return bytes;
     }
 
@@ -61,7 +61,7 @@ public final class Base64Url {
      *
      * @return The decoded byte array.
      */
-    public byte[] getDecodedBytes() {
+    public byte[] decodedBytes() {
         if (this.bytes == null) {
             return null;
         }
@@ -89,6 +89,6 @@ public final class Base64Url {
         }
 
         Base64Url rhs = (Base64Url) obj;
-        return Arrays.equals(this.bytes, rhs.getEncodedBytes());
+        return Arrays.equals(this.bytes, rhs.encodedBytes());
     }
 }

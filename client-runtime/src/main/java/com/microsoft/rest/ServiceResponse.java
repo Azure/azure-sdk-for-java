@@ -55,7 +55,7 @@ public class ServiceResponse<T> {
      * Gets the response object.
      * @return the response object. Null if there isn't one.
      */
-    public T getBody() {
+    public T body() {
         return this.body;
     }
 
@@ -64,8 +64,9 @@ public class ServiceResponse<T> {
      *
      * @param body the response object.
      */
-    public void setBody(T body) {
+    public ServiceResponse<T> withBody(T body) {
         this.body = body;
+        return this;
     }
 
     /**
@@ -73,7 +74,7 @@ public class ServiceResponse<T> {
      *
      * @return the raw REST response.
      */
-    public Response<ResponseBody> getResponse() {
+    public Response<ResponseBody> response() {
         return response;
     }
 
@@ -82,7 +83,7 @@ public class ServiceResponse<T> {
      *
      * @return the raw REST response from a HEAD operation.
      */
-    public Response<Void> getHeadResponse() {
+    public Response<Void> headResponse() {
         return headResponse;
     }
 }

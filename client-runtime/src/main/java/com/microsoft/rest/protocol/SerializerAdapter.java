@@ -7,6 +7,7 @@
 
 package com.microsoft.rest.protocol;
 
+import com.microsoft.rest.CollectionFormat;
 import retrofit2.Converter;
 
 import java.io.IOException;

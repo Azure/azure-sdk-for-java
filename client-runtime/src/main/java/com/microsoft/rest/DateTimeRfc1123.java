@@ -47,7 +47,7 @@ public class DateTimeRfc1123 {
      * Returns the underlying DateTime.
      * @return The underlying DateTime.
      */
-    public DateTime getDateTime() {
+    public DateTime dateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -75,6 +75,6 @@ public class DateTimeRfc1123 {
         }
 
         DateTimeRfc1123 rhs = (DateTimeRfc1123) obj;
-        return this.dateTime.equals(rhs.getDateTime());
+        return this.dateTime.equals(rhs.dateTime());
     }
 }

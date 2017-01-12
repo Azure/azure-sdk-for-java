@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
-import com.microsoft.rest.protocol.CollectionFormat;
+import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.protocol.SerializerAdapter;
 
 import java.io.IOException;

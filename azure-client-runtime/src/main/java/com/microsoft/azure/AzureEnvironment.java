@@ -7,7 +7,6 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.Environment;
 
 import java.lang.reflect.Field;
@@ -37,12 +36,6 @@ public final class AzureEnvironment implements Environment {
     private String graphEndpoint;
 
     /**
-     * Determines whether the authentication endpoint should
-     * be validated with Azure AD. Default value is true.
-     */
-    private boolean validateAuthority;
-
-    /**
      * Initializes an instance of AzureEnvironment class.
      *
      * @param authenticationEndpoint ActiveDirectory Endpoint for the Azure Environment.
@@ -59,7 +52,6 @@ public final class AzureEnvironment implements Environment {
         this.managementEndpoint = managementEndpoint;
         this.resourceManagerEndpoint = resourceManagerEndpoint;
         this.graphEndpoint = graphEndpoint;
-        this.validateAuthority = false;
     }
 
     /**
@@ -103,51 +95,29 @@ public final class AzureEnvironment implements Environment {
      *
      * @return the Base URL for the management service.
      */
-    public String getResourceManagerEndpoint() {
+    public String resourceManagerEndpoint() {
         return this.resourceManagerEndpoint;
     }
 
     /**
      * @return the ActiveDirectory Endpoint for the Azure Environment.
      */
-    public String getAuthenticationEndpoint() {
+    public String authenticationEndpoint() {
         return authenticationEndpoint;
     }
 
     /**
      * @return the Azure Resource Manager endpoint for the environment.
      */
-    public String getManagementEndpoint() {
+    public String managementEndpoint() {
         return managementEndpoint;
     }
 
     /**
      * @return the Graph API endpoint.
      */
-    public String getGraphEndpoint() {
+    public String graphEndpoint() {
         return graphEndpoint;
-    }
-
-    /**
-     * Gets whether the authentication endpoint should
-     * be validated with Azure AD.
-     *
-     * @return true if the authentication endpoint should be validated with
-     * Azure AD, false otherwise.
-     */
-    public boolean isValidateAuthority() {
-        return validateAuthority;
-    }
-
-    /**
-     * Sets whether the authentication endpoint should
-     * be validated with Azure AD.
-     *
-     * @param validateAuthority true if the authentication endpoint should
-     * be validated with Azure AD, false otherwise.
-     */
-    public void setValidateAuthority(boolean validateAuthority) {
-        this.validateAuthority = validateAuthority;
     }
 
     /**
@@ -190,23 +160,5 @@ public final class AzureEnvironment implements Environment {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Unable to reflect on field " + endpoint.identifier(), e);
         }
-    }
-
-    /**
-     * Create a builder for rest client from an endpoint.
-     *
-     * @param endpoint the endpoint
-     * @return a RestClient builder
-     */
-    public RestClient.Builder newRestClientBuilder(Endpoint endpoint) {
-        return new RestClient.Builder().withBaseUrl(this, endpoint);
-    }
-
-    /**
-     * Create a builder for rest client to Azure Resource Manager.
-     * @return a RestClient builder
-     */
-    public RestClient.Builder newRestClientBuilder() {
-        return new RestClient.Builder().withBaseUrl(this, Endpoint.RESOURCE_MANAGER);
     }
 }

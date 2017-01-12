@@ -42,7 +42,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
             .subscribe(new Action1<ServiceResponse<T>>() {
                 @Override
                 public void call(ServiceResponse<T> t) {
-                    serviceCall.set(t.getBody());
+                    serviceCall.set(t.body());
                 }
             }, new Action1<Throwable>() {
                 @Override
@@ -69,9 +69,9 @@ public class ServiceCall<T> extends AbstractFuture<T> {
                     @Override
                     public void call(ServiceResponse<T> t) {
                         if (callback != null) {
-                            callback.success(t.getBody());
+                            callback.success(t.body());
                         }
-                        serviceCall.set(t.getBody());
+                        serviceCall.set(t.body());
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -134,9 +134,9 @@ public class ServiceCall<T> extends AbstractFuture<T> {
                 @Override
                 public void call(ServiceResponse<T> t) {
                     if (callback != null) {
-                        callback.success(t.getBody());
+                        callback.success(t.body());
                     }
-                    serviceCall.set(t.getBody());
+                    serviceCall.set(t.body());
                 }
             }, new Action1<Throwable>() {
                 @Override
