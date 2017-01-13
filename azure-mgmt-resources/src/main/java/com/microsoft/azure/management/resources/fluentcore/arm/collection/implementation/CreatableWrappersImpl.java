@@ -8,8 +8,6 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection.imple
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
-import rx.functions.Func1;
 
 /**
  * Base class for creatable wrapper collections, i.e. those where a new member of the collection can be created.

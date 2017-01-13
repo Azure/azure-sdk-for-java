@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.fluentcore.arm;
 import com.microsoft.rest.LogLevel;
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.net.Proxy;
 import java.util.concurrent.Executor;
