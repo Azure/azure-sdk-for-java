@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCall;
@@ -25,7 +26,8 @@ import java.util.List;
  * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
-    implements Deployments {
+    implements Deployments,
+    HasManager<ResourceManager> {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
@@ -134,5 +136,10 @@ final class DeploymentsImpl
     @Override
     public Observable<Void> deleteByIdAsync(String id) {
         return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public ResourceManager manager() {
+        return this.resourceManager;
     }
 }

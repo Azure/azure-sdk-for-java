@@ -265,14 +265,14 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         public List<ResourceT> createdTopLevelResources() {
             List<ResourceT> resources = new ArrayList<>();
             for (String resourceKey : keys) {
-                resources.add((ResourceT) creatorUpdatorTaskGroup().createdResource(resourceKey));
+                resources.add((ResourceT) createdModel(resourceKey));
             }
             return Collections.unmodifiableList(resources);
         }
 
         @Override
         public Indexable createdRelatedResource(String key) {
-            return creatorUpdatorTaskGroup().createdResource(key);
+            return createdModel(key);
         }
 
         void addCreatableDependencies(Creatable<T> ... creatables) {

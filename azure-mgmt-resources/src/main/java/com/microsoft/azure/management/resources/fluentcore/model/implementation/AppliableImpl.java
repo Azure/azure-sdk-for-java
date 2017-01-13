@@ -33,7 +33,7 @@ public abstract class AppliableImpl<
 
     @Override
     public final Observable<Indexable> createAsync() {
-        throw new IllegalStateException("Internal Error: createAsyncStreaming cannot be called from UpdatableImpl");
+        throw new IllegalStateException("Internal Error: createAsync cannot be called from UpdatableImpl");
     }
 
     @Override

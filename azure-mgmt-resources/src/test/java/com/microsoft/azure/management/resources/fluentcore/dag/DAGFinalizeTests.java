@@ -15,7 +15,7 @@ public class DAGFinalizeTests {
     @Test
     public void testWithoutFinalize() {
         /**
-         *   |------------------>[D](2)----------->[B](1)------------->[A](0)
+         *   |------------------>[D](2)----------->[B](1)-------------->[A](0)
          *   |                                        ^                   ^
          *   |                                        |                   |
          *  [F](4)---->[E](3)-------------------------|                   |
@@ -63,8 +63,8 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 0 - "A"
-        Assert.assertEquals(pizzaA.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeA = pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key());
+        Assert.assertEquals(pizzaA.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeA = pizzaA.taskGroup().getNode(pizzaA.key());
         Assert.assertNotNull(nodeA);
         Assert.assertEquals(nodeA.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeA.dependentKeys().size(), 2);
@@ -73,8 +73,8 @@ public class DAGFinalizeTests {
                     || dependentKey.equalsIgnoreCase(pizzaC.key()));
         }
         // Level 0 - "I"
-        Assert.assertEquals(pizzaI.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeI = pizzaI.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key());
+        Assert.assertEquals(pizzaI.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeI = pizzaI.taskGroup().getNode(pizzaI.key());
         Assert.assertNotNull(nodeI);
         Assert.assertEquals(nodeI.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeI.dependentKeys().size(), 1);
@@ -87,9 +87,9 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 1 - "B"
-        Assert.assertEquals(pizzaB.creatorUpdatorTaskGroup().dag().getNodes().size(), 2);
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeB = pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key());
+        Assert.assertEquals(pizzaB.taskGroup().getNodes().size(), 2);
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaA.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeB = pizzaB.taskGroup().getNode(pizzaB.key());
         Assert.assertNotNull(nodeB);
         Assert.assertEquals(nodeB.dependencyKeys().size(), 1);
         for (String dependentKey : nodeB.dependencyKeys()) {
@@ -101,9 +101,9 @@ public class DAGFinalizeTests {
                     || dependentKey.equalsIgnoreCase(pizzaE.key()));
         }
         // Level 1 - "C"
-        Assert.assertEquals(pizzaC.creatorUpdatorTaskGroup().dag().getNodes().size(), 2);
-        Assert.assertNotNull(pizzaC.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeC = pizzaC.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key());
+        Assert.assertEquals(pizzaC.taskGroup().getNodes().size(), 2);
+        Assert.assertNotNull(pizzaC.taskGroup().getNode(pizzaA.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeC = pizzaC.taskGroup().getNode(pizzaC.key());
         Assert.assertNotNull(nodeC);
         Assert.assertEquals(nodeC.dependencyKeys().size(), 1);
         for (String dependentKey : nodeC.dependencyKeys()) {
@@ -114,9 +114,9 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaG.key()));
         }
         // Level 1 - "H"
-        Assert.assertEquals(pizzaH.creatorUpdatorTaskGroup().dag().getNodes().size(), 2);
-        Assert.assertNotNull(pizzaH.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeH = pizzaH.creatorUpdatorTaskGroup().dag().getNode(pizzaH.key());
+        Assert.assertEquals(pizzaH.taskGroup().getNodes().size(), 2);
+        Assert.assertNotNull(pizzaH.taskGroup().getNode(pizzaI.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeH = pizzaH.taskGroup().getNode(pizzaH.key());
         Assert.assertNotNull(nodeH);
         Assert.assertEquals(nodeH.dependencyKeys().size(), 1);
         for (String dependentKey : nodeH.dependencyKeys()) {
@@ -132,10 +132,10 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 2 - "D"
-        Assert.assertEquals(pizzaD.creatorUpdatorTaskGroup().dag().getNodes().size(), 3);
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeD = pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaD.key());
+        Assert.assertEquals(pizzaD.taskGroup().getNodes().size(), 3);
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaB.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeD = pizzaD.taskGroup().getNode(pizzaD.key());
         Assert.assertNotNull(nodeD);
         Assert.assertEquals(nodeD.dependencyKeys().size(), 1);
         for (String dependentKey : nodeD.dependencyKeys()) {
@@ -146,10 +146,10 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaF.key()));
         }
         // Level 2 - "G"
-        Assert.assertEquals(pizzaG.creatorUpdatorTaskGroup().dag().getNodes().size(), 3);
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeG = pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key());
+        Assert.assertEquals(pizzaG.taskGroup().getNodes().size(), 3);
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaC.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeG = pizzaG.taskGroup().getNode(pizzaG.key());
         Assert.assertNotNull(nodeG);
         Assert.assertEquals(nodeG.dependencyKeys().size(), 1);
         for (String dependentKey : nodeG.dependencyKeys()) {
@@ -165,12 +165,12 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 3 - "E"
-        Assert.assertEquals(pizzaE.creatorUpdatorTaskGroup().dag().getNodes().size(), 5);
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeE = pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaE.key());
+        Assert.assertEquals(pizzaE.taskGroup().getNodes().size(), 5);
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaB.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaC.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaG.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeE = pizzaE.taskGroup().getNode(pizzaE.key());
         Assert.assertNotNull(nodeE);
         Assert.assertEquals(nodeE.dependencyKeys().size(), 2);
         for (String dependentKey : nodeE.dependencyKeys()) {
@@ -187,16 +187,16 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 4 - "F"
-        Assert.assertEquals(pizzaF.creatorUpdatorTaskGroup().dag().getNodes().size(), 9);
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaH.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaE.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaD.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeF = pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaF.key());
+        Assert.assertEquals(pizzaF.taskGroup().getNodes().size(), 9);
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaB.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaC.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaG.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaI.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaH.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaE.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaD.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeF = pizzaF.taskGroup().getNode(pizzaF.key());
         Assert.assertNotNull(nodeF);
         Assert.assertEquals(nodeF.dependencyKeys().size(), 3);
         for (String dependentKey : nodeF.dependencyKeys()) {
@@ -209,7 +209,7 @@ public class DAGFinalizeTests {
 
     @Test
     public void testFinalize() {
-        // Define pizzas with instant pizzas
+        // Initial dependency graph
         //
         /**
          *   |------------------>[D](2)----------->[B](1)------------->[A](0)
@@ -247,7 +247,7 @@ public class DAGFinalizeTests {
         pizzaF.withInstantPizza(pizzaE);
         pizzaF.withInstantPizza(pizzaH);
 
-        // Update the above setup by adding delayed pizzas.
+        // Update the above setup by adding delayed pizzas in finalize (prepare).
         // Define 3 (J, K, L) delayed pizzas (edges with '==' symbol), two of them (J, L)
         // with instant pizzas.
         //    - The delayed pizza J has an instance pizza N
@@ -265,9 +265,9 @@ public class DAGFinalizeTests {
          *   |          |                              |
          *   |          |------->[G](4)-->[C](3)--------
          *   |                    |
-         *   |                    |=============================>[L](2)------->[P](1)======>[Q](0)
+         *   |                    |==================>[L](2)----->[P](1)======>[Q](0)
          *   |
-         *   |-------------------------------------------------->[H](1)------->[I](0)
+         *   |--------------------------------------------------->[H](1)------>[I](0)
          */
 
         PizzaImpl pizzaJ = new PizzaImpl("J");
@@ -295,8 +295,8 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 0 - "M"
-        Assert.assertEquals(pizzaM.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeM = pizzaM.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key());
+        Assert.assertEquals(pizzaM.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeM = pizzaM.taskGroup().getNode(pizzaM.key());
         Assert.assertNotNull(nodeM);
         Assert.assertEquals(nodeM.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeM.dependentKeys().size(), 1);
@@ -304,8 +304,8 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaJ.key()));
         }
         // Level 0 - "N"
-        Assert.assertEquals(pizzaN.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeN = pizzaN.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key());
+        Assert.assertEquals(pizzaN.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeN = pizzaN.taskGroup().getNode(pizzaN.key());
         Assert.assertNotNull(nodeN);
         Assert.assertEquals(nodeN.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeN.dependentKeys().size(), 1);
@@ -313,8 +313,8 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaJ.key()));
         }
         // Level 0 - "K"
-        Assert.assertEquals(pizzaK.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeK = pizzaK.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key());
+        Assert.assertEquals(pizzaK.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeK = pizzaK.taskGroup().getNode(pizzaK.key());
         Assert.assertNotNull(nodeK);
         Assert.assertEquals(nodeK.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeK.dependentKeys().size(), 1);
@@ -322,8 +322,8 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaA.key()));
         }
         // Level 0 - "I"
-        Assert.assertEquals(pizzaI.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeI = pizzaI.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key());
+        Assert.assertEquals(pizzaI.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeI = pizzaI.taskGroup().getNode(pizzaI.key());
         Assert.assertNotNull(nodeI);
         Assert.assertEquals(nodeI.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeI.dependentKeys().size(), 1);
@@ -331,8 +331,8 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaH.key()));
         }
         // Level 0 - "Q"
-        Assert.assertEquals(pizzaQ.creatorUpdatorTaskGroup().dag().getNodes().size(), 1);
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeQ = pizzaQ.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key());
+        Assert.assertEquals(pizzaQ.taskGroup().getNodes().size(), 1);
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeQ = pizzaQ.taskGroup().getNode(pizzaQ.key());
         Assert.assertNotNull(nodeQ);
         Assert.assertEquals(nodeQ.dependencyKeys().size(), 0);
         Assert.assertEquals(nodeQ.dependentKeys().size(), 1);
@@ -345,9 +345,9 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 1 - "H"
-        Assert.assertEquals(pizzaH.creatorUpdatorTaskGroup().dag().getNodes().size(), 2);
-        Assert.assertNotNull(pizzaH.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeH = pizzaH.creatorUpdatorTaskGroup().dag().getNode(pizzaH.key());
+        Assert.assertEquals(pizzaH.taskGroup().getNodes().size(), 2);
+        Assert.assertNotNull(pizzaH.taskGroup().getNode(pizzaI.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeH = pizzaH.taskGroup().getNode(pizzaH.key());
         Assert.assertNotNull(nodeH);
         Assert.assertEquals(nodeH.dependencyKeys().size(), 1);
         for (String dependentKey : nodeH.dependencyKeys()) {
@@ -358,10 +358,10 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaF.key()));
         }
         // Level 1 - "J"
-        Assert.assertEquals(pizzaJ.creatorUpdatorTaskGroup().dag().getNodes().size(), 3);
-        Assert.assertNotNull(pizzaJ.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaJ.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeJ = pizzaJ.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key());
+        Assert.assertEquals(pizzaJ.taskGroup().getNodes().size(), 3);
+        Assert.assertNotNull(pizzaJ.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaJ.taskGroup().getNode(pizzaN.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeJ = pizzaJ.taskGroup().getNode(pizzaJ.key());
         Assert.assertNotNull(nodeJ);
         Assert.assertEquals(nodeJ.dependencyKeys().size(), 2);
         for (String dependentKey : nodeJ.dependencyKeys()) {
@@ -373,9 +373,9 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaA.key()));
         }
         // Level 1 - "P"
-        Assert.assertEquals(pizzaP.creatorUpdatorTaskGroup().dag().getNodes().size(), 2);
-        Assert.assertNotNull(pizzaP.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeP = pizzaP.creatorUpdatorTaskGroup().dag().getNode(pizzaP.key());
+        Assert.assertEquals(pizzaP.taskGroup().getNodes().size(), 2);
+        Assert.assertNotNull(pizzaP.taskGroup().getNode(pizzaQ.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeP = pizzaP.taskGroup().getNode(pizzaP.key());
         Assert.assertNotNull(nodeP);
         Assert.assertEquals(nodeP.dependencyKeys().size(), 1);
         for (String dependentKey : nodeP.dependencyKeys()) {
@@ -390,10 +390,10 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 1 - "L"
-        Assert.assertEquals(pizzaL.creatorUpdatorTaskGroup().dag().getNodes().size(), 3);
-        Assert.assertNotNull(pizzaL.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key()));
-        Assert.assertNotNull(pizzaL.creatorUpdatorTaskGroup().dag().getNode(pizzaP.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeL = pizzaL.creatorUpdatorTaskGroup().dag().getNode(pizzaL.key());
+        Assert.assertEquals(pizzaL.taskGroup().getNodes().size(), 3);
+        Assert.assertNotNull(pizzaL.taskGroup().getNode(pizzaQ.key()));
+        Assert.assertNotNull(pizzaL.taskGroup().getNode(pizzaP.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeL = pizzaL.taskGroup().getNode(pizzaL.key());
         Assert.assertNotNull(nodeL);
         Assert.assertEquals(nodeL.dependencyKeys().size(), 1);
         for (String dependentKey : nodeL.dependencyKeys()) {
@@ -404,12 +404,12 @@ public class DAGFinalizeTests {
             Assert.assertTrue(dependentKey.equalsIgnoreCase(pizzaG.key()));
         }
         // Level 2 - "A"
-        Assert.assertEquals(pizzaA.creatorUpdatorTaskGroup().dag().getNodes().size(), 5);
-        Assert.assertNotNull(pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        Assert.assertNotNull(pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeA = pizzaA.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key());
+        Assert.assertEquals(pizzaA.taskGroup().getNodes().size(), 5);
+        Assert.assertNotNull(pizzaA.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaA.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaA.taskGroup().getNode(pizzaJ.key()));
+        Assert.assertNotNull(pizzaA.taskGroup().getNode(pizzaK.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeA = pizzaA.taskGroup().getNode(pizzaA.key());
         Assert.assertNotNull(nodeA);
         Assert.assertEquals(nodeA.dependencyKeys().size(), 2);
         for (String dependentKey : nodeA.dependencyKeys()) {
@@ -426,13 +426,13 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 3 - "B"
-        Assert.assertEquals(pizzaB.creatorUpdatorTaskGroup().dag().getNodes().size(), 6);
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        Assert.assertNotNull(pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeB = pizzaB.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key());
+        Assert.assertEquals(pizzaB.taskGroup().getNodes().size(), 6);
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaK.key()));
+        Assert.assertNotNull(pizzaB.taskGroup().getNode(pizzaJ.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeB = pizzaB.taskGroup().getNode(pizzaB.key());
         Assert.assertNotNull(nodeB);
         Assert.assertEquals(nodeB.dependencyKeys().size(), 1);
         for (String dependentKey : nodeB.dependencyKeys()) {
@@ -448,14 +448,14 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 4 - "D"
-        Assert.assertEquals(pizzaD.creatorUpdatorTaskGroup().dag().getNodes().size(), 7);
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeD = pizzaD.creatorUpdatorTaskGroup().dag().getNode(pizzaD.key());
+        Assert.assertEquals(pizzaD.taskGroup().getNodes().size(), 7);
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaB.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaJ.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaD.taskGroup().getNode(pizzaK.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeD = pizzaD.taskGroup().getNode(pizzaD.key());
         Assert.assertNotNull(nodeD);
         Assert.assertEquals(nodeD.dependencyKeys().size(), 1);
         for (String dependentKey : nodeD.dependencyKeys()) {
@@ -467,17 +467,17 @@ public class DAGFinalizeTests {
         }
 
         // Level 4 - "G"
-        Assert.assertEquals(pizzaG.creatorUpdatorTaskGroup().dag().getNodes().size(), 10);
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaL.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaP.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeG = pizzaG.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key());
+        Assert.assertEquals(pizzaG.taskGroup().getNodes().size(), 10);
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaC.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaQ.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaL.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaP.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaJ.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaG.taskGroup().getNode(pizzaK.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeG = pizzaG.taskGroup().getNode(pizzaG.key());
         Assert.assertNotNull(nodeG);
         Assert.assertEquals(nodeG.dependencyKeys().size(), 2);
         for (String dependentKey : nodeG.dependencyKeys()) {
@@ -493,19 +493,19 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 5 - "E"
-        Assert.assertEquals(pizzaE.creatorUpdatorTaskGroup().dag().getNodes().size(), 12);
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaL.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        Assert.assertNotNull(pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaP.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeE = pizzaE.creatorUpdatorTaskGroup().dag().getNode(pizzaE.key());
+        Assert.assertEquals(pizzaE.taskGroup().getNodes().size(), 12);
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaG.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaQ.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaB.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaC.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaJ.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaL.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaK.key()));
+        Assert.assertNotNull(pizzaE.taskGroup().getNode(pizzaP.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeE = pizzaE.taskGroup().getNode(pizzaE.key());
         Assert.assertNotNull(nodeE);
         Assert.assertEquals(nodeE.dependencyKeys().size(), 2);
         for (String dependentKey : nodeE.dependencyKeys()) {
@@ -521,23 +521,23 @@ public class DAGFinalizeTests {
         // ----------------------------------------------------------------------------------
         //
         // Level 6 - "F"
-        Assert.assertEquals(pizzaF.creatorUpdatorTaskGroup().dag().getNodes().size(), 16);
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaA.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaB.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaC.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaD.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaE.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaG.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaH.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaI.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaJ.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaK.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaL.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaM.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaN.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaP.key()));
-        Assert.assertNotNull(pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaQ.key()));
-        TaskItemHolder<IPizza, CreateUpdateTask<IPizza>> nodeF = pizzaF.creatorUpdatorTaskGroup().dag().getNode(pizzaF.key());
+        Assert.assertEquals(pizzaF.taskGroup().getNodes().size(), 16);
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaA.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaB.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaC.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaD.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaE.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaG.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaH.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaI.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaJ.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaK.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaL.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaM.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaN.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaP.key()));
+        Assert.assertNotNull(pizzaF.taskGroup().getNode(pizzaQ.key()));
+        TaskGroupEntry<IPizza, CreateUpdateTask<IPizza>> nodeF = pizzaF.taskGroup().getNode(pizzaF.key());
         Assert.assertNotNull(nodeF);
         Assert.assertEquals(nodeF.dependencyKeys().size(), 3);
         for (String dependentKey : nodeF.dependencyKeys()) {

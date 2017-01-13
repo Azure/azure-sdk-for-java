@@ -12,6 +12,8 @@ import java.util.Set;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -58,20 +60,24 @@ public class TestLoadBalancer {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
         private final Networks networks;
+        private final AvailabilitySets availabilitySets;
 
         /**
          * Test of a load balancer with a NAT pool.
          * @param pips public IPs
          * @param vms virtual machines
          * @param networks virtual networks
+         * @param availabilitySets availability sets
          */
         public InternetWithNatPool(
                 PublicIpAddresses pips,
                 VirtualMachines vms,
-                Networks networks) {
+                Networks networks,
+                AvailabilitySets availabilitySets) {
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
+            this.availabilitySets = availabilitySets;
         }
 
         @Override
@@ -81,7 +87,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, 2);
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
 
             // Create a load balancer
@@ -206,20 +212,24 @@ public class TestLoadBalancer {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
         private final Networks networks;
+        private final AvailabilitySets availabilitySets;
 
         /**
          * Tests an Internet-facing load balancer with NAT rules.
          * @param pips public IP addresses
          * @param vms virtual machines
          * @param networks virtual networks
+         * @param availabilitySets availability sets
          */
         public InternetWithNatRule(
                 PublicIpAddresses pips,
                 VirtualMachines vms,
-                Networks networks) {
+                Networks networks,
+                AvailabilitySets availabilitySets) {
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
+            this.availabilitySets = availabilitySets;
         }
 
         @Override
@@ -229,7 +239,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, 2);
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
             NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
@@ -391,20 +401,24 @@ public class TestLoadBalancer {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
         private final Networks networks;
+        private final AvailabilitySets availabilitySets;
 
         /**
          * Tests an Internet-facing load balancer with minimum inputs.
          * @param pips public IP addresses
          * @param vms virtual machines
          * @param networks virtual networks
+         * @param availabilitySets availability sets
          */
         public InternetMinimal(
                 PublicIpAddresses pips,
                 VirtualMachines vms,
-                Networks networks) {
+                Networks networks,
+                AvailabilitySets availabilitySets) {
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
+            this.availabilitySets = availabilitySets;
         }
 
         @Override
@@ -414,7 +428,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, 2);
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
 
             // Create a load balancer
@@ -521,7 +535,7 @@ public class TestLoadBalancer {
             // Verify probes
             LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
             Assert.assertNotNull(tcpProbe);
-            Assert.assertTrue(tcpProbe.port() == 22);
+            Assert.assertEquals(22, tcpProbe.port());
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -561,18 +575,22 @@ public class TestLoadBalancer {
     public static class InternalMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final VirtualMachines vms;
         private final Networks networks;
+        private final AvailabilitySets availabilitySets;
         private Network network;
 
         /**
          * Tests an internal load balancer with minimum inputs.
          * @param vms virtual machines
          * @param networks virtual networks
+         * @param availabilitySets availability sets
          */
         public InternalMinimal(
                 VirtualMachines vms,
-                Networks networks) {
+                Networks networks,
+                AvailabilitySets availabilitySets) {
             this.vms = vms;
             this.networks = networks;
+            this.availabilitySets = availabilitySets;
         }
 
         @Override
@@ -582,7 +600,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, 2);
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
 
             // Must use the same VNet as the VMs
             this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIpConfiguration().getNetwork();
@@ -611,7 +629,7 @@ public class TestLoadBalancer {
             Assert.assertFalse(frontend.isPublic());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assert.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
-            Assert.assertNotEquals(null, privateFrontend.privateIpAddress());
+            Assert.assertNotNull(privateFrontend.privateIpAddress());
             Assert.assertTrue("subnet1".equalsIgnoreCase(privateFrontend.subnetName()));
             Assert.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIpAllocationMethod());
 
@@ -704,7 +722,7 @@ public class TestLoadBalancer {
             // Verify probes
             LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
             Assert.assertNotNull(tcpProbe);
-            Assert.assertTrue(tcpProbe.port() == 22);
+            Assert.assertEquals(22,  tcpProbe.port());
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -752,7 +770,7 @@ public class TestLoadBalancer {
     }
 
     // Ensure VMs for the LB
-    private static VirtualMachine[] ensureVMs(Networks networks, VirtualMachines vms, int count) throws Exception {
+    private static VirtualMachine[] ensureVMs(Networks networks, VirtualMachines vms, AvailabilitySets availabilitySets, int count) throws Exception {
         // Create a network for the VMs
         Network network = networks.define("net" + TEST_ID)
                 .withRegion(REGION)
@@ -762,17 +780,19 @@ public class TestLoadBalancer {
                 .withSubnet("subnet2", "10.0.0.8/29")
                 .create();
 
-        List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
+        Creatable<AvailabilitySet> availabilitySetDefinition = availabilitySets.define("as" + TEST_ID)
+                .withRegion(REGION)
+                .withExistingResourceGroup(GROUP_NAME);
 
         // Create the requested number of VM definitions
         String userName = "testuser" + TEST_ID;
-        String availabilitySetName = "as" + TEST_ID;
+        List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             String vmName = ResourceNamer.randomResourceName("vm", 15);
 
             Creatable<VirtualMachine> vm = vms.define(vmName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(GROUP_NAME)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(GROUP_NAME)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet(network.subnets().values().iterator().next().name())
                     .withPrimaryPrivateIpAddressDynamic()
@@ -780,7 +800,7 @@ public class TestLoadBalancer {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
-                    .withNewAvailabilitySet(availabilitySetName)
+                    .withNewAvailabilitySet(availabilitySetDefinition)
                     .withSize(VirtualMachineSizeTypes.STANDARD_A1);
 
             vmDefinitions.add(vm);

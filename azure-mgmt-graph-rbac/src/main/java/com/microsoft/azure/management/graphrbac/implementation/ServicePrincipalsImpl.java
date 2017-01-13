@@ -13,6 +13,7 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -30,7 +31,9 @@ class ServicePrincipalsImpl
                     ServicePrincipal,
                     ServicePrincipalImpl,
                     ServicePrincipalInner>
-        implements ServicePrincipals {
+        implements
+            ServicePrincipals,
+            HasManager<GraphRbacManager> {
     private ServicePrincipalsInner innerCollection;
     private GraphRbacManager manager;
 
@@ -91,5 +94,10 @@ class ServicePrincipalsImpl
                         return new ServicePrincipalImpl(result.body().items().get(0), innerCollection);
                     }
                 });
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return this.manager;
     }
 }

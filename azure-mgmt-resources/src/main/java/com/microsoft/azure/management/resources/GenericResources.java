@@ -10,9 +10,11 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingInGroupByTag;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 import java.util.List;
 
@@ -26,7 +28,8 @@ public interface GenericResources extends
         SupportsListingInGroupByTag<GenericResource>,
         SupportsGettingById<GenericResource>,
         SupportsCreating<GenericResource.DefinitionStages.Blank>,
-        SupportsDeletingById {
+        SupportsDeletingById,
+        HasManager<ResourceManager> {
     /**
      * Checks if a resource exists in a resource group.
      *
