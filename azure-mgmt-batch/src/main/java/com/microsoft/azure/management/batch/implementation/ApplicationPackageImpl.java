@@ -57,6 +57,7 @@ public class ApplicationPackageImpl
     @Override
     public Observable<ApplicationPackage> createAsync() {
         final ApplicationPackageImpl self = this;
+
         return this.client.createAsync(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name())
                 .map(new Func1<ApplicationPackageInner, ApplicationPackage>() {
 

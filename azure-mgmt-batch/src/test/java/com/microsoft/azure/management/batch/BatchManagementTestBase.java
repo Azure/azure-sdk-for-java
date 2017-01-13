@@ -1,34 +1,38 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
+import com.microsoft.azure.management.resources.core.BaseTestClass;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 
-public abstract class BatchManagementTestBase {
+public abstract class BatchManagementTestBase extends BaseTestClass {
     protected static ResourceManager resourceManager;
     protected static BatchManager batchManager;
+    protected static String RG_NAME;
+    protected static String BATCH_NAME;
+    protected static String SA_NAME;
 
-    public static void createClients() {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                AzureEnvironment.AZURE);
-
-        RestClient restClient = new RestClient.Builder()
-                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .build();
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription) {
+        RG_NAME = generateRandomResourceName("javabatchrg", 20);
+        BATCH_NAME = generateRandomResourceName("javabatch", 15);
+        SA_NAME = generateRandomResourceName("javasa", 12);
 
         resourceManager = ResourceManager
                 .authenticate(restClient)
-                .withSubscription(System.getenv("subscription-id"));
+                .withSubscription(defaultSubscription);
 
         batchManager = BatchManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, defaultSubscription);
+    }
+
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 }
