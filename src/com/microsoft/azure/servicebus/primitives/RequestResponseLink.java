@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -134,6 +136,7 @@ public class RequestResponseLink extends ClientEntity{
 		sednerTarget.setAddress(this.linkPath);
 		sender.setTarget(sednerTarget);
 		Source senderSource = new Source();
+		senderSource.setAddress(this.replyTo);
 		sender.setSource(senderSource);
 		sender.setSenderSettleMode(SenderSettleMode.SETTLED);
 
@@ -209,6 +212,7 @@ public class RequestResponseLink extends ClientEntity{
 		for(RequestResponseWorkItem workItem : this.pendingRequests.values())
 		{
 			workItem.getWork().completeExceptionally(exception);
+			workItem.cancelTimeoutTask(true);
 		}
 		
 		this.pendingRequests.clear();
@@ -259,6 +263,7 @@ public class RequestResponseLink extends ClientEntity{
 			}		
 			
 			workItem.getWork().completeExceptionally(exceptionToReport);
+			workItem.cancelTimeoutTask(true);
 		}
 	}
 	
@@ -268,6 +273,7 @@ public class RequestResponseLink extends ClientEntity{
 		if(workItem != null)
 		{			
 			workItem.getWork().complete(responseMessage);
+			workItem.cancelTimeoutTask(true);
 		}
 		else
 		{
@@ -278,7 +284,31 @@ public class RequestResponseLink extends ClientEntity{
 	@Override
 	protected CompletableFuture<Void> onClose() {
 		return this.amqpSender.closeAsync().thenCompose((v) -> this.amqpReceiver.closeAsync());
-	}	
+	}
+	
+	private static void scheduleLinkCloseTimeout(CompletableFuture<Void> closeFuture, Duration timeout, String linkName)
+	{		
+		Timer.schedule(
+				new Runnable()
+				{
+					public void run()
+					{
+						if (!closeFuture.isDone())
+						{
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Link(%s) timed out at %s", "Close", linkName, ZonedDateTime.now()));
+							if (TRACE_LOGGER.isLoggable(Level.WARNING))
+							{
+								TRACE_LOGGER.log(Level.WARNING, 
+										String.format(Locale.US, "linkName[%s], %s call timedout", linkName, "Close"), operationTimedout);
+							}
+							
+							closeFuture.completeExceptionally(operationTimedout);
+						}
+					}
+				}
+				, timeout
+				, TimerType.OneTimeRun);
+	}
 	
 	private class InternalReceiver extends ClientEntity implements IAmqpReceiver
 	{
@@ -295,9 +325,22 @@ public class RequestResponseLink extends ClientEntity{
 		}		
 
 		@Override
-		protected CompletableFuture<Void> onClose() {
-			this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
-			return closeFuture;
+		protected CompletableFuture<Void> onClose() {					
+			if (!this.getIsClosed())
+			{				
+				if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
+				{
+					this.receiveLink.close();
+					this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
+					RequestResponseLink.scheduleLinkCloseTimeout(this.closeFuture, this.parent.underlyingFactory.getOperationTimeout(), this.receiveLink.getName());
+				}
+				else
+				{
+					this.closeFuture.complete(null);
+				}
+			}
+			
+			return this.closeFuture;
 		}
 
 		@Override
@@ -339,7 +382,7 @@ public class RequestResponseLink extends ClientEntity{
 			{
 				if(!this.closeFuture.isDone())
 				{
-					if(condition == null)
+					if(condition == null || condition.getCondition() == null)
 					{
 						this.closeFuture.complete(null);
 					}
@@ -427,8 +470,21 @@ public class RequestResponseLink extends ClientEntity{
 
 		@Override
 		protected CompletableFuture<Void> onClose() {
-			this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
-			return closeFuture;
+			if (!this.getIsClosed())
+			{				
+				if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
+				{
+					this.sendLink.close();
+					this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
+					RequestResponseLink.scheduleLinkCloseTimeout(this.closeFuture, this.parent.underlyingFactory.getOperationTimeout(), this.sendLink.getName());
+				}
+				else
+				{
+					this.closeFuture.complete(null);
+				}
+			}
+			
+			return this.closeFuture;
 		}
 
 		@Override
@@ -467,7 +523,7 @@ public class RequestResponseLink extends ClientEntity{
 			{
 				if(!this.closeFuture.isDone())
 				{
-					if(condition == null)
+					if(condition == null || condition.getCondition() == null)
 					{
 						this.closeFuture.complete(null);
 					}
@@ -596,5 +652,5 @@ public class RequestResponseLink extends ClientEntity{
 				}
 			}			
 		}
-	}	
+	}	 
 }

@@ -2,9 +2,12 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -377,5 +380,53 @@ class BrokeredMessageReceiver extends InitializableEntity implements IMessageRec
 		{
 			throw new UnsupportedOperationException("Operations Complete/Abandon/DeadLetter/Defer cannot be called on a receiver opened in ReceiveAndDelete mode.");
 		}
+	}
+
+	@Override
+	public CompletableFuture<Instant> renewMessageLockAsync(IBrokeredMessage message) {
+		ArrayList<IBrokeredMessage> list = new ArrayList<>();
+		list.add(message);
+		return this.renewMessageLockBatchAsync(list).thenApply((c) -> c.toArray(new Instant[0])[0]);
+	}
+
+	@Override
+	public CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages) {
+		this.ensurePeekLockReceiveMode();
+		
+		UUID[] lockTokens = new UUID[messages.size()];
+		int messageIndex = 0;
+		for(IBrokeredMessage message : messages)
+		{
+			UUID lockToken = message.getLockToken();
+			if(lockToken.equals(MessageConverter.ZEROLOCKTOKEN))
+			{
+				throw new UnsupportedOperationException("Lock of a message received in ReceiveAndDelete mode cannot be renewed.");
+			}
+			lockTokens[messageIndex++] = lockToken;
+		}
+		
+		return this.internalReceiver.renewMessageLocksAsync(lockTokens, this.messagingFactory.getOperationTimeout()).thenApply(
+				(newLockedUntilTimes) ->
+					{
+						// Assuming both collections are of same size and in same order (order doesn't really matter as all instants in the response are same).
+						Iterator<? extends IBrokeredMessage> messageIterator = messages.iterator();
+						Iterator<Instant> lockTimeIterator = newLockedUntilTimes.iterator();
+						while(messageIterator.hasNext() && lockTimeIterator.hasNext())
+						{
+							((BrokeredMessage)messageIterator.next()).setLockedUntilUtc(lockTimeIterator.next());
+						}
+						return newLockedUntilTimes;
+					}
+				);
+	}
+
+	@Override
+	public Instant renewMessageLock(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
+		return Utils.completeFuture(this.renewMessageLockAsync(message));
+	}
+
+	@Override
+	public Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException {
+		return Utils.completeFuture(this.renewMessageLockBatchAsync(messages));
 	}
 }

@@ -26,7 +26,7 @@ final class ExceptionUtil
 		}
 		if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR)
 		{
-			return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));
+			return new TimeoutException(errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR)
 		{
@@ -34,11 +34,11 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotFound)
 		{
-			return new IllegalEntityException(errorCondition.getDescription());
+			return new MessagingEntityNotFoundException(errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR)
 		{
-			return new IllegalEntityException(errorCondition.getDescription());
+			return new MessagingEntityDisabledException(errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen)
 		{
@@ -86,8 +86,24 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
 		{
-			return new ServiceBusException(false, new AmqpException(errorCondition));
+			return new QuotaExceededException(errorCondition.getDescription());
 		}
+		else if (errorCondition.getCondition() == ClientConstants.MESSAGE_LOCK_LOST_ERROR)
+		{
+			return new MessageLockLostException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == ClientConstants.SESSION_LOCK_LOST_ERROR)
+		{
+			return new SessionLockLostException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == ClientConstants.SESSIONS_CANNOT_BE_LOCKED_ERROR)
+		{
+			return new SessionCannotBeLockedException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == ClientConstants.MESSAGE_NOT_FOUND_ERROR)
+		{
+			return new MessageNotFoundException(errorCondition.getDescription());
+		}		
 
 		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
 	}

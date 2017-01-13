@@ -12,9 +12,11 @@ import java.util.UUID;
 
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 public class Util
@@ -73,83 +75,87 @@ public class Util
 	
 	// Unused now.. ServiceBus service serializes DateTime types as java time as per AMQP spec 
 		// .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
-		public static Instant convertDotNetTicksToInstant(long dotNetTicks)
+	public static Instant convertDotNetTicksToInstant(long dotNetTicks)
+	{
+		long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
+		long millisecondsFromEpoch = ticksFromEpoch/10000;
+		long fractionTicks = ticksFromEpoch%10000;
+		return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks*100);
+	}
+	
+	public static long convertInstantToDotNetTicks(Instant instant)
+	{
+		return (instant.getEpochSecond()* 10000000) + (instant.getNano()/100) + EPOCHINDOTNETTICKS ;
+	}
+			
+	//.Net GUID bytes are ordered in a different way.
+	// First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order, 7th and 8th bytes are also in reverse order
+	public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes)
+	{
+		if(dotNetBytes == null || dotNetBytes.length != GUIDSIZE)
 		{
-			long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
-			long millisecondsFromEpoch = ticksFromEpoch/10000;
-			long fractionTicks = ticksFromEpoch%10000;
-			return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks*100);
+			return new UUID(0l, 0l);
 		}
 		
-		public static long convertInstantToDotNetTicks(Instant instant)
+		byte[] reOrderedBytes = new byte[GUIDSIZE];
+		for(int i=0; i<GUIDSIZE; i++)
 		{
-			return (instant.getEpochSecond()* 10000000) + (instant.getNano()/100) + EPOCHINDOTNETTICKS ;
-		}
-			
-		//.Net GUID bytes are ordered in a different way.
-		// First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order, 7th and 8th bytes are also in reverse order
-		public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes)
-		{
-			if(dotNetBytes == null || dotNetBytes.length != GUIDSIZE)
+			int indexInReorderedBytes;
+			switch(i)
 			{
-				return new UUID(0l, 0l);
+				case 0:
+					indexInReorderedBytes = 3;
+					break;
+				case 1:
+					indexInReorderedBytes = 2;
+					break;
+				case 2:
+					indexInReorderedBytes = 1;
+					break;
+				case 3:
+					indexInReorderedBytes = 0;
+					break;
+				case 4:
+					indexInReorderedBytes = 5;
+					break;
+				case 5:
+					indexInReorderedBytes = 4;
+					break;
+				case 6:
+					indexInReorderedBytes = 7;
+					break;
+				case 7:
+					indexInReorderedBytes = 6;
+					break;
+				default:
+					indexInReorderedBytes = i;
 			}
 			
-			byte[] reOrderedBytes = new byte[GUIDSIZE];
-			for(int i=0; i<GUIDSIZE; i++)
-			{
-				int indexInReorderedBytes;
-				switch(i)
-				{
-					case 0:
-						indexInReorderedBytes = 3;
-						break;
-					case 1:
-						indexInReorderedBytes = 2;
-						break;
-					case 2:
-						indexInReorderedBytes = 1;
-						break;
-					case 3:
-						indexInReorderedBytes = 0;
-						break;
-					case 4:
-						indexInReorderedBytes = 5;
-						break;
-					case 5:
-						indexInReorderedBytes = 4;
-						break;
-					case 6:
-						indexInReorderedBytes = 7;
-						break;
-					case 7:
-						indexInReorderedBytes = 6;
-						break;
-					default:
-						indexInReorderedBytes = i;
-				}
-				
-				reOrderedBytes[indexInReorderedBytes] = dotNetBytes[i];
-			}
-			
-			ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
-			long mostSignificantBits = buffer.getLong();
-			long leastSignificantBits = buffer.getLong();
-			return new UUID(mostSignificantBits, leastSignificantBits);
+			reOrderedBytes[indexInReorderedBytes] = dotNetBytes[i];
 		}
 		
-		private static int getPayloadSize(Message msg)
+		ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
+		long mostSignificantBits = buffer.getLong();
+		long leastSignificantBits = buffer.getLong();
+		return new UUID(mostSignificantBits, leastSignificantBits);
+	}
+	
+	private static int getPayloadSize(Message msg)
+	{
+		if (msg == null || msg.getBody() == null)
 		{
-			if (msg == null || msg.getBody() == null)
-			{
-				return 0;
-			}
+			return 0;
+		}
 
-			Data payloadSection = (Data) msg.getBody();
-			if (payloadSection == null)
-			{
-				return 0;
-			}
+		Section bodySection = msg.getBody();
+		if(bodySection instanceof AmqpValue)
+		{
+			// How to calculate size of a value? this is ugly
+			return StringUtil.convertStringToBytes(((AmqpValue)bodySection).toString()).length;
+		}
+		else if (bodySection instanceof Data)
+		{
+			Data payloadSection = (Data) bodySection;			
 
 			Binary payloadBytes = payloadSection.getValue();
 			if (payloadBytes == null)
@@ -159,49 +165,54 @@ public class Util
 
 			return payloadBytes.getLength();
 		}
-
-		public static int getDataSerializedSize(Message amqpMessage)
+		else
 		{
-			if (amqpMessage == null)
-			{
-				return 0;
-			}
+			return 0;
+		}		
+	}
 
-			int payloadSize = getPayloadSize(amqpMessage);
-
-			// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
-			MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-			ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-			
-			int annotationsSize = 0;
-			int applicationPropertiesSize = 0;
-
-			if (messageAnnotations != null)
-			{
-				for(Symbol value: messageAnnotations.getValue().keySet())
-				{
-					annotationsSize += Util.sizeof(value);
-				}
-				
-				for(Object value: messageAnnotations.getValue().values())
-				{
-					annotationsSize += Util.sizeof(value);
-				}
-			}
-			
-			if (applicationProperties != null)
-			{
-				for(Object value: applicationProperties.getValue().keySet())
-				{
-					applicationPropertiesSize += Util.sizeof(value);
-				}
-				
-				for(Object value: applicationProperties.getValue().values())
-				{
-					applicationPropertiesSize += Util.sizeof(value);
-				}
-			}
-			
-			return annotationsSize + applicationPropertiesSize + payloadSize;
+	public static int getDataSerializedSize(Message amqpMessage)
+	{
+		if (amqpMessage == null)
+		{
+			return 0;
 		}
+
+		int payloadSize = getPayloadSize(amqpMessage);
+
+		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
+		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
+		
+		int annotationsSize = 0;
+		int applicationPropertiesSize = 0;
+
+		if (messageAnnotations != null)
+		{
+			for(Symbol value: messageAnnotations.getValue().keySet())
+			{
+				annotationsSize += Util.sizeof(value);
+			}
+			
+			for(Object value: messageAnnotations.getValue().values())
+			{
+				annotationsSize += Util.sizeof(value);
+			}
+		}
+		
+		if (applicationProperties != null)
+		{
+			for(Object value: applicationProperties.getValue().keySet())
+			{
+				applicationPropertiesSize += Util.sizeof(value);
+			}
+			
+			for(Object value: applicationProperties.getValue().values())
+			{
+				applicationPropertiesSize += Util.sizeof(value);
+			}
+		}
+		
+		return annotationsSize + applicationPropertiesSize + payloadSize;
+	}
 }

@@ -2,8 +2,10 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -159,6 +161,70 @@ public class QueueSendReceiveTests {
 		this.receiver.deadLetter(receivedMessage, deadLetterReason, null);
 		receivedMessage = this.receiver.receive();
 		Assert.assertNull("Message was not properly deadlettered", receivedMessage);
+	}
+	
+	@Test
+	public void testBasicQueueReceiveAndRenewLock() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	{		
+		String messageId = UUID.randomUUID().toString();
+		BrokeredMessage message = new BrokeredMessage("AMQP message");
+		message.setMessageId(messageId);
+		this.sender.send(message);
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		Assert.assertNotNull("Message not received", receivedMessage);
+		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+		Instant oldLockedUntilTime = receivedMessage.getLockedUntilUtc();
+		Thread.sleep(1000);
+		Instant newLockedUntilUtc = this.receiver.renewMessageLock(receivedMessage);
+		Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockedUntilTime.toString() + ", newLockedUntilUtc:" + newLockedUntilUtc, newLockedUntilUtc.isAfter(oldLockedUntilTime));
+		Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockedUntilUtc, receivedMessage.getLockedUntilUtc());
+		this.receiver.complete(receivedMessage);
+	}
+	
+	@Test
+	public void testBasicQueueReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	{		
+		int numMessages = 10;		
+		List<BrokeredMessage> messages = new ArrayList<BrokeredMessage>();
+		for(int i=0; i<numMessages; i++)
+		{
+			messages.add(new BrokeredMessage("AMQP message"));
+		}
+		this.sender.sendBatch(messages);
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, builder.getEntityPath(), ReceiveMode.PeekLock);
+		ArrayList<IBrokeredMessage> totalReceivedMessages = new ArrayList<>();		
+		
+		Collection<IBrokeredMessage> receivedMessages = this.receiver.receiveBatch(numMessages);
+		totalReceivedMessages.addAll(receivedMessages);		
+		while(receivedMessages != null && receivedMessages.size() > 0 && totalReceivedMessages.size() < numMessages)
+		{						
+			receivedMessages = this.receiver.receiveBatch(numMessages);
+			totalReceivedMessages.addAll(receivedMessages);	
+		}
+		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());	
+		
+		ArrayList<Instant> oldLockTimes = new ArrayList<Instant>();
+		for(IBrokeredMessage message : totalReceivedMessages)
+		{
+			oldLockTimes.add(message.getLockedUntilUtc());
+		}
+		
+		Thread.sleep(1000);
+		Collection<Instant> newLockTimes = this.receiver.renewMessageLockBatch(totalReceivedMessages);
+		Assert.assertEquals("RenewLock didn't return one instant per message in the collection", totalReceivedMessages.size(), newLockTimes.size());
+		Iterator<Instant> newLockTimeIterator = newLockTimes.iterator();
+		Iterator<Instant> oldLockTimeIterator = oldLockTimes.iterator();
+		for(IBrokeredMessage message : totalReceivedMessages)
+		{	
+			Instant oldLockTime = oldLockTimeIterator.next();
+			Instant newLockTime = newLockTimeIterator.next();
+			Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockTime.toString() + ", newLockedUntilUtc:" + newLockTime.toString(), newLockTime.isAfter(oldLockTime));
+			Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockTime, message.getLockedUntilUtc());
+			this.receiver.complete(message);			
+		}		
 	}
 	
 	@Test

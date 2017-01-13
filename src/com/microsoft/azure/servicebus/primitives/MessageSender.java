@@ -810,6 +810,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
 			{
+				this.underlyingFactory.deregisterForConnectionError(sendLink);
 				this.sendLink.close();
 				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
 			}

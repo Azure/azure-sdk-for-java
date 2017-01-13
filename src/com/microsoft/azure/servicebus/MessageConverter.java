@@ -29,7 +29,7 @@ class MessageConverter
     private static final String LOCKEDUNTILNAME = "x-opt-locked-until";
     private static final String PARTITIONKEYNAME = "x-opt-partition-key";
     private static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
-    private static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);
+    public static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);
 
 	public static Message convertBrokeredMessageToAmqpMessage(BrokeredMessage brokeredMessage)	
 	{

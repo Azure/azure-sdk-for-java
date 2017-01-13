@@ -26,6 +26,11 @@ public final class ClientConstants
 	public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
 	public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
 	public static final Symbol DEADLETTERNAME = Symbol.valueOf(AmqpConstants.VENDOR + ":dead-letter");
+    public static final Symbol MESSAGE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-lock-lost");
+    public static final Symbol SESSION_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-lock-lost");
+    public static final Symbol SESSIONS_CANNOT_BE_LOCKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-cannot-be-locked");
+    public static final Symbol MESSAGE_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-not-found");
+    public static final Symbol SESSION_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-not-found");
 	
 	public static final String DEADLETTER_REASON_HEADER = "DeadLetterReason";
     public static final String DEADLETTER_ERROR_DESCRIPTION_HEADER = "DeadLetterErrorDescription";
@@ -50,4 +55,19 @@ public final class ClientConstants
 
 	public final static String NO_RETRY = "NoRetry";
 	public final static String DEFAULT_RETRY = "Default";
+	
+	public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
+	public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
+	public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
+	public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
+	public static final String REQUEST_RESPONSE_SESSIONID = "session-id";	
+	public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
+    public static final String REQUEST_RESPONSE_STATUS_DESCRIPTION = "statusDescription";
+    public static final String REQUEST_RESPONSE_ERROR_CONDITION = "errorCondition";
+    
+    public static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+    public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+    
+	
 }
