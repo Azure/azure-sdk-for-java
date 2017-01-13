@@ -7,6 +7,7 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -186,6 +187,22 @@ class PartitionManager
     	}
     	catch (Exception e)
     	{
+    		if ((e instanceof ExecutionException) && (e.getCause() instanceof OutOfMemoryError))
+    		{
+    			Exception forLogging = new Exception("Got OutOfMemoryError with " + Thread.activeCount() + " threads running");
+    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), forLogging, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
+    			Map<Thread, StackTraceElement[]> stacks = Thread.getAllStackTraces();
+    			for (Map.Entry<Thread, StackTraceElement[]> entry : stacks.entrySet())
+    			{
+    				String stackString = "Thread " + entry.getKey().getId() + ":\n";
+    				for (int i = 0; i < entry.getValue().length; i++)
+    				{
+    					stackString += (entry.getValue()[i].toString() + "\n");
+    				}
+    				forLogging = new Exception(stackString);
+        			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), forLogging, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
+    			}
+    		}
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e);
     		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
     	}

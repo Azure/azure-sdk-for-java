@@ -389,6 +389,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	boolean retval = true;
     	String newLeaseId = EventProcessorHost.safeCreateUUID();
+    	if ((newLeaseId == null) || newLeaseId.isEmpty())
+    	{
+    		throw new IllegalArgumentException("acquireLeaseSync: newLeaseId really is " + ((newLeaseId == null) ? "null" : "empty"));
+    	}
     	try
     	{
     		String newToken = null;
@@ -603,7 +607,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 				this.host.logWithHostAndPartition(Level.FINE, partitionId, "Error message: " + extendedErrorInfo.getErrorMessage());
     			if ((errorCode.compareTo(StorageErrorCodeStrings.LEASE_LOST) == 0) ||
     				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_LEASE_OPERATION) == 0) ||
-    				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0))
+    				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0) ||
+    				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ALREADY_PRESENT) == 0))
     			{
     				retval = true;
     			}
