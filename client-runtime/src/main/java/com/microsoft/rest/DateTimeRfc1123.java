@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Simple wrapper over joda.time.DateTime used for specifying RFC1123 format during serialization/deserialization.
  */
-public class DateTimeRfc1123 {
+public final class DateTimeRfc1123 {
     /**
      * The pattern of the datetime used for RFC1123 datetime format.
      */

@@ -111,20 +111,4 @@ public final class Validator {
             }
         }
     }
-
-    /**
-     * Validates a user provided required parameter to be not null. Returns if
-     * the parameter passes the validation. An {@link IllegalArgumentException} is passed
-     * to the {@link ServiceCallback#failure(Throwable)} if a property fails the validation.
-     *
-     * @param parameter the parameter to validate
-     * @param serviceCallback the callback to call with the failure
-     */
-    public static void validate(Object parameter, ServiceCallback<?> serviceCallback) {
-        try {
-            validate(parameter);
-        } catch (IllegalArgumentException ex) {
-            serviceCallback.failure(ex);
-        }
-    }
 }
