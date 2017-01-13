@@ -42,6 +42,7 @@ import org.xml.sax.SAXException;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
+import com.microsoft.azure.servicebus.StringUtil;
 
 class PartitionManager
 {
@@ -63,61 +64,65 @@ class PartitionManager
     {
         if (this.partitionIds == null)
         {
-        	this.partitionIds = new ArrayList<String>();
-        	
-        	try
-        	{
-	        	String contentEncoding = StandardCharsets.UTF_8.name();
-	        	ConnectionStringBuilder connectionString = new ConnectionStringBuilder(this.host.getEventHubConnectionString());
-	        	URI namespaceUri = new URI("https", connectionString.getEndpoint().getHost(), null, null);
-	        	String resourcePath = String.join("/", 
-	        			namespaceUri.toString(),
-	        			connectionString.getEntityPath(),
-	        			"consumergroups",
-	        			this.host.getConsumerGroupName(),
-	        			"partitions");
-	        	
-	        	final String authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
-	        			connectionString.getSasKeyName(), connectionString.getSasKey(), 
-	        			resourcePath, Duration.ofMinutes(20));
-	        	        	
-	            URLConnection connection = new URL(resourcePath).openConnection();
-	        	connection.addRequestProperty("Authorization", authorizationToken);
-	        	connection.setRequestProperty("Content-Type", "application/atom+xml;type=entry");
-	        	connection.setRequestProperty("charset", contentEncoding);
-	        	InputStream responseStream = connection.getInputStream();
-	        	
-	        	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	        	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	        	Document doc = docBuilder.parse(responseStream);
-	        	
-	        	XPath xpath = XPathFactory.newInstance().newXPath();
-	        	NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
-	        	if (partitionIdsNodes.getLength() == 0)
-	        	{
-	        		throw new IllegalEntityException("EventHub does not exist");
-	        	}
-	        	
-	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
-	        	{
-	        		this.partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
-	        	}
-        	}
-        	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
-        	{
-        		String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
-        		if (exception instanceof FileNotFoundException)
-        		{
-        			errorMessage = "Consumer group does not exist";
-        		}
-        		this.host.logWithHost(Level.SEVERE, errorMessage);
-        		throw new EPHConfigurationException(errorMessage, exception);
-        	}
-            
+            this.partitionIds = new ArrayList<>();
+
+            try
+            {
+                    String contentEncoding = StandardCharsets.UTF_8.name();
+                    ConnectionStringBuilder connectionString = new ConnectionStringBuilder(this.host.getEventHubConnectionString());
+                    URI namespaceUri = new URI("https", connectionString.getEndpoint().getHost(), null, null);
+                    String resourcePath = String.join("/", 
+                                    namespaceUri.toString(),
+                                    connectionString.getEntityPath(),
+                                    "consumergroups",
+                                    this.host.getConsumerGroupName(),
+                                    "partitions");
+
+                    String authorizationToken = connectionString.getSharedAccessSignature();
+                    if (StringUtil.isNullOrEmpty(authorizationToken))
+                    {
+                            authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
+                                    connectionString.getSasKeyName(), connectionString.getSasKey(), 
+                                    resourcePath, Duration.ofMinutes(20));
+                    }
+
+                    URLConnection connection = new URL(resourcePath).openConnection();
+                    connection.addRequestProperty("Authorization", authorizationToken);
+                    connection.setRequestProperty("Content-Type", "application/atom+xml;type=entry");
+                    connection.setRequestProperty("charset", contentEncoding);
+                    InputStream responseStream = connection.getInputStream();
+
+                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                    Document doc = docBuilder.parse(responseStream);
+
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
+                    if (partitionIdsNodes.getLength() == 0)
+                    {
+                            throw new IllegalEntityException("EventHub does not exist");
+                    }
+
+                    for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
+                    {
+                            this.partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
+                    }
+            }
+            catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
+            {
+                    String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
+                    if (exception instanceof FileNotFoundException)
+                    {
+                            errorMessage = "Consumer group does not exist";
+                    }
+                    this.host.logWithHost(Level.SEVERE, errorMessage);
+                    throw new EPHConfigurationException(errorMessage, exception);
+            }
+
             this.host.logWithHost(Level.INFO, "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + this.partitionIds.size());
             for (String id : this.partitionIds)
             {
-            	this.host.logWithHost(Level.FINE, "Found partition with id: " + id);
+                this.host.logWithHost(Level.FINE, "Found partition with id: " + id);
             }
         }
         

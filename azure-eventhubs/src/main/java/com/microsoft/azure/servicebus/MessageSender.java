@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -50,7 +51,6 @@ import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
 import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
-import java.util.List;
 
 /**
  * Abstracts all amqp related details
@@ -123,11 +123,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		this.retryPolicy = factory.getRetryPolicy();
 
 		this.pendingSendLock = new Object();
-		this.pendingSendsData = new ConcurrentHashMap<String, ReplayableWorkItem<Void>>();
-		this.pendingSends = new PriorityQueue<WeightedDeliveryTag>(1000, new DeliveryTagComparator());
+		this.pendingSendsData = new ConcurrentHashMap<>();
+		this.pendingSends = new PriorityQueue<>(1000, new DeliveryTagComparator());
 		this.linkCredit = 0;
 
-		this.linkClose = new CompletableFuture<Void>();
+		this.linkClose = new CompletableFuture<>();
 		
 		this.sendWork = new DispatchHandler()
 		{ 
@@ -215,11 +215,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		final boolean isRetrySend = (onSend != null);
 		final String tag = (deliveryTag == null) ? UUID.randomUUID().toString().replace("-", StringUtil.EMPTY) : deliveryTag;
 		
-		final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<Void>() : onSend;
+		final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<>() : onSend;
 		
 		final ReplayableWorkItem<Void> sendWaiterData = (tracker == null) ?
-				new ReplayableWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) : 
-				new ReplayableWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
+				new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) : 
+				new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
 
 		if (lastKnownError != null)
 		{
