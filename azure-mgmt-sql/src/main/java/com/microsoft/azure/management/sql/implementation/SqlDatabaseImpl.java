@@ -257,6 +257,7 @@ class SqlDatabaseImpl
     @Override
     protected Observable<SqlDatabase> createChildResourceAsync() {
         final SqlDatabaseImpl self = this;
+
         if (this.elasticPoolCreatableKey != null) {
             SqlElasticPool sqlElasticPool = (SqlElasticPool) this.createdResource(this.elasticPoolCreatableKey);
             withExistingElasticPool(sqlElasticPool);

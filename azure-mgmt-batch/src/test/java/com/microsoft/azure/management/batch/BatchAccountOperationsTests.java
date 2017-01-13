@@ -6,35 +6,18 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import rx.Observable;
 
 import java.util.List;
 
 public class BatchAccountOperationsTests extends BatchManagementTestBase {
-    private static final String RG_NAME = "javacbatch382";
-    private static final String BATCH_NAME = "javacsmsa382";
-    private static final String SA_NAME = "javacsmsa382";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-    }
-
     @Test
     public void canCRUDBatchAccount() throws Exception {
         // Create

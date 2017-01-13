@@ -175,6 +175,7 @@ class SqlElasticPoolImpl
     @Override
     protected Observable<SqlElasticPool> createChildResourceAsync() {
         final SqlElasticPool self = this;
+
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<ElasticPoolInner, SqlElasticPool>() {
                     @Override
