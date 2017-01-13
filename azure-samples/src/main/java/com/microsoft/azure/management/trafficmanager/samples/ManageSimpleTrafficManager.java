@@ -117,12 +117,12 @@ public final class ManageSimpleTrafficManager {
                         .withPerformanceBasedRouting();
 
                 TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
-                int i = 1;
+                int routingPriority = 1;
                 for (VirtualMachine vm : virtualMachines) {
                     String endpointName = ResourceNamer.randomResourceName("ep", 15);
                     profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
                             .toResourceId(vm.getPrimaryPublicIpAddressId())
-                            .withRoutingPriority(i++)
+                            .withRoutingPriority(routingPriority++)
                             .attach();
                 }
 
