@@ -157,10 +157,10 @@ public final class EndpointsInner {
      */
     public PagedList<EndpointInner> listByProfile(final String resourceGroupName, final String profileName) {
         ServiceResponse<Page<EndpointInner>> response = listByProfileSinglePageAsync(resourceGroupName, profileName).toBlocking().single();
-        return new PagedList<EndpointInner>(response.getBody()) {
+        return new PagedList<EndpointInner>(response.body()) {
             @Override
             public Page<EndpointInner> nextPage(String nextPageLink) {
-                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -197,7 +197,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<EndpointInner>>, Page<EndpointInner>>() {
                 @Override
                 public Page<EndpointInner> call(ServiceResponse<Page<EndpointInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -214,7 +214,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<EndpointInner>>, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(ServiceResponse<Page<EndpointInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -249,7 +249,7 @@ public final class EndpointsInner {
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<EndpointInner>> result = listByProfileDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -273,7 +273,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -301,7 +301,7 @@ public final class EndpointsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -361,7 +361,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner create(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().last().body();
     }
 
     /**
@@ -391,7 +391,7 @@ public final class EndpointsInner {
         return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -439,7 +439,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginCreate(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().single().body();
     }
 
     /**
@@ -469,7 +469,7 @@ public final class EndpointsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -536,7 +536,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().last().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().last().body();
     }
 
     /**
@@ -566,7 +566,7 @@ public final class EndpointsInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -614,7 +614,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginUpdate(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().single().getBody();
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().single().body();
     }
 
     /**
@@ -644,7 +644,7 @@ public final class EndpointsInner {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -708,7 +708,7 @@ public final class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      */
     public void delete(String resourceGroupName, String profileName, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
@@ -736,7 +736,7 @@ public final class EndpointsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -777,7 +777,7 @@ public final class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      */
     public void beginDelete(String resourceGroupName, String profileName, String endpointName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -805,7 +805,7 @@ public final class EndpointsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -865,7 +865,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner start(String resourceGroupName, String profileName, String endpointName) {
-        return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
@@ -893,7 +893,7 @@ public final class EndpointsInner {
         return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -935,7 +935,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginStart(String resourceGroupName, String profileName, String endpointName) {
-        return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -963,7 +963,7 @@ public final class EndpointsInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1022,7 +1022,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner stop(String resourceGroupName, String profileName, String endpointName) {
-        return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
@@ -1050,7 +1050,7 @@ public final class EndpointsInner {
         return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1092,7 +1092,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginStop(String resourceGroupName, String profileName, String endpointName) {
-        return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -1120,7 +1120,7 @@ public final class EndpointsInner {
         return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1179,7 +1179,7 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      */
     public void purgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().getBody();
+        purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().body();
     }
 
     /**
@@ -1209,7 +1209,7 @@ public final class EndpointsInner {
         return purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1258,7 +1258,7 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      */
     public void beginPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().getBody();
+        beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().body();
     }
 
     /**
@@ -1288,7 +1288,7 @@ public final class EndpointsInner {
         return beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1354,7 +1354,7 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      */
     public void loadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().getBody();
+        loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().body();
     }
 
     /**
@@ -1384,7 +1384,7 @@ public final class EndpointsInner {
         return loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1433,7 +1433,7 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      */
     public void beginLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().getBody();
+        beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().body();
     }
 
     /**
@@ -1463,7 +1463,7 @@ public final class EndpointsInner {
         return beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1530,7 +1530,7 @@ public final class EndpointsInner {
      * @return the ValidateCustomDomainOutputInner object if successful.
      */
     public ValidateCustomDomainOutputInner validateCustomDomain(String resourceGroupName, String profileName, String endpointName, String hostName) {
-        return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).toBlocking().single().getBody();
+        return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).toBlocking().single().body();
     }
 
     /**
@@ -1560,7 +1560,7 @@ public final class EndpointsInner {
         return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).map(new Func1<ServiceResponse<ValidateCustomDomainOutputInner>, ValidateCustomDomainOutputInner>() {
             @Override
             public ValidateCustomDomainOutputInner call(ServiceResponse<ValidateCustomDomainOutputInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1626,10 +1626,10 @@ public final class EndpointsInner {
      */
     public PagedList<ResourceUsageInner> listResourceUsage(final String resourceGroupName, final String profileName, final String endpointName) {
         ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageSinglePageAsync(resourceGroupName, profileName, endpointName).toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1668,7 +1668,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1686,7 +1686,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1725,7 +1725,7 @@ public final class EndpointsInner {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1748,10 +1748,10 @@ public final class EndpointsInner {
      */
     public PagedList<EndpointInner> listByProfileNext(final String nextPageLink) {
         ServiceResponse<Page<EndpointInner>> response = listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<EndpointInner>(response.getBody()) {
+        return new PagedList<EndpointInner>(response.body()) {
             @Override
             public Page<EndpointInner> nextPage(String nextPageLink) {
-                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1787,7 +1787,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<EndpointInner>>, Page<EndpointInner>>() {
                 @Override
                 public Page<EndpointInner> call(ServiceResponse<Page<EndpointInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1803,7 +1803,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<EndpointInner>>, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(ServiceResponse<Page<EndpointInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1829,7 +1829,7 @@ public final class EndpointsInner {
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<EndpointInner>> result = listByProfileNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1852,10 +1852,10 @@ public final class EndpointsInner {
      */
     public PagedList<ResourceUsageInner> listResourceUsageNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1891,7 +1891,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1907,7 +1907,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1933,7 +1933,7 @@ public final class EndpointsInner {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

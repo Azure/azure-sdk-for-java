@@ -80,7 +80,7 @@ public final class DeploymentOperationsInner {
      * @return the DeploymentOperationInner object if successful.
      */
     public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
-        return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).toBlocking().single().body();
     }
 
     /**
@@ -108,7 +108,7 @@ public final class DeploymentOperationsInner {
         return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).map(new Func1<ServiceResponse<DeploymentOperationInner>, DeploymentOperationInner>() {
             @Override
             public DeploymentOperationInner call(ServiceResponse<DeploymentOperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -167,10 +167,10 @@ public final class DeploymentOperationsInner {
      */
     public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -207,7 +207,7 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -224,7 +224,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -260,7 +260,7 @@ public final class DeploymentOperationsInner {
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -278,10 +278,10 @@ public final class DeploymentOperationsInner {
      */
     public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName, final Integer top) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName, top).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -320,7 +320,7 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -338,7 +338,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -374,7 +374,7 @@ public final class DeploymentOperationsInner {
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -397,10 +397,10 @@ public final class DeploymentOperationsInner {
      */
     public PagedList<DeploymentOperationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -436,7 +436,7 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -452,7 +452,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -478,7 +478,7 @@ public final class DeploymentOperationsInner {
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

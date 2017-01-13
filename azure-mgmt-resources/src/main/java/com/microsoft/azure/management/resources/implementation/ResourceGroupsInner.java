@@ -118,10 +118,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<GenericResourceInner> listResources(final String resourceGroupName) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -156,7 +156,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -172,7 +172,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -206,7 +206,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -225,10 +225,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<GenericResourceInner> listResources(final String resourceGroupName, final String filter, final String expand, final Integer top) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName, filter, expand, top).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -269,7 +269,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -288,7 +288,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -322,7 +322,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -344,7 +344,7 @@ public final class ResourceGroupsInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -368,7 +368,7 @@ public final class ResourceGroupsInner {
         return checkExistenceWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -419,7 +419,7 @@ public final class ResourceGroupsInner {
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -445,7 +445,7 @@ public final class ResourceGroupsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -500,7 +500,7 @@ public final class ResourceGroupsInner {
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      */
     public void delete(String resourceGroupName) {
-        deleteWithServiceResponseAsync(resourceGroupName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName).toBlocking().last().body();
     }
 
     /**
@@ -526,7 +526,7 @@ public final class ResourceGroupsInner {
         return deleteWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -559,7 +559,7 @@ public final class ResourceGroupsInner {
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      */
     public void beginDelete(String resourceGroupName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -585,7 +585,7 @@ public final class ResourceGroupsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -635,7 +635,7 @@ public final class ResourceGroupsInner {
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner get(String resourceGroupName) {
-        return getWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -659,7 +659,7 @@ public final class ResourceGroupsInner {
         return getWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -710,7 +710,7 @@ public final class ResourceGroupsInner {
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner patch(String resourceGroupName, ResourceGroupInner parameters) {
-        return patchWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return patchWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -738,7 +738,7 @@ public final class ResourceGroupsInner {
         return patchWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -794,7 +794,7 @@ public final class ResourceGroupsInner {
      * @return the ResourceGroupExportResultInner object if successful.
      */
     public ResourceGroupExportResultInner exportTemplate(String resourceGroupName, ExportTemplateRequestInner parameters) {
-        return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -820,7 +820,7 @@ public final class ResourceGroupsInner {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>() {
             @Override
             public ResourceGroupExportResultInner call(ServiceResponse<ResourceGroupExportResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -874,10 +874,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<ResourceGroupInner> list() {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -910,7 +910,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -925,7 +925,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -954,7 +954,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -971,10 +971,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<ResourceGroupInner> list(final String filter, final Integer top) {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync(filter, top).toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1011,7 +1011,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1028,7 +1028,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1057,7 +1057,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1080,10 +1080,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<GenericResourceInner> listResourcesNext(final String nextPageLink) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1119,7 +1119,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1135,7 +1135,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1161,7 +1161,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1184,10 +1184,10 @@ public final class ResourceGroupsInner {
      */
     public PagedList<ResourceGroupInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceGroupInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1223,7 +1223,7 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1239,7 +1239,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1265,7 +1265,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

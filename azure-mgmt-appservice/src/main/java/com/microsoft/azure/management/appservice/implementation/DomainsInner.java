@@ -144,7 +144,7 @@ public final class DomainsInner {
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
     public DomainAvailablilityCheckResultInner checkAvailability() {
-        return checkAvailabilityWithServiceResponseAsync().toBlocking().single().getBody();
+        return checkAvailabilityWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -168,7 +168,7 @@ public final class DomainsInner {
         return checkAvailabilityWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
             @Override
             public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -209,7 +209,7 @@ public final class DomainsInner {
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
     public DomainAvailablilityCheckResultInner checkAvailability(String name) {
-        return checkAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
+        return checkAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
     /**
@@ -235,7 +235,7 @@ public final class DomainsInner {
         return checkAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
             @Override
             public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -283,10 +283,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainInner> list() {
         ServiceResponse<Page<DomainInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -321,7 +321,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -337,7 +337,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -363,7 +363,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -385,7 +385,7 @@ public final class DomainsInner {
      * @return the DomainControlCenterSsoRequestInner object if successful.
      */
     public DomainControlCenterSsoRequestInner getControlCenterSsoRequest() {
-        return getControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().getBody();
+        return getControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -409,7 +409,7 @@ public final class DomainsInner {
         return getControlCenterSsoRequestWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainControlCenterSsoRequestInner>, DomainControlCenterSsoRequestInner>() {
             @Override
             public DomainControlCenterSsoRequestInner call(ServiceResponse<DomainControlCenterSsoRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -455,10 +455,10 @@ public final class DomainsInner {
      */
     public PagedList<NameIdentifierInner> listRecommendations(final DomainRecommendationSearchParametersInner parameters) {
         ServiceResponse<Page<NameIdentifierInner>> response = listRecommendationsSinglePageAsync(parameters).toBlocking().single();
-        return new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.body()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) {
-                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -495,7 +495,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
                 @Override
                 public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -512,7 +512,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -543,7 +543,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NameIdentifierInner>> result = listRecommendationsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -567,10 +567,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<DomainInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -607,7 +607,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -624,7 +624,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -654,7 +654,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -678,7 +678,7 @@ public final class DomainsInner {
      * @return the DomainInner object if successful.
      */
     public DomainInner get(String resourceGroupName, String domainName) {
-        return getWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().body();
     }
 
     /**
@@ -706,7 +706,7 @@ public final class DomainsInner {
         return getWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -761,7 +761,7 @@ public final class DomainsInner {
      * @return the DomainInner object if successful.
      */
     public DomainInner createOrUpdate(String resourceGroupName, String domainName, DomainInner domain) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().last().body();
     }
 
     /**
@@ -791,7 +791,7 @@ public final class DomainsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -834,7 +834,7 @@ public final class DomainsInner {
      * @return the DomainInner object if successful.
      */
     public DomainInner beginCreateOrUpdate(String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().body();
     }
 
     /**
@@ -864,7 +864,7 @@ public final class DomainsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -923,7 +923,7 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      */
     public void delete(String resourceGroupName, String domainName) {
-        deleteWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().body();
     }
 
     /**
@@ -951,7 +951,7 @@ public final class DomainsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -999,7 +999,7 @@ public final class DomainsInner {
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      */
     public void delete(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
-        deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().body();
     }
 
     /**
@@ -1029,7 +1029,7 @@ public final class DomainsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1085,10 +1085,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(final String resourceGroupName, final String domainName) {
         ServiceResponse<Page<DomainOwnershipIdentifierInner>> response = listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName).toBlocking().single();
-        return new PagedList<DomainOwnershipIdentifierInner>(response.getBody()) {
+        return new PagedList<DomainOwnershipIdentifierInner>(response.body()) {
             @Override
             public Page<DomainOwnershipIdentifierInner> nextPage(String nextPageLink) {
-                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1127,7 +1127,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Page<DomainOwnershipIdentifierInner>>() {
                 @Override
                 public Page<DomainOwnershipIdentifierInner> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1145,7 +1145,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1179,7 +1179,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> result = listOwnershipIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1204,7 +1204,7 @@ public final class DomainsInner {
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner getOwnershipIdentifier(String resourceGroupName, String domainName, String name) {
-        return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().getBody();
+        return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().body();
     }
 
     /**
@@ -1234,7 +1234,7 @@ public final class DomainsInner {
         return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1294,7 +1294,7 @@ public final class DomainsInner {
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner createOrUpdateOwnershipIdentifier(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -1326,7 +1326,7 @@ public final class DomainsInner {
         return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1389,7 +1389,7 @@ public final class DomainsInner {
      * @param name Name of identifier.
      */
     public void deleteOwnershipIdentifier(String resourceGroupName, String domainName, String name) {
-        deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().getBody();
+        deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().body();
     }
 
     /**
@@ -1419,7 +1419,7 @@ public final class DomainsInner {
         return deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1479,7 +1479,7 @@ public final class DomainsInner {
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner updateOwnershipIdentifier(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -1511,7 +1511,7 @@ public final class DomainsInner {
         return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1574,10 +1574,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1615,7 +1615,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1632,7 +1632,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1659,7 +1659,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1683,10 +1683,10 @@ public final class DomainsInner {
      */
     public PagedList<NameIdentifierInner> listRecommendationsNext(final String nextPageLink) {
         ServiceResponse<Page<NameIdentifierInner>> response = listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.body()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) {
-                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1724,7 +1724,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
                 @Override
                 public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1741,7 +1741,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1768,7 +1768,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NameIdentifierInner>> result = listRecommendationsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1792,10 +1792,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1833,7 +1833,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1850,7 +1850,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1877,7 +1877,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1901,10 +1901,10 @@ public final class DomainsInner {
      */
     public PagedList<DomainOwnershipIdentifierInner> listOwnershipIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<DomainOwnershipIdentifierInner>> response = listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainOwnershipIdentifierInner>(response.getBody()) {
+        return new PagedList<DomainOwnershipIdentifierInner>(response.body()) {
             @Override
             public Page<DomainOwnershipIdentifierInner> nextPage(String nextPageLink) {
-                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1942,7 +1942,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Page<DomainOwnershipIdentifierInner>>() {
                 @Override
                 public Page<DomainOwnershipIdentifierInner> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1959,7 +1959,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1986,7 +1986,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> result = listOwnershipIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

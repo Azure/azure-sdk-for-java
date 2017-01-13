@@ -62,7 +62,7 @@ public final class EdgeNodesInner {
      * @return the EdgenodeResultInner object if successful.
      */
     public EdgenodeResultInner list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class EdgeNodesInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<EdgenodeResultInner>, EdgenodeResultInner>() {
             @Override
             public EdgenodeResultInner call(ServiceResponse<EdgenodeResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

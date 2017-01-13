@@ -14,7 +14,6 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -476,7 +475,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -500,7 +499,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -542,7 +541,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().body();
     }
 
     /**
@@ -568,7 +567,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

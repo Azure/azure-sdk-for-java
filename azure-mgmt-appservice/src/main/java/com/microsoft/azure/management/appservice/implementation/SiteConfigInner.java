@@ -620,9 +620,10 @@ public class SiteConfigInner extends Resource {
     }
 
     /**
-     * Get the scmType value.
+     * Set the scmType value.
      *
-     * @return the scmType value
+     * @param scmType the scmType value to set
+     * @return the SiteConfigInner object itself
      */
     public SiteConfigInner withScmType(String scmType) {
         this.scmType = scmType;

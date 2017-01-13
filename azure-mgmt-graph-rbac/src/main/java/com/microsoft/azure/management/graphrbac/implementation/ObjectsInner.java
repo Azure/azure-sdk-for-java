@@ -63,7 +63,7 @@ public final class ObjectsInner {
      * @return the AADObjectInner object if successful.
      */
     public AADObjectInner getCurrentUser() {
-        return getCurrentUserWithServiceResponseAsync().toBlocking().single().getBody();
+        return getCurrentUserWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -85,7 +85,7 @@ public final class ObjectsInner {
         return getCurrentUserWithServiceResponseAsync().map(new Func1<ServiceResponse<AADObjectInner>, AADObjectInner>() {
             @Override
             public AADObjectInner call(ServiceResponse<AADObjectInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

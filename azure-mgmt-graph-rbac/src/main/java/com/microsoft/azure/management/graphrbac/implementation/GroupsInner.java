@@ -116,7 +116,7 @@ public final class GroupsInner {
      * @return the CheckGroupMembershipResultInner object if successful.
      */
     public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParametersInner parameters) {
-        return isMemberOfWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return isMemberOfWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class GroupsInner {
         return isMemberOfWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<CheckGroupMembershipResultInner>, CheckGroupMembershipResultInner>() {
             @Override
             public CheckGroupMembershipResultInner call(ServiceResponse<CheckGroupMembershipResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -190,7 +190,7 @@ public final class GroupsInner {
      * @param memberObjectId Member object id
      */
     public void removeMember(String groupObjectId, String memberObjectId) {
-        removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().getBody();
+        removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().body();
     }
 
     /**
@@ -216,7 +216,7 @@ public final class GroupsInner {
         return removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -269,7 +269,7 @@ public final class GroupsInner {
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      */
     public void addMember(String groupObjectId, String url) {
-        addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().getBody();
+        addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().body();
     }
 
     /**
@@ -295,7 +295,7 @@ public final class GroupsInner {
         return addMemberWithServiceResponseAsync(groupObjectId, url).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -349,7 +349,7 @@ public final class GroupsInner {
      * @param groupObjectId The object ID of the group to delete.
      */
     public void delete(String groupObjectId) {
-        deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().body();
     }
 
     /**
@@ -373,7 +373,7 @@ public final class GroupsInner {
         return deleteWithServiceResponseAsync(groupObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -422,7 +422,7 @@ public final class GroupsInner {
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner create(GroupCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
@@ -446,7 +446,7 @@ public final class GroupsInner {
         return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ADGroupInner>, ADGroupInner>() {
             @Override
             public ADGroupInner call(ServiceResponse<ADGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -496,10 +496,10 @@ public final class GroupsInner {
      */
     public PagedList<ADGroupInner> list() {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -532,7 +532,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -547,7 +547,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -575,7 +575,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ADGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -591,10 +591,10 @@ public final class GroupsInner {
      */
     public PagedList<ADGroupInner> list(final String filter) {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -629,7 +629,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -645,7 +645,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -673,7 +673,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ADGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -696,10 +696,10 @@ public final class GroupsInner {
      */
     public PagedList<AADObjectInner> getGroupMembers(final String objectId) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersSinglePageAsync(objectId).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.getBody()) {
+        return new PagedList<AADObjectInner>(response.body()) {
             @Override
             public Page<AADObjectInner> nextPage(String nextLink) {
-                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -734,7 +734,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
                 @Override
                 public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -750,7 +750,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -781,7 +781,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -803,7 +803,7 @@ public final class GroupsInner {
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner get(String objectId) {
-        return getWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
@@ -827,7 +827,7 @@ public final class GroupsInner {
         return getWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<ADGroupInner>, ADGroupInner>() {
             @Override
             public ADGroupInner call(ServiceResponse<ADGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -877,7 +877,7 @@ public final class GroupsInner {
      * @return the List&lt;String&gt; object if successful.
      */
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
-        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
+        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().body();
     }
 
     /**
@@ -903,7 +903,7 @@ public final class GroupsInner {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
             @Override
             public List<String> call(ServiceResponse<List<String>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -933,7 +933,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<String>> result = getMemberGroupsDelegate(response);
-                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -957,10 +957,10 @@ public final class GroupsInner {
      */
     public PagedList<ADGroupInner> listNext(final String nextLink) {
         ServiceResponse<Page<ADGroupInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -996,7 +996,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1012,7 +1012,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -1044,7 +1044,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ADGroupInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1067,10 +1067,10 @@ public final class GroupsInner {
      */
     public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.getBody()) {
+        return new PagedList<AADObjectInner>(response.body()) {
             @Override
             public Page<AADObjectInner> nextPage(String nextLink) {
-                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -1106,7 +1106,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
                 @Override
                 public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1122,7 +1122,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -1154,7 +1154,7 @@ public final class GroupsInner {
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

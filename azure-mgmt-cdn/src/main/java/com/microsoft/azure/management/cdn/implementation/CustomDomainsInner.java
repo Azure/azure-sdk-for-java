@@ -101,10 +101,10 @@ public final class CustomDomainsInner {
      */
     public PagedList<CustomDomainInner> listByEndpoint(final String resourceGroupName, final String profileName, final String endpointName) {
         ServiceResponse<Page<CustomDomainInner>> response = listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName).toBlocking().single();
-        return new PagedList<CustomDomainInner>(response.getBody()) {
+        return new PagedList<CustomDomainInner>(response.body()) {
             @Override
             public Page<CustomDomainInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -143,7 +143,7 @@ public final class CustomDomainsInner {
             .map(new Func1<ServiceResponse<Page<CustomDomainInner>>, Page<CustomDomainInner>>() {
                 @Override
                 public Page<CustomDomainInner> call(ServiceResponse<Page<CustomDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -161,7 +161,7 @@ public final class CustomDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<CustomDomainInner>>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(ServiceResponse<Page<CustomDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -200,7 +200,7 @@ public final class CustomDomainsInner {
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CustomDomainInner>> result = listByEndpointDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -225,7 +225,7 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner get(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().body();
     }
 
     /**
@@ -255,7 +255,7 @@ public final class CustomDomainsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -320,7 +320,7 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner create(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().last().body();
     }
 
     /**
@@ -352,7 +352,7 @@ public final class CustomDomainsInner {
         return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -406,7 +406,7 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner beginCreate(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().single().body();
     }
 
     /**
@@ -438,7 +438,7 @@ public final class CustomDomainsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -510,7 +510,7 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner delete(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().last().getBody();
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().last().body();
     }
 
     /**
@@ -540,7 +540,7 @@ public final class CustomDomainsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -587,7 +587,7 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner beginDelete(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().getBody();
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().body();
     }
 
     /**
@@ -617,7 +617,7 @@ public final class CustomDomainsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -681,10 +681,10 @@ public final class CustomDomainsInner {
      */
     public PagedList<CustomDomainInner> listByEndpointNext(final String nextPageLink) {
         ServiceResponse<Page<CustomDomainInner>> response = listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CustomDomainInner>(response.getBody()) {
+        return new PagedList<CustomDomainInner>(response.body()) {
             @Override
             public Page<CustomDomainInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -720,7 +720,7 @@ public final class CustomDomainsInner {
             .map(new Func1<ServiceResponse<Page<CustomDomainInner>>, Page<CustomDomainInner>>() {
                 @Override
                 public Page<CustomDomainInner> call(ServiceResponse<Page<CustomDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -736,7 +736,7 @@ public final class CustomDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<CustomDomainInner>>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(ServiceResponse<Page<CustomDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -762,7 +762,7 @@ public final class CustomDomainsInner {
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CustomDomainInner>> result = listByEndpointNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

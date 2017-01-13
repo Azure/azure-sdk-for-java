@@ -64,7 +64,7 @@ public final class LocationsInner {
      * @return the BatchLocationQuotaInner object if successful.
      */
     public BatchLocationQuotaInner getQuotas(String locationName) {
-        return getQuotasWithServiceResponseAsync(locationName).toBlocking().single().getBody();
+        return getQuotasWithServiceResponseAsync(locationName).toBlocking().single().body();
     }
 
     /**
@@ -88,7 +88,7 @@ public final class LocationsInner {
         return getQuotasWithServiceResponseAsync(locationName).map(new Func1<ServiceResponse<BatchLocationQuotaInner>, BatchLocationQuotaInner>() {
             @Override
             public BatchLocationQuotaInner call(ServiceResponse<BatchLocationQuotaInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

@@ -50,9 +50,10 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new AppServiceManager(AzureEnvironment.AZURE.newRestClientBuilder()
+        return new AppServiceManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .build(), credentials.getDomain(), subscriptionId);
+                .build(), credentials.domain(), subscriptionId);
     }
 
     /**
@@ -86,7 +87,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.getDomain(), subscriptionId);
+            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.domain(), subscriptionId);
         }
     }
 

@@ -34,10 +34,10 @@ public final class GraphRbacManager {
      */
     public static GraphRbacManager authenticate(AzureTokenCredentials credentials) {
         return new GraphRbacManager(new RestClient.Builder()
-                .withBaseUrl(credentials.getEnvironment().getGraphEndpoint())
+                .withBaseUrl(credentials.environment().graphEndpoint())
                 .withInterceptor(new RequestIdHeaderInterceptor())
                 .withCredentials(credentials)
-                .build(), credentials.getDomain());
+                .build(), credentials.domain());
     }
 
     /**
@@ -80,7 +80,7 @@ public final class GraphRbacManager {
         public GraphRbacManager authenticate(AzureTokenCredentials credentials) {
             return GraphRbacManager.authenticate(
                     buildRestClient(credentials, AzureEnvironment.Endpoint.GRAPH),
-                    credentials.getDomain());
+                    credentials.domain());
         }
     }
 

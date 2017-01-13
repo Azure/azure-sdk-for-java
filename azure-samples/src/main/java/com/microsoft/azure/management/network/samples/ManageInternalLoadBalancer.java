@@ -112,7 +112,7 @@ public final class ManageInternalLoadBalancer {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(LogLevel.BASIC)
+                    .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

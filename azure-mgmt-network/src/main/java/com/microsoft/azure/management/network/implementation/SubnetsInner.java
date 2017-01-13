@@ -99,7 +99,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      */
     public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().body();
     }
 
     /**
@@ -127,7 +127,7 @@ public final class SubnetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class SubnetsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -252,7 +252,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().body();
     }
 
     /**
@@ -280,7 +280,7 @@ public final class SubnetsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -332,7 +332,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().body();
     }
 
     /**
@@ -362,7 +362,7 @@ public final class SubnetsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -421,7 +421,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().body();
     }
 
     /**
@@ -451,7 +451,7 @@ public final class SubnetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -497,7 +497,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().body();
     }
 
     /**
@@ -527,7 +527,7 @@ public final class SubnetsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -590,10 +590,10 @@ public final class SubnetsInner {
      */
     public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<SubnetInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        return new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.body()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -630,7 +630,7 @@ public final class SubnetsInner {
             .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
                 @Override
                 public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -647,7 +647,7 @@ public final class SubnetsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -680,7 +680,7 @@ public final class SubnetsInner {
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SubnetInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -703,10 +703,10 @@ public final class SubnetsInner {
      */
     public PagedList<SubnetInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SubnetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.body()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -742,7 +742,7 @@ public final class SubnetsInner {
             .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
                 @Override
                 public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -758,7 +758,7 @@ public final class SubnetsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -784,7 +784,7 @@ public final class SubnetsInner {
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SubnetInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

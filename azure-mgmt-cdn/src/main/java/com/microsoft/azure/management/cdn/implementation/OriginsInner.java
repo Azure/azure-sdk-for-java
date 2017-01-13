@@ -92,10 +92,10 @@ public final class OriginsInner {
      */
     public PagedList<OriginInner> listByEndpoint(final String resourceGroupName, final String profileName, final String endpointName) {
         ServiceResponse<Page<OriginInner>> response = listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName).toBlocking().single();
-        return new PagedList<OriginInner>(response.getBody()) {
+        return new PagedList<OriginInner>(response.body()) {
             @Override
             public Page<OriginInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -134,7 +134,7 @@ public final class OriginsInner {
             .map(new Func1<ServiceResponse<Page<OriginInner>>, Page<OriginInner>>() {
                 @Override
                 public Page<OriginInner> call(ServiceResponse<Page<OriginInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -152,7 +152,7 @@ public final class OriginsInner {
             .concatMap(new Func1<ServiceResponse<Page<OriginInner>>, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OriginInner>>> call(ServiceResponse<Page<OriginInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -191,7 +191,7 @@ public final class OriginsInner {
                 public Observable<ServiceResponse<Page<OriginInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<OriginInner>> result = listByEndpointDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OriginInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<OriginInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -216,7 +216,7 @@ public final class OriginsInner {
      * @return the OriginInner object if successful.
      */
     public OriginInner get(String resourceGroupName, String profileName, String endpointName, String originName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName).toBlocking().single().body();
     }
 
     /**
@@ -246,7 +246,7 @@ public final class OriginsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName).map(new Func1<ServiceResponse<OriginInner>, OriginInner>() {
             @Override
             public OriginInner call(ServiceResponse<OriginInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -311,7 +311,7 @@ public final class OriginsInner {
      * @return the OriginInner object if successful.
      */
     public OriginInner update(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).toBlocking().last().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).toBlocking().last().body();
     }
 
     /**
@@ -343,7 +343,7 @@ public final class OriginsInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).map(new Func1<ServiceResponse<OriginInner>, OriginInner>() {
             @Override
             public OriginInner call(ServiceResponse<OriginInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -396,7 +396,7 @@ public final class OriginsInner {
      * @return the OriginInner object if successful.
      */
     public OriginInner beginUpdate(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).toBlocking().single().getBody();
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).toBlocking().single().body();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class OriginsInner {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties).map(new Func1<ServiceResponse<OriginInner>, OriginInner>() {
             @Override
             public OriginInner call(ServiceResponse<OriginInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -496,10 +496,10 @@ public final class OriginsInner {
      */
     public PagedList<OriginInner> listByEndpointNext(final String nextPageLink) {
         ServiceResponse<Page<OriginInner>> response = listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<OriginInner>(response.getBody()) {
+        return new PagedList<OriginInner>(response.body()) {
             @Override
             public Page<OriginInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -535,7 +535,7 @@ public final class OriginsInner {
             .map(new Func1<ServiceResponse<Page<OriginInner>>, Page<OriginInner>>() {
                 @Override
                 public Page<OriginInner> call(ServiceResponse<Page<OriginInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -551,7 +551,7 @@ public final class OriginsInner {
             .concatMap(new Func1<ServiceResponse<Page<OriginInner>>, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OriginInner>>> call(ServiceResponse<Page<OriginInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -577,7 +577,7 @@ public final class OriginsInner {
                 public Observable<ServiceResponse<Page<OriginInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<OriginInner>> result = listByEndpointNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OriginInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<OriginInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

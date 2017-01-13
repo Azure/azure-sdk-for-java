@@ -99,7 +99,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      */
     public void delete(String resourceGroupName, String circuitName, String authorizationName) {
-        deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().body();
     }
 
     /**
@@ -127,7 +127,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      */
     public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -252,7 +252,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) {
-        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().body();
     }
 
     /**
@@ -280,7 +280,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -338,7 +338,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().body();
     }
 
     /**
@@ -368,7 +368,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -414,7 +414,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().body();
     }
 
     /**
@@ -444,7 +444,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -507,10 +507,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listSinglePageAsync(resourceGroupName, circuitName).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -547,7 +547,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -564,7 +564,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -597,7 +597,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -620,10 +620,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -659,7 +659,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -675,7 +675,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -701,7 +701,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

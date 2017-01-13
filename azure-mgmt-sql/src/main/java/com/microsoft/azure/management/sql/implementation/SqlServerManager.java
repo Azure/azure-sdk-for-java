@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -43,7 +44,8 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new SqlServerManager(credentials.getEnvironment().newRestClientBuilder()
+        return new SqlServerManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

@@ -130,10 +130,10 @@ public final class ProfilesInner {
      */
     public PagedList<ProfileInner> list() {
         ServiceResponse<Page<ProfileInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ProfileInner>(response.getBody()) {
+        return new PagedList<ProfileInner>(response.body()) {
             @Override
             public Page<ProfileInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -166,7 +166,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ProfileInner>>, Page<ProfileInner>>() {
                 @Override
                 public Page<ProfileInner> call(ServiceResponse<Page<ProfileInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -181,7 +181,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ProfileInner>>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(ServiceResponse<Page<ProfileInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -208,7 +208,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -231,10 +231,10 @@ public final class ProfilesInner {
      */
     public PagedList<ProfileInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<ProfileInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ProfileInner>(response.getBody()) {
+        return new PagedList<ProfileInner>(response.body()) {
             @Override
             public Page<ProfileInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -269,7 +269,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ProfileInner>>, Page<ProfileInner>>() {
                 @Override
                 public Page<ProfileInner> call(ServiceResponse<Page<ProfileInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -285,7 +285,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ProfileInner>>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(ServiceResponse<Page<ProfileInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -316,7 +316,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -339,7 +339,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner get(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -365,7 +365,7 @@ public final class ProfilesInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -420,7 +420,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, profile).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, profileName, profile).toBlocking().last().body();
     }
 
     /**
@@ -448,7 +448,7 @@ public final class ProfilesInner {
         return createWithServiceResponseAsync(resourceGroupName, profileName, profile).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -491,7 +491,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner beginCreate(String resourceGroupName, String profileName, ProfileInner profile) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile).toBlocking().single().body();
     }
 
     /**
@@ -519,7 +519,7 @@ public final class ProfilesInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -581,7 +581,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner update(String resourceGroupName, String profileName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, tags).toBlocking().last().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, tags).toBlocking().last().body();
     }
 
     /**
@@ -609,7 +609,7 @@ public final class ProfilesInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, tags).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -654,7 +654,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner beginUpdate(String resourceGroupName, String profileName, Map<String, String> tags) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags).toBlocking().single().getBody();
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags).toBlocking().single().body();
     }
 
     /**
@@ -682,7 +682,7 @@ public final class ProfilesInner {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -743,7 +743,7 @@ public final class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      */
     public void delete(String resourceGroupName, String profileName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().last().body();
     }
 
     /**
@@ -769,7 +769,7 @@ public final class ProfilesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -805,7 +805,7 @@ public final class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      */
     public void beginDelete(String resourceGroupName, String profileName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -831,7 +831,7 @@ public final class ProfilesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -886,7 +886,7 @@ public final class ProfilesInner {
      * @return the SsoUriInner object if successful.
      */
     public SsoUriInner generateSsoUri(String resourceGroupName, String profileName) {
-        return generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        return generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -912,7 +912,7 @@ public final class ProfilesInner {
         return generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<SsoUriInner>, SsoUriInner>() {
             @Override
             public SsoUriInner call(ServiceResponse<SsoUriInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -967,10 +967,10 @@ public final class ProfilesInner {
      */
     public PagedList<ResourceUsageInner> listResourceUsage(final String resourceGroupName, final String profileName) {
         ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageSinglePageAsync(resourceGroupName, profileName).toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1007,7 +1007,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1024,7 +1024,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1059,7 +1059,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1082,10 +1082,10 @@ public final class ProfilesInner {
      */
     public PagedList<ProfileInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ProfileInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ProfileInner>(response.getBody()) {
+        return new PagedList<ProfileInner>(response.body()) {
             @Override
             public Page<ProfileInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1121,7 +1121,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ProfileInner>>, Page<ProfileInner>>() {
                 @Override
                 public Page<ProfileInner> call(ServiceResponse<Page<ProfileInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1137,7 +1137,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ProfileInner>>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(ServiceResponse<Page<ProfileInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1163,7 +1163,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1186,10 +1186,10 @@ public final class ProfilesInner {
      */
     public PagedList<ProfileInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<ProfileInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ProfileInner>(response.getBody()) {
+        return new PagedList<ProfileInner>(response.body()) {
             @Override
             public Page<ProfileInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1225,7 +1225,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ProfileInner>>, Page<ProfileInner>>() {
                 @Override
                 public Page<ProfileInner> call(ServiceResponse<Page<ProfileInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1241,7 +1241,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ProfileInner>>, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(ServiceResponse<Page<ProfileInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1267,7 +1267,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1290,10 +1290,10 @@ public final class ProfilesInner {
      */
     public PagedList<ResourceUsageInner> listResourceUsageNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1329,7 +1329,7 @@ public final class ProfilesInner {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1345,7 +1345,7 @@ public final class ProfilesInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1371,7 +1371,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

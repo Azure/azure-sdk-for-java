@@ -99,7 +99,7 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      */
     public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().body();
     }
 
     /**
@@ -127,7 +127,7 @@ public final class VirtualNetworkPeeringsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class VirtualNetworkPeeringsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -252,7 +252,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().body();
     }
 
     /**
@@ -280,7 +280,7 @@ public final class VirtualNetworkPeeringsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -338,7 +338,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().body();
     }
 
     /**
@@ -368,7 +368,7 @@ public final class VirtualNetworkPeeringsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -414,7 +414,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().body();
     }
 
     /**
@@ -444,7 +444,7 @@ public final class VirtualNetworkPeeringsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -507,10 +507,10 @@ public final class VirtualNetworkPeeringsInner {
      */
     public PagedList<VirtualNetworkPeeringInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.body()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -547,7 +547,7 @@ public final class VirtualNetworkPeeringsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
                 @Override
                 public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -564,7 +564,7 @@ public final class VirtualNetworkPeeringsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -597,7 +597,7 @@ public final class VirtualNetworkPeeringsInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -620,10 +620,10 @@ public final class VirtualNetworkPeeringsInner {
      */
     public PagedList<VirtualNetworkPeeringInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.body()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -659,7 +659,7 @@ public final class VirtualNetworkPeeringsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
                 @Override
                 public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -675,7 +675,7 @@ public final class VirtualNetworkPeeringsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -701,7 +701,7 @@ public final class VirtualNetworkPeeringsInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

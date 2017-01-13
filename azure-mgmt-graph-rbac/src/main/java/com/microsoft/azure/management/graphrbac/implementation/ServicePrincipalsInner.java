@@ -109,7 +109,7 @@ public final class ServicePrincipalsInner {
      * @return the ServicePrincipalInner object if successful.
      */
     public ServicePrincipalInner create(ServicePrincipalCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class ServicePrincipalsInner {
         return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ServicePrincipalInner>, ServicePrincipalInner>() {
             @Override
             public ServicePrincipalInner call(ServiceResponse<ServicePrincipalInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -183,10 +183,10 @@ public final class ServicePrincipalsInner {
      */
     public PagedList<ServicePrincipalInner> list() {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ServicePrincipalInner>(response.getBody()) {
+        return new PagedList<ServicePrincipalInner>(response.body()) {
             @Override
             public Page<ServicePrincipalInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -219,7 +219,7 @@ public final class ServicePrincipalsInner {
             .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Page<ServicePrincipalInner>>() {
                 @Override
                 public Page<ServicePrincipalInner> call(ServiceResponse<Page<ServicePrincipalInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -234,7 +234,7 @@ public final class ServicePrincipalsInner {
             .concatMap(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(ServiceResponse<Page<ServicePrincipalInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -262,7 +262,7 @@ public final class ServicePrincipalsInner {
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServicePrincipalInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -278,10 +278,10 @@ public final class ServicePrincipalsInner {
      */
     public PagedList<ServicePrincipalInner> list(final String filter) {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<ServicePrincipalInner>(response.getBody()) {
+        return new PagedList<ServicePrincipalInner>(response.body()) {
             @Override
             public Page<ServicePrincipalInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -316,7 +316,7 @@ public final class ServicePrincipalsInner {
             .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Page<ServicePrincipalInner>>() {
                 @Override
                 public Page<ServicePrincipalInner> call(ServiceResponse<Page<ServicePrincipalInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -332,7 +332,7 @@ public final class ServicePrincipalsInner {
             .concatMap(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(ServiceResponse<Page<ServicePrincipalInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -360,7 +360,7 @@ public final class ServicePrincipalsInner {
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServicePrincipalInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -381,7 +381,7 @@ public final class ServicePrincipalsInner {
      * @param objectId The object ID of the service principal to delete.
      */
     public void delete(String objectId) {
-        deleteWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
@@ -405,7 +405,7 @@ public final class ServicePrincipalsInner {
         return deleteWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -454,7 +454,7 @@ public final class ServicePrincipalsInner {
      * @return the ServicePrincipalInner object if successful.
      */
     public ServicePrincipalInner get(String objectId) {
-        return getWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
@@ -478,7 +478,7 @@ public final class ServicePrincipalsInner {
         return getWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<ServicePrincipalInner>, ServicePrincipalInner>() {
             @Override
             public ServicePrincipalInner call(ServiceResponse<ServicePrincipalInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -527,7 +527,7 @@ public final class ServicePrincipalsInner {
      * @return the List&lt;KeyCredentialInner&gt; object if successful.
      */
     public List<KeyCredentialInner> listKeyCredentials(String objectId) {
-        return listKeyCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        return listKeyCredentialsWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
@@ -551,7 +551,7 @@ public final class ServicePrincipalsInner {
         return listKeyCredentialsWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<List<KeyCredentialInner>>, List<KeyCredentialInner>>() {
             @Override
             public List<KeyCredentialInner> call(ServiceResponse<List<KeyCredentialInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -578,7 +578,7 @@ public final class ServicePrincipalsInner {
                 public Observable<ServiceResponse<List<KeyCredentialInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<KeyCredentialInner>> result = listKeyCredentialsDelegate(response);
-                        ServiceResponse<List<KeyCredentialInner>> clientResponse = new ServiceResponse<List<KeyCredentialInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<KeyCredentialInner>> clientResponse = new ServiceResponse<List<KeyCredentialInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -601,7 +601,7 @@ public final class ServicePrincipalsInner {
      * @param value A collection of KeyCredentials.
      */
     public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value) {
-        updateKeyCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().getBody();
+        updateKeyCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().body();
     }
 
     /**
@@ -627,7 +627,7 @@ public final class ServicePrincipalsInner {
         return updateKeyCredentialsWithServiceResponseAsync(objectId, value).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -683,7 +683,7 @@ public final class ServicePrincipalsInner {
      * @return the List&lt;PasswordCredentialInner&gt; object if successful.
      */
     public List<PasswordCredentialInner> listPasswordCredentials(String objectId) {
-        return listPasswordCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        return listPasswordCredentialsWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
@@ -707,7 +707,7 @@ public final class ServicePrincipalsInner {
         return listPasswordCredentialsWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<List<PasswordCredentialInner>>, List<PasswordCredentialInner>>() {
             @Override
             public List<PasswordCredentialInner> call(ServiceResponse<List<PasswordCredentialInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -734,7 +734,7 @@ public final class ServicePrincipalsInner {
                 public Observable<ServiceResponse<List<PasswordCredentialInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<PasswordCredentialInner>> result = listPasswordCredentialsDelegate(response);
-                        ServiceResponse<List<PasswordCredentialInner>> clientResponse = new ServiceResponse<List<PasswordCredentialInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<PasswordCredentialInner>> clientResponse = new ServiceResponse<List<PasswordCredentialInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -757,7 +757,7 @@ public final class ServicePrincipalsInner {
      * @param value A collection of PasswordCredentials.
      */
     public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) {
-        updatePasswordCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().getBody();
+        updatePasswordCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().body();
     }
 
     /**
@@ -783,7 +783,7 @@ public final class ServicePrincipalsInner {
         return updatePasswordCredentialsWithServiceResponseAsync(objectId, value).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -840,10 +840,10 @@ public final class ServicePrincipalsInner {
      */
     public PagedList<ServicePrincipalInner> listNext(final String nextLink) {
         ServiceResponse<Page<ServicePrincipalInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<ServicePrincipalInner>(response.getBody()) {
+        return new PagedList<ServicePrincipalInner>(response.body()) {
             @Override
             public Page<ServicePrincipalInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -879,7 +879,7 @@ public final class ServicePrincipalsInner {
             .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Page<ServicePrincipalInner>>() {
                 @Override
                 public Page<ServicePrincipalInner> call(ServiceResponse<Page<ServicePrincipalInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -895,7 +895,7 @@ public final class ServicePrincipalsInner {
             .concatMap(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(ServiceResponse<Page<ServicePrincipalInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -927,7 +927,7 @@ public final class ServicePrincipalsInner {
                 public Observable<ServiceResponse<Page<ServicePrincipalInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServicePrincipalInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ServicePrincipalInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

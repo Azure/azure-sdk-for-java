@@ -99,7 +99,7 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      */
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last().body();
     }
 
     /**
@@ -127,7 +127,7 @@ public final class SecurityRulesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      */
     public void beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class SecurityRulesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -252,7 +252,7 @@ public final class SecurityRulesInner {
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().body();
     }
 
     /**
@@ -280,7 +280,7 @@ public final class SecurityRulesInner {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
             @Override
             public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -338,7 +338,7 @@ public final class SecurityRulesInner {
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().last().body();
     }
 
     /**
@@ -368,7 +368,7 @@ public final class SecurityRulesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
             @Override
             public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -414,7 +414,7 @@ public final class SecurityRulesInner {
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().single().body();
     }
 
     /**
@@ -444,7 +444,7 @@ public final class SecurityRulesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
             @Override
             public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -507,10 +507,10 @@ public final class SecurityRulesInner {
      */
     public PagedList<SecurityRuleInner> list(final String resourceGroupName, final String networkSecurityGroupName) {
         ServiceResponse<Page<SecurityRuleInner>> response = listSinglePageAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single();
-        return new PagedList<SecurityRuleInner>(response.getBody()) {
+        return new PagedList<SecurityRuleInner>(response.body()) {
             @Override
             public Page<SecurityRuleInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -547,7 +547,7 @@ public final class SecurityRulesInner {
             .map(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Page<SecurityRuleInner>>() {
                 @Override
                 public Page<SecurityRuleInner> call(ServiceResponse<Page<SecurityRuleInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -564,7 +564,7 @@ public final class SecurityRulesInner {
             .concatMap(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(ServiceResponse<Page<SecurityRuleInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -597,7 +597,7 @@ public final class SecurityRulesInner {
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SecurityRuleInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SecurityRuleInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SecurityRuleInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -620,10 +620,10 @@ public final class SecurityRulesInner {
      */
     public PagedList<SecurityRuleInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SecurityRuleInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SecurityRuleInner>(response.getBody()) {
+        return new PagedList<SecurityRuleInner>(response.body()) {
             @Override
             public Page<SecurityRuleInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -659,7 +659,7 @@ public final class SecurityRulesInner {
             .map(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Page<SecurityRuleInner>>() {
                 @Override
                 public Page<SecurityRuleInner> call(ServiceResponse<Page<SecurityRuleInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -675,7 +675,7 @@ public final class SecurityRulesInner {
             .concatMap(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(ServiceResponse<Page<SecurityRuleInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -701,7 +701,7 @@ public final class SecurityRulesInner {
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SecurityRuleInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SecurityRuleInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SecurityRuleInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -65,7 +65,7 @@ public final class VirtualMachineSizesInner {
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> list(String location) {
-        return listWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -89,7 +89,7 @@ public final class VirtualMachineSizesInner {
         return listWithServiceResponseAsync(location).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
             @Override
             public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -116,7 +116,7 @@ public final class VirtualMachineSizesInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

@@ -97,7 +97,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     protected RestClient buildRestClient(AzureTokenCredentials credentials, AzureEnvironment.Endpoint endpoint) {
-        restClientBuilder = restClientBuilder.withBaseUrl(credentials.getEnvironment(), endpoint);
+        restClientBuilder = restClientBuilder.withBaseUrl(credentials.environment(), endpoint);
         return restClientBuilder.withCredentials(credentials).build();
     }
 

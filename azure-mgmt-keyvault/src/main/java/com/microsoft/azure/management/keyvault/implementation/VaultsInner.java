@@ -101,7 +101,7 @@ public final class VaultsInner {
      * @return the VaultInner object if successful.
      */
     public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -129,7 +129,7 @@ public final class VaultsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
             @Override
             public VaultInner call(ServiceResponse<VaultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -188,7 +188,7 @@ public final class VaultsInner {
      * @param vaultName The name of the vault to delete
      */
     public void delete(String resourceGroupName, String vaultName) {
-        deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
     }
 
     /**
@@ -214,7 +214,7 @@ public final class VaultsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -267,7 +267,7 @@ public final class VaultsInner {
      * @return the VaultInner object if successful.
      */
     public VaultInner get(String resourceGroupName, String vaultName) {
-        return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
     }
 
     /**
@@ -293,7 +293,7 @@ public final class VaultsInner {
         return getWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
             @Override
             public VaultInner call(ServiceResponse<VaultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -347,10 +347,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -385,7 +385,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -401,7 +401,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -433,7 +433,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -450,10 +450,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -490,7 +490,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -507,7 +507,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -539,7 +539,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -561,10 +561,10 @@ public final class VaultsInner {
      */
     public PagedList<Resource> list() {
         ServiceResponse<Page<Resource>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<Resource>(response.getBody()) {
+        return new PagedList<Resource>(response.body()) {
             @Override
             public Page<Resource> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -597,7 +597,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
                 public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -612,7 +612,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -639,7 +639,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<Resource>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Resource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -655,10 +655,10 @@ public final class VaultsInner {
      */
     public PagedList<Resource> list(final Integer top) {
         ServiceResponse<Page<Resource>> response = listSinglePageAsync(top).toBlocking().single();
-        return new PagedList<Resource>(response.getBody()) {
+        return new PagedList<Resource>(response.body()) {
             @Override
             public Page<Resource> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -693,7 +693,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
                 public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -709,7 +709,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<Resource>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Resource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -759,10 +759,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -798,7 +798,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +840,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,10 +863,10 @@ public final class VaultsInner {
      */
     public PagedList<Resource> listNext(final String nextPageLink) {
         ServiceResponse<Page<Resource>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<Resource>(response.getBody()) {
+        return new PagedList<Resource>(response.body()) {
             @Override
             public Page<Resource> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -902,7 +902,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
                 public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -944,7 +944,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<Resource>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Resource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

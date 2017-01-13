@@ -108,7 +108,7 @@ public final class RecordSetsInner {
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner update(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().body();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class RecordSetsInner {
         return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -205,7 +205,7 @@ public final class RecordSetsInner {
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner update(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch) {
-        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch).toBlocking().single().body();
     }
 
     /**
@@ -239,7 +239,7 @@ public final class RecordSetsInner {
         return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -310,7 +310,7 @@ public final class RecordSetsInner {
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner createOrUpdate(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().body();
     }
 
     /**
@@ -342,7 +342,7 @@ public final class RecordSetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -409,7 +409,7 @@ public final class RecordSetsInner {
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner createOrUpdate(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).toBlocking().single().body();
     }
 
     /**
@@ -445,7 +445,7 @@ public final class RecordSetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -516,7 +516,7 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      */
     public void delete(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
-        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().body();
     }
 
     /**
@@ -546,7 +546,7 @@ public final class RecordSetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -604,7 +604,7 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      */
     public void delete(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch) {
-        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch).toBlocking().single().body();
     }
 
     /**
@@ -636,7 +636,7 @@ public final class RecordSetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -702,7 +702,7 @@ public final class RecordSetsInner {
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner get(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().body();
     }
 
     /**
@@ -732,7 +732,7 @@ public final class RecordSetsInner {
         return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -796,10 +796,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByType(final String resourceGroupName, final String zoneName, final RecordType recordType) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -838,7 +838,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -856,7 +856,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -896,7 +896,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -915,10 +915,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByType(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -959,7 +959,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -978,7 +978,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1018,7 +1018,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1042,10 +1042,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByDnsZone(final String resourceGroupName, final String zoneName) {
         ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneSinglePageAsync(resourceGroupName, zoneName).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1082,7 +1082,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1099,7 +1099,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1135,7 +1135,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1153,10 +1153,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByDnsZone(final String resourceGroupName, final String zoneName, final Integer top) {
         ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1195,7 +1195,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1213,7 +1213,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1249,7 +1249,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1272,10 +1272,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByTypeNext(final String nextPageLink) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1311,7 +1311,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1327,7 +1327,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1353,7 +1353,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1376,10 +1376,10 @@ public final class RecordSetsInner {
      */
     public PagedList<RecordSetInner> listByDnsZoneNext(final String nextPageLink) {
         ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1415,7 +1415,7 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1431,7 +1431,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1457,7 +1457,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

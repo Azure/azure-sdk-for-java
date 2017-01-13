@@ -131,7 +131,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void delete(String resourceGroupName, String applicationGatewayName) {
-        deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -157,7 +157,7 @@ public final class ApplicationGatewaysInner {
         return deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -191,7 +191,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginDelete(String resourceGroupName, String applicationGatewayName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -217,7 +217,7 @@ public final class ApplicationGatewaysInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -270,7 +270,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -296,7 +296,7 @@ public final class ApplicationGatewaysInner {
         return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -349,7 +349,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -377,7 +377,7 @@ public final class ApplicationGatewaysInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -418,7 +418,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -446,7 +446,7 @@ public final class ApplicationGatewaysInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -504,10 +504,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -542,7 +542,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -558,7 +558,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -587,7 +587,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -609,10 +609,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listAll() {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -645,7 +645,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -660,7 +660,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -685,7 +685,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -707,7 +707,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void start(String resourceGroupName, String applicationGatewayName) {
-        startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -733,7 +733,7 @@ public final class ApplicationGatewaysInner {
         return startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -767,7 +767,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginStart(String resourceGroupName, String applicationGatewayName) {
-        beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -793,7 +793,7 @@ public final class ApplicationGatewaysInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -844,7 +844,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void stop(String resourceGroupName, String applicationGatewayName) {
-        stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -870,7 +870,7 @@ public final class ApplicationGatewaysInner {
         return stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -904,7 +904,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginStop(String resourceGroupName, String applicationGatewayName) {
-        beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -930,7 +930,7 @@ public final class ApplicationGatewaysInner {
         return beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -982,7 +982,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName) {
-        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -1008,7 +1008,7 @@ public final class ApplicationGatewaysInner {
         return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1044,7 +1044,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
-        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().last().getBody();
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().last().body();
     }
 
     /**
@@ -1072,7 +1072,7 @@ public final class ApplicationGatewaysInner {
         return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1108,7 +1108,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName) {
-        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -1134,7 +1134,7 @@ public final class ApplicationGatewaysInner {
         return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1181,7 +1181,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
-        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().single().getBody();
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().single().body();
     }
 
     /**
@@ -1209,7 +1209,7 @@ public final class ApplicationGatewaysInner {
         return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1263,10 +1263,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1302,7 +1302,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1318,7 +1318,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1344,7 +1344,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1367,10 +1367,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1406,7 +1406,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1422,7 +1422,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1448,7 +1448,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

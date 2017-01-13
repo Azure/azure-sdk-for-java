@@ -143,7 +143,7 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      */
     public void delete(String resourceGroupName, String networkInterfaceName) {
-        deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().body();
     }
 
     /**
@@ -169,7 +169,7 @@ public final class NetworkInterfacesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -203,7 +203,7 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      */
     public void beginDelete(String resourceGroupName, String networkInterfaceName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().body();
     }
 
     /**
@@ -229,7 +229,7 @@ public final class NetworkInterfacesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -282,7 +282,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName) {
-        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().body();
     }
 
     /**
@@ -308,7 +308,7 @@ public final class NetworkInterfacesInner {
         return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -355,7 +355,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).toBlocking().single().body();
     }
 
     /**
@@ -383,7 +383,7 @@ public final class NetworkInterfacesInner {
         return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -437,7 +437,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -465,7 +465,7 @@ public final class NetworkInterfacesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -506,7 +506,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -534,7 +534,7 @@ public final class NetworkInterfacesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -591,10 +591,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listAll() {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -627,7 +627,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -642,7 +642,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -667,7 +667,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -690,10 +690,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> list(final String resourceGroupName) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -728,7 +728,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -744,7 +744,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -773,7 +773,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -796,7 +796,7 @@ public final class NetworkInterfacesInner {
      * @return the EffectiveRouteListResultInner object if successful.
      */
     public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
-        return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
+        return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().body();
     }
 
     /**
@@ -822,7 +822,7 @@ public final class NetworkInterfacesInner {
         return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>() {
             @Override
             public EffectiveRouteListResultInner call(ServiceResponse<EffectiveRouteListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -857,7 +857,7 @@ public final class NetworkInterfacesInner {
      * @return the EffectiveRouteListResultInner object if successful.
      */
     public EffectiveRouteListResultInner beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
-        return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
+        return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().body();
     }
 
     /**
@@ -883,7 +883,7 @@ public final class NetworkInterfacesInner {
         return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>() {
             @Override
             public EffectiveRouteListResultInner call(ServiceResponse<EffectiveRouteListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -936,7 +936,7 @@ public final class NetworkInterfacesInner {
      * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
     public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
-        return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
+        return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().body();
     }
 
     /**
@@ -962,7 +962,7 @@ public final class NetworkInterfacesInner {
         return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>() {
             @Override
             public EffectiveNetworkSecurityGroupListResultInner call(ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -997,7 +997,7 @@ public final class NetworkInterfacesInner {
      * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
     public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
-        return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
+        return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().body();
     }
 
     /**
@@ -1023,7 +1023,7 @@ public final class NetworkInterfacesInner {
         return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>() {
             @Override
             public EffectiveNetworkSecurityGroupListResultInner call(ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1078,10 +1078,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1120,7 +1120,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1138,7 +1138,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1175,7 +1175,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1199,10 +1199,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1239,7 +1239,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1256,7 +1256,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1289,7 +1289,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listVirtualMachineScaleSetNetworkInterfacesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1314,7 +1314,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
-        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).toBlocking().single().getBody();
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).toBlocking().single().body();
     }
 
     /**
@@ -1344,7 +1344,7 @@ public final class NetworkInterfacesInner {
         return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1401,7 +1401,7 @@ public final class NetworkInterfacesInner {
      * @return the NetworkInterfaceInner object if successful.
      */
     public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) {
-        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).toBlocking().single().getBody();
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).toBlocking().single().body();
     }
 
     /**
@@ -1433,7 +1433,7 @@ public final class NetworkInterfacesInner {
         return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
             @Override
             public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1494,10 +1494,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1533,7 +1533,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1549,7 +1549,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1575,7 +1575,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1598,10 +1598,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1637,7 +1637,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1653,7 +1653,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1679,7 +1679,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1702,10 +1702,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1741,7 +1741,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1757,7 +1757,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1783,7 +1783,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1806,10 +1806,10 @@ public final class NetworkInterfacesInner {
      */
     public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.body()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
-                return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1845,7 +1845,7 @@ public final class NetworkInterfacesInner {
             .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
                 public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1861,7 +1861,7 @@ public final class NetworkInterfacesInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1887,7 +1887,7 @@ public final class NetworkInterfacesInner {
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkInterfaceInner>> result = listVirtualMachineScaleSetNetworkInterfacesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkInterfaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

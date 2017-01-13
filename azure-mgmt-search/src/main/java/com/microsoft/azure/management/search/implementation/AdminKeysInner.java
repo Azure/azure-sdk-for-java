@@ -65,7 +65,7 @@ public final class AdminKeysInner {
      * @return the AdminKeyResultInner object if successful.
      */
     public AdminKeyResultInner list(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -91,7 +91,7 @@ public final class AdminKeysInner {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<AdminKeyResultInner>, AdminKeyResultInner>() {
             @Override
             public AdminKeyResultInner call(ServiceResponse<AdminKeyResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

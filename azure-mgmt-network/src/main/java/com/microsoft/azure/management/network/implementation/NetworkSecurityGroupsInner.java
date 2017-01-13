@@ -106,7 +106,7 @@ public final class NetworkSecurityGroupsInner {
      * @param networkSecurityGroupName The name of the network security group.
      */
     public void delete(String resourceGroupName, String networkSecurityGroupName) {
-        deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().last().body();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class NetworkSecurityGroupsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class NetworkSecurityGroupsInner {
      * @param networkSecurityGroupName The name of the network security group.
      */
     public void beginDelete(String resourceGroupName, String networkSecurityGroupName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().body();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class NetworkSecurityGroupsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,7 +245,7 @@ public final class NetworkSecurityGroupsInner {
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName) {
-        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().body();
     }
 
     /**
@@ -271,7 +271,7 @@ public final class NetworkSecurityGroupsInner {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroupInner>() {
             @Override
             public NetworkSecurityGroupInner call(ServiceResponse<NetworkSecurityGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -318,7 +318,7 @@ public final class NetworkSecurityGroupsInner {
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand).toBlocking().single().body();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class NetworkSecurityGroupsInner {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand).map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroupInner>() {
             @Override
             public NetworkSecurityGroupInner call(ServiceResponse<NetworkSecurityGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -400,7 +400,7 @@ public final class NetworkSecurityGroupsInner {
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class NetworkSecurityGroupsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroupInner>() {
             @Override
             public NetworkSecurityGroupInner call(ServiceResponse<NetworkSecurityGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -469,7 +469,7 @@ public final class NetworkSecurityGroupsInner {
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -497,7 +497,7 @@ public final class NetworkSecurityGroupsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroupInner>() {
             @Override
             public NetworkSecurityGroupInner call(ServiceResponse<NetworkSecurityGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -554,10 +554,10 @@ public final class NetworkSecurityGroupsInner {
      */
     public PagedList<NetworkSecurityGroupInner> listAll() {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
+        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -590,7 +590,7 @@ public final class NetworkSecurityGroupsInner {
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -605,7 +605,7 @@ public final class NetworkSecurityGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -630,7 +630,7 @@ public final class NetworkSecurityGroupsInner {
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -653,10 +653,10 @@ public final class NetworkSecurityGroupsInner {
      */
     public PagedList<NetworkSecurityGroupInner> list(final String resourceGroupName) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
+        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -691,7 +691,7 @@ public final class NetworkSecurityGroupsInner {
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -707,7 +707,7 @@ public final class NetworkSecurityGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class NetworkSecurityGroupsInner {
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -759,10 +759,10 @@ public final class NetworkSecurityGroupsInner {
      */
     public PagedList<NetworkSecurityGroupInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
+        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -798,7 +798,7 @@ public final class NetworkSecurityGroupsInner {
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class NetworkSecurityGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +840,7 @@ public final class NetworkSecurityGroupsInner {
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,10 +863,10 @@ public final class NetworkSecurityGroupsInner {
      */
     public PagedList<NetworkSecurityGroupInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
+        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -902,7 +902,7 @@ public final class NetworkSecurityGroupsInner {
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class NetworkSecurityGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -944,7 +944,7 @@ public final class NetworkSecurityGroupsInner {
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -106,7 +106,7 @@ public final class RouteTablesInner {
      * @param routeTableName The name of the route table.
      */
     public void delete(String resourceGroupName, String routeTableName) {
-        deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().body();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class RouteTablesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class RouteTablesInner {
      * @param routeTableName The name of the route table.
      */
     public void beginDelete(String resourceGroupName, String routeTableName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class RouteTablesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,7 +245,7 @@ public final class RouteTablesInner {
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner get(String resourceGroupName, String routeTableName) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
     }
 
     /**
@@ -271,7 +271,7 @@ public final class RouteTablesInner {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -318,7 +318,7 @@ public final class RouteTablesInner {
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().body();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class RouteTablesInner {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -400,7 +400,7 @@ public final class RouteTablesInner {
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class RouteTablesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -469,7 +469,7 @@ public final class RouteTablesInner {
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -497,7 +497,7 @@ public final class RouteTablesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -555,10 +555,10 @@ public final class RouteTablesInner {
      */
     public PagedList<RouteTableInner> list(final String resourceGroupName) {
         ServiceResponse<Page<RouteTableInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -593,7 +593,7 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -609,7 +609,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -638,7 +638,7 @@ public final class RouteTablesInner {
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -660,10 +660,10 @@ public final class RouteTablesInner {
      */
     public PagedList<RouteTableInner> listAll() {
         ServiceResponse<Page<RouteTableInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -696,7 +696,7 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -711,7 +711,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class RouteTablesInner {
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -759,10 +759,10 @@ public final class RouteTablesInner {
      */
     public PagedList<RouteTableInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -798,7 +798,7 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +840,7 @@ public final class RouteTablesInner {
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,10 +863,10 @@ public final class RouteTablesInner {
      */
     public PagedList<RouteTableInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -902,7 +902,7 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -944,7 +944,7 @@ public final class RouteTablesInner {
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -90,10 +90,10 @@ public final class TopLevelDomainsInner {
      */
     public PagedList<TopLevelDomainInner> list() {
         ServiceResponse<Page<TopLevelDomainInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<TopLevelDomainInner>(response.getBody()) {
+        return new PagedList<TopLevelDomainInner>(response.body()) {
             @Override
             public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -128,7 +128,7 @@ public final class TopLevelDomainsInner {
             .map(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Page<TopLevelDomainInner>>() {
                 @Override
                 public Page<TopLevelDomainInner> call(ServiceResponse<Page<TopLevelDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -144,7 +144,7 @@ public final class TopLevelDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(ServiceResponse<Page<TopLevelDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -170,7 +170,7 @@ public final class TopLevelDomainsInner {
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TopLevelDomainInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -193,7 +193,7 @@ public final class TopLevelDomainsInner {
      * @return the TopLevelDomainInner object if successful.
      */
     public TopLevelDomainInner get(String name) {
-        return getWithServiceResponseAsync(name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
     /**
@@ -219,7 +219,7 @@ public final class TopLevelDomainsInner {
         return getWithServiceResponseAsync(name).map(new Func1<ServiceResponse<TopLevelDomainInner>, TopLevelDomainInner>() {
             @Override
             public TopLevelDomainInner call(ServiceResponse<TopLevelDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -269,10 +269,10 @@ public final class TopLevelDomainsInner {
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name).toBlocking().single();
-        return new PagedList<TldLegalAgreementInner>(response.getBody()) {
+        return new PagedList<TldLegalAgreementInner>(response.body()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -309,7 +309,7 @@ public final class TopLevelDomainsInner {
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -326,7 +326,7 @@ public final class TopLevelDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -359,7 +359,7 @@ public final class TopLevelDomainsInner {
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -377,10 +377,10 @@ public final class TopLevelDomainsInner {
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name, final Boolean includePrivacy) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name, includePrivacy).toBlocking().single();
-        return new PagedList<TldLegalAgreementInner>(response.getBody()) {
+        return new PagedList<TldLegalAgreementInner>(response.body()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -419,7 +419,7 @@ public final class TopLevelDomainsInner {
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -437,7 +437,7 @@ public final class TopLevelDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -470,7 +470,7 @@ public final class TopLevelDomainsInner {
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -494,10 +494,10 @@ public final class TopLevelDomainsInner {
      */
     public PagedList<TopLevelDomainInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TopLevelDomainInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TopLevelDomainInner>(response.getBody()) {
+        return new PagedList<TopLevelDomainInner>(response.body()) {
             @Override
             public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -535,7 +535,7 @@ public final class TopLevelDomainsInner {
             .map(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Page<TopLevelDomainInner>>() {
                 @Override
                 public Page<TopLevelDomainInner> call(ServiceResponse<Page<TopLevelDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -552,7 +552,7 @@ public final class TopLevelDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(ServiceResponse<Page<TopLevelDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -579,7 +579,7 @@ public final class TopLevelDomainsInner {
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TopLevelDomainInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -603,10 +603,10 @@ public final class TopLevelDomainsInner {
      */
     public PagedList<TldLegalAgreementInner> listAgreementsNext(final String nextPageLink) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TldLegalAgreementInner>(response.getBody()) {
+        return new PagedList<TldLegalAgreementInner>(response.body()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -644,7 +644,7 @@ public final class TopLevelDomainsInner {
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -661,7 +661,7 @@ public final class TopLevelDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -688,7 +688,7 @@ public final class TopLevelDomainsInner {
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

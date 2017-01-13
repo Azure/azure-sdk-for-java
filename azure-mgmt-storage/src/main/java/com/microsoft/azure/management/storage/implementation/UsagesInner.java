@@ -64,7 +64,7 @@ public final class UsagesInner {
      * @return the List&lt;UsageInner&gt; object if successful.
      */
     public List<UsageInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -86,7 +86,7 @@ public final class UsagesInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<UsageInner>>, List<UsageInner>>() {
             @Override
             public List<UsageInner> call(ServiceResponse<List<UsageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -109,7 +109,7 @@ public final class UsagesInner {
                 public Observable<ServiceResponse<List<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
-                        ServiceResponse<List<UsageInner>> clientResponse = new ServiceResponse<List<UsageInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<UsageInner>> clientResponse = new ServiceResponse<List<UsageInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

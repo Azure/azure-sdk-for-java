@@ -1031,10 +1031,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> list() {
         ServiceResponse<Page<SiteInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1069,7 +1069,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1085,7 +1085,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1111,7 +1111,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1135,10 +1135,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1175,7 +1175,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1192,7 +1192,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1223,7 +1223,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1241,10 +1241,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName, final Boolean includeSlots) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, includeSlots).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1283,7 +1283,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1301,7 +1301,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1332,7 +1332,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1356,7 +1356,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1384,7 +1384,7 @@ public final class WebAppsInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1439,7 +1439,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -1469,7 +1469,7 @@ public final class WebAppsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1520,7 +1520,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().body();
     }
 
     /**
@@ -1560,7 +1560,7 @@ public final class WebAppsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1608,7 +1608,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -1638,7 +1638,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1700,7 +1700,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -1740,7 +1740,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1804,7 +1804,7 @@ public final class WebAppsInner {
      * @param name Name of the app to delete.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1832,7 +1832,7 @@ public final class WebAppsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1884,7 +1884,7 @@ public final class WebAppsInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      */
     public void delete(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
-        deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
     }
 
     /**
@@ -1918,7 +1918,7 @@ public final class WebAppsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1975,7 +1975,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name) {
-        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -2003,7 +2003,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2052,7 +2052,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name, String hostName) {
-        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -2082,7 +2082,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2137,7 +2137,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
+        applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -2167,7 +2167,7 @@ public final class WebAppsInner {
         return applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2226,7 +2226,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backup(String resourceGroupName, String name, BackupRequestInner request) {
-        return backupWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return backupWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -2256,7 +2256,7 @@ public final class WebAppsInner {
         return backupWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2316,10 +2316,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackups(final String resourceGroupName, final String name) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2358,7 +2358,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2376,7 +2376,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2410,7 +2410,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2435,7 +2435,7 @@ public final class WebAppsInner {
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestore(String resourceGroupName, String name, RestoreRequestInner request) {
-        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -2465,7 +2465,7 @@ public final class WebAppsInner {
         return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
             @Override
             public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2525,7 +2525,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatus(String resourceGroupName, String name, String backupId) {
-        return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
+        return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().body();
     }
 
     /**
@@ -2555,7 +2555,7 @@ public final class WebAppsInner {
         return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2613,7 +2613,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      */
     public void deleteBackup(String resourceGroupName, String name, String backupId) {
-        deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
+        deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().body();
     }
 
     /**
@@ -2643,7 +2643,7 @@ public final class WebAppsInner {
         return deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2703,7 +2703,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
-        return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
+        return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().body();
     }
 
     /**
@@ -2735,7 +2735,7 @@ public final class WebAppsInner {
         return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2800,7 +2800,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
-        return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().getBody();
+        return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().body();
     }
 
     /**
@@ -2832,7 +2832,7 @@ public final class WebAppsInner {
         return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2880,7 +2880,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
-        return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
+        return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().body();
     }
 
     /**
@@ -2912,7 +2912,7 @@ public final class WebAppsInner {
         return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2976,7 +2976,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) {
-        return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().getBody();
+        return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().body();
     }
 
     /**
@@ -3006,7 +3006,7 @@ public final class WebAppsInner {
         return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3065,7 +3065,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettings(String resourceGroupName, String name) {
-        return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3093,7 +3093,7 @@ public final class WebAppsInner {
         return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3148,7 +3148,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
-        return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().getBody();
+        return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().body();
     }
 
     /**
@@ -3178,7 +3178,7 @@ public final class WebAppsInner {
         return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3237,7 +3237,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettings(String resourceGroupName, String name) {
-        return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3265,7 +3265,7 @@ public final class WebAppsInner {
         return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3320,7 +3320,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) {
-        return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -3350,7 +3350,7 @@ public final class WebAppsInner {
         return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3408,7 +3408,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void deleteBackupConfiguration(String resourceGroupName, String name) {
-        deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3436,7 +3436,7 @@ public final class WebAppsInner {
         return deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3489,7 +3489,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfiguration(String resourceGroupName, String name) {
-        return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3517,7 +3517,7 @@ public final class WebAppsInner {
         return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3572,7 +3572,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
-        return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().getBody();
+        return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().body();
     }
 
     /**
@@ -3602,7 +3602,7 @@ public final class WebAppsInner {
         return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3661,7 +3661,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStrings(String resourceGroupName, String name) {
-        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3689,7 +3689,7 @@ public final class WebAppsInner {
         return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3743,7 +3743,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfiguration(String resourceGroupName, String name) {
-        return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3771,7 +3771,7 @@ public final class WebAppsInner {
         return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3826,7 +3826,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
-        return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().getBody();
+        return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().body();
     }
 
     /**
@@ -3856,7 +3856,7 @@ public final class WebAppsInner {
         return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3916,7 +3916,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) {
-        return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().getBody();
+        return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().body();
     }
 
     /**
@@ -3946,7 +3946,7 @@ public final class WebAppsInner {
         return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4005,7 +4005,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadata(String resourceGroupName, String name) {
-        return listMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4033,7 +4033,7 @@ public final class WebAppsInner {
         return listMetadataWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4087,7 +4087,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentials(String resourceGroupName, String name) {
-        return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
+        return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
     /**
@@ -4115,7 +4115,7 @@ public final class WebAppsInner {
         return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4152,7 +4152,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentials(String resourceGroupName, String name) {
-        return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4180,7 +4180,7 @@ public final class WebAppsInner {
         return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4235,7 +4235,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettings(String resourceGroupName, String name, PushSettingsInner pushSettings) {
-        return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).toBlocking().single().getBody();
+        return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).toBlocking().single().body();
     }
 
     /**
@@ -4265,7 +4265,7 @@ public final class WebAppsInner {
         return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4324,7 +4324,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettings(String resourceGroupName, String name) {
-        return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4352,7 +4352,7 @@ public final class WebAppsInner {
         return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4406,7 +4406,7 @@ public final class WebAppsInner {
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner listSlotConfigurationNames(String resourceGroupName, String name) {
-        return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4434,7 +4434,7 @@ public final class WebAppsInner {
         return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
             @Override
             public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4489,7 +4489,7 @@ public final class WebAppsInner {
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner updateSlotConfigurationNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
-        return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().getBody();
+        return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().body();
     }
 
     /**
@@ -4519,7 +4519,7 @@ public final class WebAppsInner {
         return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
             @Override
             public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4578,7 +4578,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfiguration(String resourceGroupName, String name) {
-        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4606,7 +4606,7 @@ public final class WebAppsInner {
         return getConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4661,7 +4661,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
+        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -4691,7 +4691,7 @@ public final class WebAppsInner {
         return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4751,7 +4751,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
+        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -4781,7 +4781,7 @@ public final class WebAppsInner {
         return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4841,10 +4841,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeployments(final String resourceGroupName, final String name) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4883,7 +4883,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4901,7 +4901,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4935,7 +4935,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4960,7 +4960,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeployment(String resourceGroupName, String name, String id) {
-        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
+        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().body();
     }
 
     /**
@@ -4990,7 +4990,7 @@ public final class WebAppsInner {
         return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5050,7 +5050,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) {
-        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().getBody();
+        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().body();
     }
 
     /**
@@ -5082,7 +5082,7 @@ public final class WebAppsInner {
         return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5145,7 +5145,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      */
     public void deleteDeployment(String resourceGroupName, String name, String id) {
-        deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
+        deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().body();
     }
 
     /**
@@ -5175,7 +5175,7 @@ public final class WebAppsInner {
         return deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5234,10 +5234,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiers(final String resourceGroupName, final String name) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5276,7 +5276,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5294,7 +5294,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5328,7 +5328,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5353,7 +5353,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
-        return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().getBody();
+        return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().body();
     }
 
     /**
@@ -5383,7 +5383,7 @@ public final class WebAppsInner {
         return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5443,7 +5443,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -5475,7 +5475,7 @@ public final class WebAppsInner {
         return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5538,7 +5538,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      */
     public void deleteDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
-        deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().getBody();
+        deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().body();
     }
 
     /**
@@ -5568,7 +5568,7 @@ public final class WebAppsInner {
         return deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5628,7 +5628,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
-        return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -5660,7 +5660,7 @@ public final class WebAppsInner {
         return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5724,10 +5724,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindings(final String resourceGroupName, final String name) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5766,7 +5766,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5784,7 +5784,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5818,7 +5818,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5843,7 +5843,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBinding(String resourceGroupName, String name, String hostName) {
-        return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -5873,7 +5873,7 @@ public final class WebAppsInner {
         return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5933,7 +5933,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
-        return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().getBody();
+        return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().body();
     }
 
     /**
@@ -5965,7 +5965,7 @@ public final class WebAppsInner {
         return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6028,7 +6028,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      */
     public void deleteHostNameBinding(String resourceGroupName, String name, String hostName) {
-        deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -6058,7 +6058,7 @@ public final class WebAppsInner {
         return deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6118,7 +6118,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6150,7 +6150,7 @@ public final class WebAppsInner {
         return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6215,7 +6215,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
-        return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6249,7 +6249,7 @@ public final class WebAppsInner {
         return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6317,7 +6317,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      */
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6349,7 +6349,7 @@ public final class WebAppsInner {
         return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6414,7 +6414,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
-        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6448,7 +6448,7 @@ public final class WebAppsInner {
         return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6517,7 +6517,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6549,7 +6549,7 @@ public final class WebAppsInner {
         return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6611,7 +6611,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnections(String resourceGroupName, String name) {
-        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -6639,7 +6639,7 @@ public final class WebAppsInner {
         return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6693,7 +6693,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnections(String resourceGroupName, String name) {
-        return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -6721,7 +6721,7 @@ public final class WebAppsInner {
         return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6776,7 +6776,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnection(String resourceGroupName, String name, String entityName) {
-        return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
+        return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().body();
     }
 
     /**
@@ -6806,7 +6806,7 @@ public final class WebAppsInner {
         return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6866,7 +6866,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6898,7 +6898,7 @@ public final class WebAppsInner {
         return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6961,7 +6961,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      */
     public void deleteRelayServiceConnection(String resourceGroupName, String name, String entityName) {
-        deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
+        deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().body();
     }
 
     /**
@@ -6991,7 +6991,7 @@ public final class WebAppsInner {
         return deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7051,7 +7051,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
+        return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -7083,7 +7083,7 @@ public final class WebAppsInner {
         return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7147,10 +7147,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiers(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7189,7 +7189,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7207,7 +7207,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7241,7 +7241,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7267,10 +7267,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7311,7 +7311,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7330,7 +7330,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7368,7 +7368,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7394,7 +7394,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
-        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
+        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -7426,7 +7426,7 @@ public final class WebAppsInner {
         return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7491,7 +7491,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
-        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().getBody();
+        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().body();
     }
 
     /**
@@ -7525,7 +7525,7 @@ public final class WebAppsInner {
         return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7593,7 +7593,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      */
     public void deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
-        deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
+        deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -7625,7 +7625,7 @@ public final class WebAppsInner {
         return deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7687,7 +7687,7 @@ public final class WebAppsInner {
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneable(String resourceGroupName, String name) {
-        return isCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return isCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -7715,7 +7715,7 @@ public final class WebAppsInner {
         return isCloneableWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
             @Override
             public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7770,10 +7770,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7812,7 +7812,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7830,7 +7830,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7864,7 +7864,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7889,10 +7889,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7931,7 +7931,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7949,7 +7949,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7985,7 +7985,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8005,10 +8005,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8051,7 +8051,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8071,7 +8071,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8107,7 +8107,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8133,7 +8133,7 @@ public final class WebAppsInner {
      * @return the StorageMigrationResponseInner object if successful.
      */
     public StorageMigrationResponseInner migrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().last().getBody();
+        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().last().body();
     }
 
     /**
@@ -8165,7 +8165,7 @@ public final class WebAppsInner {
         return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8213,7 +8213,7 @@ public final class WebAppsInner {
      * @return the StorageMigrationResponseInner object if successful.
      */
     public StorageMigrationResponseInner beginMigrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().single().getBody();
+        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().single().body();
     }
 
     /**
@@ -8245,7 +8245,7 @@ public final class WebAppsInner {
         return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8309,7 +8309,7 @@ public final class WebAppsInner {
      * @return the OperationInner object if successful.
      */
     public OperationInner migrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
-        return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().last().getBody();
+        return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -8339,7 +8339,7 @@ public final class WebAppsInner {
         return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
             @Override
             public OperationInner call(ServiceResponse<OperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8382,7 +8382,7 @@ public final class WebAppsInner {
      * @return the OperationInner object if successful.
      */
     public OperationInner beginMigrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
-        return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().single().getBody();
+        return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -8412,7 +8412,7 @@ public final class WebAppsInner {
         return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
             @Override
             public OperationInner call(ServiceResponse<OperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8472,7 +8472,7 @@ public final class WebAppsInner {
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeatures(String resourceGroupName, String name, String view) {
-        return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().getBody();
+        return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().body();
     }
 
     /**
@@ -8502,7 +8502,7 @@ public final class WebAppsInner {
         return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
             @Override
             public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8561,7 +8561,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8589,7 +8589,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8638,7 +8638,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -8668,7 +8668,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8723,7 +8723,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8751,7 +8751,7 @@ public final class WebAppsInner {
         return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8804,7 +8804,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void generateNewSitePublishingPassword(String resourceGroupName, String name) {
-        generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8832,7 +8832,7 @@ public final class WebAppsInner {
         return generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8886,10 +8886,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8928,7 +8928,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8946,7 +8946,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8981,7 +8981,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -9000,10 +9000,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -9044,7 +9044,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -9063,7 +9063,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -9098,7 +9098,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -9122,7 +9122,7 @@ public final class WebAppsInner {
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlag(String resourceGroupName, String name) {
-        return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9150,7 +9150,7 @@ public final class WebAppsInner {
         return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SitePhpErrorLogFlagInner>, SitePhpErrorLogFlagInner>() {
             @Override
             public SitePhpErrorLogFlagInner call(ServiceResponse<SitePhpErrorLogFlagInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9204,7 +9204,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOns(String resourceGroupName, String name) {
-        return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9232,7 +9232,7 @@ public final class WebAppsInner {
         return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9287,7 +9287,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
-        return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
+        return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().body();
     }
 
     /**
@@ -9317,7 +9317,7 @@ public final class WebAppsInner {
         return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9377,7 +9377,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn) {
-        return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().getBody();
+        return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().body();
     }
 
     /**
@@ -9409,7 +9409,7 @@ public final class WebAppsInner {
         return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9472,7 +9472,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      */
     public void deletePremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
-        deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
+        deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().body();
     }
 
     /**
@@ -9502,7 +9502,7 @@ public final class WebAppsInner {
         return deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9559,7 +9559,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9587,7 +9587,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9641,7 +9641,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().body();
     }
 
     /**
@@ -9677,7 +9677,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9738,7 +9738,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().getBody();
+        return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().body();
     }
 
     /**
@@ -9768,7 +9768,7 @@ public final class WebAppsInner {
         return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9811,7 +9811,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().getBody();
+        return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().body();
     }
 
     /**
@@ -9841,7 +9841,7 @@ public final class WebAppsInner {
         return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9899,7 +9899,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void resetProductionSlotConfig(String resourceGroupName, String name) {
-        resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9927,7 +9927,7 @@ public final class WebAppsInner {
         return resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9979,7 +9979,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void restart(String resourceGroupName, String name) {
-        restartWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -10007,7 +10007,7 @@ public final class WebAppsInner {
         return restartWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10057,7 +10057,7 @@ public final class WebAppsInner {
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      */
     public void restart(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
-        restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().body();
     }
 
     /**
@@ -10089,7 +10089,7 @@ public final class WebAppsInner {
         return restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10131,6 +10131,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> restartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -10145,10 +10146,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listSlots(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = listSlotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -10187,7 +10188,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -10205,7 +10206,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -10239,7 +10240,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listSlotsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -10264,7 +10265,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner getSlot(String resourceGroupName, String name, String slot) {
-        return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10294,7 +10295,7 @@ public final class WebAppsInner {
         return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10354,7 +10355,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
-        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().getBody();
+        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -10386,7 +10387,7 @@ public final class WebAppsInner {
         return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10442,7 +10443,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
+        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().body();
     }
 
     /**
@@ -10484,7 +10485,7 @@ public final class WebAppsInner {
         return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10537,7 +10538,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
-        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().getBody();
+        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -10569,7 +10570,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10636,7 +10637,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
+        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -10678,7 +10679,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10747,7 +10748,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      */
     public void deleteSlot(String resourceGroupName, String name, String slot) {
-        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10777,7 +10778,7 @@ public final class WebAppsInner {
         return deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10834,7 +10835,7 @@ public final class WebAppsInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      */
     public void deleteSlot(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
-        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().getBody();
+        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
     }
 
     /**
@@ -10870,7 +10871,7 @@ public final class WebAppsInner {
         return deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10932,7 +10933,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot) {
-        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10962,7 +10963,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11016,7 +11017,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot, String hostName) {
-        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -11048,7 +11049,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11108,7 +11109,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void applySlotConfigurationSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
+        applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -11140,7 +11141,7 @@ public final class WebAppsInner {
         return applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11204,7 +11205,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backupSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
-        return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11236,7 +11237,7 @@ public final class WebAppsInner {
         return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11301,10 +11302,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -11345,7 +11346,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -11364,7 +11365,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -11402,7 +11403,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -11428,7 +11429,7 @@ public final class WebAppsInner {
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11460,7 +11461,7 @@ public final class WebAppsInner {
         return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
             @Override
             public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11525,7 +11526,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) {
-        return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
+        return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().body();
     }
 
     /**
@@ -11557,7 +11558,7 @@ public final class WebAppsInner {
         return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11620,7 +11621,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
      */
     public void deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) {
-        deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
+        deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().body();
     }
 
     /**
@@ -11652,7 +11653,7 @@ public final class WebAppsInner {
         return deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11717,7 +11718,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
-        return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
+        return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11751,7 +11752,7 @@ public final class WebAppsInner {
         return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11821,7 +11822,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
-        return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().getBody();
+        return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().body();
     }
 
     /**
@@ -11855,7 +11856,7 @@ public final class WebAppsInner {
         return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11908,7 +11909,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
-        return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
+        return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11942,7 +11943,7 @@ public final class WebAppsInner {
         return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12011,7 +12012,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
-        return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().getBody();
+        return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().body();
     }
 
     /**
@@ -12043,7 +12044,7 @@ public final class WebAppsInner {
         return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12107,7 +12108,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettingsSlot(String resourceGroupName, String name, String slot) {
-        return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12137,7 +12138,7 @@ public final class WebAppsInner {
         return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12197,7 +12198,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
-        return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().getBody();
+        return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().body();
     }
 
     /**
@@ -12229,7 +12230,7 @@ public final class WebAppsInner {
         return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12293,7 +12294,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettingsSlot(String resourceGroupName, String name, String slot) {
-        return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12323,7 +12324,7 @@ public final class WebAppsInner {
         return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12383,7 +12384,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
-        return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -12415,7 +12416,7 @@ public final class WebAppsInner {
         return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12478,7 +12479,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
      */
     public void deleteBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
-        deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12508,7 +12509,7 @@ public final class WebAppsInner {
         return deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12566,7 +12567,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12596,7 +12597,7 @@ public final class WebAppsInner {
         return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12656,7 +12657,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
-        return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().getBody();
+        return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().body();
     }
 
     /**
@@ -12688,7 +12689,7 @@ public final class WebAppsInner {
         return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12752,7 +12753,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStringsSlot(String resourceGroupName, String name, String slot) {
-        return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12782,7 +12783,7 @@ public final class WebAppsInner {
         return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12841,7 +12842,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12871,7 +12872,7 @@ public final class WebAppsInner {
         return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12931,7 +12932,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
-        return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().getBody();
+        return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().body();
     }
 
     /**
@@ -12963,7 +12964,7 @@ public final class WebAppsInner {
         return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13028,7 +13029,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
-        return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().getBody();
+        return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().body();
     }
 
     /**
@@ -13060,7 +13061,7 @@ public final class WebAppsInner {
         return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13124,7 +13125,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadataSlot(String resourceGroupName, String name, String slot) {
-        return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13154,7 +13155,7 @@ public final class WebAppsInner {
         return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13213,7 +13214,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().getBody();
+        return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().body();
     }
 
     /**
@@ -13243,7 +13244,7 @@ public final class WebAppsInner {
         return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13285,7 +13286,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
-        return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13315,7 +13316,7 @@ public final class WebAppsInner {
         return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13375,7 +13376,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettingsSlot(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings) {
-        return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).toBlocking().single().getBody();
+        return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).toBlocking().single().body();
     }
 
     /**
@@ -13407,7 +13408,7 @@ public final class WebAppsInner {
         return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13471,7 +13472,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettingsSlot(String resourceGroupName, String name, String slot) {
-        return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13501,7 +13502,7 @@ public final class WebAppsInner {
         return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13560,7 +13561,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13590,7 +13591,7 @@ public final class WebAppsInner {
         return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13650,7 +13651,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
+        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -13682,7 +13683,7 @@ public final class WebAppsInner {
         return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13747,7 +13748,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
+        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -13779,7 +13780,7 @@ public final class WebAppsInner {
         return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13844,10 +13845,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -13888,7 +13889,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -13907,7 +13908,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -13945,7 +13946,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -13971,7 +13972,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
-        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
+        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().body();
     }
 
     /**
@@ -14003,7 +14004,7 @@ public final class WebAppsInner {
         return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14068,7 +14069,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
-        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().getBody();
+        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().body();
     }
 
     /**
@@ -14102,7 +14103,7 @@ public final class WebAppsInner {
         return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14170,7 +14171,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      */
     public void deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
-        deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
+        deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().body();
     }
 
     /**
@@ -14202,7 +14203,7 @@ public final class WebAppsInner {
         return deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14266,10 +14267,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -14310,7 +14311,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -14329,7 +14330,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -14367,7 +14368,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -14393,7 +14394,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
-        return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().getBody();
+        return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().body();
     }
 
     /**
@@ -14425,7 +14426,7 @@ public final class WebAppsInner {
         return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14490,7 +14491,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -14524,7 +14525,7 @@ public final class WebAppsInner {
         return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14592,7 +14593,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      */
     public void deleteDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
-        deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().getBody();
+        deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().body();
     }
 
     /**
@@ -14624,7 +14625,7 @@ public final class WebAppsInner {
         return deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14689,7 +14690,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
-        return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -14723,7 +14724,7 @@ public final class WebAppsInner {
         return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14792,10 +14793,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -14836,7 +14837,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -14855,7 +14856,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -14893,7 +14894,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -14919,7 +14920,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
-        return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -14951,7 +14952,7 @@ public final class WebAppsInner {
         return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15016,7 +15017,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
-        return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().getBody();
+        return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().body();
     }
 
     /**
@@ -15050,7 +15051,7 @@ public final class WebAppsInner {
         return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15118,7 +15119,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      */
     public void deleteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
-        deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -15150,7 +15151,7 @@ public final class WebAppsInner {
         return deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15215,7 +15216,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15249,7 +15250,7 @@ public final class WebAppsInner {
         return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15319,7 +15320,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
-        return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -15355,7 +15356,7 @@ public final class WebAppsInner {
         return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15428,7 +15429,7 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      */
     public void deleteHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15462,7 +15463,7 @@ public final class WebAppsInner {
         return deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15532,7 +15533,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
-        return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -15568,7 +15569,7 @@ public final class WebAppsInner {
         return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15642,7 +15643,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeysSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15676,7 +15677,7 @@ public final class WebAppsInner {
         return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15743,7 +15744,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -15773,7 +15774,7 @@ public final class WebAppsInner {
         return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15832,7 +15833,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -15862,7 +15863,7 @@ public final class WebAppsInner {
         return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15922,7 +15923,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
-        return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
+        return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15954,7 +15955,7 @@ public final class WebAppsInner {
         return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16019,7 +16020,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -16053,7 +16054,7 @@ public final class WebAppsInner {
         return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16121,7 +16122,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
      */
     public void deleteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
-        deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
+        deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().body();
     }
 
     /**
@@ -16153,7 +16154,7 @@ public final class WebAppsInner {
         return deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16218,7 +16219,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -16252,7 +16253,7 @@ public final class WebAppsInner {
         return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16321,10 +16322,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -16365,7 +16366,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -16384,7 +16385,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -16422,7 +16423,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -16449,10 +16450,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -16495,7 +16496,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -16515,7 +16516,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -16557,7 +16558,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -16584,7 +16585,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
-        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
+        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -16618,7 +16619,7 @@ public final class WebAppsInner {
         return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16688,7 +16689,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
-        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().getBody();
+        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().body();
     }
 
     /**
@@ -16724,7 +16725,7 @@ public final class WebAppsInner {
         return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16797,7 +16798,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      */
     public void deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
-        deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
+        deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -16831,7 +16832,7 @@ public final class WebAppsInner {
         return deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16898,7 +16899,7 @@ public final class WebAppsInner {
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneableSlot(String resourceGroupName, String name, String slot) {
-        return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -16928,7 +16929,7 @@ public final class WebAppsInner {
         return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
             @Override
             public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16988,10 +16989,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17032,7 +17033,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17051,7 +17052,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17089,7 +17090,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17115,10 +17116,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17159,7 +17160,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17178,7 +17179,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17218,7 +17219,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17239,10 +17240,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17287,7 +17288,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17308,7 +17309,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17348,7 +17349,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17374,7 +17375,7 @@ public final class WebAppsInner {
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) {
-        return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().getBody();
+        return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().body();
     }
 
     /**
@@ -17406,7 +17407,7 @@ public final class WebAppsInner {
         return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
             @Override
             public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17470,7 +17471,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17500,7 +17501,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17554,7 +17555,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -17586,7 +17587,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17646,7 +17647,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17676,7 +17677,7 @@ public final class WebAppsInner {
         return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17734,7 +17735,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
      */
     public void generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) {
-        generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17764,7 +17765,7 @@ public final class WebAppsInner {
         return generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17823,10 +17824,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17867,7 +17868,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17886,7 +17887,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17925,7 +17926,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17945,10 +17946,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17991,7 +17992,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -18011,7 +18012,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -18050,7 +18051,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -18075,7 +18076,7 @@ public final class WebAppsInner {
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlagSlot(String resourceGroupName, String name, String slot) {
-        return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18105,7 +18106,7 @@ public final class WebAppsInner {
         return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SitePhpErrorLogFlagInner>, SitePhpErrorLogFlagInner>() {
             @Override
             public SitePhpErrorLogFlagInner call(ServiceResponse<SitePhpErrorLogFlagInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18164,7 +18165,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOnsSlot(String resourceGroupName, String name, String slot) {
-        return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18194,7 +18195,7 @@ public final class WebAppsInner {
         return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18254,7 +18255,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
-        return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
+        return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().body();
     }
 
     /**
@@ -18286,7 +18287,7 @@ public final class WebAppsInner {
         return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18351,7 +18352,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn) {
-        return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().getBody();
+        return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().body();
     }
 
     /**
@@ -18385,7 +18386,7 @@ public final class WebAppsInner {
         return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18453,7 +18454,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
      */
     public void deletePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
-        deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
+        deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().body();
     }
 
     /**
@@ -18485,7 +18486,7 @@ public final class WebAppsInner {
         return deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18547,7 +18548,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18577,7 +18578,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18636,7 +18637,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().body();
     }
 
     /**
@@ -18674,7 +18675,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18740,7 +18741,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().getBody();
+        return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().body();
     }
 
     /**
@@ -18772,7 +18773,7 @@ public final class WebAppsInner {
         return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18820,7 +18821,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().getBody();
+        return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().body();
     }
 
     /**
@@ -18852,7 +18853,7 @@ public final class WebAppsInner {
         return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18915,7 +18916,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
      */
     public void resetSlotConfigurationSlot(String resourceGroupName, String name, String slot) {
-        resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18945,7 +18946,7 @@ public final class WebAppsInner {
         return resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19002,7 +19003,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      */
     public void restartSlot(String resourceGroupName, String name, String slot) {
-        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19032,7 +19033,7 @@ public final class WebAppsInner {
         return restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19087,7 +19088,7 @@ public final class WebAppsInner {
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      */
     public void restartSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
-        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().getBody();
+        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().body();
     }
 
     /**
@@ -19121,7 +19122,7 @@ public final class WebAppsInner {
         return restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19167,6 +19168,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> restartSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -19183,10 +19185,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -19229,7 +19231,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -19249,7 +19251,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -19292,7 +19294,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -19317,7 +19319,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void swapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().getBody();
+        swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().body();
     }
 
     /**
@@ -19349,7 +19351,7 @@ public final class WebAppsInner {
         return swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19396,7 +19398,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void beginSwapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
+        beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -19428,7 +19430,7 @@ public final class WebAppsInner {
         return beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19493,10 +19495,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -19537,7 +19539,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -19556,7 +19558,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -19594,7 +19596,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -19619,7 +19621,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19649,7 +19651,7 @@ public final class WebAppsInner {
         return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19709,7 +19711,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
-        return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().last().getBody();
+        return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().last().body();
     }
 
     /**
@@ -19741,7 +19743,7 @@ public final class WebAppsInner {
         return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19789,7 +19791,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
-        return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
+        return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().body();
     }
 
     /**
@@ -19821,7 +19823,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19886,7 +19888,7 @@ public final class WebAppsInner {
      * @return the Object object if successful.
      */
     public Object deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19916,7 +19918,7 @@ public final class WebAppsInner {
         return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
             public Object call(ServiceResponse<Object> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19976,7 +19978,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
      */
     public void startSlot(String resourceGroupName, String name, String slot) {
-        startSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        startSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20006,7 +20008,7 @@ public final class WebAppsInner {
         return startSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20050,6 +20052,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> startSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -20063,7 +20066,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
      */
     public void stopSlot(String resourceGroupName, String name, String slot) {
-        stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20093,7 +20096,7 @@ public final class WebAppsInner {
         return stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20137,6 +20140,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> stopSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -20150,7 +20154,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      */
     public void syncRepositorySlot(String resourceGroupName, String name, String slot) {
-        syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20180,7 +20184,7 @@ public final class WebAppsInner {
         return syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20239,10 +20243,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -20283,7 +20287,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -20302,7 +20306,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -20341,7 +20345,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -20361,10 +20365,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -20407,7 +20411,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -20427,7 +20431,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -20466,7 +20470,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -20491,7 +20495,7 @@ public final class WebAppsInner {
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20521,7 +20525,7 @@ public final class WebAppsInner {
         return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20581,7 +20585,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
-        return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
+        return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().body();
     }
 
     /**
@@ -20613,7 +20617,7 @@ public final class WebAppsInner {
         return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20678,7 +20682,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -20712,7 +20716,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20780,7 +20784,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
      */
     public void deleteVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
-        deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
+        deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().body();
     }
 
     /**
@@ -20812,7 +20816,7 @@ public final class WebAppsInner {
         return deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20877,7 +20881,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
-        return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -20911,7 +20915,7 @@ public final class WebAppsInner {
         return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20981,7 +20985,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
-        return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().getBody();
+        return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -21015,7 +21019,7 @@ public final class WebAppsInner {
         return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21086,7 +21090,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -21122,7 +21126,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21197,7 +21201,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
-        return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -21233,7 +21237,7 @@ public final class WebAppsInner {
         return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21306,10 +21310,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -21350,7 +21354,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -21369,7 +21373,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -21408,7 +21412,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -21432,7 +21436,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().getBody();
+        swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().body();
     }
 
     /**
@@ -21462,7 +21466,7 @@ public final class WebAppsInner {
         return swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21504,7 +21508,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
+        beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -21534,7 +21538,7 @@ public final class WebAppsInner {
         return beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21594,10 +21598,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshots(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -21636,7 +21640,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -21654,7 +21658,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -21688,7 +21692,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -21712,7 +21716,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControl(String resourceGroupName, String name) {
-        return getSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -21740,7 +21744,7 @@ public final class WebAppsInner {
         return getSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21795,7 +21799,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
-        return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().last().getBody();
+        return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().last().body();
     }
 
     /**
@@ -21825,7 +21829,7 @@ public final class WebAppsInner {
         return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21868,7 +21872,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
-        return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
+        return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().body();
     }
 
     /**
@@ -21898,7 +21902,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21958,7 +21962,7 @@ public final class WebAppsInner {
      * @return the Object object if successful.
      */
     public Object deleteSourceControl(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -21986,7 +21990,7 @@ public final class WebAppsInner {
         return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
             public Object call(ServiceResponse<Object> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22041,7 +22045,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void start(String resourceGroupName, String name) {
-        startWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        startWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22069,7 +22073,7 @@ public final class WebAppsInner {
         return startWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22109,6 +22113,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> startDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -22121,7 +22126,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void stop(String resourceGroupName, String name) {
-        stopWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        stopWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22149,7 +22154,7 @@ public final class WebAppsInner {
         return stopWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22189,6 +22194,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<Void> stopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -22201,7 +22207,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      */
     public void syncRepository(String resourceGroupName, String name) {
-        syncRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        syncRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22229,7 +22235,7 @@ public final class WebAppsInner {
         return syncRepositoryWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22283,10 +22289,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -22325,7 +22331,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -22343,7 +22349,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -22378,7 +22384,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -22397,10 +22403,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -22441,7 +22447,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -22460,7 +22466,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -22495,7 +22501,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -22519,7 +22525,7 @@ public final class WebAppsInner {
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnections(String resourceGroupName, String name) {
-        return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22547,7 +22553,7 @@ public final class WebAppsInner {
         return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22602,7 +22608,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnection(String resourceGroupName, String name, String vnetName) {
-        return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -22632,7 +22638,7 @@ public final class WebAppsInner {
         return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22692,7 +22698,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -22724,7 +22730,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22787,7 +22793,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      */
     public void deleteVnetConnection(String resourceGroupName, String name, String vnetName) {
-        deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -22817,7 +22823,7 @@ public final class WebAppsInner {
         return deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22877,7 +22883,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
-        return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -22909,7 +22915,7 @@ public final class WebAppsInner {
         return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22974,7 +22980,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
-        return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
+        return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().body();
     }
 
     /**
@@ -23006,7 +23012,7 @@ public final class WebAppsInner {
         return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23072,7 +23078,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -23106,7 +23112,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23176,7 +23182,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -23210,7 +23216,7 @@ public final class WebAppsInner {
         return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23277,10 +23283,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23318,7 +23324,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23335,7 +23341,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23362,7 +23368,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23386,10 +23392,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23427,7 +23433,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23444,7 +23450,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23471,7 +23477,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23495,10 +23501,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23536,7 +23542,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23553,7 +23559,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23580,7 +23586,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23604,10 +23610,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23645,7 +23651,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23662,7 +23668,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23689,7 +23695,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23713,10 +23719,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23754,7 +23760,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23771,7 +23777,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23798,7 +23804,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23822,10 +23828,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23863,7 +23869,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23880,7 +23886,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23907,7 +23913,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23931,10 +23937,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23972,7 +23978,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23989,7 +23995,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24016,7 +24022,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24040,10 +24046,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24081,7 +24087,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24098,7 +24104,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24125,7 +24131,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24149,10 +24155,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24190,7 +24196,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24207,7 +24213,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24234,7 +24240,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24258,10 +24264,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24299,7 +24305,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24316,7 +24322,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24343,7 +24349,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24367,10 +24373,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersNext(final String nextPageLink) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24408,7 +24414,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24425,7 +24431,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24452,7 +24458,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24476,10 +24482,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listSlotsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24517,7 +24523,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24534,7 +24540,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24561,7 +24567,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listSlotsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24585,10 +24591,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24626,7 +24632,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24643,7 +24649,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24670,7 +24676,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24694,10 +24700,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24735,7 +24741,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24752,7 +24758,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24779,7 +24785,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24803,10 +24809,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24844,7 +24850,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24861,7 +24867,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24888,7 +24894,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24912,10 +24918,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24953,7 +24959,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24970,7 +24976,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24997,7 +25003,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25021,10 +25027,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25062,7 +25068,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25079,7 +25085,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25106,7 +25112,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25130,10 +25136,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25171,7 +25177,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25188,7 +25194,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25215,7 +25221,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25239,10 +25245,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25280,7 +25286,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25297,7 +25303,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25324,7 +25330,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25348,10 +25354,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25389,7 +25395,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25406,7 +25412,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25433,7 +25439,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25457,10 +25463,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25498,7 +25504,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25515,7 +25521,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25542,7 +25548,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25566,10 +25572,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25607,7 +25613,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25624,7 +25630,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25651,7 +25657,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25675,10 +25681,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25716,7 +25722,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25733,7 +25739,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25760,7 +25766,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25784,10 +25790,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25825,7 +25831,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25842,7 +25848,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25869,7 +25875,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25893,10 +25899,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25934,7 +25940,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25951,7 +25957,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25978,7 +25984,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -26002,10 +26008,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsNext(final String nextPageLink) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -26043,7 +26049,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -26060,7 +26066,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -26087,7 +26093,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -26111,10 +26117,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -26152,7 +26158,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -26169,7 +26175,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -26196,7 +26202,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

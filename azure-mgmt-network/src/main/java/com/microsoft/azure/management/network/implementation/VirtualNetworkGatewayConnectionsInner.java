@@ -121,7 +121,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
     public VirtualNetworkGatewayConnectionInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -149,7 +149,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).map(new Func1<ServiceResponse<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>() {
             @Override
             public VirtualNetworkGatewayConnectionInner call(ServiceResponse<VirtualNetworkGatewayConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -190,7 +190,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
     public VirtualNetworkGatewayConnectionInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -218,7 +218,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).map(new Func1<ServiceResponse<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>() {
             @Override
             public VirtualNetworkGatewayConnectionInner call(ServiceResponse<VirtualNetworkGatewayConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -276,7 +276,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
     public VirtualNetworkGatewayConnectionInner get(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().body();
     }
 
     /**
@@ -302,7 +302,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).map(new Func1<ServiceResponse<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>() {
             @Override
             public VirtualNetworkGatewayConnectionInner call(ServiceResponse<VirtualNetworkGatewayConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -353,7 +353,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      */
     public void delete(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().last().body();
     }
 
     /**
@@ -379,7 +379,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -413,7 +413,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().body();
     }
 
     /**
@@ -439,7 +439,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -493,7 +493,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the ConnectionSharedKeyInner object if successful.
      */
     public ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) {
-        return setSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().last().getBody();
+        return setSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().last().body();
     }
 
     /**
@@ -521,7 +521,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return setSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).map(new Func1<ServiceResponse<ConnectionSharedKeyInner>, ConnectionSharedKeyInner>() {
             @Override
             public ConnectionSharedKeyInner call(ServiceResponse<ConnectionSharedKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -563,7 +563,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the ConnectionSharedKeyInner object if successful.
      */
     public ConnectionSharedKeyInner beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) {
-        return beginSetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().single().getBody();
+        return beginSetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().single().body();
     }
 
     /**
@@ -591,7 +591,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return beginSetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).map(new Func1<ServiceResponse<ConnectionSharedKeyInner>, ConnectionSharedKeyInner>() {
             @Override
             public ConnectionSharedKeyInner call(ServiceResponse<ConnectionSharedKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -650,7 +650,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the ConnectionSharedKeyInner object if successful.
      */
     public ConnectionSharedKeyInner getSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        return getSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
+        return getSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().body();
     }
 
     /**
@@ -676,7 +676,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return getSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).map(new Func1<ServiceResponse<ConnectionSharedKeyInner>, ConnectionSharedKeyInner>() {
             @Override
             public ConnectionSharedKeyInner call(ServiceResponse<ConnectionSharedKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -728,10 +728,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
      */
     public PagedList<VirtualNetworkGatewayConnectionInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<VirtualNetworkGatewayConnectionInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkGatewayConnectionInner>(response.body()) {
             @Override
             public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -766,7 +766,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Page<VirtualNetworkGatewayConnectionInner>>() {
                 @Override
                 public Page<VirtualNetworkGatewayConnectionInner> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -782,7 +782,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -811,7 +811,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -835,7 +835,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the ConnectionResetSharedKeyInner object if successful.
      */
     public ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength) {
-        return resetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().last().getBody();
+        return resetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().last().body();
     }
 
     /**
@@ -863,7 +863,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return resetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).map(new Func1<ServiceResponse<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner>() {
             @Override
             public ConnectionResetSharedKeyInner call(ServiceResponse<ConnectionResetSharedKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -902,7 +902,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @return the ConnectionResetSharedKeyInner object if successful.
      */
     public ConnectionResetSharedKeyInner beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength) {
-        return beginResetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().single().getBody();
+        return beginResetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().single().body();
     }
 
     /**
@@ -930,7 +930,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return beginResetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).map(new Func1<ServiceResponse<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner>() {
             @Override
             public ConnectionResetSharedKeyInner call(ServiceResponse<ConnectionResetSharedKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -986,10 +986,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
      */
     public PagedList<VirtualNetworkGatewayConnectionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualNetworkGatewayConnectionInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkGatewayConnectionInner>(response.body()) {
             @Override
             public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1025,7 +1025,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Page<VirtualNetworkGatewayConnectionInner>>() {
                 @Override
                 public Page<VirtualNetworkGatewayConnectionInner> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1041,7 +1041,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1067,7 +1067,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

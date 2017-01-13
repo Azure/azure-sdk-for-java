@@ -100,7 +100,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -128,7 +128,7 @@ public final class LocalNetworkGatewaysInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
             @Override
             public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -169,7 +169,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -197,7 +197,7 @@ public final class LocalNetworkGatewaysInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
             @Override
             public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -255,7 +255,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner get(String resourceGroupName, String localNetworkGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -281,7 +281,7 @@ public final class LocalNetworkGatewaysInner {
         return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
             @Override
             public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -332,7 +332,7 @@ public final class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      */
     public void delete(String resourceGroupName, String localNetworkGatewayName) {
-        deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -358,7 +358,7 @@ public final class LocalNetworkGatewaysInner {
         return deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -392,7 +392,7 @@ public final class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      */
     public void beginDelete(String resourceGroupName, String localNetworkGatewayName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -418,7 +418,7 @@ public final class LocalNetworkGatewaysInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -471,10 +471,10 @@ public final class LocalNetworkGatewaysInner {
      */
     public PagedList<LocalNetworkGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
+        return new PagedList<LocalNetworkGatewayInner>(response.body()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -509,7 +509,7 @@ public final class LocalNetworkGatewaysInner {
             .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
                 @Override
                 public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -525,7 +525,7 @@ public final class LocalNetworkGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -554,7 +554,7 @@ public final class LocalNetworkGatewaysInner {
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -577,10 +577,10 @@ public final class LocalNetworkGatewaysInner {
      */
     public PagedList<LocalNetworkGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
+        return new PagedList<LocalNetworkGatewayInner>(response.body()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -616,7 +616,7 @@ public final class LocalNetworkGatewaysInner {
             .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
                 @Override
                 public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -632,7 +632,7 @@ public final class LocalNetworkGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -658,7 +658,7 @@ public final class LocalNetworkGatewaysInner {
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

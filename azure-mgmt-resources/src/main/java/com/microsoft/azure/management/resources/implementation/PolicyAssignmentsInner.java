@@ -119,7 +119,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner delete(String scope, String policyAssignmentName) {
-        return deleteWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().getBody();
+        return deleteWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().body();
     }
 
     /**
@@ -145,7 +145,7 @@ public final class PolicyAssignmentsInner {
         return deleteWithServiceResponseAsync(scope, policyAssignmentName).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -198,7 +198,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner create(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
-        return createWithServiceResponseAsync(scope, policyAssignmentName, parameters).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(scope, policyAssignmentName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -228,7 +228,7 @@ public final class PolicyAssignmentsInner {
         return createWithServiceResponseAsync(scope, policyAssignmentName, parameters).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -285,7 +285,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner get(String scope, String policyAssignmentName) {
-        return getWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().body();
     }
 
     /**
@@ -311,7 +311,7 @@ public final class PolicyAssignmentsInner {
         return getWithServiceResponseAsync(scope, policyAssignmentName).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -362,10 +362,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -400,7 +400,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -416,7 +416,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -448,7 +448,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -465,10 +465,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResourceGroup(final String resourceGroupName, final String filter) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -505,7 +505,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -522,7 +522,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -554,7 +554,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -581,10 +581,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -627,7 +627,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -647,7 +647,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -695,7 +695,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -716,10 +716,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -764,7 +764,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -785,7 +785,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -833,7 +833,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -855,10 +855,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> list() {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -891,7 +891,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -906,7 +906,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -934,7 +934,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -950,10 +950,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> list(final String filter) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -988,7 +988,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1004,7 +1004,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1032,7 +1032,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1055,7 +1055,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner deleteById(String policyAssignmentId) {
-        return deleteByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().getBody();
+        return deleteByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().body();
     }
 
     /**
@@ -1081,7 +1081,7 @@ public final class PolicyAssignmentsInner {
         return deleteByIdWithServiceResponseAsync(policyAssignmentId).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1130,7 +1130,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner createById(String policyAssignmentId, PolicyAssignmentInner parameters) {
-        return createByIdWithServiceResponseAsync(policyAssignmentId, parameters).toBlocking().single().getBody();
+        return createByIdWithServiceResponseAsync(policyAssignmentId, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1158,7 +1158,7 @@ public final class PolicyAssignmentsInner {
         return createByIdWithServiceResponseAsync(policyAssignmentId, parameters).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1211,7 +1211,7 @@ public final class PolicyAssignmentsInner {
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner getById(String policyAssignmentId) {
-        return getByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().getBody();
+        return getByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().body();
     }
 
     /**
@@ -1237,7 +1237,7 @@ public final class PolicyAssignmentsInner {
         return getByIdWithServiceResponseAsync(policyAssignmentId).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
             @Override
             public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1285,10 +1285,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1324,7 +1324,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1340,7 +1340,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1366,7 +1366,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1389,10 +1389,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listForResourceNext(final String nextPageLink) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1428,7 +1428,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1444,7 +1444,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1470,7 +1470,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1493,10 +1493,10 @@ public final class PolicyAssignmentsInner {
      */
     public PagedList<PolicyAssignmentInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<PolicyAssignmentInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.getBody()) {
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1532,7 +1532,7 @@ public final class PolicyAssignmentsInner {
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1548,7 +1548,7 @@ public final class PolicyAssignmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1574,7 +1574,7 @@ public final class PolicyAssignmentsInner {
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -74,10 +74,10 @@ public final class UsagesInner {
      */
     public PagedList<UsageInner> list(final String location) {
         ServiceResponse<Page<UsageInner>> response = listSinglePageAsync(location).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -112,7 +112,7 @@ public final class UsagesInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -128,7 +128,7 @@ public final class UsagesInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -157,7 +157,7 @@ public final class UsagesInner {
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -180,10 +180,10 @@ public final class UsagesInner {
      */
     public PagedList<UsageInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<UsageInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -219,7 +219,7 @@ public final class UsagesInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -235,7 +235,7 @@ public final class UsagesInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -261,7 +261,7 @@ public final class UsagesInner {
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

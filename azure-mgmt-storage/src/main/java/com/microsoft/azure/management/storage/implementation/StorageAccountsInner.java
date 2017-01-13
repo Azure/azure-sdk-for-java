@@ -109,7 +109,7 @@ public final class StorageAccountsInner {
      * @return the CheckNameAvailabilityResultInner object if successful.
      */
     public CheckNameAvailabilityResultInner checkNameAvailability(String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
+        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class StorageAccountsInner {
         return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<CheckNameAvailabilityResultInner>, CheckNameAvailabilityResultInner>() {
             @Override
             public CheckNameAvailabilityResultInner call(ServiceResponse<CheckNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -186,7 +186,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountInner object if successful.
      */
     public StorageAccountInner create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -214,7 +214,7 @@ public final class StorageAccountsInner {
         return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
             @Override
             public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -257,7 +257,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountInner object if successful.
      */
     public StorageAccountInner beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -285,7 +285,7 @@ public final class StorageAccountsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
             @Override
             public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -344,7 +344,7 @@ public final class StorageAccountsInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      */
     public void delete(String resourceGroupName, String accountName) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -370,7 +370,7 @@ public final class StorageAccountsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -424,7 +424,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountInner object if successful.
      */
     public StorageAccountInner getProperties(String resourceGroupName, String accountName) {
-        return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -450,7 +450,7 @@ public final class StorageAccountsInner {
         return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
             @Override
             public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -505,7 +505,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountInner object if successful.
      */
     public StorageAccountInner update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -533,7 +533,7 @@ public final class StorageAccountsInner {
         return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
             @Override
             public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -590,7 +590,7 @@ public final class StorageAccountsInner {
      * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
     public List<StorageAccountInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -612,7 +612,7 @@ public final class StorageAccountsInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
             @Override
             public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -635,7 +635,7 @@ public final class StorageAccountsInner {
                 public Observable<ServiceResponse<List<StorageAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StorageAccountInner>> result = listDelegate(response);
-                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -658,7 +658,7 @@ public final class StorageAccountsInner {
      * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
     public List<StorageAccountInner> listByResourceGroup(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -682,7 +682,7 @@ public final class StorageAccountsInner {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
             @Override
             public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -709,7 +709,7 @@ public final class StorageAccountsInner {
                 public Observable<ServiceResponse<List<StorageAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StorageAccountInner>> result = listByResourceGroupDelegate(response);
-                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -733,7 +733,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountListKeysResultInner object if successful.
      */
     public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -759,7 +759,7 @@ public final class StorageAccountsInner {
         return listKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<StorageAccountListKeysResultInner>, StorageAccountListKeysResultInner>() {
             @Override
             public StorageAccountListKeysResultInner call(ServiceResponse<StorageAccountListKeysResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -814,7 +814,7 @@ public final class StorageAccountsInner {
      * @return the StorageAccountListKeysResultInner object if successful.
      */
     public StorageAccountListKeysResultInner regenerateKey(String resourceGroupName, String accountName, String keyName) {
-        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().body();
     }
 
     /**
@@ -842,7 +842,7 @@ public final class StorageAccountsInner {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).map(new Func1<ServiceResponse<StorageAccountListKeysResultInner>, StorageAccountListKeysResultInner>() {
             @Override
             public StorageAccountListKeysResultInner call(ServiceResponse<StorageAccountListKeysResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

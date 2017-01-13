@@ -128,10 +128,10 @@ public final class CertificatesInner {
      */
     public PagedList<CertificateInner> list() {
         ServiceResponse<Page<CertificateInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.body()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -166,7 +166,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
                 @Override
                 public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -182,7 +182,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -208,7 +208,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CertificateInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -232,10 +232,10 @@ public final class CertificatesInner {
      */
     public PagedList<CertificateInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<CertificateInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.body()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -272,7 +272,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
                 @Override
                 public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -289,7 +289,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -319,7 +319,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CertificateInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -343,7 +343,7 @@ public final class CertificatesInner {
      * @return the CertificateInner object if successful.
      */
     public CertificateInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -371,7 +371,7 @@ public final class CertificatesInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CertificateInner>, CertificateInner>() {
             @Override
             public CertificateInner call(ServiceResponse<CertificateInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -426,7 +426,7 @@ public final class CertificatesInner {
      * @return the CertificateInner object if successful.
      */
     public CertificateInner createOrUpdate(String resourceGroupName, String name, CertificateInner certificateEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -456,7 +456,7 @@ public final class CertificatesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).map(new Func1<ServiceResponse<CertificateInner>, CertificateInner>() {
             @Override
             public CertificateInner call(ServiceResponse<CertificateInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -514,7 +514,7 @@ public final class CertificatesInner {
      * @param name Name of the certificate.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -542,7 +542,7 @@ public final class CertificatesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -597,7 +597,7 @@ public final class CertificatesInner {
      * @return the CertificateInner object if successful.
      */
     public CertificateInner update(String resourceGroupName, String name, CertificateInner certificateEnvelope) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -627,7 +627,7 @@ public final class CertificatesInner {
         return updateWithServiceResponseAsync(resourceGroupName, name, certificateEnvelope).map(new Func1<ServiceResponse<CertificateInner>, CertificateInner>() {
             @Override
             public CertificateInner call(ServiceResponse<CertificateInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -686,10 +686,10 @@ public final class CertificatesInner {
      */
     public PagedList<CsrInner> listSigningRequestByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<CsrInner>> response = listSigningRequestByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<CsrInner>(response.getBody()) {
+        return new PagedList<CsrInner>(response.body()) {
             @Override
             public Page<CsrInner> nextPage(String nextPageLink) {
-                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -726,7 +726,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CsrInner>>, Page<CsrInner>>() {
                 @Override
                 public Page<CsrInner> call(ServiceResponse<Page<CsrInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -743,7 +743,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CsrInner>>, Observable<ServiceResponse<Page<CsrInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsrInner>>> call(ServiceResponse<Page<CsrInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -773,7 +773,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CsrInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsrInner>> result = listSigningRequestByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -797,7 +797,7 @@ public final class CertificatesInner {
      * @return the CsrInner object if successful.
      */
     public CsrInner getSigningRequest(String resourceGroupName, String name) {
-        return getSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -825,7 +825,7 @@ public final class CertificatesInner {
         return getSigningRequestWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
             @Override
             public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -880,7 +880,7 @@ public final class CertificatesInner {
      * @return the CsrInner object if successful.
      */
     public CsrInner createOrUpdateSigningRequest(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().getBody();
+        return createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -910,7 +910,7 @@ public final class CertificatesInner {
         return createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
             @Override
             public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -968,7 +968,7 @@ public final class CertificatesInner {
      * @param name Name of the certificate signing request.
      */
     public void deleteSigningRequest(String resourceGroupName, String name) {
-        deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -996,7 +996,7 @@ public final class CertificatesInner {
         return deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1051,7 +1051,7 @@ public final class CertificatesInner {
      * @return the CsrInner object if successful.
      */
     public CsrInner updateSigningRequest(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().getBody();
+        return updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -1081,7 +1081,7 @@ public final class CertificatesInner {
         return updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
             @Override
             public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1140,10 +1140,10 @@ public final class CertificatesInner {
      */
     public PagedList<CertificateInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.body()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1181,7 +1181,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
                 @Override
                 public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1198,7 +1198,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1225,7 +1225,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CertificateInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1249,10 +1249,10 @@ public final class CertificatesInner {
      */
     public PagedList<CertificateInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.body()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1290,7 +1290,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
                 @Override
                 public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1307,7 +1307,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1334,7 +1334,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CertificateInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1358,10 +1358,10 @@ public final class CertificatesInner {
      */
     public PagedList<CsrInner> listSigningRequestByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<CsrInner>> response = listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsrInner>(response.getBody()) {
+        return new PagedList<CsrInner>(response.body()) {
             @Override
             public Page<CsrInner> nextPage(String nextPageLink) {
-                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1399,7 +1399,7 @@ public final class CertificatesInner {
             .map(new Func1<ServiceResponse<Page<CsrInner>>, Page<CsrInner>>() {
                 @Override
                 public Page<CsrInner> call(ServiceResponse<Page<CsrInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1416,7 +1416,7 @@ public final class CertificatesInner {
             .concatMap(new Func1<ServiceResponse<Page<CsrInner>>, Observable<ServiceResponse<Page<CsrInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsrInner>>> call(ServiceResponse<Page<CsrInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1443,7 +1443,7 @@ public final class CertificatesInner {
                 public Observable<ServiceResponse<Page<CsrInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsrInner>> result = listSigningRequestByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -85,7 +85,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class EndpointsInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -186,7 +186,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -216,7 +216,7 @@ public final class EndpointsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -281,7 +281,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner createOrUpdate(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -313,7 +313,7 @@ public final class EndpointsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -382,7 +382,7 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      */
     public void delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -412,7 +412,7 @@ public final class EndpointsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

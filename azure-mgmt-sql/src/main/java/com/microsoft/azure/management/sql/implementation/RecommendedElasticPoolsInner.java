@@ -83,7 +83,7 @@ public final class RecommendedElasticPoolsInner {
      * @return the RecommendedElasticPoolInner object if successful.
      */
     public RecommendedElasticPoolInner get(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -111,7 +111,7 @@ public final class RecommendedElasticPoolsInner {
         return getWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).map(new Func1<ServiceResponse<RecommendedElasticPoolInner>, RecommendedElasticPoolInner>() {
             @Override
             public RecommendedElasticPoolInner call(ServiceResponse<RecommendedElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -169,7 +169,7 @@ public final class RecommendedElasticPoolsInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner getDatabases(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName) {
-        return getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName, databaseName).toBlocking().single().getBody();
+        return getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -199,7 +199,7 @@ public final class RecommendedElasticPoolsInner {
         return getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -259,7 +259,7 @@ public final class RecommendedElasticPoolsInner {
      * @return the List&lt;RecommendedElasticPoolInner&gt; object if successful.
      */
     public List<RecommendedElasticPoolInner> list(String resourceGroupName, String serverName) {
-        return listWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -285,7 +285,7 @@ public final class RecommendedElasticPoolsInner {
         return listWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<RecommendedElasticPoolInner>>, List<RecommendedElasticPoolInner>>() {
             @Override
             public List<RecommendedElasticPoolInner> call(ServiceResponse<List<RecommendedElasticPoolInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -314,7 +314,7 @@ public final class RecommendedElasticPoolsInner {
                 public Observable<ServiceResponse<List<RecommendedElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecommendedElasticPoolInner>> result = listDelegate(response);
-                        ServiceResponse<List<RecommendedElasticPoolInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<RecommendedElasticPoolInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -339,7 +339,7 @@ public final class RecommendedElasticPoolsInner {
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listDatabases(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
-        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().getBody();
+        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -367,7 +367,7 @@ public final class RecommendedElasticPoolsInner {
         return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
             @Override
             public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -400,7 +400,7 @@ public final class RecommendedElasticPoolsInner {
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DatabaseInner>> result = listDatabasesDelegate(response);
-                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -425,7 +425,7 @@ public final class RecommendedElasticPoolsInner {
      * @return the List&lt;RecommendedElasticPoolMetricInner&gt; object if successful.
      */
     public List<RecommendedElasticPoolMetricInner> listMetrics(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
-        return listMetricsWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().getBody();
+        return listMetricsWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -453,7 +453,7 @@ public final class RecommendedElasticPoolsInner {
         return listMetricsWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName).map(new Func1<ServiceResponse<List<RecommendedElasticPoolMetricInner>>, List<RecommendedElasticPoolMetricInner>>() {
             @Override
             public List<RecommendedElasticPoolMetricInner> call(ServiceResponse<List<RecommendedElasticPoolMetricInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -486,7 +486,7 @@ public final class RecommendedElasticPoolsInner {
                 public Observable<ServiceResponse<List<RecommendedElasticPoolMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecommendedElasticPoolMetricInner>> result = listMetricsDelegate(response);
-                        ServiceResponse<List<RecommendedElasticPoolMetricInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolMetricInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<RecommendedElasticPoolMetricInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolMetricInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

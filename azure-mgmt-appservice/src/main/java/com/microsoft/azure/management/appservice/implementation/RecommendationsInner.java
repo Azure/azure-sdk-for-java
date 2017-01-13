@@ -90,7 +90,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class RecommendationsInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -155,7 +155,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> list(Boolean featured, String filter) {
-        return listWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(featured, filter).toBlocking().single().body();
     }
 
     /**
@@ -183,7 +183,7 @@ public final class RecommendationsInner {
         return listWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -228,7 +228,7 @@ public final class RecommendationsInner {
      *
      */
     public void resetAllFilters() {
-        resetAllFiltersWithServiceResponseAsync().toBlocking().single().getBody();
+        resetAllFiltersWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -252,7 +252,7 @@ public final class RecommendationsInner {
         return resetAllFiltersWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -297,7 +297,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -325,7 +325,7 @@ public final class RecommendationsInner {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -374,7 +374,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName, String filter) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().body();
     }
 
     /**
@@ -404,7 +404,7 @@ public final class RecommendationsInner {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -459,7 +459,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -487,7 +487,7 @@ public final class RecommendationsInner {
         return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -544,7 +544,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().getBody();
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().body();
     }
 
     /**
@@ -582,7 +582,7 @@ public final class RecommendationsInner {
         return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -640,7 +640,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      */
     public void disableAllForWebApp(String resourceGroupName, String siteName) {
-        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -668,7 +668,7 @@ public final class RecommendationsInner {
         return disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -720,7 +720,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      */
     public void resetAllFiltersForWebApp(String resourceGroupName, String siteName) {
-        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -748,7 +748,7 @@ public final class RecommendationsInner {
         return resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -802,7 +802,7 @@ public final class RecommendationsInner {
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().body();
     }
 
     /**
@@ -832,7 +832,7 @@ public final class RecommendationsInner {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -886,7 +886,7 @@ public final class RecommendationsInner {
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().body();
     }
 
     /**
@@ -918,7 +918,7 @@ public final class RecommendationsInner {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

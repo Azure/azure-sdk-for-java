@@ -106,7 +106,7 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      */
     public void delete(String resourceGroupName, String loadBalancerName) {
-        deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().body();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class LoadBalancersInner {
         return deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      */
     public void beginDelete(String resourceGroupName, String loadBalancerName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().body();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class LoadBalancersInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,7 +245,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) {
-        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().body();
     }
 
     /**
@@ -271,7 +271,7 @@ public final class LoadBalancersInner {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -318,7 +318,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().body();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class LoadBalancersInner {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -400,7 +400,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class LoadBalancersInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -469,7 +469,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -497,7 +497,7 @@ public final class LoadBalancersInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -554,10 +554,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listAll() {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -590,7 +590,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -605,7 +605,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -630,7 +630,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -653,10 +653,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> list(final String resourceGroupName) {
         ServiceResponse<Page<LoadBalancerInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -691,7 +691,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -707,7 +707,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -759,10 +759,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -798,7 +798,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +840,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,10 +863,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -902,7 +902,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -944,7 +944,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -110,7 +110,7 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      */
     public void delete(String resourceGroupName, String virtualNetworkName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().last().body();
     }
 
     /**
@@ -136,7 +136,7 @@ public final class VirtualNetworksInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -170,7 +170,7 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
     }
 
     /**
@@ -196,7 +196,7 @@ public final class VirtualNetworksInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -249,7 +249,7 @@ public final class VirtualNetworksInner {
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
     }
 
     /**
@@ -275,7 +275,7 @@ public final class VirtualNetworksInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -322,7 +322,7 @@ public final class VirtualNetworksInner {
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).toBlocking().single().body();
     }
 
     /**
@@ -350,7 +350,7 @@ public final class VirtualNetworksInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -404,7 +404,7 @@ public final class VirtualNetworksInner {
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -432,7 +432,7 @@ public final class VirtualNetworksInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -473,7 +473,7 @@ public final class VirtualNetworksInner {
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -501,7 +501,7 @@ public final class VirtualNetworksInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -558,10 +558,10 @@ public final class VirtualNetworksInner {
      */
     public PagedList<VirtualNetworkInner> listAll() {
         ServiceResponse<Page<VirtualNetworkInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<VirtualNetworkInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkInner>(response.body()) {
             @Override
             public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -594,7 +594,7 @@ public final class VirtualNetworksInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Page<VirtualNetworkInner>>() {
                 @Override
                 public Page<VirtualNetworkInner> call(ServiceResponse<Page<VirtualNetworkInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -609,7 +609,7 @@ public final class VirtualNetworksInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(ServiceResponse<Page<VirtualNetworkInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -634,7 +634,7 @@ public final class VirtualNetworksInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -657,10 +657,10 @@ public final class VirtualNetworksInner {
      */
     public PagedList<VirtualNetworkInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<VirtualNetworkInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkInner>(response.body()) {
             @Override
             public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -695,7 +695,7 @@ public final class VirtualNetworksInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Page<VirtualNetworkInner>>() {
                 @Override
                 public Page<VirtualNetworkInner> call(ServiceResponse<Page<VirtualNetworkInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -711,7 +711,7 @@ public final class VirtualNetworksInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(ServiceResponse<Page<VirtualNetworkInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -740,7 +740,7 @@ public final class VirtualNetworksInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -763,7 +763,7 @@ public final class VirtualNetworksInner {
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
     public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName) {
-        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
+        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
     }
 
     /**
@@ -789,7 +789,7 @@ public final class VirtualNetworksInner {
         return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<IPAddressAvailabilityResultInner>, IPAddressAvailabilityResultInner>() {
             @Override
             public IPAddressAvailabilityResultInner call(ServiceResponse<IPAddressAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -836,7 +836,7 @@ public final class VirtualNetworksInner {
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
     public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName, String ipAddress) {
-        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress).toBlocking().single().getBody();
+        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress).toBlocking().single().body();
     }
 
     /**
@@ -864,7 +864,7 @@ public final class VirtualNetworksInner {
         return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress).map(new Func1<ServiceResponse<IPAddressAvailabilityResultInner>, IPAddressAvailabilityResultInner>() {
             @Override
             public IPAddressAvailabilityResultInner call(ServiceResponse<IPAddressAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -917,10 +917,10 @@ public final class VirtualNetworksInner {
      */
     public PagedList<VirtualNetworkInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualNetworkInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkInner>(response.body()) {
             @Override
             public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -956,7 +956,7 @@ public final class VirtualNetworksInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Page<VirtualNetworkInner>>() {
                 @Override
                 public Page<VirtualNetworkInner> call(ServiceResponse<Page<VirtualNetworkInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -972,7 +972,7 @@ public final class VirtualNetworksInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(ServiceResponse<Page<VirtualNetworkInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -998,7 +998,7 @@ public final class VirtualNetworksInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1021,10 +1021,10 @@ public final class VirtualNetworksInner {
      */
     public PagedList<VirtualNetworkInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualNetworkInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkInner>(response.body()) {
             @Override
             public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1060,7 +1060,7 @@ public final class VirtualNetworksInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Page<VirtualNetworkInner>>() {
                 @Override
                 public Page<VirtualNetworkInner> call(ServiceResponse<Page<VirtualNetworkInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1076,7 +1076,7 @@ public final class VirtualNetworksInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkInner>>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(ServiceResponse<Page<VirtualNetworkInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1102,7 +1102,7 @@ public final class VirtualNetworksInner {
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

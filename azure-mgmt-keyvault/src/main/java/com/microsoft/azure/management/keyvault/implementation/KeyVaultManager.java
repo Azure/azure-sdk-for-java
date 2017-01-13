@@ -43,10 +43,10 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      * @return the StorageManager
      */
     public static KeyVaultManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new KeyVaultManager(credentials.getEnvironment()
-                .newRestClientBuilder()
+        return new KeyVaultManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .build(), credentials.getDomain(), subscriptionId);
+                .build(), credentials.domain(), subscriptionId);
     }
 
     /**
@@ -92,9 +92,9 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
                 restClient,
                 subscriptionId,
                 new KeyVaultManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
-        String graphEndpoint = AzureEnvironment.AZURE.getGraphEndpoint();
+        String graphEndpoint = AzureEnvironment.AZURE.graphEndpoint();
         if (restClient.credentials() instanceof AzureTokenCredentials) {
-            graphEndpoint = ((AzureTokenCredentials) restClient.credentials()).getEnvironment().getGraphEndpoint();
+            graphEndpoint = ((AzureTokenCredentials) restClient.credentials()).environment().graphEndpoint();
         }
         graphRbacManager = GraphRbacManager.authenticate(restClient.newBuilder()
                 .withBaseUrl(graphEndpoint)

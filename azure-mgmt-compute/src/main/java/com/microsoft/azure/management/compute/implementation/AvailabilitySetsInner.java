@@ -87,7 +87,7 @@ public final class AvailabilitySetsInner {
      * @return the AvailabilitySetInner object if successful.
      */
     public AvailabilitySetInner createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -115,7 +115,7 @@ public final class AvailabilitySetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
             @Override
             public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -173,7 +173,7 @@ public final class AvailabilitySetsInner {
      * @param availabilitySetName The name of the availability set.
      */
     public void delete(String resourceGroupName, String availabilitySetName) {
-        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
@@ -199,7 +199,7 @@ public final class AvailabilitySetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -253,7 +253,7 @@ public final class AvailabilitySetsInner {
      * @return the AvailabilitySetInner object if successful.
      */
     public AvailabilitySetInner get(String resourceGroupName, String availabilitySetName) {
-        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
@@ -279,7 +279,7 @@ public final class AvailabilitySetsInner {
         return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
             @Override
             public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -332,7 +332,7 @@ public final class AvailabilitySetsInner {
      * @return the List&lt;AvailabilitySetInner&gt; object if successful.
      */
     public List<AvailabilitySetInner> list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -356,7 +356,7 @@ public final class AvailabilitySetsInner {
         return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, List<AvailabilitySetInner>>() {
             @Override
             public List<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -383,7 +383,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
-                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -407,7 +407,7 @@ public final class AvailabilitySetsInner {
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName) {
-        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
@@ -433,7 +433,7 @@ public final class AvailabilitySetsInner {
         return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
             @Override
             public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -464,7 +464,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

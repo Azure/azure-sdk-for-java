@@ -133,7 +133,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void reimage(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        reimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        reimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -161,7 +161,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return reimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -202,7 +202,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginReimage(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginReimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginReimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -230,7 +230,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginReimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -287,7 +287,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void deallocate(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        deallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        deallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -315,7 +315,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return deallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -356,7 +356,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginDeallocate(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -384,7 +384,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -441,7 +441,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void delete(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        deleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -469,7 +469,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -510,7 +510,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -538,7 +538,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -598,7 +598,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @return the VirtualMachineScaleSetVMInner object if successful.
      */
     public VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -626,7 +626,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner>() {
             @Override
             public VirtualMachineScaleSetVMInner call(ServiceResponse<VirtualMachineScaleSetVMInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -685,7 +685,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @return the VirtualMachineScaleSetVMInstanceViewInner object if successful.
      */
     public VirtualMachineScaleSetVMInstanceViewInner getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return getInstanceViewWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        return getInstanceViewWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -713,7 +713,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return getInstanceViewWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<VirtualMachineScaleSetVMInstanceViewInner>, VirtualMachineScaleSetVMInstanceViewInner>() {
             @Override
             public VirtualMachineScaleSetVMInstanceViewInner call(ServiceResponse<VirtualMachineScaleSetVMInstanceViewInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -772,10 +772,10 @@ public final class VirtualMachineScaleSetVMsInner {
      */
     public PagedList<VirtualMachineScaleSetVMInner> list(final String resourceGroupName, final String virtualMachineScaleSetName) {
         ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response = listSinglePageAsync(resourceGroupName, virtualMachineScaleSetName).toBlocking().single();
-        return new PagedList<VirtualMachineScaleSetVMInner>(response.getBody()) {
+        return new PagedList<VirtualMachineScaleSetVMInner>(response.body()) {
             @Override
             public Page<VirtualMachineScaleSetVMInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -812,7 +812,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Page<VirtualMachineScaleSetVMInner>>() {
                 @Override
                 public Page<VirtualMachineScaleSetVMInner> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -829,7 +829,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -867,7 +867,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -887,10 +887,10 @@ public final class VirtualMachineScaleSetVMsInner {
      */
     public PagedList<VirtualMachineScaleSetVMInner> list(final String resourceGroupName, final String virtualMachineScaleSetName, final String filter, final String select, final String expand) {
         ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response = listSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, filter, select, expand).toBlocking().single();
-        return new PagedList<VirtualMachineScaleSetVMInner>(response.getBody()) {
+        return new PagedList<VirtualMachineScaleSetVMInner>(response.body()) {
             @Override
             public Page<VirtualMachineScaleSetVMInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -933,7 +933,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Page<VirtualMachineScaleSetVMInner>>() {
                 @Override
                 public Page<VirtualMachineScaleSetVMInner> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -953,7 +953,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -991,7 +991,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1014,7 +1014,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void powerOff(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        powerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        powerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -1042,7 +1042,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return powerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1083,7 +1083,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginPowerOff(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -1111,7 +1111,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1168,7 +1168,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void restart(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        restartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -1196,7 +1196,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return restartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1237,7 +1237,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -1265,7 +1265,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1322,7 +1322,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void start(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        startWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().getBody();
+        startWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().last().body();
     }
 
     /**
@@ -1350,7 +1350,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return startWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1391,7 +1391,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param instanceId The instance ID of the virtual machine.
      */
     public void beginStart(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().getBody();
+        beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -1419,7 +1419,7 @@ public final class VirtualMachineScaleSetVMsInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1476,10 +1476,10 @@ public final class VirtualMachineScaleSetVMsInner {
      */
     public PagedList<VirtualMachineScaleSetVMInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualMachineScaleSetVMInner>(response.getBody()) {
+        return new PagedList<VirtualMachineScaleSetVMInner>(response.body()) {
             @Override
             public Page<VirtualMachineScaleSetVMInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1515,7 +1515,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Page<VirtualMachineScaleSetVMInner>>() {
                 @Override
                 public Page<VirtualMachineScaleSetVMInner> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1531,7 +1531,7 @@ public final class VirtualMachineScaleSetVMsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetVMInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1557,7 +1557,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetVMInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

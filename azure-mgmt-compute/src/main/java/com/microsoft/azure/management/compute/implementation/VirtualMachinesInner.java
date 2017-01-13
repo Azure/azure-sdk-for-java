@@ -166,7 +166,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineCaptureResultInner object if successful.
      */
     public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
-        return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
+        return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class VirtualMachinesInner {
         return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>() {
             @Override
             public VirtualMachineCaptureResultInner call(ServiceResponse<VirtualMachineCaptureResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -237,7 +237,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineCaptureResultInner object if successful.
      */
     public VirtualMachineCaptureResultInner beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
-        return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
+        return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -265,7 +265,7 @@ public final class VirtualMachinesInner {
         return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>() {
             @Override
             public VirtualMachineCaptureResultInner call(ServiceResponse<VirtualMachineCaptureResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -326,7 +326,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineInner object if successful.
      */
     public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -354,7 +354,7 @@ public final class VirtualMachinesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
             @Override
             public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -397,7 +397,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineInner object if successful.
      */
     public VirtualMachineInner beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -425,7 +425,7 @@ public final class VirtualMachinesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
             @Override
             public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -484,7 +484,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void delete(String resourceGroupName, String vmName) {
-        deleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -510,7 +510,7 @@ public final class VirtualMachinesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -546,7 +546,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginDelete(String resourceGroupName, String vmName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -572,7 +572,7 @@ public final class VirtualMachinesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -626,7 +626,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineInner object if successful.
      */
     public VirtualMachineInner get(String resourceGroupName, String vmName) {
-        return getWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -652,7 +652,7 @@ public final class VirtualMachinesInner {
         return getWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
             @Override
             public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -701,7 +701,7 @@ public final class VirtualMachinesInner {
      * @return the VirtualMachineInner object if successful.
      */
     public VirtualMachineInner get(String resourceGroupName, String vmName, InstanceViewTypes expand) {
-        return getWithServiceResponseAsync(resourceGroupName, vmName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vmName, expand).toBlocking().single().body();
     }
 
     /**
@@ -729,7 +729,7 @@ public final class VirtualMachinesInner {
         return getWithServiceResponseAsync(resourceGroupName, vmName, expand).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
             @Override
             public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -783,7 +783,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void deallocate(String resourceGroupName, String vmName) {
-        deallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        deallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -809,7 +809,7 @@ public final class VirtualMachinesInner {
         return deallocateWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -845,7 +845,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginDeallocate(String resourceGroupName, String vmName) {
-        beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -871,7 +871,7 @@ public final class VirtualMachinesInner {
         return beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -923,7 +923,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void generalize(String resourceGroupName, String vmName) {
-        generalizeWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        generalizeWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -949,7 +949,7 @@ public final class VirtualMachinesInner {
         return generalizeWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1002,10 +1002,10 @@ public final class VirtualMachinesInner {
      */
     public PagedList<VirtualMachineInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualMachineInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.body()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1040,7 +1040,7 @@ public final class VirtualMachinesInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
                 public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1056,7 +1056,7 @@ public final class VirtualMachinesInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1087,7 +1087,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1109,10 +1109,10 @@ public final class VirtualMachinesInner {
      */
     public PagedList<VirtualMachineInner> listAll() {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.body()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1145,7 +1145,7 @@ public final class VirtualMachinesInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
                 public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1160,7 +1160,7 @@ public final class VirtualMachinesInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1187,7 +1187,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1210,7 +1210,7 @@ public final class VirtualMachinesInner {
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName) {
-        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -1236,7 +1236,7 @@ public final class VirtualMachinesInner {
         return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
             @Override
             public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1267,7 +1267,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1290,7 +1290,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void powerOff(String resourceGroupName, String vmName) {
-        powerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        powerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -1316,7 +1316,7 @@ public final class VirtualMachinesInner {
         return powerOffWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1352,7 +1352,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginPowerOff(String resourceGroupName, String vmName) {
-        beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -1378,7 +1378,7 @@ public final class VirtualMachinesInner {
         return beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1430,7 +1430,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void restart(String resourceGroupName, String vmName) {
-        restartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -1456,7 +1456,7 @@ public final class VirtualMachinesInner {
         return restartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1492,7 +1492,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginRestart(String resourceGroupName, String vmName) {
-        beginRestartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginRestartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -1518,7 +1518,7 @@ public final class VirtualMachinesInner {
         return beginRestartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1570,7 +1570,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void start(String resourceGroupName, String vmName) {
-        startWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        startWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -1596,7 +1596,7 @@ public final class VirtualMachinesInner {
         return startWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1632,7 +1632,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginStart(String resourceGroupName, String vmName) {
-        beginStartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginStartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -1658,7 +1658,7 @@ public final class VirtualMachinesInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1710,7 +1710,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void redeploy(String resourceGroupName, String vmName) {
-        redeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
+        redeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().body();
     }
 
     /**
@@ -1736,7 +1736,7 @@ public final class VirtualMachinesInner {
         return redeployWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1772,7 +1772,7 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      */
     public void beginRedeploy(String resourceGroupName, String vmName) {
-        beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
+        beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().body();
     }
 
     /**
@@ -1798,7 +1798,7 @@ public final class VirtualMachinesInner {
         return beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1851,10 +1851,10 @@ public final class VirtualMachinesInner {
      */
     public PagedList<VirtualMachineInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.body()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1890,7 +1890,7 @@ public final class VirtualMachinesInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
                 public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1906,7 +1906,7 @@ public final class VirtualMachinesInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1932,7 +1932,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1955,10 +1955,10 @@ public final class VirtualMachinesInner {
      */
     public PagedList<VirtualMachineInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.body()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1994,7 +1994,7 @@ public final class VirtualMachinesInner {
             .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
                 public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2010,7 +2010,7 @@ public final class VirtualMachinesInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2036,7 +2036,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

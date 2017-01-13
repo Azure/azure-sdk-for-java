@@ -104,7 +104,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -134,7 +134,7 @@ public final class ElasticPoolsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -180,7 +180,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner beginCreateOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -210,7 +210,7 @@ public final class ElasticPoolsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -273,7 +273,7 @@ public final class ElasticPoolsInner {
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      */
     public void delete(String resourceGroupName, String serverName, String elasticPoolName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -301,7 +301,7 @@ public final class ElasticPoolsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -358,7 +358,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner get(String resourceGroupName, String serverName, String elasticPoolName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -386,7 +386,7 @@ public final class ElasticPoolsInner {
         return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -442,7 +442,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolInner&gt; object if successful.
      */
     public List<ElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -468,7 +468,7 @@ public final class ElasticPoolsInner {
         return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolInner>>, List<ElasticPoolInner>>() {
             @Override
             public List<ElasticPoolInner> call(ServiceResponse<List<ElasticPoolInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -497,7 +497,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolInner>> result = listByServerDelegate(response);
-                        ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -522,7 +522,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolActivityInner&gt; object if successful.
      */
     public List<ElasticPoolActivityInner> listActivity(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -550,7 +550,7 @@ public final class ElasticPoolsInner {
         return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<ElasticPoolActivityInner>>, List<ElasticPoolActivityInner>>() {
             @Override
             public List<ElasticPoolActivityInner> call(ServiceResponse<List<ElasticPoolActivityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -583,7 +583,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolActivityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolActivityInner>> result = listActivityDelegate(response);
-                        ServiceResponse<List<ElasticPoolActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolActivityInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -608,7 +608,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolDatabaseActivityInner&gt; object if successful.
      */
     public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -636,7 +636,7 @@ public final class ElasticPoolsInner {
         return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
             @Override
             public List<ElasticPoolDatabaseActivityInner> call(ServiceResponse<List<ElasticPoolDatabaseActivityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -669,7 +669,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
-                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -695,7 +695,7 @@ public final class ElasticPoolsInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner getDatabase(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
-        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().getBody();
+        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -725,7 +725,7 @@ public final class ElasticPoolsInner {
         return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -786,7 +786,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listDatabases(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -814,7 +814,7 @@ public final class ElasticPoolsInner {
         return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
             @Override
             public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -847,7 +847,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DatabaseInner>> result = listDatabasesDelegate(response);
-                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

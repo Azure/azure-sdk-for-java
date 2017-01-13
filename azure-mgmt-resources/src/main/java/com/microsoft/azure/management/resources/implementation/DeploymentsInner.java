@@ -117,7 +117,7 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment to delete.
      */
     public void delete(String resourceGroupName, String deploymentName) {
-        deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().body();
     }
 
     /**
@@ -145,7 +145,7 @@ public final class DeploymentsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -183,7 +183,7 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment to delete.
      */
     public void beginDelete(String resourceGroupName, String deploymentName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
@@ -211,7 +211,7 @@ public final class DeploymentsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -266,7 +266,7 @@ public final class DeploymentsInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
@@ -292,7 +292,7 @@ public final class DeploymentsInner {
         return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -349,7 +349,7 @@ public final class DeploymentsInner {
      * @return the DeploymentExtendedInner object if successful.
      */
     public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -379,7 +379,7 @@ public final class DeploymentsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -424,7 +424,7 @@ public final class DeploymentsInner {
      * @return the DeploymentExtendedInner object if successful.
      */
     public DeploymentExtendedInner beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -454,7 +454,7 @@ public final class DeploymentsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -515,7 +515,7 @@ public final class DeploymentsInner {
      * @return the DeploymentExtendedInner object if successful.
      */
     public DeploymentExtendedInner get(String resourceGroupName, String deploymentName) {
-        return getWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
@@ -541,7 +541,7 @@ public final class DeploymentsInner {
         return getWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -595,7 +595,7 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment to cancel.
      */
     public void cancel(String resourceGroupName, String deploymentName) {
-        cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
@@ -623,7 +623,7 @@ public final class DeploymentsInner {
         return cancelWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -678,7 +678,7 @@ public final class DeploymentsInner {
      * @return the DeploymentValidateResultInner object if successful.
      */
     public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
+        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -706,7 +706,7 @@ public final class DeploymentsInner {
         return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentValidateResultInner>, DeploymentValidateResultInner>() {
             @Override
             public DeploymentValidateResultInner call(ServiceResponse<DeploymentValidateResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -766,7 +766,7 @@ public final class DeploymentsInner {
      * @return the DeploymentExportResultInner object if successful.
      */
     public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) {
-        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
@@ -792,7 +792,7 @@ public final class DeploymentsInner {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExportResultInner>, DeploymentExportResultInner>() {
             @Override
             public DeploymentExportResultInner call(ServiceResponse<DeploymentExportResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -846,10 +846,10 @@ public final class DeploymentsInner {
      */
     public PagedList<DeploymentExtendedInner> list(final String resourceGroupName) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -884,7 +884,7 @@ public final class DeploymentsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -900,7 +900,7 @@ public final class DeploymentsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -933,7 +933,7 @@ public final class DeploymentsInner {
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -951,10 +951,10 @@ public final class DeploymentsInner {
      */
     public PagedList<DeploymentExtendedInner> list(final String resourceGroupName, final String filter, final Integer top) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName, filter, top).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -993,7 +993,7 @@ public final class DeploymentsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1011,7 +1011,7 @@ public final class DeploymentsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1044,7 +1044,7 @@ public final class DeploymentsInner {
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1067,10 +1067,10 @@ public final class DeploymentsInner {
      */
     public PagedList<DeploymentExtendedInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1106,7 +1106,7 @@ public final class DeploymentsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1122,7 +1122,7 @@ public final class DeploymentsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1148,7 +1148,7 @@ public final class DeploymentsInner {
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

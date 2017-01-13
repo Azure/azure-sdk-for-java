@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -62,7 +63,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      * @return the NetworkManager
      */
     public static NetworkManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new NetworkManager(credentials.getEnvironment().newRestClientBuilder()
+        return new NetworkManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

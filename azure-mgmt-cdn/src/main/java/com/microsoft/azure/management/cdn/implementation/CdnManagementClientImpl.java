@@ -19,7 +19,6 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -318,7 +317,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
      * @return the CheckNameAvailabilityOutputInner object if successful.
      */
     public CheckNameAvailabilityOutputInner checkNameAvailability(String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
+        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
     /**
@@ -342,7 +341,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
         return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<CheckNameAvailabilityOutputInner>, CheckNameAvailabilityOutputInner>() {
             @Override
             public CheckNameAvailabilityOutputInner call(ServiceResponse<CheckNameAvailabilityOutputInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -390,10 +389,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<ResourceUsageInner> checkResourceUsage() {
         ServiceResponse<Page<ResourceUsageInner>> response = checkResourceUsageSinglePageAsync().toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return checkResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return checkResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -426,7 +425,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -441,7 +440,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -468,7 +467,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = checkResourceUsageDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -490,10 +489,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<OperationInner> listOperations() {
         ServiceResponse<Page<OperationInner>> response = listOperationsSinglePageAsync().toBlocking().single();
-        return new PagedList<OperationInner>(response.getBody()) {
+        return new PagedList<OperationInner>(response.body()) {
             @Override
             public Page<OperationInner> nextPage(String nextPageLink) {
-                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -526,7 +525,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<OperationInner>>, Page<OperationInner>>() {
                 @Override
                 public Page<OperationInner> call(ServiceResponse<Page<OperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -541,7 +540,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<OperationInner>>, Observable<ServiceResponse<Page<OperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OperationInner>>> call(ServiceResponse<Page<OperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -565,7 +564,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<OperationInner>> result = listOperationsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -588,10 +587,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<ResourceUsageInner> checkResourceUsageNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceUsageInner>> response = checkResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceUsageInner>(response.getBody()) {
+        return new PagedList<ResourceUsageInner>(response.body()) {
             @Override
             public Page<ResourceUsageInner> nextPage(String nextPageLink) {
-                return checkResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return checkResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -627,7 +626,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
                 @Override
                 public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -643,7 +642,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -669,7 +668,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceUsageInner>> result = checkResourceUsageNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -692,10 +691,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<OperationInner> listOperationsNext(final String nextPageLink) {
         ServiceResponse<Page<OperationInner>> response = listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<OperationInner>(response.getBody()) {
+        return new PagedList<OperationInner>(response.body()) {
             @Override
             public Page<OperationInner> nextPage(String nextPageLink) {
-                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -731,7 +730,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<OperationInner>>, Page<OperationInner>>() {
                 @Override
                 public Page<OperationInner> call(ServiceResponse<Page<OperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -747,7 +746,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<OperationInner>>, Observable<ServiceResponse<Page<OperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OperationInner>>> call(ServiceResponse<Page<OperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -773,7 +772,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<OperationInner>> result = listOperationsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

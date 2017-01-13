@@ -139,7 +139,7 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the express route circuit.
      */
     public void delete(String resourceGroupName, String circuitName) {
-        deleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().last().body();
     }
 
     /**
@@ -165,7 +165,7 @@ public final class ExpressRouteCircuitsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -199,7 +199,7 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the express route circuit.
      */
     public void beginDelete(String resourceGroupName, String circuitName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
@@ -225,7 +225,7 @@ public final class ExpressRouteCircuitsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -278,7 +278,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner get(String resourceGroupName, String circuitName) {
-        return getWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
@@ -304,7 +304,7 @@ public final class ExpressRouteCircuitsInner {
         return getWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -357,7 +357,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -385,7 +385,7 @@ public final class ExpressRouteCircuitsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -426,7 +426,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -454,7 +454,7 @@ public final class ExpressRouteCircuitsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -514,7 +514,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
@@ -544,7 +544,7 @@ public final class ExpressRouteCircuitsInner {
         return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsArpTableListResultInner call(ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -589,7 +589,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsArpTableListResultInner beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
@@ -619,7 +619,7 @@ public final class ExpressRouteCircuitsInner {
         return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsArpTableListResultInner call(ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -682,7 +682,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
@@ -712,7 +712,7 @@ public final class ExpressRouteCircuitsInner {
         return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -757,7 +757,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableListResultInner beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
@@ -787,7 +787,7 @@ public final class ExpressRouteCircuitsInner {
         return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -850,7 +850,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
@@ -880,7 +880,7 @@ public final class ExpressRouteCircuitsInner {
         return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableSummaryListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -925,7 +925,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
@@ -955,7 +955,7 @@ public final class ExpressRouteCircuitsInner {
         return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableSummaryListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1016,7 +1016,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
     public ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName) {
-        return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
@@ -1042,7 +1042,7 @@ public final class ExpressRouteCircuitsInner {
         return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<ExpressRouteCircuitStatsInner>, ExpressRouteCircuitStatsInner>() {
             @Override
             public ExpressRouteCircuitStatsInner call(ServiceResponse<ExpressRouteCircuitStatsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1095,7 +1095,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
     public ExpressRouteCircuitStatsInner getPeeringStats(String resourceGroupName, String circuitName, String peeringName) {
-        return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().getBody();
+        return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().body();
     }
 
     /**
@@ -1123,7 +1123,7 @@ public final class ExpressRouteCircuitsInner {
         return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).map(new Func1<ServiceResponse<ExpressRouteCircuitStatsInner>, ExpressRouteCircuitStatsInner>() {
             @Override
             public ExpressRouteCircuitStatsInner call(ServiceResponse<ExpressRouteCircuitStatsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1179,10 +1179,10 @@ public final class ExpressRouteCircuitsInner {
      */
     public PagedList<ExpressRouteCircuitInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1217,7 +1217,7 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1233,7 +1233,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1262,7 +1262,7 @@ public final class ExpressRouteCircuitsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1284,10 +1284,10 @@ public final class ExpressRouteCircuitsInner {
      */
     public PagedList<ExpressRouteCircuitInner> listAll() {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1320,7 +1320,7 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1335,7 +1335,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1360,7 +1360,7 @@ public final class ExpressRouteCircuitsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1383,10 +1383,10 @@ public final class ExpressRouteCircuitsInner {
      */
     public PagedList<ExpressRouteCircuitInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1422,7 +1422,7 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1438,7 +1438,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1464,7 +1464,7 @@ public final class ExpressRouteCircuitsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1487,10 +1487,10 @@ public final class ExpressRouteCircuitsInner {
      */
     public PagedList<ExpressRouteCircuitInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1526,7 +1526,7 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1542,7 +1542,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1568,7 +1568,7 @@ public final class ExpressRouteCircuitsInner {
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

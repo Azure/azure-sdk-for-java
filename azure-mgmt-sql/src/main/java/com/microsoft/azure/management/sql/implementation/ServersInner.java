@@ -116,7 +116,7 @@ public final class ServersInner {
      * @return the ServerFirewallRuleInner object if successful.
      */
     public ServerFirewallRuleInner createOrUpdateFirewallRule(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
-        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).toBlocking().single().getBody();
+        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -146,7 +146,7 @@ public final class ServersInner {
         return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
             @Override
             public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -208,7 +208,7 @@ public final class ServersInner {
      * @param firewallRuleName The name of the Azure SQL server firewall rule.
      */
     public void deleteFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
-        deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().getBody();
+        deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().body();
     }
 
     /**
@@ -236,7 +236,7 @@ public final class ServersInner {
         return deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -293,7 +293,7 @@ public final class ServersInner {
      * @return the ServerFirewallRuleInner object if successful.
      */
     public ServerFirewallRuleInner getFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
-        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().getBody();
+        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().body();
     }
 
     /**
@@ -321,7 +321,7 @@ public final class ServersInner {
         return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
             @Override
             public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -377,7 +377,7 @@ public final class ServersInner {
      * @return the List&lt;ServerFirewallRuleInner&gt; object if successful.
      */
     public List<ServerFirewallRuleInner> listFirewallRules(String resourceGroupName, String serverName) {
-        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -403,7 +403,7 @@ public final class ServersInner {
         return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServerFirewallRuleInner>>, List<ServerFirewallRuleInner>>() {
             @Override
             public List<ServerFirewallRuleInner> call(ServiceResponse<List<ServerFirewallRuleInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -432,7 +432,7 @@ public final class ServersInner {
                 public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServerFirewallRuleInner>> result = listFirewallRulesDelegate(response);
-                        ServiceResponse<List<ServerFirewallRuleInner>> clientResponse = new ServiceResponse<List<ServerFirewallRuleInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServerFirewallRuleInner>> clientResponse = new ServiceResponse<List<ServerFirewallRuleInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -454,7 +454,7 @@ public final class ServersInner {
      * @return the List&lt;ServerInner&gt; object if successful.
      */
     public List<ServerInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -476,7 +476,7 @@ public final class ServersInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
             @Override
             public List<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -497,7 +497,7 @@ public final class ServersInner {
                 public Observable<ServiceResponse<List<ServerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServerInner>> result = listDelegate(response);
-                        ServiceResponse<List<ServerInner>> clientResponse = new ServiceResponse<List<ServerInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServerInner>> clientResponse = new ServiceResponse<List<ServerInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -522,7 +522,7 @@ public final class ServersInner {
      * @return the ServerInner object if successful.
      */
     public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -550,7 +550,7 @@ public final class ServersInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ServerInner>, ServerInner>() {
             @Override
             public ServerInner call(ServiceResponse<ServerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -607,7 +607,7 @@ public final class ServersInner {
      * @param serverName The name of the Azure SQL server.
      */
     public void delete(String resourceGroupName, String serverName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -633,7 +633,7 @@ public final class ServersInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -685,7 +685,7 @@ public final class ServersInner {
      * @return the ServerInner object if successful.
      */
     public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -711,7 +711,7 @@ public final class ServersInner {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<ServerInner>, ServerInner>() {
             @Override
             public ServerInner call(ServiceResponse<ServerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -762,7 +762,7 @@ public final class ServersInner {
      * @return the List&lt;ServerInner&gt; object if successful.
      */
     public List<ServerInner> listByResourceGroup(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -786,7 +786,7 @@ public final class ServersInner {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
             @Override
             public List<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -811,7 +811,7 @@ public final class ServersInner {
                 public Observable<ServiceResponse<List<ServerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServerInner>> result = listByResourceGroupDelegate(response);
-                        ServiceResponse<List<ServerInner>> clientResponse = new ServiceResponse<List<ServerInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServerInner>> clientResponse = new ServiceResponse<List<ServerInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -835,7 +835,7 @@ public final class ServersInner {
      * @return the List&lt;ServerMetricInner&gt; object if successful.
      */
     public List<ServerMetricInner> listUsages(String resourceGroupName, String serverName) {
-        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -861,7 +861,7 @@ public final class ServersInner {
         return listUsagesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServerMetricInner>>, List<ServerMetricInner>>() {
             @Override
             public List<ServerMetricInner> call(ServiceResponse<List<ServerMetricInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -890,7 +890,7 @@ public final class ServersInner {
                 public Observable<ServiceResponse<List<ServerMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServerMetricInner>> result = listUsagesDelegate(response);
-                        ServiceResponse<List<ServerMetricInner>> clientResponse = new ServiceResponse<List<ServerMetricInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServerMetricInner>> clientResponse = new ServiceResponse<List<ServerMetricInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -915,7 +915,7 @@ public final class ServersInner {
      * @return the ServiceObjectiveInner object if successful.
      */
     public ServiceObjectiveInner getServiceObjective(String resourceGroupName, String serverName, String serviceObjectiveName) {
-        return getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName).toBlocking().single().getBody();
+        return getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName).toBlocking().single().body();
     }
 
     /**
@@ -943,7 +943,7 @@ public final class ServersInner {
         return getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName).map(new Func1<ServiceResponse<ServiceObjectiveInner>, ServiceObjectiveInner>() {
             @Override
             public ServiceObjectiveInner call(ServiceResponse<ServiceObjectiveInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -999,7 +999,7 @@ public final class ServersInner {
      * @return the List&lt;ServiceObjectiveInner&gt; object if successful.
      */
     public List<ServiceObjectiveInner> listServiceObjectives(String resourceGroupName, String serverName) {
-        return listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -1025,7 +1025,7 @@ public final class ServersInner {
         return listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServiceObjectiveInner>>, List<ServiceObjectiveInner>>() {
             @Override
             public List<ServiceObjectiveInner> call(ServiceResponse<List<ServiceObjectiveInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1054,7 +1054,7 @@ public final class ServersInner {
                 public Observable<ServiceResponse<List<ServiceObjectiveInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServiceObjectiveInner>> result = listServiceObjectivesDelegate(response);
-                        ServiceResponse<List<ServiceObjectiveInner>> clientResponse = new ServiceResponse<List<ServiceObjectiveInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServiceObjectiveInner>> clientResponse = new ServiceResponse<List<ServiceObjectiveInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

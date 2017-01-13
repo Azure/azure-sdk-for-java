@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
@@ -48,7 +49,8 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
      * @return the BatchManager
      */
     public static BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new BatchManager(credentials.getEnvironment().newRestClientBuilder()
+        return new BatchManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

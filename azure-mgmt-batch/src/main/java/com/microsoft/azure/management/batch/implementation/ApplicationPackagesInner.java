@@ -84,7 +84,7 @@ public final class ApplicationPackagesInner {
      * @param format The format of the application package binary file.
      */
     public void activate(String resourceGroupName, String accountName, String applicationId, String version, String format) {
-        activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).toBlocking().single().getBody();
+        activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).toBlocking().single().body();
     }
 
     /**
@@ -116,7 +116,7 @@ public final class ApplicationPackagesInner {
         return activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -186,7 +186,7 @@ public final class ApplicationPackagesInner {
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner create(String resourceGroupName, String accountName, String applicationId, String version) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -216,7 +216,7 @@ public final class ApplicationPackagesInner {
         return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<ApplicationPackageInner>, ApplicationPackageInner>() {
             @Override
             public ApplicationPackageInner call(ServiceResponse<ApplicationPackageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -279,7 +279,7 @@ public final class ApplicationPackagesInner {
      * @param version The version of the application to delete.
      */
     public void delete(String resourceGroupName, String accountName, String applicationId, String version) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -309,7 +309,7 @@ public final class ApplicationPackagesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -373,7 +373,7 @@ public final class ApplicationPackagesInner {
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner get(String resourceGroupName, String accountName, String applicationId, String version) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -403,7 +403,7 @@ public final class ApplicationPackagesInner {
         return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<ApplicationPackageInner>, ApplicationPackageInner>() {
             @Override
             public ApplicationPackageInner call(ServiceResponse<ApplicationPackageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

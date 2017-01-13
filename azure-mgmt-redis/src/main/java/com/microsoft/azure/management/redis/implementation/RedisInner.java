@@ -144,7 +144,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -172,7 +172,7 @@ public final class RedisInner {
         return createWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -215,7 +215,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner beginCreate(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -243,7 +243,7 @@ public final class RedisInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -304,7 +304,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -332,7 +332,7 @@ public final class RedisInner {
         return updateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -390,7 +390,7 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
     /**
@@ -416,7 +416,7 @@ public final class RedisInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -452,7 +452,7 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      */
     public void beginDelete(String resourceGroupName, String name) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -478,7 +478,7 @@ public final class RedisInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -532,7 +532,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -558,7 +558,7 @@ public final class RedisInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -612,10 +612,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -650,7 +650,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -666,7 +666,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -697,7 +697,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -719,10 +719,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> list() {
         ServiceResponse<Page<RedisResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -755,7 +755,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -770,7 +770,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -797,7 +797,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -820,7 +820,7 @@ public final class RedisInner {
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
-        return listKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -846,7 +846,7 @@ public final class RedisInner {
         return listKeysWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisAccessKeysInner>, RedisAccessKeysInner>() {
             @Override
             public RedisAccessKeysInner call(ServiceResponse<RedisAccessKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -901,7 +901,7 @@ public final class RedisInner {
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).toBlocking().single().getBody();
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).toBlocking().single().body();
     }
 
     /**
@@ -929,7 +929,7 @@ public final class RedisInner {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).map(new Func1<ServiceResponse<RedisAccessKeysInner>, RedisAccessKeysInner>() {
             @Override
             public RedisAccessKeysInner call(ServiceResponse<RedisAccessKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -989,7 +989,7 @@ public final class RedisInner {
      * @param parameters Specifies which Redis node(s) to reboot.
      */
     public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
-        forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1017,7 +1017,7 @@ public final class RedisInner {
         return forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1076,7 +1076,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis import operation.
      */
     public void importData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
-        importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1104,7 +1104,7 @@ public final class RedisInner {
         return importDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1146,7 +1146,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis import operation.
      */
     public void beginImportData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
-        beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1174,7 +1174,7 @@ public final class RedisInner {
         return beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1232,7 +1232,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis export operation.
      */
     public void exportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
-        exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1260,7 +1260,7 @@ public final class RedisInner {
         return exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1302,7 +1302,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis export operation.
      */
     public void beginExportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
-        beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1330,7 +1330,7 @@ public final class RedisInner {
         return beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1388,10 +1388,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1427,7 +1427,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1443,7 +1443,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1469,7 +1469,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1492,10 +1492,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1531,7 +1531,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1547,7 +1547,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1573,7 +1573,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -83,7 +83,7 @@ public final class SubscriptionsInner {
      * @return the List&lt;LocationInner&gt; object if successful.
      */
     public List<LocationInner> listLocations(String subscriptionId) {
-        return listLocationsWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
+        return listLocationsWithServiceResponseAsync(subscriptionId).toBlocking().single().body();
     }
 
     /**
@@ -109,7 +109,7 @@ public final class SubscriptionsInner {
         return listLocationsWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<List<LocationInner>>, List<LocationInner>>() {
             @Override
             public List<LocationInner> call(ServiceResponse<List<LocationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -134,7 +134,7 @@ public final class SubscriptionsInner {
                 public Observable<ServiceResponse<List<LocationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LocationInner>> result = listLocationsDelegate(response);
-                        ServiceResponse<List<LocationInner>> clientResponse = new ServiceResponse<List<LocationInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<LocationInner>> clientResponse = new ServiceResponse<List<LocationInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -157,7 +157,7 @@ public final class SubscriptionsInner {
      * @return the SubscriptionInner object if successful.
      */
     public SubscriptionInner get(String subscriptionId) {
-        return getWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(subscriptionId).toBlocking().single().body();
     }
 
     /**
@@ -181,7 +181,7 @@ public final class SubscriptionsInner {
         return getWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<SubscriptionInner>, SubscriptionInner>() {
             @Override
             public SubscriptionInner call(ServiceResponse<SubscriptionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -227,10 +227,10 @@ public final class SubscriptionsInner {
      */
     public PagedList<SubscriptionInner> list() {
         ServiceResponse<Page<SubscriptionInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<SubscriptionInner>(response.getBody()) {
+        return new PagedList<SubscriptionInner>(response.body()) {
             @Override
             public Page<SubscriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -263,7 +263,7 @@ public final class SubscriptionsInner {
             .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
                 @Override
                 public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -278,7 +278,7 @@ public final class SubscriptionsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -302,7 +302,7 @@ public final class SubscriptionsInner {
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<SubscriptionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -325,10 +325,10 @@ public final class SubscriptionsInner {
      */
     public PagedList<SubscriptionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SubscriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SubscriptionInner>(response.getBody()) {
+        return new PagedList<SubscriptionInner>(response.body()) {
             @Override
             public Page<SubscriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -364,7 +364,7 @@ public final class SubscriptionsInner {
             .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
                 @Override
                 public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -380,7 +380,7 @@ public final class SubscriptionsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -406,7 +406,7 @@ public final class SubscriptionsInner {
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<SubscriptionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

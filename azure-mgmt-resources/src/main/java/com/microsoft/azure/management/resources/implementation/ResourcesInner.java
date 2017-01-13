@@ -137,7 +137,7 @@ public final class ResourcesInner {
      * @param parameters Parameters for moving resources.
      */
     public void moveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
-        moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().last().getBody();
+        moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -165,7 +165,7 @@ public final class ResourcesInner {
         return moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -204,7 +204,7 @@ public final class ResourcesInner {
      * @param parameters Parameters for moving resources.
      */
     public void beginMoveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
-        beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().single().getBody();
+        beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -232,7 +232,7 @@ public final class ResourcesInner {
         return beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -287,10 +287,10 @@ public final class ResourcesInner {
      */
     public PagedList<GenericResourceInner> list() {
         ServiceResponse<Page<GenericResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -323,7 +323,7 @@ public final class ResourcesInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -338,7 +338,7 @@ public final class ResourcesInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -368,7 +368,7 @@ public final class ResourcesInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -386,10 +386,10 @@ public final class ResourcesInner {
      */
     public PagedList<GenericResourceInner> list(final String filter, final String expand, final Integer top) {
         ServiceResponse<Page<GenericResourceInner>> response = listSinglePageAsync(filter, expand, top).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -428,7 +428,7 @@ public final class ResourcesInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -446,7 +446,7 @@ public final class ResourcesInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -476,7 +476,7 @@ public final class ResourcesInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -503,7 +503,7 @@ public final class ResourcesInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -537,7 +537,7 @@ public final class ResourcesInner {
         return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -608,7 +608,7 @@ public final class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      */
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().last().body();
     }
 
     /**
@@ -642,7 +642,7 @@ public final class ResourcesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -695,7 +695,7 @@ public final class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      */
     public void beginDelete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -729,7 +729,7 @@ public final class ResourcesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -802,7 +802,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().last().body();
     }
 
     /**
@@ -838,7 +838,7 @@ public final class ResourcesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -898,7 +898,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner beginCreateOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().single().body();
     }
 
     /**
@@ -934,7 +934,7 @@ public final class ResourcesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1012,7 +1012,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return getWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1046,7 +1046,7 @@ public final class ResourcesInner {
         return getWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1113,7 +1113,7 @@ public final class ResourcesInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistenceById(String resourceId, String apiVersion) {
-        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1139,7 +1139,7 @@ public final class ResourcesInner {
         return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1187,7 +1187,7 @@ public final class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      */
     public void deleteById(String resourceId, String apiVersion) {
-        deleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().last().getBody();
+        deleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().last().body();
     }
 
     /**
@@ -1213,7 +1213,7 @@ public final class ResourcesInner {
         return deleteByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1243,7 +1243,7 @@ public final class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      */
     public void beginDeleteById(String resourceId, String apiVersion) {
-        beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+        beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1269,7 +1269,7 @@ public final class ResourcesInner {
         return beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1319,7 +1319,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().last().getBody();
+        return createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1347,7 +1347,7 @@ public final class ResourcesInner {
         return createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1384,7 +1384,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner beginCreateOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1412,7 +1412,7 @@ public final class ResourcesInner {
         return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1467,7 +1467,7 @@ public final class ResourcesInner {
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner getById(String resourceId, String apiVersion) {
-        return getByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+        return getByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1493,7 +1493,7 @@ public final class ResourcesInner {
         return getByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
             @Override
             public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1541,10 +1541,10 @@ public final class ResourcesInner {
      */
     public PagedList<GenericResourceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<GenericResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1580,7 +1580,7 @@ public final class ResourcesInner {
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1596,7 +1596,7 @@ public final class ResourcesInner {
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1622,7 +1622,7 @@ public final class ResourcesInner {
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GenericResourceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

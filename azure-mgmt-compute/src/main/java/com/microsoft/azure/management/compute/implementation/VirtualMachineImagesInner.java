@@ -85,7 +85,7 @@ public final class VirtualMachineImagesInner {
      * @return the VirtualMachineImageInner object if successful.
      */
     public VirtualMachineImageInner get(String location, String publisherName, String offer, String skus, String version) {
-        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).toBlocking().single().body();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class VirtualMachineImagesInner {
         return getWithServiceResponseAsync(location, publisherName, offer, skus, version).map(new Func1<ServiceResponse<VirtualMachineImageInner>, VirtualMachineImageInner>() {
             @Override
             public VirtualMachineImageInner call(ServiceResponse<VirtualMachineImageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -185,7 +185,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(location, publisherName, offer, skus).toBlocking().single().body();
     }
 
     /**
@@ -215,7 +215,7 @@ public final class VirtualMachineImagesInner {
         return listWithServiceResponseAsync(location, publisherName, offer, skus).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -278,7 +278,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().body();
     }
 
     /**
@@ -314,7 +314,7 @@ public final class VirtualMachineImagesInner {
         return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -379,7 +379,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listOffers(String location, String publisherName) {
-        return listOffersWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
+        return listOffersWithServiceResponseAsync(location, publisherName).toBlocking().single().body();
     }
 
     /**
@@ -405,7 +405,7 @@ public final class VirtualMachineImagesInner {
         return listOffersWithServiceResponseAsync(location, publisherName).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -458,7 +458,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listPublishers(String location) {
-        return listPublishersWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return listPublishersWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -482,7 +482,7 @@ public final class VirtualMachineImagesInner {
         return listPublishersWithServiceResponseAsync(location).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -533,7 +533,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listSkus(String location, String publisherName, String offer) {
-        return listSkusWithServiceResponseAsync(location, publisherName, offer).toBlocking().single().getBody();
+        return listSkusWithServiceResponseAsync(location, publisherName, offer).toBlocking().single().body();
     }
 
     /**
@@ -561,7 +561,7 @@ public final class VirtualMachineImagesInner {
         return listSkusWithServiceResponseAsync(location, publisherName, offer).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

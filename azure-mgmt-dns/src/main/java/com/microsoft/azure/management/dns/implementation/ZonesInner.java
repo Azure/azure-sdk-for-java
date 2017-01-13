@@ -104,7 +104,7 @@ public final class ZonesInner {
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class ZonesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -189,7 +189,7 @@ public final class ZonesInner {
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).toBlocking().single().body();
     }
 
     /**
@@ -221,7 +221,7 @@ public final class ZonesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -283,7 +283,7 @@ public final class ZonesInner {
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().last().getBody();
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().last().body();
     }
 
     /**
@@ -309,7 +309,7 @@ public final class ZonesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -347,7 +347,7 @@ public final class ZonesInner {
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName, String ifMatch) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().last().getBody();
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().last().body();
     }
 
     /**
@@ -375,7 +375,7 @@ public final class ZonesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -413,7 +413,7 @@ public final class ZonesInner {
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().getBody();
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
     }
 
     /**
@@ -439,7 +439,7 @@ public final class ZonesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -488,7 +488,7 @@ public final class ZonesInner {
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName, String ifMatch) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().single().getBody();
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().single().body();
     }
 
     /**
@@ -516,7 +516,7 @@ public final class ZonesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -573,7 +573,7 @@ public final class ZonesInner {
      * @return the ZoneInner object if successful.
      */
     public ZoneInner get(String resourceGroupName, String zoneName) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
     }
 
     /**
@@ -599,7 +599,7 @@ public final class ZonesInner {
         return getWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -653,10 +653,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<ZoneInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -691,7 +691,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -707,7 +707,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -739,7 +739,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -756,10 +756,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
         ServiceResponse<Page<ZoneInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -796,7 +796,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -813,7 +813,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -845,7 +845,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -867,10 +867,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> list() {
         ServiceResponse<Page<ZoneInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -903,7 +903,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -946,7 +946,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -962,10 +962,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> list(final Integer top) {
         ServiceResponse<Page<ZoneInner>> response = listSinglePageAsync(top).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1000,7 +1000,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1016,7 +1016,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1044,7 +1044,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1067,10 +1067,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<ZoneInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1106,7 +1106,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1122,7 +1122,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1148,7 +1148,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1171,10 +1171,10 @@ public final class ZonesInner {
      */
     public PagedList<ZoneInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ZoneInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1210,7 +1210,7 @@ public final class ZonesInner {
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1226,7 +1226,7 @@ public final class ZonesInner {
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1252,7 +1252,7 @@ public final class ZonesInner {
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ZoneInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

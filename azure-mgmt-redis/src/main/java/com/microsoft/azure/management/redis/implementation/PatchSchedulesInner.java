@@ -80,7 +80,7 @@ public final class PatchSchedulesInner {
      * @return the RedisPatchScheduleInner object if successful.
      */
     public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().body();
     }
 
     /**
@@ -108,7 +108,7 @@ public final class PatchSchedulesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).map(new Func1<ServiceResponse<RedisPatchScheduleInner>, RedisPatchScheduleInner>() {
             @Override
             public RedisPatchScheduleInner call(ServiceResponse<RedisPatchScheduleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -168,7 +168,7 @@ public final class PatchSchedulesInner {
      * @param name The name of the redis cache.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class PatchSchedulesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -248,7 +248,7 @@ public final class PatchSchedulesInner {
      * @return the RedisPatchScheduleInner object if successful.
      */
     public RedisPatchScheduleInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -274,7 +274,7 @@ public final class PatchSchedulesInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisPatchScheduleInner>, RedisPatchScheduleInner>() {
             @Override
             public RedisPatchScheduleInner call(ServiceResponse<RedisPatchScheduleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

@@ -95,7 +95,7 @@ public final class ProfilesInner {
      * @return the TrafficManagerNameAvailabilityInner object if successful.
      */
     public TrafficManagerNameAvailabilityInner checkTrafficManagerRelativeDnsNameAvailability(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
-        return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class ProfilesInner {
         return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<TrafficManagerNameAvailabilityInner>, TrafficManagerNameAvailabilityInner>() {
             @Override
             public TrafficManagerNameAvailabilityInner call(ServiceResponse<TrafficManagerNameAvailabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -169,7 +169,7 @@ public final class ProfilesInner {
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public List<ProfileInner> listAllInResourceGroup(String resourceGroupName) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -193,7 +193,7 @@ public final class ProfilesInner {
         return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
             @Override
             public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -220,7 +220,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listAllInResourceGroupDelegate(response);
-                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -242,7 +242,7 @@ public final class ProfilesInner {
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public List<ProfileInner> listAll() {
-        return listAllWithServiceResponseAsync().toBlocking().single().getBody();
+        return listAllWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -264,7 +264,7 @@ public final class ProfilesInner {
         return listAllWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
             @Override
             public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -287,7 +287,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listAllDelegate(response);
-                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -311,7 +311,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner get(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -337,7 +337,7 @@ public final class ProfilesInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -392,7 +392,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -420,7 +420,7 @@ public final class ProfilesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -479,7 +479,7 @@ public final class ProfilesInner {
      * @param profileName The name of the Traffic Manager profile to be deleted.
      */
     public void delete(String resourceGroupName, String profileName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -505,7 +505,7 @@ public final class ProfilesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -560,7 +560,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -588,7 +588,7 @@ public final class ProfilesInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

@@ -92,7 +92,7 @@ public final class TagsInner {
      * @param tagValue The value of the tag to delete.
      */
     public void deleteValue(String tagName, String tagValue) {
-        deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
+        deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().body();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class TagsInner {
         return deleteValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -172,7 +172,7 @@ public final class TagsInner {
      * @return the TagValueInner object if successful.
      */
     public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
-        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
+        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().body();
     }
 
     /**
@@ -198,7 +198,7 @@ public final class TagsInner {
         return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<TagValueInner>, TagValueInner>() {
             @Override
             public TagValueInner call(ServiceResponse<TagValueInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -253,7 +253,7 @@ public final class TagsInner {
      * @return the TagDetailsInner object if successful.
      */
     public TagDetailsInner createOrUpdate(String tagName) {
-        return createOrUpdateWithServiceResponseAsync(tagName).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(tagName).toBlocking().single().body();
     }
 
     /**
@@ -279,7 +279,7 @@ public final class TagsInner {
         return createOrUpdateWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<TagDetailsInner>, TagDetailsInner>() {
             @Override
             public TagDetailsInner call(ServiceResponse<TagDetailsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -330,7 +330,7 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      */
     public void delete(String tagName) {
-        deleteWithServiceResponseAsync(tagName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(tagName).toBlocking().single().body();
     }
 
     /**
@@ -356,7 +356,7 @@ public final class TagsInner {
         return deleteWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -406,10 +406,10 @@ public final class TagsInner {
      */
     public PagedList<TagDetailsInner> list() {
         ServiceResponse<Page<TagDetailsInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<TagDetailsInner>(response.getBody()) {
+        return new PagedList<TagDetailsInner>(response.body()) {
             @Override
             public Page<TagDetailsInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -442,7 +442,7 @@ public final class TagsInner {
             .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
                 @Override
                 public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -457,7 +457,7 @@ public final class TagsInner {
             .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -484,7 +484,7 @@ public final class TagsInner {
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TagDetailsInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -507,10 +507,10 @@ public final class TagsInner {
      */
     public PagedList<TagDetailsInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TagDetailsInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TagDetailsInner>(response.getBody()) {
+        return new PagedList<TagDetailsInner>(response.body()) {
             @Override
             public Page<TagDetailsInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -546,7 +546,7 @@ public final class TagsInner {
             .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
                 @Override
                 public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -562,7 +562,7 @@ public final class TagsInner {
             .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -588,7 +588,7 @@ public final class TagsInner {
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TagDetailsInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

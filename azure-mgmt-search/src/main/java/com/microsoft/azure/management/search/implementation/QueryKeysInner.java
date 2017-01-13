@@ -65,7 +65,7 @@ public final class QueryKeysInner {
      * @return the ListQueryKeysResultInner object if successful.
      */
     public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -91,7 +91,7 @@ public final class QueryKeysInner {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ListQueryKeysResultInner>, ListQueryKeysResultInner>() {
             @Override
             public ListQueryKeysResultInner call(ServiceResponse<ListQueryKeysResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

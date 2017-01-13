@@ -72,10 +72,10 @@ public final class TenantsInner {
      */
     public PagedList<TenantIdDescriptionInner> list() {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.body()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -108,7 +108,7 @@ public final class TenantsInner {
             .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
                 @Override
                 public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -123,7 +123,7 @@ public final class TenantsInner {
             .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -147,7 +147,7 @@ public final class TenantsInner {
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -170,10 +170,10 @@ public final class TenantsInner {
      */
     public PagedList<TenantIdDescriptionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.body()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -209,7 +209,7 @@ public final class TenantsInner {
             .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
                 @Override
                 public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -225,7 +225,7 @@ public final class TenantsInner {
             .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -251,7 +251,7 @@ public final class TenantsInner {
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

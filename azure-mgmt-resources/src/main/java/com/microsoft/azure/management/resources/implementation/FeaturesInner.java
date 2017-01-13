@@ -91,10 +91,10 @@ public final class FeaturesInner {
      */
     public PagedList<FeatureResultInner> listAll() {
         ServiceResponse<Page<FeatureResultInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.body()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -127,7 +127,7 @@ public final class FeaturesInner {
             .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
                 @Override
                 public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -142,7 +142,7 @@ public final class FeaturesInner {
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -169,7 +169,7 @@ public final class FeaturesInner {
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<FeatureResultInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -192,10 +192,10 @@ public final class FeaturesInner {
      */
     public PagedList<FeatureResultInner> list(final String resourceProviderNamespace) {
         ServiceResponse<Page<FeatureResultInner>> response = listSinglePageAsync(resourceProviderNamespace).toBlocking().single();
-        return new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.body()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -230,7 +230,7 @@ public final class FeaturesInner {
             .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
                 @Override
                 public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -246,7 +246,7 @@ public final class FeaturesInner {
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -277,7 +277,7 @@ public final class FeaturesInner {
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<FeatureResultInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -300,7 +300,7 @@ public final class FeaturesInner {
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
-        return getWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().body();
     }
 
     /**
@@ -326,7 +326,7 @@ public final class FeaturesInner {
         return getWithServiceResponseAsync(resourceProviderNamespace, featureName).map(new Func1<ServiceResponse<FeatureResultInner>, FeatureResultInner>() {
             @Override
             public FeatureResultInner call(ServiceResponse<FeatureResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -380,7 +380,7 @@ public final class FeaturesInner {
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
-        return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
+        return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().body();
     }
 
     /**
@@ -406,7 +406,7 @@ public final class FeaturesInner {
         return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).map(new Func1<ServiceResponse<FeatureResultInner>, FeatureResultInner>() {
             @Override
             public FeatureResultInner call(ServiceResponse<FeatureResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -460,10 +460,10 @@ public final class FeaturesInner {
      */
     public PagedList<FeatureResultInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<FeatureResultInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.body()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -499,7 +499,7 @@ public final class FeaturesInner {
             .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
                 @Override
                 public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -515,7 +515,7 @@ public final class FeaturesInner {
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -541,7 +541,7 @@ public final class FeaturesInner {
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<FeatureResultInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -564,10 +564,10 @@ public final class FeaturesInner {
      */
     public PagedList<FeatureResultInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<FeatureResultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.body()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -603,7 +603,7 @@ public final class FeaturesInner {
             .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
                 @Override
                 public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -619,7 +619,7 @@ public final class FeaturesInner {
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -645,7 +645,7 @@ public final class FeaturesInner {
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<FeatureResultInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

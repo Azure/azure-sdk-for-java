@@ -76,7 +76,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the VirtualMachineExtensionImageInner object if successful.
      */
     public VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version) {
-        return getWithServiceResponseAsync(location, publisherName, type, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(location, publisherName, type, version).toBlocking().single().body();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class VirtualMachineExtensionImagesInner {
         return getWithServiceResponseAsync(location, publisherName, type, version).map(new Func1<ServiceResponse<VirtualMachineExtensionImageInner>, VirtualMachineExtensionImageInner>() {
             @Override
             public VirtualMachineExtensionImageInner call(ServiceResponse<VirtualMachineExtensionImageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -168,7 +168,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listTypes(String location, String publisherName) {
-        return listTypesWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
+        return listTypesWithServiceResponseAsync(location, publisherName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listTypesWithServiceResponseAsync(location, publisherName).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -249,7 +249,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
-        return listVersionsWithServiceResponseAsync(location, publisherName, type).toBlocking().single().getBody();
+        return listVersionsWithServiceResponseAsync(location, publisherName, type).toBlocking().single().body();
     }
 
     /**
@@ -277,7 +277,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listVersionsWithServiceResponseAsync(location, publisherName, type).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -335,7 +335,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) {
-        return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).toBlocking().single().getBody();
+        return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).toBlocking().single().body();
     }
 
     /**
@@ -369,7 +369,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

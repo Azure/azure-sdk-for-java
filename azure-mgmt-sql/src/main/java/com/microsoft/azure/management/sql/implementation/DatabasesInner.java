@@ -161,7 +161,7 @@ public final class DatabasesInner {
      * @param linkId The ID of the replication link to be deleted.
      */
     public void deleteReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
+        deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().body();
     }
 
     /**
@@ -191,7 +191,7 @@ public final class DatabasesInner {
         return deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -253,7 +253,7 @@ public final class DatabasesInner {
      * @return the ReplicationLinkInner object if successful.
      */
     public ReplicationLinkInner getReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return getReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
+        return getReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().body();
     }
 
     /**
@@ -283,7 +283,7 @@ public final class DatabasesInner {
         return getReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<ReplicationLinkInner>, ReplicationLinkInner>() {
             @Override
             public ReplicationLinkInner call(ServiceResponse<ReplicationLinkInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -344,7 +344,7 @@ public final class DatabasesInner {
      * @param linkId The ID of the replication link to be failed over.
      */
     public void failoverReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().getBody();
+        failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().body();
     }
 
     /**
@@ -374,7 +374,7 @@ public final class DatabasesInner {
         return failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -418,7 +418,7 @@ public final class DatabasesInner {
      * @param linkId The ID of the replication link to be failed over.
      */
     public void beginFailoverReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
+        beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().body();
     }
 
     /**
@@ -448,7 +448,7 @@ public final class DatabasesInner {
         return beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -509,7 +509,7 @@ public final class DatabasesInner {
      * @param linkId The ID of the replication link to be failed over.
      */
     public void failoverReplicationLinkAllowDataLoss(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().getBody();
+        failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().body();
     }
 
     /**
@@ -539,7 +539,7 @@ public final class DatabasesInner {
         return failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -583,7 +583,7 @@ public final class DatabasesInner {
      * @param linkId The ID of the replication link to be failed over.
      */
     public void beginFailoverReplicationLinkAllowDataLoss(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
+        beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().body();
     }
 
     /**
@@ -613,7 +613,7 @@ public final class DatabasesInner {
         return beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -674,7 +674,7 @@ public final class DatabasesInner {
      * @return the List&lt;ReplicationLinkInner&gt; object if successful.
      */
     public List<ReplicationLinkInner> listReplicationLinks(String resourceGroupName, String serverName, String databaseName) {
-        return listReplicationLinksWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return listReplicationLinksWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -702,7 +702,7 @@ public final class DatabasesInner {
         return listReplicationLinksWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<ReplicationLinkInner>>, List<ReplicationLinkInner>>() {
             @Override
             public List<ReplicationLinkInner> call(ServiceResponse<List<ReplicationLinkInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -735,7 +735,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<ReplicationLinkInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ReplicationLinkInner>> result = listReplicationLinksDelegate(response);
-                        ServiceResponse<List<ReplicationLinkInner>> clientResponse = new ServiceResponse<List<ReplicationLinkInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ReplicationLinkInner>> clientResponse = new ServiceResponse<List<ReplicationLinkInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -759,7 +759,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      */
     public void pauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
+        pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().body();
     }
 
     /**
@@ -787,7 +787,7 @@ public final class DatabasesInner {
         return pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -826,7 +826,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      */
     public void beginPauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -854,7 +854,7 @@ public final class DatabasesInner {
         return beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -910,7 +910,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      */
     public void resumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
+        resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().body();
     }
 
     /**
@@ -938,7 +938,7 @@ public final class DatabasesInner {
         return resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -977,7 +977,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      */
     public void beginResumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1005,7 +1005,7 @@ public final class DatabasesInner {
         return beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1062,7 +1062,7 @@ public final class DatabasesInner {
      * @return the List&lt;RestorePointInner&gt; object if successful.
      */
     public List<RestorePointInner> listRestorePoints(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1090,7 +1090,7 @@ public final class DatabasesInner {
         return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
             @Override
             public List<RestorePointInner> call(ServiceResponse<List<RestorePointInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1123,7 +1123,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<RestorePointInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RestorePointInner>> result = listRestorePointsDelegate(response);
-                        ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1149,7 +1149,7 @@ public final class DatabasesInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1179,7 +1179,7 @@ public final class DatabasesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1225,7 +1225,7 @@ public final class DatabasesInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1255,7 +1255,7 @@ public final class DatabasesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1318,7 +1318,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database to be deleted.
      */
     public void delete(String resourceGroupName, String serverName, String databaseName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1346,7 +1346,7 @@ public final class DatabasesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1403,7 +1403,7 @@ public final class DatabasesInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1431,7 +1431,7 @@ public final class DatabasesInner {
         return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1483,7 +1483,7 @@ public final class DatabasesInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).toBlocking().single().body();
     }
 
     /**
@@ -1513,7 +1513,7 @@ public final class DatabasesInner {
         return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1570,7 +1570,7 @@ public final class DatabasesInner {
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -1596,7 +1596,7 @@ public final class DatabasesInner {
         return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
             @Override
             public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1625,7 +1625,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DatabaseInner>> result = listByServerDelegate(response);
-                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1650,7 +1650,7 @@ public final class DatabasesInner {
      * @return the List&lt;DatabaseMetricInner&gt; object if successful.
      */
     public List<DatabaseMetricInner> listUsages(String resourceGroupName, String serverName, String databaseName) {
-        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1678,7 +1678,7 @@ public final class DatabasesInner {
         return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DatabaseMetricInner>>, List<DatabaseMetricInner>>() {
             @Override
             public List<DatabaseMetricInner> call(ServiceResponse<List<DatabaseMetricInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1711,7 +1711,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<DatabaseMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DatabaseMetricInner>> result = listUsagesDelegate(response);
-                        ServiceResponse<List<DatabaseMetricInner>> clientResponse = new ServiceResponse<List<DatabaseMetricInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<DatabaseMetricInner>> clientResponse = new ServiceResponse<List<DatabaseMetricInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1737,7 +1737,7 @@ public final class DatabasesInner {
      * @return the ServiceTierAdvisorInner object if successful.
      */
     public ServiceTierAdvisorInner getServiceTierAdvisor(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
-        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).toBlocking().single().getBody();
+        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).toBlocking().single().body();
     }
 
     /**
@@ -1767,7 +1767,7 @@ public final class DatabasesInner {
         return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).map(new Func1<ServiceResponse<ServiceTierAdvisorInner>, ServiceTierAdvisorInner>() {
             @Override
             public ServiceTierAdvisorInner call(ServiceResponse<ServiceTierAdvisorInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1828,7 +1828,7 @@ public final class DatabasesInner {
      * @return the List&lt;ServiceTierAdvisorInner&gt; object if successful.
      */
     public List<ServiceTierAdvisorInner> listServiceTierAdvisors(String resourceGroupName, String serverName, String databaseName) {
-        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1856,7 +1856,7 @@ public final class DatabasesInner {
         return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<ServiceTierAdvisorInner>>, List<ServiceTierAdvisorInner>>() {
             @Override
             public List<ServiceTierAdvisorInner> call(ServiceResponse<List<ServiceTierAdvisorInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1889,7 +1889,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<ServiceTierAdvisorInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ServiceTierAdvisorInner>> result = listServiceTierAdvisorsDelegate(response);
-                        ServiceResponse<List<ServiceTierAdvisorInner>> clientResponse = new ServiceResponse<List<ServiceTierAdvisorInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ServiceTierAdvisorInner>> clientResponse = new ServiceResponse<List<ServiceTierAdvisorInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1914,7 +1914,7 @@ public final class DatabasesInner {
      * @return the TransparentDataEncryptionInner object if successful.
      */
     public TransparentDataEncryptionInner createOrUpdateTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName) {
-        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -1942,7 +1942,7 @@ public final class DatabasesInner {
         return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
             @Override
             public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1996,7 +1996,7 @@ public final class DatabasesInner {
      * @return the TransparentDataEncryptionInner object if successful.
      */
     public TransparentDataEncryptionInner createOrUpdateTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStates status) {
-        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, status).toBlocking().single().getBody();
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, status).toBlocking().single().body();
     }
 
     /**
@@ -2026,7 +2026,7 @@ public final class DatabasesInner {
         return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, status).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
             @Override
             public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2087,7 +2087,7 @@ public final class DatabasesInner {
      * @return the TransparentDataEncryptionInner object if successful.
      */
     public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName) {
-        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -2115,7 +2115,7 @@ public final class DatabasesInner {
         return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
             @Override
             public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2172,7 +2172,7 @@ public final class DatabasesInner {
      * @return the List&lt;TransparentDataEncryptionActivityInner&gt; object if successful.
      */
     public List<TransparentDataEncryptionActivityInner> listTransparentDataEncryptionActivity(String resourceGroupName, String serverName, String databaseName) {
-        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -2200,7 +2200,7 @@ public final class DatabasesInner {
         return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<TransparentDataEncryptionActivityInner>>, List<TransparentDataEncryptionActivityInner>>() {
             @Override
             public List<TransparentDataEncryptionActivityInner> call(ServiceResponse<List<TransparentDataEncryptionActivityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2233,7 +2233,7 @@ public final class DatabasesInner {
                 public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<TransparentDataEncryptionActivityInner>> result = listTransparentDataEncryptionActivityDelegate(response);
-                        ServiceResponse<List<TransparentDataEncryptionActivityInner>> clientResponse = new ServiceResponse<List<TransparentDataEncryptionActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<TransparentDataEncryptionActivityInner>> clientResponse = new ServiceResponse<List<TransparentDataEncryptionActivityInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

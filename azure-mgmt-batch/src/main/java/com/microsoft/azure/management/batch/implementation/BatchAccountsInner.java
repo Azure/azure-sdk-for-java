@@ -129,7 +129,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -157,7 +157,7 @@ public final class BatchAccountsInner {
         return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>, BatchAccountInner>() {
             @Override
             public BatchAccountInner call(ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -200,7 +200,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -228,7 +228,7 @@ public final class BatchAccountsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>, BatchAccountInner>() {
             @Override
             public BatchAccountInner call(ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -289,7 +289,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -317,7 +317,7 @@ public final class BatchAccountsInner {
         return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
             @Override
             public BatchAccountInner call(ServiceResponse<BatchAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -375,7 +375,7 @@ public final class BatchAccountsInner {
      * @param accountName The name of the account to be deleted.
      */
     public void delete(String resourceGroupName, String accountName) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
     }
 
     /**
@@ -401,7 +401,7 @@ public final class BatchAccountsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>, Void>() {
             @Override
             public Void call(ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -437,7 +437,7 @@ public final class BatchAccountsInner {
      * @param accountName The name of the account to be deleted.
      */
     public void beginDelete(String resourceGroupName, String accountName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -463,7 +463,7 @@ public final class BatchAccountsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>, Void>() {
             @Override
             public Void call(ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -518,7 +518,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner get(String resourceGroupName, String accountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -544,7 +544,7 @@ public final class BatchAccountsInner {
         return getWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
             @Override
             public BatchAccountInner call(ServiceResponse<BatchAccountInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -597,10 +597,10 @@ public final class BatchAccountsInner {
      */
     public PagedList<BatchAccountInner> list() {
         ServiceResponse<Page<BatchAccountInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<BatchAccountInner>(response.getBody()) {
+        return new PagedList<BatchAccountInner>(response.body()) {
             @Override
             public Page<BatchAccountInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -633,7 +633,7 @@ public final class BatchAccountsInner {
             .map(new Func1<ServiceResponse<Page<BatchAccountInner>>, Page<BatchAccountInner>>() {
                 @Override
                 public Page<BatchAccountInner> call(ServiceResponse<Page<BatchAccountInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -648,7 +648,7 @@ public final class BatchAccountsInner {
             .concatMap(new Func1<ServiceResponse<Page<BatchAccountInner>>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(ServiceResponse<Page<BatchAccountInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -675,7 +675,7 @@ public final class BatchAccountsInner {
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BatchAccountInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -698,10 +698,10 @@ public final class BatchAccountsInner {
      */
     public PagedList<BatchAccountInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<BatchAccountInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<BatchAccountInner>(response.getBody()) {
+        return new PagedList<BatchAccountInner>(response.body()) {
             @Override
             public Page<BatchAccountInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -736,7 +736,7 @@ public final class BatchAccountsInner {
             .map(new Func1<ServiceResponse<Page<BatchAccountInner>>, Page<BatchAccountInner>>() {
                 @Override
                 public Page<BatchAccountInner> call(ServiceResponse<Page<BatchAccountInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -752,7 +752,7 @@ public final class BatchAccountsInner {
             .concatMap(new Func1<ServiceResponse<Page<BatchAccountInner>>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(ServiceResponse<Page<BatchAccountInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -783,7 +783,7 @@ public final class BatchAccountsInner {
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BatchAccountInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -805,7 +805,7 @@ public final class BatchAccountsInner {
      * @param accountName The name of the Batch account.
      */
     public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
-        synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -831,7 +831,7 @@ public final class BatchAccountsInner {
         return synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -886,7 +886,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountKeysInner object if successful.
      */
     public BatchAccountKeysInner regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) {
-        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().body();
     }
 
     /**
@@ -914,7 +914,7 @@ public final class BatchAccountsInner {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).map(new Func1<ServiceResponse<BatchAccountKeysInner>, BatchAccountKeysInner>() {
             @Override
             public BatchAccountKeysInner call(ServiceResponse<BatchAccountKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -974,7 +974,7 @@ public final class BatchAccountsInner {
      * @return the BatchAccountKeysInner object if successful.
      */
     public BatchAccountKeysInner getKeys(String resourceGroupName, String accountName) {
-        return getKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
+        return getKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -1000,7 +1000,7 @@ public final class BatchAccountsInner {
         return getKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<BatchAccountKeysInner>, BatchAccountKeysInner>() {
             @Override
             public BatchAccountKeysInner call(ServiceResponse<BatchAccountKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1054,10 +1054,10 @@ public final class BatchAccountsInner {
      */
     public PagedList<BatchAccountInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<BatchAccountInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BatchAccountInner>(response.getBody()) {
+        return new PagedList<BatchAccountInner>(response.body()) {
             @Override
             public Page<BatchAccountInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1093,7 +1093,7 @@ public final class BatchAccountsInner {
             .map(new Func1<ServiceResponse<Page<BatchAccountInner>>, Page<BatchAccountInner>>() {
                 @Override
                 public Page<BatchAccountInner> call(ServiceResponse<Page<BatchAccountInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1109,7 +1109,7 @@ public final class BatchAccountsInner {
             .concatMap(new Func1<ServiceResponse<Page<BatchAccountInner>>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(ServiceResponse<Page<BatchAccountInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1135,7 +1135,7 @@ public final class BatchAccountsInner {
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BatchAccountInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1158,10 +1158,10 @@ public final class BatchAccountsInner {
      */
     public PagedList<BatchAccountInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<BatchAccountInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BatchAccountInner>(response.getBody()) {
+        return new PagedList<BatchAccountInner>(response.body()) {
             @Override
             public Page<BatchAccountInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1197,7 +1197,7 @@ public final class BatchAccountsInner {
             .map(new Func1<ServiceResponse<Page<BatchAccountInner>>, Page<BatchAccountInner>>() {
                 @Override
                 public Page<BatchAccountInner> call(ServiceResponse<Page<BatchAccountInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1213,7 +1213,7 @@ public final class BatchAccountsInner {
             .concatMap(new Func1<ServiceResponse<Page<BatchAccountInner>>, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(ServiceResponse<Page<BatchAccountInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1239,7 +1239,7 @@ public final class BatchAccountsInner {
                 public Observable<ServiceResponse<Page<BatchAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BatchAccountInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BatchAccountInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

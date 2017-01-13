@@ -81,14 +81,14 @@ class ServicePrincipalsImpl
 
     @Override
     public Observable<ServicePrincipal> getByServicePrincipalNameAsync(final String spn) {
-        return innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
-                .map(new Func1<Page<ServicePrincipalInner>, ServicePrincipal>() {
+        return innerCollection.listWithServiceResponseAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
+                .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, ServicePrincipal>() {
                     @Override
-                    public ServicePrincipal call(Page<ServicePrincipalInner> result) {
-                        if (result == null || result.getItems() == null || result.getItems().isEmpty()) {
-                            throw new GraphErrorException("Service principal not found for SPN: " + spn);
+                    public ServicePrincipal call(ServiceResponse<Page<ServicePrincipalInner>> result) {
+                        if (result == null || result.body().items() == null || result.body().items().isEmpty()) {
+                            throw new GraphErrorException("Service principal not found for SPN: " + spn, result.response());
                         }
-                        return new ServicePrincipalImpl(result.getItems().get(0), innerCollection);
+                        return new ServicePrincipalImpl(result.body().items().get(0), innerCollection);
                     }
                 });
     }

@@ -106,7 +106,7 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the subnet.
      */
     public void delete(String resourceGroupName, String publicIpAddressName) {
-        deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().last().body();
     }
 
     /**
@@ -132,7 +132,7 @@ public final class PublicIPAddressesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the subnet.
      */
     public void beginDelete(String resourceGroupName, String publicIpAddressName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().body();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class PublicIPAddressesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,7 +245,7 @@ public final class PublicIPAddressesInner {
      * @return the PublicIPAddressInner object if successful.
      */
     public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName) {
-        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().body();
     }
 
     /**
@@ -271,7 +271,7 @@ public final class PublicIPAddressesInner {
         return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
             @Override
             public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -318,7 +318,7 @@ public final class PublicIPAddressesInner {
      * @return the PublicIPAddressInner object if successful.
      */
     public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).toBlocking().single().body();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class PublicIPAddressesInner {
         return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
             @Override
             public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -400,7 +400,7 @@ public final class PublicIPAddressesInner {
      * @return the PublicIPAddressInner object if successful.
      */
     public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class PublicIPAddressesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
             @Override
             public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -469,7 +469,7 @@ public final class PublicIPAddressesInner {
      * @return the PublicIPAddressInner object if successful.
      */
     public PublicIPAddressInner beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -497,7 +497,7 @@ public final class PublicIPAddressesInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
             @Override
             public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -554,10 +554,10 @@ public final class PublicIPAddressesInner {
      */
     public PagedList<PublicIPAddressInner> listAll() {
         ServiceResponse<Page<PublicIPAddressInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+        return new PagedList<PublicIPAddressInner>(response.body()) {
             @Override
             public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -590,7 +590,7 @@ public final class PublicIPAddressesInner {
             .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
                 @Override
                 public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -605,7 +605,7 @@ public final class PublicIPAddressesInner {
             .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -630,7 +630,7 @@ public final class PublicIPAddressesInner {
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -653,10 +653,10 @@ public final class PublicIPAddressesInner {
      */
     public PagedList<PublicIPAddressInner> list(final String resourceGroupName) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+        return new PagedList<PublicIPAddressInner>(response.body()) {
             @Override
             public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -691,7 +691,7 @@ public final class PublicIPAddressesInner {
             .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
                 @Override
                 public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -707,7 +707,7 @@ public final class PublicIPAddressesInner {
             .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class PublicIPAddressesInner {
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PublicIPAddressInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -759,10 +759,10 @@ public final class PublicIPAddressesInner {
      */
     public PagedList<PublicIPAddressInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+        return new PagedList<PublicIPAddressInner>(response.body()) {
             @Override
             public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -798,7 +798,7 @@ public final class PublicIPAddressesInner {
             .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
                 @Override
                 public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class PublicIPAddressesInner {
             .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +840,7 @@ public final class PublicIPAddressesInner {
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,10 +863,10 @@ public final class PublicIPAddressesInner {
      */
     public PagedList<PublicIPAddressInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+        return new PagedList<PublicIPAddressInner>(response.body()) {
             @Override
             public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -902,7 +902,7 @@ public final class PublicIPAddressesInner {
             .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
                 @Override
                 public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -918,7 +918,7 @@ public final class PublicIPAddressesInner {
             .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -944,7 +944,7 @@ public final class PublicIPAddressesInner {
                 public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PublicIPAddressInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -91,7 +91,7 @@ public final class PolicyDefinitionsInner {
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner createOrUpdate(String policyDefinitionName, PolicyDefinitionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class PolicyDefinitionsInner {
         return createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters).map(new Func1<ServiceResponse<PolicyDefinitionInner>, PolicyDefinitionInner>() {
             @Override
             public PolicyDefinitionInner call(ServiceResponse<PolicyDefinitionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -170,7 +170,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to delete.
      */
     public void delete(String policyDefinitionName) {
-        deleteWithServiceResponseAsync(policyDefinitionName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(policyDefinitionName).toBlocking().single().body();
     }
 
     /**
@@ -194,7 +194,7 @@ public final class PolicyDefinitionsInner {
         return deleteWithServiceResponseAsync(policyDefinitionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -243,7 +243,7 @@ public final class PolicyDefinitionsInner {
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner get(String policyDefinitionName) {
-        return getWithServiceResponseAsync(policyDefinitionName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(policyDefinitionName).toBlocking().single().body();
     }
 
     /**
@@ -267,7 +267,7 @@ public final class PolicyDefinitionsInner {
         return getWithServiceResponseAsync(policyDefinitionName).map(new Func1<ServiceResponse<PolicyDefinitionInner>, PolicyDefinitionInner>() {
             @Override
             public PolicyDefinitionInner call(ServiceResponse<PolicyDefinitionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -316,10 +316,10 @@ public final class PolicyDefinitionsInner {
      */
     public PagedList<PolicyDefinitionInner> list() {
         ServiceResponse<Page<PolicyDefinitionInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.getBody()) {
+        return new PagedList<PolicyDefinitionInner>(response.body()) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -352,7 +352,7 @@ public final class PolicyDefinitionsInner {
             .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
                 @Override
                 public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -367,7 +367,7 @@ public final class PolicyDefinitionsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -395,7 +395,7 @@ public final class PolicyDefinitionsInner {
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -411,10 +411,10 @@ public final class PolicyDefinitionsInner {
      */
     public PagedList<PolicyDefinitionInner> list(final String filter) {
         ServiceResponse<Page<PolicyDefinitionInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.getBody()) {
+        return new PagedList<PolicyDefinitionInner>(response.body()) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -449,7 +449,7 @@ public final class PolicyDefinitionsInner {
             .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
                 @Override
                 public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -465,7 +465,7 @@ public final class PolicyDefinitionsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -493,7 +493,7 @@ public final class PolicyDefinitionsInner {
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -516,10 +516,10 @@ public final class PolicyDefinitionsInner {
      */
     public PagedList<PolicyDefinitionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<PolicyDefinitionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.getBody()) {
+        return new PagedList<PolicyDefinitionInner>(response.body()) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -555,7 +555,7 @@ public final class PolicyDefinitionsInner {
             .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
                 @Override
                 public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -571,7 +571,7 @@ public final class PolicyDefinitionsInner {
             .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -597,7 +597,7 @@ public final class PolicyDefinitionsInner {
                 public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

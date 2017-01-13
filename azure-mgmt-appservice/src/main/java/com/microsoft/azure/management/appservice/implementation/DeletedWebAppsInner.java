@@ -83,10 +83,10 @@ public final class DeletedWebAppsInner {
      */
     public PagedList<DeletedSiteInner> list() {
         ServiceResponse<Page<DeletedSiteInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -121,7 +121,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -137,7 +137,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -163,7 +163,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -187,10 +187,10 @@ public final class DeletedWebAppsInner {
      */
     public PagedList<DeletedSiteInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<DeletedSiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -227,7 +227,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -244,7 +244,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -274,7 +274,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -298,10 +298,10 @@ public final class DeletedWebAppsInner {
      */
     public PagedList<DeletedSiteInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeletedSiteInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -339,7 +339,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -356,7 +356,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -383,7 +383,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -407,10 +407,10 @@ public final class DeletedWebAppsInner {
      */
     public PagedList<DeletedSiteInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<DeletedSiteInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -448,7 +448,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -465,7 +465,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -492,7 +492,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

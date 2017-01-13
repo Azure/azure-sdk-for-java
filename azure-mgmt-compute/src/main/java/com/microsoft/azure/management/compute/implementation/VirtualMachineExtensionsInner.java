@@ -87,7 +87,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the VirtualMachineExtensionInner object if successful.
      */
     public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().last().body();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class VirtualMachineExtensionsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
             @Override
             public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -165,7 +165,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the VirtualMachineExtensionInner object if successful.
      */
     public VirtualMachineExtensionInner beginCreateOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().single().body();
     }
 
     /**
@@ -195,7 +195,7 @@ public final class VirtualMachineExtensionsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
             @Override
             public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -259,7 +259,7 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      */
     public void delete(String resourceGroupName, String vmName, String vmExtensionName) {
-        deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().body();
     }
 
     /**
@@ -287,7 +287,7 @@ public final class VirtualMachineExtensionsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -328,7 +328,7 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      */
     public void beginDelete(String resourceGroupName, String vmName, String vmExtensionName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().body();
     }
 
     /**
@@ -356,7 +356,7 @@ public final class VirtualMachineExtensionsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -415,7 +415,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the VirtualMachineExtensionInner object if successful.
      */
     public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
-        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().body();
     }
 
     /**
@@ -443,7 +443,7 @@ public final class VirtualMachineExtensionsInner {
         return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
             @Override
             public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -497,7 +497,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the VirtualMachineExtensionInner object if successful.
      */
     public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).toBlocking().single().body();
     }
 
     /**
@@ -527,7 +527,7 @@ public final class VirtualMachineExtensionsInner {
         return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
             @Override
             public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }

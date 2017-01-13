@@ -78,7 +78,7 @@ public final class ServicesInner {
      * @return the SearchServiceResourceInner object if successful.
      */
     public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class ServicesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).map(new Func1<ServiceResponse<SearchServiceResourceInner>, SearchServiceResourceInner>() {
             @Override
             public SearchServiceResourceInner call(ServiceResponse<SearchServiceResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -165,7 +165,7 @@ public final class ServicesInner {
      * @param serviceName The name of the Search service to delete.
      */
     public void delete(String resourceGroupName, String serviceName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -191,7 +191,7 @@ public final class ServicesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,7 +245,7 @@ public final class ServicesInner {
      * @return the SearchServiceListResultInner object if successful.
      */
     public SearchServiceListResultInner list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -269,7 +269,7 @@ public final class ServicesInner {
         return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<SearchServiceListResultInner>, SearchServiceListResultInner>() {
             @Override
             public SearchServiceListResultInner call(ServiceResponse<SearchServiceListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
