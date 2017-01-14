@@ -44,11 +44,6 @@ class VaultsImpl
     }
 
     @Override
-    public PagedList<Vault> list() {
-        return wrapList(this.innerCollection.list());
-    }
-
-    @Override
     public PagedList<Vault> listByGroup(String groupName) {
         return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }

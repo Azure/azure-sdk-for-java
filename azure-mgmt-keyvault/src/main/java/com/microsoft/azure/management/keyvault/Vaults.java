@@ -15,14 +15,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
  * Entry point for key vaults management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vaults extends
-        SupportsListing<Vault>,
         SupportsCreating<Vault.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<Vault>,

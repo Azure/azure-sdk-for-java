@@ -15,22 +15,22 @@ import com.microsoft.azure.management.resources.FeatureProperties;
  */
 public class FeatureResultInner {
     /**
-     * Gets or sets the name of the feature.
+     * The name of the feature.
      */
     private String name;
 
     /**
-     * Gets or sets the properties of the previewed feature.
+     * Properties of the previewed feature.
      */
     private FeatureProperties properties;
 
     /**
-     * Gets or sets the Id of the feature.
+     * The resource ID of the feature.
      */
     private String id;
 
     /**
-     * Gets or sets the type of the feature.
+     * The resource type of the feature.
      */
     private String type;
 

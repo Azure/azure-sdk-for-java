@@ -22,7 +22,7 @@ import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

@@ -8,23 +8,22 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.Resource;
-import com.microsoft.azure.management.appservice.ApiDefinitionInfo;
+import java.util.List;
+import org.joda.time.DateTime;
+import com.microsoft.azure.management.appservice.SiteMachineKey;
+import com.microsoft.azure.management.appservice.HandlerMapping;
+import com.microsoft.azure.management.appservice.ManagedPipelineMode;
+import com.microsoft.azure.management.appservice.VirtualApplication;
+import com.microsoft.azure.management.appservice.SiteLoadBalancing;
+import com.microsoft.azure.management.appservice.Experiments;
+import com.microsoft.azure.management.appservice.SiteLimits;
 import com.microsoft.azure.management.appservice.AutoHealRules;
 import com.microsoft.azure.management.appservice.CorsSettings;
-import com.microsoft.azure.management.appservice.Experiments;
-import com.microsoft.azure.management.appservice.HandlerMapping;
+import com.microsoft.azure.management.appservice.ApiDefinitionInfo;
 import com.microsoft.azure.management.appservice.IpSecurityRestriction;
-import com.microsoft.azure.management.appservice.ManagedPipelineMode;
-import com.microsoft.azure.management.appservice.SiteLimits;
-import com.microsoft.azure.management.appservice.SiteLoadBalancing;
-import com.microsoft.azure.management.appservice.SiteMachineKey;
-import com.microsoft.azure.management.appservice.VirtualApplication;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import org.joda.time.DateTime;
-
-import java.util.List;
+import com.microsoft.azure.Resource;
 
 /**
  * Configuration of an App Service app.
@@ -81,8 +80,8 @@ public class SiteConfigInner extends Resource {
     private DateTime requestTracingExpirationTime;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.remoteDebuggingEnabled")
     private Boolean remoteDebuggingEnabled;
@@ -140,7 +139,7 @@ public class SiteConfigInner extends Resource {
     /**
      * SCM type.
      */
-    @JsonProperty(value = "properties.scmType")
+    @JsonProperty(value = "properties.scmType", access = JsonProperty.Access.WRITE_ONLY)
     private String scmType;
 
     /**
@@ -623,8 +622,8 @@ public class SiteConfigInner extends Resource {
     /**
      * Set the scmType value.
      *
-     * @param scmType the scmType value
-     * @return the SiteConfigInner object itself.
+     * @param scmType the scmType value to set
+     * @return the SiteConfigInner object itself
      */
     public SiteConfigInner withScmType(String scmType) {
         this.scmType = scmType;

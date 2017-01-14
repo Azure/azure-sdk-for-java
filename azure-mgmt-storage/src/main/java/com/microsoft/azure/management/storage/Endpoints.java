@@ -11,7 +11,7 @@ package com.microsoft.azure.management.storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The URIs that are used to perform a retrieval of a public blob, queue or
+ * The URIs that are used to perform a retrieval of a public blob, queue, or
  * table object.
  */
 public class Endpoints {

@@ -11,24 +11,24 @@ package com.microsoft.azure.management.compute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Used for establishing the purchase context of any 3rd Party artifact
- * through MarketPlace.
+ * Used for establishing the purchase context of any 3rd Party artifact through
+ * MarketPlace.
  */
 public class PurchasePlan {
     /**
-     * the publisher ID.
+     * The publisher ID.
      */
     @JsonProperty(required = true)
     private String publisher;
 
     /**
-     * the plan ID.
+     * The plan ID.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * the product ID.
+     * The product ID.
      */
     @JsonProperty(required = true)
     private String product;

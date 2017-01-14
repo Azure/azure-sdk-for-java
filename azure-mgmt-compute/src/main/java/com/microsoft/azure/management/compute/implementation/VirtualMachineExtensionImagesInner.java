@@ -10,7 +10,6 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -53,15 +52,15 @@ public final class VirtualMachineExtensionImagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VirtualMachineExtensionImagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineExtensionImages get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
         Observable<Response<ResponseBody>> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineExtensionImages listTypes" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types")
         Observable<Response<ResponseBody>> listTypes(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineExtensionImages listVersions" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
         Observable<Response<ResponseBody>> listVersions(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -77,7 +76,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the VirtualMachineExtensionImageInner object if successful.
      */
     public VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version) {
-        return getWithServiceResponseAsync(location, publisherName, type, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(location, publisherName, type, version).toBlocking().single().body();
     }
 
     /**
@@ -91,7 +90,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImageInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(location, publisherName, type, version), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(location, publisherName, type, version), serviceCallback);
     }
 
     /**
@@ -107,7 +106,7 @@ public final class VirtualMachineExtensionImagesInner {
         return getWithServiceResponseAsync(location, publisherName, type, version).map(new Func1<ServiceResponse<VirtualMachineExtensionImageInner>, VirtualMachineExtensionImageInner>() {
             @Override
             public VirtualMachineExtensionImageInner call(ServiceResponse<VirtualMachineExtensionImageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -155,7 +154,7 @@ public final class VirtualMachineExtensionImagesInner {
     }
 
     private ServiceResponse<VirtualMachineExtensionImageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineExtensionImageInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VirtualMachineExtensionImageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualMachineExtensionImageInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -169,7 +168,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listTypes(String location, String publisherName) {
-        return listTypesWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
+        return listTypesWithServiceResponseAsync(location, publisherName).toBlocking().single().body();
     }
 
     /**
@@ -181,7 +180,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
-        return ServiceCall.create(listTypesWithServiceResponseAsync(location, publisherName), serviceCallback);
+        return ServiceCall.fromResponse(listTypesWithServiceResponseAsync(location, publisherName), serviceCallback);
     }
 
     /**
@@ -195,7 +194,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listTypesWithServiceResponseAsync(location, publisherName).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -235,7 +234,7 @@ public final class VirtualMachineExtensionImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineExtensionImageInner>> listTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineExtensionImageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineExtensionImageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineExtensionImageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -250,7 +249,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
-        return listVersionsWithServiceResponseAsync(location, publisherName, type).toBlocking().single().getBody();
+        return listVersionsWithServiceResponseAsync(location, publisherName, type).toBlocking().single().body();
     }
 
     /**
@@ -263,7 +262,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
-        return ServiceCall.create(listVersionsWithServiceResponseAsync(location, publisherName, type), serviceCallback);
+        return ServiceCall.fromResponse(listVersionsWithServiceResponseAsync(location, publisherName, type), serviceCallback);
     }
 
     /**
@@ -278,7 +277,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listVersionsWithServiceResponseAsync(location, publisherName, type).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -336,7 +335,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) {
-        return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).toBlocking().single().getBody();
+        return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).toBlocking().single().body();
     }
 
     /**
@@ -352,7 +351,7 @@ public final class VirtualMachineExtensionImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
-        return ServiceCall.create(listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby), serviceCallback);
+        return ServiceCall.fromResponse(listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby), serviceCallback);
     }
 
     /**
@@ -370,7 +369,7 @@ public final class VirtualMachineExtensionImagesInner {
         return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineExtensionImageInner>>, List<VirtualMachineExtensionImageInner>>() {
             @Override
             public List<VirtualMachineExtensionImageInner> call(ServiceResponse<List<VirtualMachineExtensionImageInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -417,7 +416,7 @@ public final class VirtualMachineExtensionImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineExtensionImageInner>> listVersionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineExtensionImageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineExtensionImageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineExtensionImageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

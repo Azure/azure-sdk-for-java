@@ -20,19 +20,19 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class VirtualMachineScaleSetNetworkConfigurationInner extends SubResource {
     /**
-     * the network configuration name.
+     * The network configuration name.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * whether this is a primary NIC on a virtual machine.
+     * Whether this is a primary NIC on a virtual machine.
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
 
     /**
-     * the virtual machine scale set IP Configuration.
+     * The virtual machine scale set IP Configuration.
      */
     @JsonProperty(value = "properties.ipConfigurations", required = true)
     private List<VirtualMachineScaleSetIPConfigurationInner> ipConfigurations;

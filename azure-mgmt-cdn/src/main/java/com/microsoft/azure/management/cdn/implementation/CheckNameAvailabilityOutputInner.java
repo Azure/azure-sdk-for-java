@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Output of check name availability API.
@@ -17,19 +16,16 @@ public class CheckNameAvailabilityOutputInner {
     /**
      * Indicates whether the name is available.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /**
      * The reason why the name is not available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /**
      * The detailed error message describing why the name is not available.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**

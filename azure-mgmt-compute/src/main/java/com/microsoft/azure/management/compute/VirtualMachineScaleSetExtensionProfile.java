@@ -16,7 +16,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineScale
  */
 public class VirtualMachineScaleSetExtensionProfile {
     /**
-     * the virtual machine scale set child extension resources.
+     * The virtual machine scale set child extension resources.
      */
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 

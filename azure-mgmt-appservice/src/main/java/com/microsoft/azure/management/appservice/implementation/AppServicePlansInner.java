@@ -11,7 +11,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -33,6 +32,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -63,145 +63,145 @@ public final class AppServicePlansInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AppServicePlansService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listCapabilities" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities")
         Observable<Response<ResponseBody>> listCapabilities(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getHybridConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> getHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans updateHybridConnection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> updateHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connection, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans deleteHybridConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnectionKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
         Observable<Response<ResponseBody>> listHybridConnectionKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsByHybridConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
         Observable<Response<ResponseBody>> listWebAppsByHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getHybridConnectionPlanLimit" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit")
         Observable<Response<ResponseBody>> getHybridConnectionPlanLimit(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays")
         Observable<Response<ResponseBody>> listHybridConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricDefintions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefintions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metrics")
         Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans restartWebApps" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites")
         Observable<Response<ResponseBody>> restartWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebApps" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites")
         Observable<Response<ResponseBody>> listWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query(value = "$filter", encoded = true) String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listVnets" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections")
         Observable<Response<ResponseBody>> listVnets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getVnetFromServerFarm" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> getVnetFromServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getVnetGateway" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> getVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans updateVnetGateway" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> updateVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listRoutesForVnet" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes")
         Observable<Response<ResponseBody>> listRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getRouteForVnet" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> getRouteForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans createOrUpdateVnetRoute" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans deleteVnetRoute" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans updateVnetRoute" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> updateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans rebootWorker" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot")
         Observable<Response<ResponseBody>> rebootWorker(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerName") String workerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebAppsByHybridConnectionNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsByHybridConnectionNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebAppsByHybridConnectionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listHybridConnectionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnectionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listHybridConnectionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricDefintionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricDefintionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricDefintionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebAppsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebAppsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -213,10 +213,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<AppServicePlanInner> list() {
         ServiceResponse<Page<AppServicePlanInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -229,7 +229,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServicePlanInner>> listAsync(final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -251,7 +251,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -267,7 +267,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -294,7 +294,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -312,10 +312,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<AppServicePlanInner> list(final Boolean detailed) {
         ServiceResponse<Page<AppServicePlanInner>> response = listSinglePageAsync(detailed).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -330,7 +330,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServicePlanInner>> listAsync(final Boolean detailed, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(detailed),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -354,7 +354,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -372,7 +372,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -400,7 +400,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -409,7 +409,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -424,10 +424,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<AppServicePlanInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<AppServicePlanInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -441,7 +441,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -464,7 +464,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -481,7 +481,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -511,7 +511,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -520,7 +520,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -535,7 +535,7 @@ public final class AppServicePlansInner {
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -548,7 +548,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServicePlanInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -563,7 +563,7 @@ public final class AppServicePlansInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -602,7 +602,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<AppServicePlanInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServicePlanInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -618,7 +618,7 @@ public final class AppServicePlansInner {
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner createOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().last().body();
     }
 
     /**
@@ -632,7 +632,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -648,7 +648,7 @@ public final class AppServicePlansInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -691,7 +691,7 @@ public final class AppServicePlansInner {
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner beginCreateOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().single().body();
     }
 
     /**
@@ -705,7 +705,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -721,7 +721,7 @@ public final class AppServicePlansInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -765,7 +765,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<AppServicePlanInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServicePlanInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
                 .register(202, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -780,7 +780,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -793,7 +793,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -808,7 +808,7 @@ public final class AppServicePlansInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -847,7 +847,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -861,7 +861,7 @@ public final class AppServicePlansInner {
      * @return the List&lt;CapabilityInner&gt; object if successful.
      */
     public List<CapabilityInner> listCapabilities(String resourceGroupName, String name) {
-        return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -874,7 +874,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, final ServiceCallback<List<CapabilityInner>> serviceCallback) {
-        return ServiceCall.create(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -889,7 +889,7 @@ public final class AppServicePlansInner {
         return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CapabilityInner>>, List<CapabilityInner>>() {
             @Override
             public List<CapabilityInner> call(ServiceResponse<List<CapabilityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -928,7 +928,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<CapabilityInner>> listCapabilitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CapabilityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CapabilityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CapabilityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -945,7 +945,7 @@ public final class AppServicePlansInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -960,7 +960,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -977,7 +977,7 @@ public final class AppServicePlansInner {
         return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1024,7 +1024,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionInner> getHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1042,7 +1042,7 @@ public final class AppServicePlansInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
-        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection).toBlocking().single().getBody();
+        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection).toBlocking().single().body();
     }
 
     /**
@@ -1058,7 +1058,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection), serviceCallback);
+        return ServiceCall.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection), serviceCallback);
     }
 
     /**
@@ -1076,7 +1076,7 @@ public final class AppServicePlansInner {
         return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1128,7 +1128,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionInner> updateHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1144,7 +1144,7 @@ public final class AppServicePlansInner {
      * @param relayName Name of the Service Bus relay.
      */
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -1159,7 +1159,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1176,7 +1176,7 @@ public final class AppServicePlansInner {
         return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1223,7 +1223,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1240,7 +1240,7 @@ public final class AppServicePlansInner {
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -1255,7 +1255,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1272,7 +1272,7 @@ public final class AppServicePlansInner {
         return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1319,7 +1319,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionKeyInner> listHybridConnectionKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionKeyInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionKeyInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionKeyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1337,10 +1337,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<String> listWebAppsByHybridConnection(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
         ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single();
-        return new PagedList<String>(response.getBody()) {
+        return new PagedList<String>(response.body()) {
             @Override
             public Page<String> nextPage(String nextPageLink) {
-                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1357,7 +1357,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -1383,7 +1383,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
                 @Override
                 public Page<String> call(ServiceResponse<Page<String>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1403,7 +1403,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1445,7 +1445,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<String>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1454,7 +1454,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<String>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<String>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1469,7 +1469,7 @@ public final class AppServicePlansInner {
      * @return the HybridConnectionLimitsInner object if successful.
      */
     public HybridConnectionLimitsInner getHybridConnectionPlanLimit(String resourceGroupName, String name) {
-        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1482,7 +1482,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1497,7 +1497,7 @@ public final class AppServicePlansInner {
         return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionLimitsInner>, HybridConnectionLimitsInner>() {
             @Override
             public HybridConnectionLimitsInner call(ServiceResponse<HybridConnectionLimitsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1536,7 +1536,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionLimitsInner> getHybridConnectionPlanLimitDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionLimitsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionLimitsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionLimitsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1552,10 +1552,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<HybridConnectionInner> listHybridConnections(final String resourceGroupName, final String name) {
         ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<HybridConnectionInner>(response.getBody()) {
+        return new PagedList<HybridConnectionInner>(response.body()) {
             @Override
             public Page<HybridConnectionInner> nextPage(String nextPageLink) {
-                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1570,7 +1570,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHybridConnectionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -1594,7 +1594,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
                 @Override
                 public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1612,7 +1612,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1646,7 +1646,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1655,7 +1655,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HybridConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1671,10 +1671,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefintions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1689,7 +1689,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefintionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -1713,7 +1713,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1731,7 +1731,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1765,7 +1765,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1774,7 +1774,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1790,10 +1790,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1808,7 +1808,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1832,7 +1832,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1850,7 +1850,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1886,7 +1886,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1906,10 +1906,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1926,7 +1926,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1952,7 +1952,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1972,7 +1972,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2008,7 +2008,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2017,7 +2017,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2031,7 +2031,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      */
     public void restartWebApps(String resourceGroupName, String name) {
-        restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -2044,7 +2044,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2059,7 +2059,7 @@ public final class AppServicePlansInner {
         return restartWebAppsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2107,7 +2107,7 @@ public final class AppServicePlansInner {
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      */
     public void restartWebApps(String resourceGroupName, String name, Boolean softRestart) {
-        restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().body();
     }
 
     /**
@@ -2121,7 +2121,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
+        return ServiceCall.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
     }
 
     /**
@@ -2137,7 +2137,7 @@ public final class AppServicePlansInner {
         return restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2177,7 +2177,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> restartWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -2192,10 +2192,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2210,7 +2210,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2234,7 +2234,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2252,7 +2252,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2289,7 +2289,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2310,10 +2310,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2331,7 +2331,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2358,7 +2358,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2379,7 +2379,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2416,7 +2416,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2425,7 +2425,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2440,7 +2440,7 @@ public final class AppServicePlansInner {
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnets(String resourceGroupName, String name) {
-        return listVnetsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listVnetsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -2453,7 +2453,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2468,7 +2468,7 @@ public final class AppServicePlansInner {
         return listVnetsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2507,7 +2507,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetInfoInner>> listVnetsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2523,7 +2523,7 @@ public final class AppServicePlansInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
-        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -2537,7 +2537,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.fromResponse(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2553,7 +2553,7 @@ public final class AppServicePlansInner {
         return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2596,7 +2596,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetInfoInner> getVnetFromServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -2614,7 +2614,7 @@ public final class AppServicePlansInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
-        return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
+        return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().body();
     }
 
     /**
@@ -2629,7 +2629,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+        return ServiceCall.fromResponse(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -2646,7 +2646,7 @@ public final class AppServicePlansInner {
         return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2693,7 +2693,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetGatewayInner> getVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2711,7 +2711,7 @@ public final class AppServicePlansInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -2727,7 +2727,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -2745,7 +2745,7 @@ public final class AppServicePlansInner {
         return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2797,7 +2797,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetGatewayInner> updateVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2813,7 +2813,7 @@ public final class AppServicePlansInner {
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
     public List<VnetRouteInner> listRoutesForVnet(String resourceGroupName, String name, String vnetName) {
-        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -2827,7 +2827,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.create(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.fromResponse(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2843,7 +2843,7 @@ public final class AppServicePlansInner {
         return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
             @Override
             public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2886,7 +2886,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> listRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetRouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2903,7 +2903,7 @@ public final class AppServicePlansInner {
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
     public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) {
-        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().body();
     }
 
     /**
@@ -2918,7 +2918,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.create(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+        return ServiceCall.fromResponse(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -2935,7 +2935,7 @@ public final class AppServicePlansInner {
         return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
             @Override
             public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2982,7 +2982,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRouteForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetRouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -3001,7 +3001,7 @@ public final class AppServicePlansInner {
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().body();
     }
 
     /**
@@ -3017,7 +3017,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3035,7 +3035,7 @@ public final class AppServicePlansInner {
         return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
             @Override
             public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3087,7 +3087,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetRouteInner> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetRouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -3105,7 +3105,7 @@ public final class AppServicePlansInner {
      * @param routeName Name of the Virtual Network route.
      */
     public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
-        deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+        deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().body();
     }
 
     /**
@@ -3120,7 +3120,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+        return ServiceCall.fromResponse(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -3137,7 +3137,7 @@ public final class AppServicePlansInner {
         return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3184,7 +3184,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -3202,7 +3202,7 @@ public final class AppServicePlansInner {
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().body();
     }
 
     /**
@@ -3218,7 +3218,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.create(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3236,7 +3236,7 @@ public final class AppServicePlansInner {
         return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
             @Override
             public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3288,7 +3288,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetRouteInner> updateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetRouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -3305,7 +3305,7 @@ public final class AppServicePlansInner {
      * @param workerName Name of worker machine, which typically starts with RD.
      */
     public void rebootWorker(String resourceGroupName, String name, String workerName) {
-        rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
+        rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().body();
     }
 
     /**
@@ -3319,7 +3319,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
+        return ServiceCall.fromResponse(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
     }
 
     /**
@@ -3335,7 +3335,7 @@ public final class AppServicePlansInner {
         return rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3378,7 +3378,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> rebootWorkerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -3392,10 +3392,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<AppServicePlanInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<AppServicePlanInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3410,7 +3410,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServicePlanInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3433,7 +3433,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3450,7 +3450,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3470,13 +3470,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3485,7 +3486,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3500,10 +3501,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<AppServicePlanInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<AppServicePlanInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3518,7 +3519,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3541,7 +3542,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3558,7 +3559,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3578,13 +3579,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3593,7 +3595,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3608,10 +3610,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<String> listWebAppsByHybridConnectionNext(final String nextPageLink) {
         ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<String>(response.getBody()) {
+        return new PagedList<String>(response.body()) {
             @Override
             public Page<String> nextPage(String nextPageLink) {
-                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3626,7 +3628,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceCall<List<String>> serviceCall, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -3649,7 +3651,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
                 @Override
                 public Page<String> call(ServiceResponse<Page<String>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3666,7 +3668,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3686,13 +3688,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebAppsByHybridConnectionNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebAppsByHybridConnectionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<String>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3701,7 +3704,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<String>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<String>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3716,10 +3719,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<HybridConnectionInner> listHybridConnectionsNext(final String nextPageLink) {
         ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HybridConnectionInner>(response.getBody()) {
+        return new PagedList<HybridConnectionInner>(response.body()) {
             @Override
             public Page<HybridConnectionInner> nextPage(String nextPageLink) {
-                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3734,7 +3737,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceCall<List<HybridConnectionInner>> serviceCall, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHybridConnectionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -3757,7 +3760,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
                 @Override
                 public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3774,7 +3777,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3794,13 +3797,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listHybridConnectionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listHybridConnectionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3809,7 +3813,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HybridConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3824,10 +3828,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefintionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3842,7 +3846,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefintionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -3865,7 +3869,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3882,7 +3886,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3902,13 +3906,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricDefintionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricDefintionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3917,7 +3922,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3932,10 +3937,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3950,7 +3955,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -3973,7 +3978,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3990,7 +3995,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4010,13 +4015,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4025,7 +4031,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4040,10 +4046,10 @@ public final class AppServicePlansInner {
      */
     public PagedList<SiteInner> listWebAppsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4058,7 +4064,7 @@ public final class AppServicePlansInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listWebAppsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -4081,7 +4087,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4098,7 +4104,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4118,13 +4124,14 @@ public final class AppServicePlansInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebAppsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebAppsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4133,7 +4140,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

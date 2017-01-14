@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 
 /**
  * Base class for Azure resource managers.
@@ -36,7 +36,7 @@ public abstract class ManagerBase {
     }
 
     /**
-     * @return the {@ResourceManager} associated with this manager
+     * @return the {@link ResourceManager} associated with this manager
      */
     public ResourceManager resourceManager() {
         return this.resourceManager;

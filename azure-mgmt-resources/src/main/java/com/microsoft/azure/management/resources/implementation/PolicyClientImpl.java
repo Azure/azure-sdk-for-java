@@ -10,9 +10,8 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the PolicyClientImpl class.
@@ -29,11 +28,11 @@ public final class PolicyClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -42,7 +41,7 @@ public final class PolicyClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -52,11 +51,11 @@ public final class PolicyClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client Api Version. */
+    /** The API version to use for the operation. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets The API version to use for the operation.
      *
      * @return the apiVersion value.
      */
@@ -96,7 +95,7 @@ public final class PolicyClientImpl extends AzureServiceClient {
      * @return the longRunningOperationRetryTimeout value.
      */
     public int longRunningOperationRetryTimeout() {
-        return Utils.toPrimitiveInt(this.longRunningOperationRetryTimeout);
+        return this.longRunningOperationRetryTimeout;
     }
 
     /**
@@ -175,10 +174,8 @@ public final class PolicyClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public PolicyClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

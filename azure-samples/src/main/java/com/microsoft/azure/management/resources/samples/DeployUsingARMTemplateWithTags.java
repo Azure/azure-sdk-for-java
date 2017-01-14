@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public final class DeployUsingARMTemplateWithTags {
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
                 Azure azure = Azure.configure()
-                        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                        .withLogLevel(LogLevel.NONE)
                         .authenticate(credFile)
                         .withDefaultSubscription();
 

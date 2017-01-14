@@ -8,7 +8,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -69,24 +68,12 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
-        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
-            @Override
-            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
-                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
-                return new ServiceResponse<>(ts, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(createAsyncNonStream(creatables), callback);
     }
 
     @Override
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, List<Creatable<T>> creatables) {
-        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
-            @Override
-            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
-                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
-                return new ServiceResponse<>(ts, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(createAsyncNonStream(creatables), callback);
     }
 
 

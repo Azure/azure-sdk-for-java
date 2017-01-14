@@ -12,11 +12,11 @@ import com.microsoft.azure.management.dns.implementation.RecordSetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters supplied to update a RecordSet.
+ * Parameters supplied to update a record set.
  */
 public class RecordSetUpdateParameters {
     /**
-     * Gets or sets information about the RecordSet being updated.
+     * Specifies information about the record set being updated.
      */
     @JsonProperty(value = "RecordSet")
     private RecordSetInner recordSet;

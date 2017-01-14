@@ -10,8 +10,8 @@ package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the KeyVaultManagementClientImpl class.
@@ -161,10 +161,8 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public KeyVaultManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

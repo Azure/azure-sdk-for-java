@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -65,14 +64,7 @@ class UsersImpl
 
     @Override
     public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
-        return ServiceCall.create(
-                getByUserPrincipalNameAsync(upn).map(new Func1<User, ServiceResponse<User>>() {
-                    @Override
-                    public ServiceResponse<User> call(User fluentModelT) {
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
+        return ServiceCall.fromBody(getByUserPrincipalNameAsync(upn), callback);
     }
 
     @Override

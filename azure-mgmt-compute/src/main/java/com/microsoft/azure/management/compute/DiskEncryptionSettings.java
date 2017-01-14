@@ -14,17 +14,18 @@ package com.microsoft.azure.management.compute;
  */
 public class DiskEncryptionSettings {
     /**
-     * the disk encryption key which is a KeyVault Secret.
+     * The disk encryption key which is a Key Vault Secret.
      */
     private KeyVaultSecretReference diskEncryptionKey;
 
     /**
-     * the key encryption key which is KeyVault Key.
+     * The key encryption key which is Key Vault Key.
      */
     private KeyVaultKeyReference keyEncryptionKey;
 
     /**
-     * whether disk encryption should be enabled on the Virtual Machine.
+     * Specifies whether disk encryption should be enabled on the virtual
+     * machine.
      */
     private Boolean enabled;
 

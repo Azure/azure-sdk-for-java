@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.rest.LogLevel;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -17,7 +18,7 @@ public class ProvidersTests {
     public static void setup() throws Exception {
         resourceManager = ResourceManager
                 .configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 .authenticate(
                         new ApplicationTokenCredentials(
                                 System.getenv("client-id"),

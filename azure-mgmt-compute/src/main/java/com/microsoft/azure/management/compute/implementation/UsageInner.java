@@ -16,25 +16,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UsageInner {
     /**
-     * an enum describing the unit of measurement.
+     * An enum describing the unit of usage measurement.
      */
     @JsonProperty(required = true)
     private String unit;
 
     /**
-     * the current value of the usage.
+     * The current usage of the resource.
      */
     @JsonProperty(required = true)
     private int currentValue;
 
     /**
-     * the limit of usage.
+     * The maximum permitted usage of the resource.
      */
     @JsonProperty(required = true)
     private long limit;
 
     /**
-     * the name of the type of usage.
+     * The name of the type of usage.
      */
     @JsonProperty(required = true)
     private UsageName name;

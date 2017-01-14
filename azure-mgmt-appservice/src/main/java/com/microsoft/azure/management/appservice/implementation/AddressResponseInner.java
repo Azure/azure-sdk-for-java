@@ -21,8 +21,8 @@ public class AddressResponseInner {
     private String serviceIpAddress;
 
     /**
-     * Virtual Network internal IP address of the App Service Environment if
-     * it is in internal load-balancing mode.
+     * Virtual Network internal IP address of the App Service Environment if it
+     * is in internal load-balancing mode.
      */
     private String internalIpAddress;
 

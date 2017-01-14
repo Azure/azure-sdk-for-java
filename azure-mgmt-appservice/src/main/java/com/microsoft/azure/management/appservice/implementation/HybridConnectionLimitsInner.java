@@ -13,8 +13,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Hybrid Connection limits contract. This is used to return the plan limits
- * of Hybrid Connections.
+ * Hybrid Connection limits contract. This is used to return the plan limits of
+ * Hybrid Connections.
  */
 @JsonFlatten
 public class HybridConnectionLimitsInner extends Resource {

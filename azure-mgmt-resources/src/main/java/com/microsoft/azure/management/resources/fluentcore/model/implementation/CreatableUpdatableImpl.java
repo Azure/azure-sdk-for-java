@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -111,7 +110,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(Utils.<FluentModelT>rootResource(createAsync()), callback);
+        return ServiceCall.fromBody(Utils.<FluentModelT>rootResource(createAsync()), callback);
     }
 
     @Override
@@ -138,7 +137,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public ServiceCall<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(applyAsync(), callback);
+        return ServiceCall.fromBody(applyAsync(), callback);
     }
 
     @Override
@@ -180,18 +179,5 @@ public abstract class CreatableUpdatableImpl<
                 return (FluentModelT) fluentModelImplT;
             }
         };
-    }
-
-    protected ServiceCall<FluentModelT> observableToFuture(
-            Observable<FluentModelT> observable,
-            final ServiceCallback<FluentModelT> callback) {
-        return ServiceCall.create(
-                observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
-                    @Override
-                    public ServiceResponse<FluentModelT> call(FluentModelT fluentModel) {
-                        return new ServiceResponse<>(fluentModel, null);
-                    }
-                }), callback
-        );
     }
 }

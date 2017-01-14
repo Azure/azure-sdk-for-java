@@ -14,7 +14,7 @@ package com.microsoft.azure.management.compute;
  */
 public class UpgradePolicy {
     /**
-     * the upgrade mode. Possible values include: 'Automatic', 'Manual'.
+     * The upgrade mode. Possible values include: 'Automatic', 'Manual'.
      */
     private UpgradeMode mode;
 

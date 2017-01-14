@@ -21,55 +21,55 @@ public class CertificateDetailsInner extends Resource {
     /**
      * Version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
     private Integer version;
 
     /**
      * Serial Number.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /**
      * Thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
      * Subject.
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /**
      * Valid from.
      */
-    @JsonProperty(value = "notBefore", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.notBefore", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime notBefore;
 
     /**
      * Valid to.
      */
-    @JsonProperty(value = "notAfter", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.notAfter", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime notAfter;
 
     /**
      * Signature algorithm.
      */
-    @JsonProperty(value = "signatureAlgorithm", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.signatureAlgorithm", access = JsonProperty.Access.WRITE_ONLY)
     private String signatureAlgorithm;
 
     /**
      * Issuer.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /**
      * Raw certificate data.
      */
-    @JsonProperty(value = "rawData", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.rawData", access = JsonProperty.Access.WRITE_ONLY)
     private String rawData;
 
     /**

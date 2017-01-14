@@ -8,34 +8,33 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.Resource;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import rx.Observable;
-import rx.functions.Func1;
-
 import java.io.IOException;
 import java.util.List;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -63,33 +62,33 @@ public final class VaultsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VaultsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body VaultCreateOrUpdateParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults list" })
         @GET("subscriptions/{subscriptionId}/resources")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults listByResourceGroupNext" })
         @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults listNext" })
         @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -102,7 +101,7 @@ public final class VaultsInner {
      * @return the VaultInner object if successful.
      */
     public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -115,7 +114,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters, final ServiceCallback<VaultInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters), serviceCallback);
     }
 
     /**
@@ -130,7 +129,7 @@ public final class VaultsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
             @Override
             public VaultInner call(ServiceResponse<VaultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -175,7 +174,7 @@ public final class VaultsInner {
     }
 
     private ServiceResponse<VaultInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VaultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VaultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<VaultInner>() { }.getType())
                 .register(200, new TypeToken<VaultInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -189,7 +188,7 @@ public final class VaultsInner {
      * @param vaultName The name of the vault to delete
      */
     public void delete(String resourceGroupName, String vaultName) {
-        deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
     }
 
     /**
@@ -201,7 +200,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String vaultName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
     }
 
     /**
@@ -215,7 +214,7 @@ public final class VaultsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -255,7 +254,7 @@ public final class VaultsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -268,7 +267,7 @@ public final class VaultsInner {
      * @return the VaultInner object if successful.
      */
     public VaultInner get(String resourceGroupName, String vaultName) {
-        return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
     }
 
     /**
@@ -280,7 +279,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VaultInner> getAsync(String resourceGroupName, String vaultName, final ServiceCallback<VaultInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
     }
 
     /**
@@ -294,7 +293,7 @@ public final class VaultsInner {
         return getWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
             @Override
             public VaultInner call(ServiceResponse<VaultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -334,7 +333,7 @@ public final class VaultsInner {
     }
 
     private ServiceResponse<VaultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VaultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VaultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VaultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -348,10 +347,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -364,7 +363,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -386,7 +385,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -402,7 +401,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -434,7 +433,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -451,10 +450,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -468,7 +467,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, top),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -491,7 +490,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -508,7 +507,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -540,7 +539,7 @@ public final class VaultsInner {
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -549,7 +548,7 @@ public final class VaultsInner {
     }
 
     private ServiceResponse<PageImpl<VaultInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VaultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VaultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VaultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -558,14 +557,14 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-     * @return the PagedList&lt;VaultInner&gt; object if successful.
+     * @return the PagedList&lt;Resource&gt; object if successful.
      */
-    public PagedList<VaultInner> list() {
-        ServiceResponse<Page<VaultInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+    public PagedList<Resource> list() {
+        ServiceResponse<Page<Resource>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<Resource>(response.body()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<Resource> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -576,12 +575,12 @@ public final class VaultsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<VaultInner>> listAsync(final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceCall<List<Resource>> listAsync(final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<Resource>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -591,14 +590,14 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<Page<VaultInner>> listAsync() {
+    public Observable<Page<Resource>> listAsync() {
         return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
+            .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
-                public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
+                    return response.body();
                 }
             });
     }
@@ -606,14 +605,14 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<Resource>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -625,9 +624,9 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-     * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<Resource>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -635,12 +634,12 @@ public final class VaultsInner {
         final String apiVersion = "2015-11-01";
         final Integer top = null;
         return service.list(this.client.subscriptionId(), filter, top, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VaultInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<Resource>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -652,14 +651,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
-     * @return the PagedList&lt;VaultInner&gt; object if successful.
+     * @return the PagedList&lt;Resource&gt; object if successful.
      */
-    public PagedList<VaultInner> list(final Integer top) {
-        ServiceResponse<Page<VaultInner>> response = listSinglePageAsync(top).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+    public PagedList<Resource> list(final Integer top) {
+        ServiceResponse<Page<Resource>> response = listSinglePageAsync(top).toBlocking().single();
+        return new PagedList<Resource>(response.body()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<Resource> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -671,12 +670,12 @@ public final class VaultsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<VaultInner>> listAsync(final Integer top, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceCall<List<Resource>> listAsync(final Integer top, final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(top),
-            new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<Resource>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -687,14 +686,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<Page<VaultInner>> listAsync(final Integer top) {
+    public Observable<Page<Resource>> listAsync(final Integer top) {
         return listWithServiceResponseAsync(top)
-            .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
+            .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
-                public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
+                    return response.body();
                 }
             });
     }
@@ -703,14 +702,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listWithServiceResponseAsync(final Integer top) {
+    public Observable<ServiceResponse<Page<Resource>>> listWithServiceResponseAsync(final Integer top) {
         return listSinglePageAsync(top)
-            .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -722,22 +721,22 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-    ServiceResponse<PageImpl<VaultInner>> * @param top Maximum number of results to return.
-     * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<Resource>> * @param top Maximum number of results to return.
+     * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listSinglePageAsync(final Integer top) {
+    public Observable<ServiceResponse<Page<Resource>>> listSinglePageAsync(final Integer top) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
         final String apiVersion = "2015-11-01";
         return service.list(this.client.subscriptionId(), filter, top, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VaultInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<Resource>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -745,9 +744,9 @@ public final class VaultsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<VaultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VaultInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VaultInner>>() { }.getType())
+    private ServiceResponse<PageImpl<Resource>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<Resource>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<Resource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -760,10 +759,10 @@ public final class VaultsInner {
      */
     public PagedList<VaultInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+        return new PagedList<VaultInner>(response.body()) {
             @Override
             public Page<VaultInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -777,7 +776,7 @@ public final class VaultsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VaultInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<VaultInner>> serviceCall, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -799,7 +798,7 @@ public final class VaultsInner {
             .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
                 @Override
                 public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -815,7 +814,7 @@ public final class VaultsInner {
             .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -834,13 +833,14 @@ public final class VaultsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VaultInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -849,7 +849,7 @@ public final class VaultsInner {
     }
 
     private ServiceResponse<PageImpl<VaultInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VaultInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VaultInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VaultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -859,14 +859,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VaultInner&gt; object if successful.
+     * @return the PagedList&lt;Resource&gt; object if successful.
      */
-    public PagedList<VaultInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<VaultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VaultInner>(response.getBody()) {
+    public PagedList<Resource> listNext(final String nextPageLink) {
+        ServiceResponse<Page<Resource>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<Resource>(response.body()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<Resource> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -879,12 +879,12 @@ public final class VaultsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<VaultInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VaultInner>> serviceCall, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceCall<List<Resource>> listNextAsync(final String nextPageLink, final ServiceCall<List<Resource>> serviceCall, final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<Resource>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -895,14 +895,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<Page<VaultInner>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<Resource>> listNextAsync(final String nextPageLink) {
         return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<VaultInner>>, Page<VaultInner>>() {
+            .map(new Func1<ServiceResponse<Page<Resource>>, Page<Resource>>() {
                 @Override
-                public Page<VaultInner> call(ServiceResponse<Page<VaultInner>> response) {
-                    return response.getBody();
+                public Page<Resource> call(ServiceResponse<Page<Resource>> response) {
+                    return response.body();
                 }
             });
     }
@@ -911,14 +911,14 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VaultInner&gt; object
+     * @return the observable to the PagedList&lt;Resource&gt; object
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<Resource>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<VaultInner>>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<Resource>>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(ServiceResponse<Page<VaultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<Resource>>> call(ServiceResponse<Page<Resource>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -930,20 +930,21 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-    ServiceResponse<PageImpl<VaultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<Resource>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VaultInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<Resource>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VaultInner>>>>() {
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VaultInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<Resource>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VaultInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VaultInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<Resource>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<Resource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -951,9 +952,9 @@ public final class VaultsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<VaultInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VaultInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VaultInner>>() { }.getType())
+    private ServiceResponse<PageImpl<Resource>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<Resource>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<Resource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

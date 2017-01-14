@@ -10,7 +10,6 @@ package com.microsoft.azure.management.search.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -56,15 +55,15 @@ public final class ServicesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ServicesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Body SearchServiceCreateOrUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -79,7 +78,7 @@ public final class ServicesInner {
      * @return the SearchServiceResourceInner object if successful.
      */
     public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -92,7 +91,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters, final ServiceCallback<SearchServiceResourceInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
     }
 
     /**
@@ -107,7 +106,7 @@ public final class ServicesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).map(new Func1<ServiceResponse<SearchServiceResourceInner>, SearchServiceResourceInner>() {
             @Override
             public SearchServiceResourceInner call(ServiceResponse<SearchServiceResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -152,7 +151,7 @@ public final class ServicesInner {
     }
 
     private ServiceResponse<SearchServiceResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SearchServiceResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SearchServiceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SearchServiceResourceInner>() { }.getType())
                 .register(201, new TypeToken<SearchServiceResourceInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -166,7 +165,7 @@ public final class ServicesInner {
      * @param serviceName The name of the Search service to delete.
      */
     public void delete(String resourceGroupName, String serviceName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -178,7 +177,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String serviceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -192,7 +191,7 @@ public final class ServicesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -232,7 +231,7 @@ public final class ServicesInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -246,7 +245,7 @@ public final class ServicesInner {
      * @return the SearchServiceListResultInner object if successful.
      */
     public SearchServiceListResultInner list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -257,7 +256,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SearchServiceListResultInner> listAsync(String resourceGroupName, final ServiceCallback<SearchServiceListResultInner> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -270,7 +269,7 @@ public final class ServicesInner {
         return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<SearchServiceListResultInner>, SearchServiceListResultInner>() {
             @Override
             public SearchServiceListResultInner call(ServiceResponse<SearchServiceListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -306,7 +305,7 @@ public final class ServicesInner {
     }
 
     private ServiceResponse<SearchServiceListResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SearchServiceListResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SearchServiceListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SearchServiceListResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

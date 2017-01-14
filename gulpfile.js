@@ -143,6 +143,12 @@ var mappings = {
         'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
         'package': 'com.microsoft.azure.management.cdn',
         'args': '-FT 2'
+    },
+    'dns': {
+        'dir': 'azure-mgmt-dns',
+        'source': 'arm-dns/2016-04-01/swagger/dns.json',
+        'package': 'com.microsoft.azure.management.dns',
+        'args': '-FT 1'
     }
 };
 

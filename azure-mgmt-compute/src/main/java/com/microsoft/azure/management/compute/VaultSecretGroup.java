@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class VaultSecretGroup {
     /**
-     * the Relative URL of the Key Vault containing all of the certificates in
+     * The Relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.
      */
     private SubResource sourceVault;
 
     /**
-     * the list of key vault references in SourceVault which contain
+     * The list of key vault references in SourceVault which contain
      * certificates.
      */
     private List<VaultCertificate> vaultCertificates;

@@ -16,9 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.List;
 
@@ -86,12 +84,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name), callback);
     }
 
     @Override
@@ -135,12 +128,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByIdAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByIdAsync(id), callback);
     }
 
     @Override

@@ -14,32 +14,32 @@ package com.microsoft.azure.management.graphrbac.implementation;
  */
 public class UserInner {
     /**
-     * object Id.
+     * The object ID.
      */
     private String objectId;
 
     /**
-     * object type.
+     * The object type.
      */
     private String objectType;
 
     /**
-     * user principal name.
+     * The principal name of the user.
      */
     private String userPrincipalName;
 
     /**
-     * user display name.
+     * The display name of the user.
      */
     private String displayName;
 
     /**
-     * user signIn name.
+     * The sign-in name of the user.
      */
     private String signInName;
 
     /**
-     * user mail.
+     * The primary email address of the user.
      */
     private String mail;
 

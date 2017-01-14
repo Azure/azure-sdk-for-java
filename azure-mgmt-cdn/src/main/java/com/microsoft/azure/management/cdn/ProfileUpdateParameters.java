@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Profile properties required for profile update.
+ * Properties required to update a profile.
  */
 public class ProfileUpdateParameters {
     /**

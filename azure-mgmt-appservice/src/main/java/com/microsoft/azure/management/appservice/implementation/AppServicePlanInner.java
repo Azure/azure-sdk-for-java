@@ -52,8 +52,8 @@ public class AppServicePlanInner extends Resource {
     private String adminSiteName;
 
     /**
-     * Specification for the App Service Environment to use for the App
-     * Service plan.
+     * Specification for the App Service Environment to use for the App Service
+     * plan.
      */
     @JsonProperty(value = "properties.hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
@@ -72,8 +72,8 @@ public class AppServicePlanInner extends Resource {
     private String geoRegion;
 
     /**
-     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service
-     * plan can be scaled independently.
+     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan
+     * can be scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service
      * plan will scale to all instances of the plan.
      */

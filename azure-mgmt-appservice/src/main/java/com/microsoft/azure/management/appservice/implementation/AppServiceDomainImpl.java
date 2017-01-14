@@ -74,7 +74,7 @@ class AppServiceDomainImpl
                     @Override
                     public Observable<List<String>> call(Page<TldLegalAgreementInner> tldLegalAgreementInnerPage) {
                         List<String> agreementKeys = new ArrayList<String>();
-                        for (TldLegalAgreementInner agreementInner : tldLegalAgreementInnerPage.getItems()) {
+                        for (TldLegalAgreementInner agreementInner : tldLegalAgreementInnerPage.items()) {
                             agreementKeys.add(agreementInner.agreementKey());
                         }
                         return Observable.just(agreementKeys);

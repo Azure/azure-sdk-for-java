@@ -204,7 +204,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public boolean overProvisionEnabled() {
-        return this.inner().overProvision();
+        return this.inner().overprovision();
     }
 
     @Override
@@ -773,7 +773,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withOverProvision(boolean enabled) {
         this.inner()
-                .withOverProvision(enabled);
+                .withOverprovision(enabled);
         return this;
     }
 

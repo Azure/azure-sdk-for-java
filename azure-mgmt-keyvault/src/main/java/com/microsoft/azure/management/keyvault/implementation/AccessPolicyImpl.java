@@ -66,7 +66,7 @@ class AccessPolicyImpl
         if (inner().objectId() == null) {
             return null;
         }
-        return inner().objectId().toString();
+        return inner().objectId();
     }
 
     @Override
@@ -84,7 +84,7 @@ class AccessPolicyImpl
 
     @Override
     public String name() {
-        return inner().objectId().toString();
+        return inner().objectId();
     }
 
     private void initializeKeyPermissions() {
@@ -140,14 +140,14 @@ class AccessPolicyImpl
     }
 
     @Override
-    public AccessPolicyImpl forObjectId(UUID objectId) {
+    public AccessPolicyImpl forObjectId(String objectId) {
         inner().withObjectId(objectId);
         return this;
     }
 
     @Override
     public AccessPolicyImpl forUser(User user) {
-        inner().withObjectId(UUID.fromString(user.objectId()));
+        inner().withObjectId(user.objectId());
         return this;
     }
 
@@ -159,13 +159,13 @@ class AccessPolicyImpl
 
     @Override
     public AccessPolicyImpl forGroup(ActiveDirectoryGroup group) {
-        inner().withObjectId(UUID.fromString(group.objectId()));
+        inner().withObjectId(group.objectId());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forServicePrincipal(ServicePrincipal servicePrincipal) {
-        inner().withObjectId(UUID.fromString(servicePrincipal.objectId()));
+        inner().withObjectId(servicePrincipal.objectId());
         return this;
     }
 

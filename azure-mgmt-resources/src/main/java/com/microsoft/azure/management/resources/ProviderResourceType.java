@@ -21,7 +21,7 @@ public class ProviderResourceType {
     private String resourceType;
 
     /**
-     * The collection of locations where this resource type can be created in.
+     * The collection of locations where this resource type can be created.
      */
     private List<String> locations;
 
@@ -31,7 +31,7 @@ public class ProviderResourceType {
     private List<AliasType> aliases;
 
     /**
-     * The api version.
+     * The API version.
      */
     private List<String> apiVersions;
 

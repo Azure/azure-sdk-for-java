@@ -48,14 +48,14 @@ public class StorageAccountInner extends Resource {
 
     /**
      * Gets the URLs that are used to perform a retrieval of a public blob,
-     * queue or table object.Note that StandardZRS and PremiumLRS accounts
+     * queue, or table object. Note that Standard_ZRS and Premium_LRS accounts
      * only return the blob endpoint.
      */
     @JsonProperty(value = "properties.primaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints primaryEndpoints;
 
     /**
-     * Gets the location of the primary for the storage account.
+     * Gets the location of the primary data center for the storage account.
      */
     @JsonProperty(value = "properties.primaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryLocation;
@@ -72,24 +72,24 @@ public class StorageAccountInner extends Resource {
      * Gets the timestamp of the most recent instance of a failover to the
      * secondary location. Only the most recent timestamp is retained. This
      * element is not returned if there has never been a failover instance.
-     * Only available if the accountType is StandardGRS or StandardRAGRS.
+     * Only available if the accountType is Standard_GRS or Standard_RAGRS.
      */
     @JsonProperty(value = "properties.lastGeoFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastGeoFailoverTime;
 
     /**
-     * Gets the location of the geo replicated secondary for the storage
-     * account. Only available if the accountType is StandardGRS or
-     * StandardRAGRS.
+     * Gets the location of the geo-replicated secondary for the storage
+     * account. Only available if the accountType is Standard_GRS or
+     * Standard_RAGRS.
      */
     @JsonProperty(value = "properties.secondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryLocation;
 
     /**
-     * Gets the status indicating whether the secondary location of the
-     * storage account is available or unavailable. Only available if the
-     * accountType is StandardGRS or StandardRAGRS. Possible values include:
-     * 'Available', 'Unavailable'.
+     * Gets the status indicating whether the secondary location of the storage
+     * account is available or unavailable. Only available if the SKU name is
+     * Standard_GRS or Standard_RAGRS. Possible values include: 'Available',
+     * 'Unavailable'.
      */
     @JsonProperty(value = "properties.statusOfSecondary", access = JsonProperty.Access.WRITE_ONLY)
     private AccountStatus statusOfSecondary;
@@ -101,31 +101,29 @@ public class StorageAccountInner extends Resource {
     private DateTime creationTime;
 
     /**
-     * Gets the user assigned custom domain assigned to this storage account.
+     * Gets the custom domain the user assigned to this storage account.
      */
     @JsonProperty(value = "properties.customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
 
     /**
      * Gets the URLs that are used to perform a retrieval of a public blob,
-     * queue or table object from the secondary location of the storage
-     * account. Only available if the accountType is StandardRAGRS.
+     * queue, or table object from the secondary location of the storage
+     * account. Only available if the SKU name is Standard_RAGRS.
      */
     @JsonProperty(value = "properties.secondaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints secondaryEndpoints;
 
     /**
-     * Gets the encryption settings on the account. If unspecified the account
+     * Gets the encryption settings on the account. If unspecified, the account
      * is unencrypted.
      */
     @JsonProperty(value = "properties.encryption", access = JsonProperty.Access.WRITE_ONLY)
     private Encryption encryption;
 
     /**
-     * The access tier used for billing. Access tier cannot be changed more
-     * than once every 7 days (168 hours). Access tier cannot be set for
-     * StandardLRS, StandardGRS, StandardRAGRS, or PremiumLRS account types.
-     * Possible values include: 'Hot', 'Cool'.
+     * Required for storage accounts where kind = BlobStorage. The access tier
+     * used for billing. Possible values include: 'Hot', 'Cool'.
      */
     @JsonProperty(value = "properties.accessTier", access = JsonProperty.Access.WRITE_ONLY)
     private AccessTier accessTier;

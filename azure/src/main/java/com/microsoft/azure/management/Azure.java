@@ -6,9 +6,10 @@
 
 package com.microsoft.azure.management;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
@@ -88,10 +89,10 @@ public final class Azure {
      * @return the authenticated Azure client
      */
     public static Authenticated authenticate(AzureTokenCredentials credentials) {
-        return new AuthenticatedImpl(
-                credentials.getEnvironment().newRestClientBuilder()
-                        .withCredentials(credentials)
-                        .build(), credentials.getDomain());
+        return new AuthenticatedImpl(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withCredentials(credentials)
+                .build(), credentials.domain());
     }
 
     /**
@@ -112,9 +113,10 @@ public final class Azure {
      */
     public static Authenticated authenticate(File credentialsFile) throws IOException {
         ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-        return new AuthenticatedImpl(credentials.getEnvironment().newRestClientBuilder()
+        return new AuthenticatedImpl(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .build(), credentials.getDomain()).withDefaultSubscription(credentials.defaultSubscriptionId());
+                .build(), credentials.domain()).withDefaultSubscription(credentials.defaultSubscriptionId());
     }
 
     /**
@@ -167,13 +169,13 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(AzureTokenCredentials credentials) {
-            return Azure.authenticate(buildRestClient(credentials), credentials.getDomain());
+            return Azure.authenticate(buildRestClient(credentials), credentials.domain());
         }
 
         @Override
         public Authenticated authenticate(File credentialsFile) throws IOException {
             ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-            return Azure.authenticate(buildRestClient(credentials), credentials.getDomain(), credentials.defaultSubscriptionId());
+            return Azure.authenticate(buildRestClient(credentials), credentials.domain(), credentials.defaultSubscriptionId());
         }
     }
 

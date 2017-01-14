@@ -10,7 +10,6 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -54,31 +53,31 @@ public final class RecommendationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RecommendationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations resetAllFilters" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
         Observable<Response<ResponseBody>> resetAllFilters(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations listHistoryForWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
         Observable<Response<ResponseBody>> listHistoryForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations listRecommendedRulesForWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
         Observable<Response<ResponseBody>> listRecommendedRulesForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("webAppSku") String webAppSku, @Query("numSlots") Integer numSlots, @Query("liveHours") Integer liveHours, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations disableAllForWebApp" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable")
         Observable<Response<ResponseBody>> disableAllForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations resetAllFiltersForWebApp" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset")
         Observable<Response<ResponseBody>> resetAllFiltersForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations getRuleDetailsByWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}")
         Observable<Response<ResponseBody>> getRuleDetailsByWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("updateSeen") Boolean updateSeen, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -91,7 +90,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -102,7 +101,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -115,7 +114,7 @@ public final class RecommendationsInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -156,7 +155,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> list(Boolean featured, String filter) {
-        return listWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(featured, filter).toBlocking().single().body();
     }
 
     /**
@@ -169,7 +168,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(featured, filter), serviceCallback);
+        return ServiceCall.fromResponse(listWithServiceResponseAsync(featured, filter), serviceCallback);
     }
 
     /**
@@ -184,7 +183,7 @@ public final class RecommendationsInner {
         return listWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -217,7 +216,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -229,7 +228,7 @@ public final class RecommendationsInner {
      *
      */
     public void resetAllFilters() {
-        resetAllFiltersWithServiceResponseAsync().toBlocking().single().getBody();
+        resetAllFiltersWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -240,7 +239,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -253,7 +252,7 @@ public final class RecommendationsInner {
         return resetAllFiltersWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -284,7 +283,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> resetAllFiltersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -298,7 +297,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -311,7 +310,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+        return ServiceCall.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -326,7 +325,7 @@ public final class RecommendationsInner {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -375,7 +374,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName, String filter) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().body();
     }
 
     /**
@@ -389,7 +388,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
+        return ServiceCall.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
     }
 
     /**
@@ -405,7 +404,7 @@ public final class RecommendationsInner {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -445,7 +444,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> listHistoryForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -460,7 +459,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -473,7 +472,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+        return ServiceCall.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -488,7 +487,7 @@ public final class RecommendationsInner {
         return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -545,7 +544,7 @@ public final class RecommendationsInner {
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().getBody();
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().body();
     }
 
     /**
@@ -563,7 +562,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
+        return ServiceCall.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
     }
 
     /**
@@ -583,7 +582,7 @@ public final class RecommendationsInner {
         return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -627,7 +626,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> listRecommendedRulesForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -641,7 +640,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      */
     public void disableAllForWebApp(String resourceGroupName, String siteName) {
-        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -654,7 +653,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+        return ServiceCall.fromResponse(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -669,7 +668,7 @@ public final class RecommendationsInner {
         return disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -708,7 +707,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> disableAllForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -721,7 +720,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      */
     public void resetAllFiltersForWebApp(String resourceGroupName, String siteName) {
-        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -734,7 +733,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+        return ServiceCall.fromResponse(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -749,7 +748,7 @@ public final class RecommendationsInner {
         return resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -788,7 +787,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> resetAllFiltersForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -803,7 +802,7 @@ public final class RecommendationsInner {
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().body();
     }
 
     /**
@@ -817,7 +816,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.create(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
+        return ServiceCall.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
     }
 
     /**
@@ -833,7 +832,7 @@ public final class RecommendationsInner {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -887,7 +886,7 @@ public final class RecommendationsInner {
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().body();
     }
 
     /**
@@ -902,7 +901,7 @@ public final class RecommendationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.create(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
+        return ServiceCall.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
     }
 
     /**
@@ -919,7 +918,7 @@ public final class RecommendationsInner {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -963,7 +962,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<RecommendationRuleInner> getRuleDetailsByWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecommendationRuleInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecommendationRuleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecommendationRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -10,11 +10,11 @@ package com.microsoft.azure.management.resources;
 
 
 /**
- * Previewed feature information.
+ * Information about feature.
  */
 public class FeatureProperties {
     /**
-     * Gets or sets the state of the previewed feature.
+     * The registration state of the feature for the subscription.
      */
     private String state;
 

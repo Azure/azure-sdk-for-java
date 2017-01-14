@@ -6,7 +6,8 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
@@ -45,7 +46,8 @@ public final class ResourceManager extends ManagerBase {
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(AzureTokenCredentials credentials) {
-        return new AuthenticatedImpl(credentials.getEnvironment().newRestClientBuilder()
+        return new AuthenticatedImpl(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build());
     }

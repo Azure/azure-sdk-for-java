@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TenantIdDescriptionInner {
     /**
-     * The fully qualified Id. For example,
+     * The fully qualified ID of the tenant. For example,
      * /tenants/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The tenantId. For example, 00000000-0000-0000-0000-000000000000.
+     * The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;

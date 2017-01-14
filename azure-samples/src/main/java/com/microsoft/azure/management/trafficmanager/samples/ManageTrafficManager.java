@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public final class ManageTrafficManager {
 
             azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

@@ -11,10 +11,9 @@ package com.microsoft.azure.management.network.implementation;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -401,10 +400,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public NetworkManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -465,7 +462,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkManagementClientService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkManagementClient checkDnsNameAvailability" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         Observable<Response<ResponseBody>> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -478,7 +475,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -489,7 +486,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
+        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -502,7 +499,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -544,7 +541,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().body();
     }
 
     /**
@@ -556,7 +553,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
+        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
     }
 
     /**
@@ -570,7 +567,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -605,7 +602,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DnsNameAvailabilityResultInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<DnsNameAvailabilityResultInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<DnsNameAvailabilityResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

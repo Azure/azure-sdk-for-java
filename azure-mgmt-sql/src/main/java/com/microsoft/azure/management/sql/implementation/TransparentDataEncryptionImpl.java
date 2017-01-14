@@ -70,7 +70,7 @@ class TransparentDataEncryptionImpl
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.inner()));
+                this.inner().status()));
 
         return this;
     }

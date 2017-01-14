@@ -15,28 +15,28 @@ import java.util.List;
  */
 public class VirtualMachineExtensionInstanceView {
     /**
-     * the virtual machine extension name.
+     * The virtual machine extension name.
      */
     private String name;
 
     /**
-     * the full type of the extension handler which includes both publisher
-     * and type.
+     * The full type of the extension handler which includes both publisher and
+     * type.
      */
     private String type;
 
     /**
-     * the type version of the extension handler.
+     * The type version of the extension handler.
      */
     private String typeHandlerVersion;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
     private List<InstanceViewStatus> substatuses;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
     private List<InstanceViewStatus> statuses;
 

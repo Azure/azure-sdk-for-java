@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -32,6 +31,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -62,65 +62,65 @@ public final class ApplicationGatewaysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ApplicationGatewaysService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways start" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start")
         Observable<Response<ResponseBody>> start(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways beginStart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start")
         Observable<Response<ResponseBody>> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways stop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop")
         Observable<Response<ResponseBody>> stop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways beginStop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop")
         Observable<Response<ResponseBody>> beginStop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways backendHealth" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth")
         Observable<Response<ResponseBody>> backendHealth(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways beginBackendHealth" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth")
         Observable<Response<ResponseBody>> beginBackendHealth(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listAllNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -131,7 +131,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void delete(String resourceGroupName, String applicationGatewayName) {
-        deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -143,7 +143,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -157,7 +157,7 @@ public final class ApplicationGatewaysInner {
         return deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -191,7 +191,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginDelete(String resourceGroupName, String applicationGatewayName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -203,7 +203,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -217,7 +217,7 @@ public final class ApplicationGatewaysInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -255,7 +255,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -270,7 +270,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -282,7 +282,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -296,7 +296,7 @@ public final class ApplicationGatewaysInner {
         return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -334,7 +334,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<ApplicationGatewayInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ApplicationGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -349,7 +349,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -362,7 +362,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -377,7 +377,7 @@ public final class ApplicationGatewaysInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -418,7 +418,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -431,7 +431,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class ApplicationGatewaysInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -489,7 +489,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<ApplicationGatewayInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ApplicationGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .register(200, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -504,10 +504,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -520,7 +520,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -542,7 +542,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -558,7 +558,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -587,7 +587,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -596,7 +596,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -609,10 +609,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listAll() {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -624,7 +624,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -645,7 +645,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -660,7 +660,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -685,7 +685,7 @@ public final class ApplicationGatewaysInner {
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -694,7 +694,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -707,7 +707,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void start(String resourceGroupName, String applicationGatewayName) {
-        startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -719,7 +719,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> startAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -733,7 +733,7 @@ public final class ApplicationGatewaysInner {
         return startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -767,7 +767,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginStart(String resourceGroupName, String applicationGatewayName) {
-        beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -779,7 +779,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -793,7 +793,7 @@ public final class ApplicationGatewaysInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -831,7 +831,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -844,7 +844,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void stop(String resourceGroupName, String applicationGatewayName) {
-        stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -856,7 +856,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> stopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -870,7 +870,7 @@ public final class ApplicationGatewaysInner {
         return stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -904,7 +904,7 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      */
     public void beginStop(String resourceGroupName, String applicationGatewayName) {
-        beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -916,7 +916,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -930,7 +930,7 @@ public final class ApplicationGatewaysInner {
         return beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -968,7 +968,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginStopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -982,7 +982,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName) {
-        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
     }
 
     /**
@@ -994,7 +994,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.create(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -1008,7 +1008,7 @@ public final class ApplicationGatewaysInner {
         return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1044,7 +1044,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
-        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().last().getBody();
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().last().body();
     }
 
     /**
@@ -1057,7 +1057,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.create(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+        return ServiceCall.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
     }
 
     /**
@@ -1072,7 +1072,7 @@ public final class ApplicationGatewaysInner {
         return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1108,7 +1108,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName) {
-        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -1120,7 +1120,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.create(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -1134,7 +1134,7 @@ public final class ApplicationGatewaysInner {
         return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1181,7 +1181,7 @@ public final class ApplicationGatewaysInner {
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
-        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().single().getBody();
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().single().body();
     }
 
     /**
@@ -1194,7 +1194,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.create(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+        return ServiceCall.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
     }
 
     /**
@@ -1209,7 +1209,7 @@ public final class ApplicationGatewaysInner {
         return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
             @Override
             public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1248,7 +1248,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<ApplicationGatewayBackendHealthInner> beginBackendHealthDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGatewayBackendHealthInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ApplicationGatewayBackendHealthInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1263,10 +1263,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1280,7 +1280,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -1302,7 +1302,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1318,7 +1318,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1337,13 +1337,14 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1352,7 +1353,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1366,10 +1367,10 @@ public final class ApplicationGatewaysInner {
      */
     public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1383,7 +1384,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -1405,7 +1406,7 @@ public final class ApplicationGatewaysInner {
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1421,7 +1422,7 @@ public final class ApplicationGatewaysInner {
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1440,13 +1441,14 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1455,7 +1457,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

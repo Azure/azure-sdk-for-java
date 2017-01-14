@@ -11,56 +11,56 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import java.util.List;
 
 /**
- * Active Directory object information.
+ * The properties of an Active Directory object.
  */
 public class AADObjectInner {
     /**
-     * object Id.
+     * The ID of the object.
      */
     private String objectId;
 
     /**
-     * object type.
+     * The type of AAD object.
      */
     private String objectType;
 
     /**
-     * object display name.
+     * The display name of the object.
      */
     private String displayName;
 
     /**
-     * principal name.
+     * The principal name of the object.
      */
     private String userPrincipalName;
 
     /**
-     * mail.
+     * The primary email address of the object.
      */
     private String mail;
 
     /**
-     * MailEnabled field.
+     * Whether the AAD object is mail-enabled.
      */
     private Boolean mailEnabled;
 
     /**
-     * SecurityEnabled field.
+     * Whether the AAD object is security-enabled.
      */
     private Boolean securityEnabled;
 
     /**
-     * signIn name.
+     * The sign-in name of the object.
      */
     private String signInName;
 
     /**
-     * the list of service principal names.
+     * A collection of service principal names associated with the object.
      */
     private List<String> servicePrincipalNames;
 
     /**
-     * the user type.
+     * The user type of the object.
      */
     private String userType;
 

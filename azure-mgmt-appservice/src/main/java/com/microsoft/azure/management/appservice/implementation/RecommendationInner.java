@@ -36,8 +36,8 @@ public class RecommendationInner {
 
     /**
      * Name of a resource type this recommendation applies, e.g. Subscription,
-     * ServerFarm, Site. Possible values include: 'ServerFarm',
-     * 'Subscription', 'WebSite'.
+     * ServerFarm, Site. Possible values include: 'ServerFarm', 'Subscription',
+     * 'WebSite'.
      */
     private ResourceScopeType resourceScope;
 

@@ -10,7 +10,6 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -57,19 +56,19 @@ public final class EndpointsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface EndpointsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -86,7 +85,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -101,7 +100,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -118,7 +117,7 @@ public final class EndpointsInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -171,7 +170,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -187,7 +186,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -201,7 +200,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
@@ -217,7 +216,7 @@ public final class EndpointsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -265,7 +264,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -282,7 +281,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner createOrUpdate(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -297,7 +296,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -314,7 +313,7 @@ public final class EndpointsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -367,7 +366,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .register(201, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -383,7 +382,7 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      */
     public void delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -397,7 +396,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
@@ -413,7 +412,7 @@ public final class EndpointsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -461,7 +460,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);

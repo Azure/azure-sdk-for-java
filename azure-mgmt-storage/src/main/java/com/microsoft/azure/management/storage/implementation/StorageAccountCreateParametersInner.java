@@ -18,12 +18,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * The parameters to provide for the account.
+ * The parameters used when creating a storage account.
  */
 @JsonFlatten
 public class StorageAccountCreateParametersInner {
     /**
-     * Required. Gets or sets the sku type.
+     * Required. Gets or sets the sku name.
      */
     @JsonProperty(required = true)
     private Sku sku;
@@ -36,46 +36,44 @@ public class StorageAccountCreateParametersInner {
     private Kind kind;
 
     /**
-     * Required. Gets or sets the location of the resource. This will be one
-     * of the supported and registered Azure Geo Regions (e.g. West US, East
-     * US, Southeast Asia, etc.). The geo region of a resource cannot be
-     * changed once it is created, but if an identical geo region is
-     * specified on update the request will succeed.
+     * Required. Gets or sets the location of the resource. This will be one of
+     * the supported and registered Azure Geo Regions (e.g. West US, East US,
+     * Southeast Asia, etc.). The geo region of a resource cannot be changed
+     * once it is created, but if an identical geo region is specified on
+     * update, the request will succeed.
      */
     @JsonProperty(required = true)
     private String location;
 
     /**
-     * Gets or sets a list of key value pairs that describe the resource.
-     * These tags can be used in viewing and grouping this resource (across
-     * resource groups). A maximum of 15 tags can be provided for a resource.
-     * Each tag must have a key no greater than 128 characters and value no
-     * greater than 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These
+     * tags can be used for viewing and grouping this resource (across resource
+     * groups). A maximum of 15 tags can be provided for a resource. Each tag
+     * must have a key with a length no greater than 128 characters and a value
+     * with a length no greater than 256 characters.
      */
     private Map<String, String> tags;
 
     /**
      * User domain assigned to the storage account. Name is the CNAME source.
-     * Only one custom domain is supported per storage account at this time.
-     * To clear the existing custom domain, use an empty string for the
-     * custom domain name property.
+     * Only one custom domain is supported per storage account at this time. To
+     * clear the existing custom domain, use an empty string for the custom
+     * domain name property.
      */
     @JsonProperty(value = "properties.customDomain")
     private CustomDomain customDomain;
 
     /**
-     * Provides the encryption settings on the account. If left unspecified
-     * the account encryption settings will remain. The default setting is
+     * Provides the encryption settings on the account. If left unspecified the
+     * account encryption settings will remain the same. The default setting is
      * unencrypted.
      */
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
 
     /**
-     * Required for StandardBlob accounts. The access tier used for billing.
-     * Access tier cannot be changed more than once every 7 days (168 hours).
-     * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
-     * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
+     * Required for storage accounts where kind = BlobStorage. The access tier
+     * used for billing. Possible values include: 'Hot', 'Cool'.
      */
     @JsonProperty(value = "properties.accessTier")
     private AccessTier accessTier;

@@ -10,11 +10,11 @@ package com.microsoft.azure.management.cdn.implementation;
 
 
 /**
- * SSO URI required to login to third party web portal.
+ * SSO URI required to login to the supplemental portal.
  */
 public class SsoUriInner {
     /**
-     * The URI used to login to third party web portal.
+     * The URI used to login to the supplemental portal.
      */
     private String ssoUriValue;
 

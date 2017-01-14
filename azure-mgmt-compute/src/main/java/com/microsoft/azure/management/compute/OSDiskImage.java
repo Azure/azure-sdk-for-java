@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class OSDiskImage {
     /**
-     * the operating system of the osDiskImage. Possible values include:
+     * The operating system of the osDiskImage. Possible values include:
      * 'Windows', 'Linux'.
      */
     @JsonProperty(required = true)

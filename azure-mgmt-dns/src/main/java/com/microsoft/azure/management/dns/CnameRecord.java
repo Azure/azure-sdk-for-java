@@ -14,8 +14,7 @@ package com.microsoft.azure.management.dns;
  */
 public class CnameRecord {
     /**
-     * Gets or sets the canonical name for this record without a terminating
-     * dot.
+     * The canonical name for this CNAME record.
      */
     private String cname;
 

@@ -5,7 +5,8 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -37,7 +38,8 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
      * @return the TrafficManager
      */
     public static TrafficManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new TrafficManager(credentials.getEnvironment().newRestClientBuilder()
+        return new TrafficManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

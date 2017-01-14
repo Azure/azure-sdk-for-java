@@ -17,8 +17,8 @@ import com.microsoft.azure.management.appservice.SiteCloneabilityCriterion;
  */
 public class SiteCloneabilityInner {
     /**
-     * Name of app. Possible values include: 'Cloneable',
-     * 'PartiallyCloneable', 'NotCloneable'.
+     * Name of app. Possible values include: 'Cloneable', 'PartiallyCloneable',
+     * 'NotCloneable'.
      */
     private CloneAbilityResult result;
 

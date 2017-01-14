@@ -15,38 +15,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SoaRecord {
     /**
-     * Gets or sets the domain name of the authoritative name server, without
-     * a temrinating dot.
+     * The domain name of the authoritative name server for this SOA record.
      */
     private String host;
 
     /**
-     * Gets or sets the email for this record.
+     * The email contact for this SOA record.
      */
     private String email;
 
     /**
-     * Gets or sets the serial number for this record.
+     * The serial number for this SOA record.
      */
     private Long serialNumber;
 
     /**
-     * Gets or sets the refresh value for this record.
+     * The refresh value for this SOA record.
      */
     private Long refreshTime;
 
     /**
-     * Gets or sets the retry time for this record.
+     * The retry time for this SOA record.
      */
     private Long retryTime;
 
     /**
-     * Gets or sets the expire time for this record.
+     * The expire time for this SOA record.
      */
     private Long expireTime;
 
     /**
-     * Gets or sets the minimum TTL value for this record.
+     * The minimum value for this SOA record. By convention this is used to
+     * determine the negative caching duration.
      */
     @JsonProperty(value = "minimumTTL")
     private Long minimumTtl;
