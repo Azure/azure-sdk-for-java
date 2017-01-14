@@ -15,14 +15,15 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import okhttp3.logging.HttpLoggingInterceptor;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure Compute sample for managing virtual machines -
@@ -83,7 +84,7 @@ public final class ManageVirtualMachinesInParallel {
                 List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
 
                 for (int i = 0; i < vmCount; i++) {
-                    VirtualMachine.DefinitionStages.WithCreate creatableVirtualMachine = azure.virtualMachines()
+                    Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
                             .define("VM-" + i)
                             .withRegion(Region.US_EAST)
                             .withExistingResourceGroup(resourceGroup)
@@ -98,19 +99,20 @@ public final class ManageVirtualMachinesInParallel {
                     creatableVirtualMachines.add(creatableVirtualMachine);
                 }
 
-                Date t1 = new Date();
+                StopWatch stopwatch = new StopWatch();
                 System.out.println("Creating the virtual machines");
+                stopwatch.start();
 
-                CreatedResources<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines);
+                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines).values();
 
-                Date t2 = new Date();
+                stopwatch.stop();
                 System.out.println("Created virtual machines");
 
                 for (VirtualMachine virtualMachine : virtualMachines) {
                     System.out.println(virtualMachine.id());
                 }
 
-                System.out.println("Virtual Machines create: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
             } catch (Exception f) {
 
                 System.out.println(f.getMessage());
