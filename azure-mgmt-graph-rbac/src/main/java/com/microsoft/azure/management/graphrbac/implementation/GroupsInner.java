@@ -11,7 +11,6 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.GroupAddMemberParameters;
@@ -33,6 +32,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -63,92 +63,92 @@ public final class GroupsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface GroupsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups isMemberOf" })
         @POST("{tenantID}/isMemberOf")
         Observable<Response<ResponseBody>> isMemberOf(@Path("tenantID") String tenantID, @Body CheckGroupMembershipParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups removeMember" })
         @HTTP(path = "{tenantID}/groups/{groupObjectId}/$links/members/{memberObjectId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> removeMember(@Path(value = "groupObjectId", encoded = true) String groupObjectId, @Path(value = "memberObjectId", encoded = true) String memberObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups addMember" })
         @POST("{tenantID}/groups/{groupObjectId}/$links/members")
         Observable<Response<ResponseBody>> addMember(@Path(value = "groupObjectId", encoded = true) String groupObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GroupAddMemberParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups delete" })
         @HTTP(path = "{tenantID}/groups/{groupObjectId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path(value = "groupObjectId", encoded = true) String groupObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups create" })
         @POST("{tenantID}/groups")
         Observable<Response<ResponseBody>> create(@Path("tenantID") String tenantID, @Body GroupCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups list" })
         @GET("{tenantID}/groups")
         Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups getGroupMembers" })
         @GET("{tenantID}/groups/{objectId}/members")
         Observable<Response<ResponseBody>> getGroupMembers(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups get" })
         @GET("{tenantID}/groups/{objectId}")
         Observable<Response<ResponseBody>> get(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups getMemberGroups" })
         @POST("{tenantID}/groups/{objectId}/getMemberGroups")
         Observable<Response<ResponseBody>> getMemberGroups(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GroupGetMemberGroupsParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{tenantID}/{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{tenantID}/{nextLink}")
-        Observable<Response<ResponseBody>> getGroupMembersNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Groups getGroupMembersNext" })
+        @GET
+        Observable<Response<ResponseBody>> getGroupMembersNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or a transitive member of the specified group.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
-     * @param parameters Check group membership parameters.
+     * @param parameters The check group membership parameters.
      * @return the CheckGroupMembershipResultInner object if successful.
      */
     public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParametersInner parameters) {
-        return isMemberOfWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return isMemberOfWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or a transitive member of the specified group.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
-     * @param parameters Check group membership parameters.
+     * @param parameters The check group membership parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters, final ServiceCallback<CheckGroupMembershipResultInner> serviceCallback) {
-        return ServiceCall.create(isMemberOfWithServiceResponseAsync(parameters), serviceCallback);
+        return ServiceCall.fromResponse(isMemberOfWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or a transitive member of the specified group.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
-     * @param parameters Check group membership parameters.
+     * @param parameters The check group membership parameters.
      * @return the observable to the CheckGroupMembershipResultInner object
      */
     public Observable<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters) {
         return isMemberOfWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<CheckGroupMembershipResultInner>, CheckGroupMembershipResultInner>() {
             @Override
             public CheckGroupMembershipResultInner call(ServiceResponse<CheckGroupMembershipResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or a transitive member of the specified group.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
-     * @param parameters Check group membership parameters.
+     * @param parameters The check group membership parameters.
      * @return the observable to the CheckGroupMembershipResultInner object
      */
     public Observable<ServiceResponse<CheckGroupMembershipResultInner>> isMemberOfWithServiceResponseAsync(CheckGroupMembershipParametersInner parameters) {
@@ -177,55 +177,55 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<CheckGroupMembershipResultInner> isMemberOfDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CheckGroupMembershipResultInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CheckGroupMembershipResultInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CheckGroupMembershipResultInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Remove a memeber from a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#DeleteGroupMember.
+     * Remove a member from a group.
      *
-     * @param groupObjectId Group object id
-     * @param memberObjectId Member Object id
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id
      */
     public void removeMember(String groupObjectId, String memberObjectId) {
-        removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().getBody();
+        removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().body();
     }
 
     /**
-     * Remove a memeber from a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#DeleteGroupMember.
+     * Remove a member from a group.
      *
-     * @param groupObjectId Group object id
-     * @param memberObjectId Member Object id
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> removeMemberAsync(String groupObjectId, String memberObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId), serviceCallback);
+        return ServiceCall.fromResponse(removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId), serviceCallback);
     }
 
     /**
-     * Remove a memeber from a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#DeleteGroupMember.
+     * Remove a member from a group.
      *
-     * @param groupObjectId Group object id
-     * @param memberObjectId Member Object id
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> removeMemberAsync(String groupObjectId, String memberObjectId) {
         return removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Remove a memeber from a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#DeleteGroupMember.
+     * Remove a member from a group.
      *
-     * @param groupObjectId Group object id
-     * @param memberObjectId Member Object id
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> removeMemberWithServiceResponseAsync(String groupObjectId, String memberObjectId) {
@@ -256,55 +256,55 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<Void> removeMemberDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Add a memeber to a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#AddGroupMembers.
+     * Add a member to a group.
      *
-     * @param groupObjectId Group object id
-     * @param url Member Object Url as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      */
     public void addMember(String groupObjectId, String url) {
-        addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().getBody();
+        addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().body();
     }
 
     /**
-     * Add a memeber to a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#AddGroupMembers.
+     * Add a member to a group.
      *
-     * @param groupObjectId Group object id
-     * @param url Member Object Url as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> addMemberAsync(String groupObjectId, String url, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(addMemberWithServiceResponseAsync(groupObjectId, url), serviceCallback);
+        return ServiceCall.fromResponse(addMemberWithServiceResponseAsync(groupObjectId, url), serviceCallback);
     }
 
     /**
-     * Add a memeber to a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#AddGroupMembers.
+     * Add a member to a group.
      *
-     * @param groupObjectId Group object id
-     * @param url Member Object Url as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> addMemberAsync(String groupObjectId, String url) {
         return addMemberWithServiceResponseAsync(groupObjectId, url).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Add a memeber to a group. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/groups-operations#AddGroupMembers.
+     * Add a member to a group.
      *
-     * @param groupObjectId Group object id
-     * @param url Member Object Url as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> addMemberWithServiceResponseAsync(String groupObjectId, String url) {
@@ -337,51 +337,51 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<Void> addMemberDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Delete a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Delete a group from the directory.
      *
-     * @param groupObjectId Object id
+     * @param groupObjectId The object ID of the group to delete.
      */
     public void delete(String groupObjectId) {
-        deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().body();
     }
 
     /**
-     * Delete a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Delete a group from the directory.
      *
-     * @param groupObjectId Object id
+     * @param groupObjectId The object ID of the group to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String groupObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(groupObjectId), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(groupObjectId), serviceCallback);
     }
 
     /**
-     * Delete a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Delete a group from the directory.
      *
-     * @param groupObjectId Object id
+     * @param groupObjectId The object ID of the group to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String groupObjectId) {
         return deleteWithServiceResponseAsync(groupObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Delete a group from the directory.
      *
-     * @param groupObjectId Object id
+     * @param groupObjectId The object ID of the group to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String groupObjectId) {
@@ -409,52 +409,52 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Create a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Create a group in the directory.
      *
-     * @param parameters Parameters to create a group
+     * @param parameters The parameters for the group to create.
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner create(GroupCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
-     * Create a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Create a group in the directory.
      *
-     * @param parameters Parameters to create a group
+     * @param parameters The parameters for the group to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ADGroupInner> createAsync(GroupCreateParametersInner parameters, final ServiceCallback<ADGroupInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(parameters), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
-     * Create a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Create a group in the directory.
      *
-     * @param parameters Parameters to create a group
+     * @param parameters The parameters for the group to create.
      * @return the observable to the ADGroupInner object
      */
     public Observable<ADGroupInner> createAsync(GroupCreateParametersInner parameters) {
         return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ADGroupInner>, ADGroupInner>() {
             @Override
             public ADGroupInner call(ServiceResponse<ADGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Create a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
+     * Create a group in the directory.
      *
-     * @param parameters Parameters to create a group
+     * @param parameters The parameters for the group to create.
      * @return the observable to the ADGroupInner object
      */
     public Observable<ServiceResponse<ADGroupInner>> createWithServiceResponseAsync(GroupCreateParametersInner parameters) {
@@ -483,7 +483,7 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<ADGroupInner> createDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ADGroupInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ADGroupInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ADGroupInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
@@ -496,10 +496,10 @@ public final class GroupsInner {
      */
     public PagedList<ADGroupInner> list() {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -511,7 +511,7 @@ public final class GroupsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ADGroupInner>> listAsync(final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -532,7 +532,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -547,7 +547,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -574,8 +574,8 @@ public final class GroupsInner {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ADGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ADGroupInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -586,15 +586,15 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
     public PagedList<ADGroupInner> list(final String filter) {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -602,12 +602,12 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ADGroupInner>> listAsync(final String filter, final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -621,7 +621,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<Page<ADGroupInner>> listAsync(final String filter) {
@@ -629,7 +629,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -637,7 +637,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listWithServiceResponseAsync(final String filter) {
@@ -645,7 +645,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -657,7 +657,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-    ServiceResponse<PageImpl1<ADGroupInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<ADGroupInner>> * @param filter The filter to apply to the operation.
      * @return the PagedList&lt;ADGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listSinglePageAsync(final String filter) {
@@ -672,8 +672,8 @@ public final class GroupsInner {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ADGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ADGroupInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -681,9 +681,9 @@ public final class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ADGroupInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ADGroupInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ADGroupInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ADGroupInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ADGroupInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ADGroupInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -691,15 +691,15 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param objectId Group object Id who's members should be retrieved.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
     public PagedList<AADObjectInner> getGroupMembers(final String objectId) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersSinglePageAsync(objectId).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.getBody()) {
+        return new PagedList<AADObjectInner>(response.body()) {
             @Override
             public Page<AADObjectInner> nextPage(String nextLink) {
-                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -707,12 +707,12 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param objectId Group object Id who's members should be retrieved.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AADObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<AADObjectInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getGroupMembersSinglePageAsync(objectId),
             new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
@@ -726,7 +726,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param objectId Group object Id who's members should be retrieved.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<Page<AADObjectInner>> getGroupMembersAsync(final String objectId) {
@@ -734,7 +734,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
                 @Override
                 public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -742,7 +742,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param objectId Group object Id who's members should be retrieved.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersWithServiceResponseAsync(final String objectId) {
@@ -750,7 +750,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -762,7 +762,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-    ServiceResponse<PageImpl1<AADObjectInner>> * @param objectId Group object Id who's members should be retrieved.
+    ServiceResponse<PageImpl<AADObjectInner>> * @param objectId The object ID of the group whose members should be retrieved.
      * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersSinglePageAsync(final String objectId) {
@@ -780,8 +780,8 @@ public final class GroupsInner {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<AADObjectInner>> result = getGroupMembersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -789,9 +789,9 @@ public final class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<AADObjectInner>> getGroupMembersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<AADObjectInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<AADObjectInner>> getGroupMembersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -799,35 +799,35 @@ public final class GroupsInner {
     /**
      * Gets group information from the directory.
      *
-     * @param objectId User objectId to get group information.
+     * @param objectId The object ID of the user for which to get group information.
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner get(String objectId) {
-        return getWithServiceResponseAsync(objectId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
      * Gets group information from the directory.
      *
-     * @param objectId User objectId to get group information.
+     * @param objectId The object ID of the user for which to get group information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ADGroupInner> getAsync(String objectId, final ServiceCallback<ADGroupInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(objectId), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
      * Gets group information from the directory.
      *
-     * @param objectId User objectId to get group information.
+     * @param objectId The object ID of the user for which to get group information.
      * @return the observable to the ADGroupInner object
      */
     public Observable<ADGroupInner> getAsync(String objectId) {
         return getWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<ADGroupInner>, ADGroupInner>() {
             @Override
             public ADGroupInner call(ServiceResponse<ADGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -835,7 +835,7 @@ public final class GroupsInner {
     /**
      * Gets group information from the directory.
      *
-     * @param objectId User objectId to get group information.
+     * @param objectId The object ID of the user for which to get group information.
      * @return the observable to the ADGroupInner object
      */
     public Observable<ServiceResponse<ADGroupInner>> getWithServiceResponseAsync(String objectId) {
@@ -863,56 +863,56 @@ public final class GroupsInner {
     }
 
     private ServiceResponse<ADGroupInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ADGroupInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ADGroupInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ADGroupInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the group is a member.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param objectId Group filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the List&lt;String&gt; object if successful.
      */
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
-        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
+        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().body();
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the group is a member.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param objectId Group filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceCall.create(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
+        return ServiceCall.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the group is a member.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param objectId Group filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
             @Override
             public List<String> call(ServiceResponse<List<String>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the group is a member.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param objectId Group filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
@@ -932,8 +932,8 @@ public final class GroupsInner {
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<String>> result = getMemberGroupsDelegate(response);
-                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<PageImpl1<String>> result = getMemberGroupsDelegate(response);
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -942,39 +942,39 @@ public final class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<String>>() { }.getType())
+    private ServiceResponse<PageImpl1<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<String>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<String>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets list of groups for the current tenant.
+     * Gets a list of groups for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
     public PagedList<ADGroupInner> listNext(final String nextLink) {
         ServiceResponse<Page<ADGroupInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<ADGroupInner>(response.getBody()) {
+        return new PagedList<ADGroupInner>(response.body()) {
             @Override
             public Page<ADGroupInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets list of groups for the current tenant.
+     * Gets a list of groups for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ADGroupInner>> listNextAsync(final String nextLink, final ServiceCall<List<ADGroupInner>> serviceCall, final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -986,9 +986,9 @@ public final class GroupsInner {
     }
 
     /**
-     * Gets list of groups for the current tenant.
+     * Gets a list of groups for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<Page<ADGroupInner>> listNextAsync(final String nextLink) {
@@ -996,15 +996,15 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<ADGroupInner>>, Page<ADGroupInner>>() {
                 @Override
                 public Page<ADGroupInner> call(ServiceResponse<Page<ADGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets list of groups for the current tenant.
+     * Gets a list of groups for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listNextWithServiceResponseAsync(final String nextLink) {
@@ -1012,7 +1012,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ADGroupInner>>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(ServiceResponse<Page<ADGroupInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -1022,9 +1022,9 @@ public final class GroupsInner {
     }
 
     /**
-     * Gets list of groups for the current tenant.
+     * Gets a list of groups for the current tenant.
      *
-    ServiceResponse<PageImpl1<ADGroupInner>> * @param nextLink Next link for list operation.
+    ServiceResponse<PageImpl<ADGroupInner>> * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;ADGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listNextSinglePageAsync(final String nextLink) {
@@ -1037,13 +1037,14 @@ public final class GroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
+        return service.listNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ADGroupInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ADGroupInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ADGroupInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ADGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1051,9 +1052,9 @@ public final class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ADGroupInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ADGroupInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ADGroupInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ADGroupInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ADGroupInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ADGroupInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -1061,15 +1062,15 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
     public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.getBody()) {
+        return new PagedList<AADObjectInner>(response.body()) {
             @Override
             public Page<AADObjectInner> nextPage(String nextLink) {
-                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
@@ -1077,13 +1078,13 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AADObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceCall<List<AADObjectInner>> serviceCall, final ListOperationCallback<AADObjectInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getGroupMembersNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
@@ -1097,7 +1098,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<Page<AADObjectInner>> getGroupMembersNextAsync(final String nextLink) {
@@ -1105,7 +1106,7 @@ public final class GroupsInner {
             .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
                 @Override
                 public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1113,7 +1114,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextWithServiceResponseAsync(final String nextLink) {
@@ -1121,7 +1122,7 @@ public final class GroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -1133,7 +1134,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      *
-    ServiceResponse<PageImpl1<AADObjectInner>> * @param nextLink Next link for list operation.
+    ServiceResponse<PageImpl<AADObjectInner>> * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextSinglePageAsync(final String nextLink) {
@@ -1146,13 +1147,14 @@ public final class GroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getGroupMembersNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
+        return service.getGroupMembersNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<AADObjectInner>> result = getGroupMembersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1160,9 +1162,9 @@ public final class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<AADObjectInner>> getGroupMembersNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<AADObjectInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<AADObjectInner>> getGroupMembersNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }

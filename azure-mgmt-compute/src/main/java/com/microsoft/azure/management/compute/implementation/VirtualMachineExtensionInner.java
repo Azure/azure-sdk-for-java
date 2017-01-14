@@ -19,32 +19,32 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineExtensionInner extends Resource {
     /**
-     * how the extension handler should be forced to update even if the
+     * How the extension handler should be forced to update even if the
      * extension configuration has not changed.
      */
     @JsonProperty(value = "properties.forceUpdateTag")
     private String forceUpdateTag;
 
     /**
-     * the name of the extension handler publisher.
+     * The name of the extension handler publisher.
      */
     @JsonProperty(value = "properties.publisher")
     private String publisher;
 
     /**
-     * the type of the extension handler.
+     * The type of the extension handler.
      */
     @JsonProperty(value = "properties.type")
     private String virtualMachineExtensionType;
 
     /**
-     * the type version of the extension handler.
+     * The type version of the extension handler.
      */
     @JsonProperty(value = "properties.typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
-     * whether the extension handler should be automatically upgraded across
+     * Whether the extension handler should be automatically upgraded across
      * minor versions.
      */
     @JsonProperty(value = "properties.autoUpgradeMinorVersion")
@@ -63,13 +63,13 @@ public class VirtualMachineExtensionInner extends Resource {
     private Object protectedSettings;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * the virtual machine extension instance view.
+     * The virtual machine extension instance view.
      */
     @JsonProperty(value = "properties.instanceView")
     private VirtualMachineExtensionInstanceView instanceView;

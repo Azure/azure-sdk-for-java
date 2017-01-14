@@ -17,35 +17,35 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class PolicyAssignmentInner {
     /**
-     * Gets or sets the policy assignment display name.
+     * The display name of the policy assignment.
      */
     @JsonProperty(value = "properties.displayName")
     private String displayName;
 
     /**
-     * Gets or sets the policy definition Id.
+     * The ID of the policy definition.
      */
     @JsonProperty(value = "properties.policyDefinitionId")
     private String policyDefinitionId;
 
     /**
-     * Gets or sets the scope at which the policy assignment exists.
+     * The scope for the policy assignment.
      */
     @JsonProperty(value = "properties.scope")
     private String scope;
 
     /**
-     * Gets or sets the Id of the policy assignment.
+     * The ID of the policy assignment.
      */
     private String id;
 
     /**
-     * Gets or sets the type of the policy assignment.
+     * The type of the policy assignment.
      */
     private String type;
 
     /**
-     * Gets or sets the name of the policy assignment.
+     * The name of the policy assignment.
      */
     private String name;
 

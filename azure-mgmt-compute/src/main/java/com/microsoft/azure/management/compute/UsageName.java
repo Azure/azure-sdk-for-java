@@ -14,12 +14,12 @@ package com.microsoft.azure.management.compute;
  */
 public class UsageName {
     /**
-     * a string describing the resource name.
+     * The name of the resource.
      */
     private String value;
 
     /**
-     * a localized string describing the resource name.
+     * The localized name of the resource.
      */
     private String localizedValue;
 

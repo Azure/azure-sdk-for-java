@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LocationInner {
     /**
-     * The fully qualified Id of the location. For example,
+     * The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The subscription Id.
+     * The subscription ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;

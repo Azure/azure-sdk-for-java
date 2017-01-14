@@ -20,7 +20,7 @@ public class AliasPathType {
     private String path;
 
     /**
-     * The api versions.
+     * The API versions.
      */
     private List<String> apiVersions;
 

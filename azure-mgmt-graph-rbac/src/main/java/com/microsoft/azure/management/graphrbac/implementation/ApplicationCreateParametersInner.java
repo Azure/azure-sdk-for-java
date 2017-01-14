@@ -12,44 +12,44 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for create a new application.
+ * Request parameters for creating a new application.
  */
 public class ApplicationCreateParametersInner {
     /**
-     * Indicates if the application will be available to other tenants.
+     * Whether the application is available to other tenants.
      */
     @JsonProperty(required = true)
     private boolean availableToOtherTenants;
 
     /**
-     * Application display name.
+     * The display name of the application.
      */
     @JsonProperty(required = true)
     private String displayName;
 
     /**
-     * Application homepage.
+     * The home page of the application.
      */
     private String homepage;
 
     /**
-     * Application Uris.
+     * A collection of URIs for the application.
      */
     @JsonProperty(required = true)
     private List<String> identifierUris;
 
     /**
-     * Application reply Urls.
+     * A collection of reply URLs for the application.
      */
     private List<String> replyUrls;
 
     /**
-     * the list of KeyCredential objects.
+     * The list of KeyCredential objects.
      */
     private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * the list of PasswordCredential objects.
+     * The list of PasswordCredential objects.
      */
     private List<PasswordCredentialInner> passwordCredentials;
 

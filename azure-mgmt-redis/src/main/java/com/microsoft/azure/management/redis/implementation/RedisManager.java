@@ -6,7 +6,8 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -44,7 +45,8 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
      * @return the RedisManager
      */
     public static RedisManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new RedisManager(credentials.getEnvironment().newRestClientBuilder()
+        return new RedisManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

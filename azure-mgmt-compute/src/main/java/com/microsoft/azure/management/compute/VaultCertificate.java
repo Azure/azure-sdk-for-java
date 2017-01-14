@@ -15,13 +15,13 @@ package com.microsoft.azure.management.compute;
  */
 public class VaultCertificate {
     /**
-     * the URL referencing a secret in a Key Vault which contains a properly
+     * The URL referencing a secret in a Key Vault which contains a properly
      * formatted certificate.
      */
     private String certificateUrl;
 
     /**
-     * the Certificate store in LocalMachine to add the certificate to on
+     * The Certificate store in LocalMachine to add the certificate to on
      * Windows, leave empty on Linux.
      */
     private String certificateStore;

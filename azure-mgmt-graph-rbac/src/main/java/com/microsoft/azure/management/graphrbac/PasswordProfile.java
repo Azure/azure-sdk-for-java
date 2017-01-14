@@ -11,7 +11,7 @@ package com.microsoft.azure.management.graphrbac;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Contains the password profile associated with a user.
+ * The password profile associated with a user.
  */
 public class PasswordProfile {
     /**
@@ -21,7 +21,7 @@ public class PasswordProfile {
     private String password;
 
     /**
-     * Force change password on next login.
+     * Whether to force a password change on next login.
      */
     private Boolean forceChangePasswordNextLogin;
 

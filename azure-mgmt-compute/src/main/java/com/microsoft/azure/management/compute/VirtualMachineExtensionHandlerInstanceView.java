@@ -14,18 +14,18 @@ package com.microsoft.azure.management.compute;
  */
 public class VirtualMachineExtensionHandlerInstanceView {
     /**
-     * full type of the extension handler which includes both publisher and
+     * Full type of the extension handler which includes both publisher and
      * type.
      */
     private String type;
 
     /**
-     * the type version of the extension handler.
+     * The type version of the extension handler.
      */
     private String typeHandlerVersion;
 
     /**
-     * the extension handler status.
+     * The extension handler status.
      */
     private InstanceViewStatus status;
 

@@ -21,24 +21,24 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineScaleSetInner extends Resource {
     /**
-     * the virtual machine scale set sku.
+     * The virtual machine scale set sku.
      */
     private Sku sku;
 
     /**
-     * the upgrade policy.
+     * The upgrade policy.
      */
     @JsonProperty(value = "properties.upgradePolicy")
     private UpgradePolicy upgradePolicy;
 
     /**
-     * the virtual machine profile.
+     * The virtual machine profile.
      */
     @JsonProperty(value = "properties.virtualMachineProfile")
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -47,8 +47,8 @@ public class VirtualMachineScaleSetInner extends Resource {
      * Specifies whether the Virtual Machine Scale Set should be
      * overprovisioned.
      */
-    @JsonProperty(value = "properties.overProvision")
-    private Boolean overProvision;
+    @JsonProperty(value = "properties.overprovision")
+    private Boolean overprovision;
 
     /**
      * Get the sku value.
@@ -120,22 +120,22 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the overProvision value.
+     * Get the overprovision value.
      *
-     * @return the overProvision value
+     * @return the overprovision value
      */
-    public Boolean overProvision() {
-        return this.overProvision;
+    public Boolean overprovision() {
+        return this.overprovision;
     }
 
     /**
-     * Set the overProvision value.
+     * Set the overprovision value.
      *
-     * @param overProvision the overProvision value to set
+     * @param overprovision the overprovision value to set
      * @return the VirtualMachineScaleSetInner object itself.
      */
-    public VirtualMachineScaleSetInner withOverProvision(Boolean overProvision) {
-        this.overProvision = overProvision;
+    public VirtualMachineScaleSetInner withOverprovision(Boolean overprovision) {
+        this.overprovision = overprovision;
         return this;
     }
 

@@ -18,26 +18,26 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineExtensionImageInner extends Resource {
     /**
-     * the operating system this extension supports.
+     * The operating system this extension supports.
      */
     @JsonProperty(value = "properties.operatingSystem", required = true)
     private String operatingSystem;
 
     /**
-     * the type of role (IaaS or PaaS) this extension supports.
+     * The type of role (IaaS or PaaS) this extension supports.
      */
     @JsonProperty(value = "properties.computeRole", required = true)
     private String computeRole;
 
     /**
-     * the schema defined by publisher, where extension consumers should
+     * The schema defined by publisher, where extension consumers should
      * provide settings in a matching schema.
      */
     @JsonProperty(value = "properties.handlerSchema", required = true)
     private String handlerSchema;
 
     /**
-     * whether the extension can be used on xRP VMScaleSets.By default
+     * Whether the extension can be used on xRP VMScaleSets. By default
      * existing extensions are usable on scalesets, but there might be cases
      * where a publisher wants to explicitly indicate the extension is only
      * enabled for CRP VMs but not VMSS.
@@ -46,7 +46,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     private Boolean vmScaleSetEnabled;
 
     /**
-     * whether the handler can support multiple extensions.
+     * Whether the handler can support multiple extensions.
      */
     @JsonProperty(value = "properties.supportsMultipleExtensions")
     private Boolean supportsMultipleExtensions;

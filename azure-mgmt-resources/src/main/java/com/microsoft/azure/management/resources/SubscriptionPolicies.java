@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SubscriptionPolicies {
     /**
-     * The subscription location placement Id. The Id indicates which regions
+     * The subscription location placement ID. The ID indicates which regions
      * are visible for a subscription. For example, a subscription with a
      * location placement Id of Public_2014-09-01 has access to Azure public
      * regions.
@@ -24,7 +24,7 @@ public class SubscriptionPolicies {
     private String locationPlacementId;
 
     /**
-     * The subscription quota Id.
+     * The subscription quota ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String quotaId;

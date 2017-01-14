@@ -31,8 +31,8 @@ public class MonitorConfig {
     private Long port;
 
     /**
-     * Gets or sets the path relative to the endpoint domain name used to
-     * probe for endpoint health.
+     * Gets or sets the path relative to the endpoint domain name used to probe
+     * for endpoint health.
      */
     private String path;
 

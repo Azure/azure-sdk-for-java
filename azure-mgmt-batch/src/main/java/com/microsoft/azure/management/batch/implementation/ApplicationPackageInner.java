@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  */
 public class ApplicationPackageInner {
     /**
-     * The id of the application.
+     * The ID of the application.
      */
     private String id;
 

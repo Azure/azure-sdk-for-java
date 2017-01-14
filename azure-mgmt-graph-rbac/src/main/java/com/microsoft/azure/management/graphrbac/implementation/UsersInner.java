@@ -11,7 +11,6 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
@@ -33,6 +32,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -63,59 +63,59 @@ public final class UsersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users create" })
         @POST("{tenantID}/users")
         Observable<Response<ResponseBody>> create(@Path("tenantID") String tenantID, @Body UserCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users list" })
         @GET("{tenantID}/users")
         Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users get" })
         @GET("{tenantID}/users/{upnOrObjectId}")
         Observable<Response<ResponseBody>> get(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users update" })
         @PATCH("{tenantID}/users/{upnOrObjectId}")
         Observable<Response<ResponseBody>> update(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Body UserUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users delete" })
         @HTTP(path = "{tenantID}/users/{upnOrObjectId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users getMemberGroups" })
         @POST("{tenantID}/users/{objectId}/getMemberGroups")
         Observable<Response<ResponseBody>> getMemberGroups(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UserGetMemberGroupsParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{tenantID}/{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Users listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     * Create a new user.
      *
      * @param parameters Parameters to create a user.
      * @return the UserInner object if successful.
      */
     public UserInner create(UserCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
-     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     * Create a new user.
      *
      * @param parameters Parameters to create a user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(parameters), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
-     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     * Create a new user.
      *
      * @param parameters Parameters to create a user.
      * @return the observable to the UserInner object
@@ -124,13 +124,13 @@ public final class UsersInner {
         return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     * Create a new user.
      *
      * @param parameters Parameters to create a user.
      * @return the observable to the UserInner object
@@ -161,35 +161,35 @@ public final class UsersInner {
     }
 
     private ServiceResponse<UserInner> createDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<UserInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<UserInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> list() {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<UserInner>(response.getBody()) {
+        return new PagedList<UserInner>(response.body()) {
             @Override
             public Page<UserInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -201,7 +201,7 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
@@ -210,13 +210,13 @@ public final class UsersInner {
             .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
                 @Override
                 public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
@@ -225,7 +225,7 @@ public final class UsersInner {
             .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -235,7 +235,7 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -252,8 +252,8 @@ public final class UsersInner {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<UserInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -262,30 +262,30 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> list(final String filter) {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<UserInner>(response.getBody()) {
+        return new PagedList<UserInner>(response.body()) {
             @Override
             public Page<UserInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -297,9 +297,9 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<Page<UserInner>> listAsync(final String filter) {
@@ -307,15 +307,15 @@ public final class UsersInner {
             .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
                 @Override
                 public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply to the operation.
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<ServiceResponse<Page<UserInner>>> listWithServiceResponseAsync(final String filter) {
@@ -323,7 +323,7 @@ public final class UsersInner {
             .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -333,9 +333,9 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     * Gets list of users for the current tenant.
      *
-    ServiceResponse<PageImpl1<UserInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<UserInner>> * @param filter The filter to apply to the operation.
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync(final String filter) {
@@ -350,8 +350,8 @@ public final class UsersInner {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<UserInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -359,53 +359,53 @@ public final class UsersInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<UserInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<UserInner>>() { }.getType())
+    private ServiceResponse<PageImpl<UserInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UserInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<UserInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     * Gets user information from the directory.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @return the UserInner object if successful.
      */
     public UserInner get(String upnOrObjectId) {
-        return getWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(upnOrObjectId).toBlocking().single().body();
     }
 
     /**
-     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     * Gets user information from the directory.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(upnOrObjectId), serviceCallback);
     }
 
     /**
-     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     * Gets user information from the directory.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @return the observable to the UserInner object
      */
     public Observable<UserInner> getAsync(String upnOrObjectId) {
         return getWithServiceResponseAsync(upnOrObjectId).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     * Gets user information from the directory.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> getWithServiceResponseAsync(String upnOrObjectId) {
@@ -433,55 +433,55 @@ public final class UsersInner {
     }
 
     private ServiceResponse<UserInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<UserInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     * Updates a user.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param parameters Parameters to update an exisitng user.
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Parameters to update an existing user.
      */
     public void update(String upnOrObjectId, UserUpdateParametersInner parameters) {
-        updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().getBody();
+        updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().body();
     }
 
     /**
-     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     * Updates a user.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param parameters Parameters to update an exisitng user.
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Parameters to update an existing user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(upnOrObjectId, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(upnOrObjectId, parameters), serviceCallback);
     }
 
     /**
-     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     * Updates a user.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param parameters Parameters to update an exisitng user.
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Parameters to update an existing user.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(upnOrObjectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     * Updates a user.
      *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param parameters Parameters to update an exisitng user.
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Parameters to update an existing user.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
@@ -513,51 +513,51 @@ public final class UsersInner {
     }
 
     private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     * Delete a user.
      *
-     * @param upnOrObjectId user object id or user principal name (upn)
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
      */
     public void delete(String upnOrObjectId) {
-        deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().body();
     }
 
     /**
-     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     * Delete a user.
      *
-     * @param upnOrObjectId user object id or user principal name (upn)
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(upnOrObjectId), serviceCallback);
     }
 
     /**
-     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     * Delete a user.
      *
-     * @param upnOrObjectId user object id or user principal name (upn)
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String upnOrObjectId) {
         return deleteWithServiceResponseAsync(upnOrObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     * Delete a user.
      *
-     * @param upnOrObjectId user object id or user principal name (upn)
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String upnOrObjectId) {
@@ -585,56 +585,56 @@ public final class UsersInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     * Gets a collection that contains the object IDs of the groups of which the user is a member.
      *
-     * @param objectId User filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the user for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the List&lt;String&gt; object if successful.
      */
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
-        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
+        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().body();
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     * Gets a collection that contains the object IDs of the groups of which the user is a member.
      *
-     * @param objectId User filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the user for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceCall.create(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
+        return ServiceCall.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     * Gets a collection that contains the object IDs of the groups of which the user is a member.
      *
-     * @param objectId User filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the user for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
             @Override
             public List<String> call(ServiceResponse<List<String>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     * Gets a collection that contains the object IDs of the groups of which the user is a member.
      *
-     * @param objectId User filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param objectId The object ID of the user for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
@@ -654,8 +654,8 @@ public final class UsersInner {
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<String>> result = getMemberGroupsDelegate(response);
-                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<PageImpl1<String>> result = getMemberGroupsDelegate(response);
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -664,39 +664,39 @@ public final class UsersInner {
             });
     }
 
-    private ServiceResponse<PageImpl<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<String>>() { }.getType())
+    private ServiceResponse<PageImpl1<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<String>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<String>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
-     * Gets list of users for the current tenant.
+     * Gets a list of users for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> listNext(final String nextLink) {
         ServiceResponse<Page<UserInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<UserInner>(response.getBody()) {
+        return new PagedList<UserInner>(response.body()) {
             @Override
             public Page<UserInner> nextPage(String nextLink) {
-                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets list of users for the current tenant.
+     * Gets a list of users for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listNextAsync(final String nextLink, final ServiceCall<List<UserInner>> serviceCall, final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -708,9 +708,9 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant.
+     * Gets a list of users for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<Page<UserInner>> listNextAsync(final String nextLink) {
@@ -718,15 +718,15 @@ public final class UsersInner {
             .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
                 @Override
                 public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets list of users for the current tenant.
+     * Gets a list of users for the current tenant.
      *
-     * @param nextLink Next link for list operation.
+     * @param nextLink Next link for the list operation.
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<ServiceResponse<Page<UserInner>>> listNextWithServiceResponseAsync(final String nextLink) {
@@ -734,7 +734,7 @@ public final class UsersInner {
             .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
-                    String nextLink = page.getBody().getNextPageLink();
+                    String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
                     }
@@ -744,9 +744,9 @@ public final class UsersInner {
     }
 
     /**
-     * Gets list of users for the current tenant.
+     * Gets a list of users for the current tenant.
      *
-    ServiceResponse<PageImpl1<UserInner>> * @param nextLink Next link for list operation.
+    ServiceResponse<PageImpl<UserInner>> * @param nextLink Next link for the list operation.
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listNextSinglePageAsync(final String nextLink) {
@@ -759,13 +759,14 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
+        return service.listNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<UserInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<UserInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -773,9 +774,9 @@ public final class UsersInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<UserInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, GraphErrorException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<UserInner>>() { }.getType())
+    private ServiceResponse<PageImpl<UserInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UserInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<UserInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }

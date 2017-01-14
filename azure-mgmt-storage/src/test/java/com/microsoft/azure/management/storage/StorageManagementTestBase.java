@@ -10,8 +10,8 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.RestClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 /**
  * The base for storage manager tests.
@@ -30,7 +30,7 @@ public abstract class StorageManagementTestBase {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(LogLevel.BASIC)
                 .build();
 
         resourceManager = ResourceManager

@@ -20,31 +20,31 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class VirtualMachineScaleSetIPConfigurationInner extends SubResource {
     /**
-     * the IP configuration name.
+     * The IP configuration name.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * the subnet.
+     * The subnet.
      */
     @JsonProperty(value = "properties.subnet", required = true)
     private ApiEntityReference subnet;
 
     /**
-     * the application gateway backend address pools.
+     * The application gateway backend address pools.
      */
     @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
     private List<SubResource> applicationGatewayBackendAddressPools;
 
     /**
-     * the load balancer backend address pools.
+     * The load balancer backend address pools.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
     /**
-     * the load balancer inbound nat pools.
+     * The load balancer inbound nat pools.
      */
     @JsonProperty(value = "properties.loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;

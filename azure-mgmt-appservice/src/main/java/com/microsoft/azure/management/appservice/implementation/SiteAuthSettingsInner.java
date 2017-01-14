@@ -26,15 +26,13 @@ public class SiteAuthSettingsInner {
 
     /**
      * The relative path prefix used by platform HTTP APIs.
-     * Changing this value is not recommended except for compatibility
-     * reasons.
+     * Changing this value is not recommended except for compatibility reasons.
      */
     private String httpApiPrefixPath;
 
     /**
-     * The action to take when an unauthenticated client attempts to access
-     * the app. Possible values include: 'RedirectToLoginPage',
-     * 'AllowAnonymous'.
+     * The action to take when an unauthenticated client attempts to access the
+     * app. Possible values include: 'RedirectToLoginPage', 'AllowAnonymous'.
      */
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
@@ -47,9 +45,8 @@ public class SiteAuthSettingsInner {
     private Boolean tokenStoreEnabled;
 
     /**
-     * External URLs that can be redirected to as part of logging in or
-     * logging out of the app. Note that the query string part of the URL is
-     * ignored.
+     * External URLs that can be redirected to as part of logging in or logging
+     * out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store
      * application backends.
      * Note that URLs within the current domain are always implicitly allowed.
@@ -59,8 +56,8 @@ public class SiteAuthSettingsInner {
     /**
      * The default authentication provider to use when multiple providers are
      * configured.
-     * This setting is only needed if multiple providers are configured and
-     * the unauthenticated client
+     * This setting is only needed if multiple providers are configured and the
+     * unauthenticated client
      * action is set to "RedirectToLoginPage". Possible values include:
      * 'AzureActiveDirectory', 'Facebook', 'Google', 'MicrosoftAccount',
      * 'Twitter'.
@@ -87,8 +84,8 @@ public class SiteAuthSettingsInner {
     /**
      * The Client Secret of this relying party application (in Azure Active
      * Directory, this is also referred to as the Key).
-     * This setting is optional. If no client secret is configured, the
-     * OpenID Connect implicit auth flow is used to authenticate end users.
+     * This setting is optional. If no client secret is configured, the OpenID
+     * Connect implicit auth flow is used to authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to
      * authenticate end users.
      * More information on OpenID Connect:
@@ -109,8 +106,8 @@ public class SiteAuthSettingsInner {
 
     /**
      * Allowed audience values to consider when validating JWTs issued by
-     * Azure Active Directory. Note that the
-     * &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
+     * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt;
+     * value is always considered an
      * allowed audience, regardless of this setting.
      */
     private List<String> allowedAudiences;
@@ -217,8 +214,8 @@ public class SiteAuthSettingsInner {
     private String microsoftAccountClientSecret;
 
     /**
-     * The OAuth 2.0 scopes that will be requested as part of Microsoft
-     * Account authentication.
+     * The OAuth 2.0 scopes that will be requested as part of Microsoft Account
+     * authentication.
      * This setting is optional. If not specified, "wl.basic" is used as the
      * default scope.
      * Microsoft Account Scopes and permissions documentation:

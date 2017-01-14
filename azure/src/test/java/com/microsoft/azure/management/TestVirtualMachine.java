@@ -15,6 +15,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.LogLevel;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
 import rx.Observable;
@@ -73,7 +74,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 null);
 
         Azure azure = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                .withLogLevel(LogLevel.NONE)
                 .authenticate(credentials)
                 .withDefaultSubscription();
         runTest(azure.virtualMachines(), azure.resourceGroups());

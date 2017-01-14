@@ -17,20 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SubscriptionInner {
     /**
-     * The fully qualified Id. For example,
+     * The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The subscription Id.
+     * The subscription ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
-     * The tenant Id.
+     * The tenant ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -42,7 +42,8 @@ public class SubscriptionInner {
     private String displayName;
 
     /**
-     * The subscription state. Possible values include: 'Enabled', 'Warned',
+     * The subscription state. Possible values are Enabled, Warned, PastDue,
+     * Disabled, and Deleted. Possible values include: 'Enabled', 'Warned',
      * 'PastDue', 'Disabled', 'Deleted'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -55,8 +56,8 @@ public class SubscriptionInner {
 
     /**
      * The authorization source of the request. Valid values are one or more
-     * combinations of Legacy, RoleBased, Bypassed, Direct and Management.
-     * For example, 'Legacy, RoleBased'.
+     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For
+     * example, 'Legacy, RoleBased'.
      */
     private String authorizationSource;
 

@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Create or update Availability Set parameters.
+ * Create or update availability set parameters.
  */
 @JsonFlatten
 public class AvailabilitySetInner extends Resource {
@@ -33,16 +33,15 @@ public class AvailabilitySetInner extends Resource {
     private Integer platformFaultDomainCount;
 
     /**
-     * a list containing reference to all Virtual Machines created under this
-     * Availability Set.
+     * A list of references to all virtual machines in the availability set.
      */
     @JsonProperty(value = "properties.virtualMachines")
     private List<SubResource> virtualMachines;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
-    @JsonProperty(value = "properties.statuses")
+    @JsonProperty(value = "properties.statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -112,17 +111,6 @@ public class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
-    }
-
-    /**
-     * Set the statuses value.
-     *
-     * @param statuses the statuses value to set
-     * @return the AvailabilitySetInner object itself.
-     */
-    public AvailabilitySetInner withStatuses(List<InstanceViewStatus> statuses) {
-        this.statuses = statuses;
-        return this;
     }
 
 }

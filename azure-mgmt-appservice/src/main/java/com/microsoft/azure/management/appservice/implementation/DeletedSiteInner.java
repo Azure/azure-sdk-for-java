@@ -58,8 +58,8 @@ public class DeletedSiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables
-     * the app (takes the app offline).
+     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the
+     * app (takes the app offline).
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
@@ -158,9 +158,9 @@ public class DeletedSiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to enable client affinity;
-     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity
-     * cookies, which route client requests in the same session to the same
-     * instance. Default is &lt;code&gt;true&lt;/code&gt;.
+     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies,
+     * which route client requests in the same session to the same instance.
+     * Default is &lt;code&gt;true&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.clientAffinityEnabled")
     private Boolean clientAffinityEnabled;

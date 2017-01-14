@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,33 +61,33 @@ public final class SubnetsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface SubnetsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Body SubnetInner subnetParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Body SubnetInner subnetParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Subnets listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -99,7 +99,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      */
     public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().body();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -127,7 +127,7 @@ public final class SubnetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().body();
     }
 
     /**
@@ -179,7 +179,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -194,7 +194,7 @@ public final class SubnetsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -236,7 +236,7 @@ public final class SubnetsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -252,7 +252,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().body();
     }
 
     /**
@@ -265,7 +265,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class SubnetsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -332,7 +332,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().body();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand), serviceCallback);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class SubnetsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -405,7 +405,7 @@ public final class SubnetsInner {
     }
 
     private ServiceResponse<SubnetInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SubnetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SubnetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SubnetInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -421,7 +421,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().body();
     }
 
     /**
@@ -435,7 +435,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
     }
 
     /**
@@ -451,7 +451,7 @@ public final class SubnetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -497,7 +497,7 @@ public final class SubnetsInner {
      * @return the SubnetInner object if successful.
      */
     public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().body();
     }
 
     /**
@@ -511,7 +511,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
     }
 
     /**
@@ -527,7 +527,7 @@ public final class SubnetsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
             @Override
             public SubnetInner call(ServiceResponse<SubnetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -574,7 +574,7 @@ public final class SubnetsInner {
     }
 
     private ServiceResponse<SubnetInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SubnetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SubnetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SubnetInner>() { }.getType())
                 .register(201, new TypeToken<SubnetInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -590,10 +590,10 @@ public final class SubnetsInner {
      */
     public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<SubnetInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        return new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.body()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -607,7 +607,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<SubnetInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName, virtualNetworkName),
             new Func1<String, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
@@ -630,7 +630,7 @@ public final class SubnetsInner {
             .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
                 @Override
                 public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -647,7 +647,7 @@ public final class SubnetsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -680,7 +680,7 @@ public final class SubnetsInner {
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SubnetInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -689,7 +689,7 @@ public final class SubnetsInner {
     }
 
     private ServiceResponse<PageImpl<SubnetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubnetInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubnetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SubnetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -703,10 +703,10 @@ public final class SubnetsInner {
      */
     public PagedList<SubnetInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SubnetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.body()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -720,7 +720,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SubnetInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SubnetInner>> serviceCall, final ListOperationCallback<SubnetInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
@@ -742,7 +742,7 @@ public final class SubnetsInner {
             .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
                 @Override
                 public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -758,7 +758,7 @@ public final class SubnetsInner {
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -777,13 +777,14 @@ public final class SubnetsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SubnetInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SubnetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -792,7 +793,7 @@ public final class SubnetsInner {
     }
 
     private ServiceResponse<PageImpl<SubnetInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubnetInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubnetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SubnetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

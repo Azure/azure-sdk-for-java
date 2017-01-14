@@ -14,7 +14,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
  */
 public class CheckGroupMembershipResultInner {
     /**
-     * true if the specified user, group, contact, or service principal has
+     * True if the specified user, group, contact, or service principal has
      * either direct or transitive membership in the specified group;
      * otherwise, false.
      */

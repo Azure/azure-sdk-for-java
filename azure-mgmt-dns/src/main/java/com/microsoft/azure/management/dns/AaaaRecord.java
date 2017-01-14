@@ -14,7 +14,7 @@ package com.microsoft.azure.management.dns;
  */
 public class AaaaRecord {
     /**
-     * Gets or sets the IPv6 address of this AAAA record in string notation.
+     * The IPv6 address of this AAAA record.
      */
     private String ipv6Address;
 

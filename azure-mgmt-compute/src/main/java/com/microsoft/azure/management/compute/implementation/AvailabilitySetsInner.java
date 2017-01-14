@@ -10,7 +10,6 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -57,58 +56,58 @@ public final class AvailabilitySetsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AvailabilitySetsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AvailabilitySetInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets listAvailableSizes" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes")
         Observable<Response<ResponseBody>> listAvailableSizes(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The operation to create or update the availability set.
+     * Create or update an availability set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name Parameters supplied to the Create Availability Set operation.
+     * @param name The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @return the AvailabilitySetInner object if successful.
      */
     public AvailabilitySetInner createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
-     * The operation to create or update the availability set.
+     * Create or update an availability set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name Parameters supplied to the Create Availability Set operation.
+     * @param name The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AvailabilitySetInner> createOrUpdateAsync(String resourceGroupName, String name, AvailabilitySetInner parameters, final ServiceCallback<AvailabilitySetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
-     * The operation to create or update the availability set.
+     * Create or update an availability set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name Parameters supplied to the Create Availability Set operation.
+     * @param name The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @return the observable to the AvailabilitySetInner object
      */
@@ -116,16 +115,16 @@ public final class AvailabilitySetsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
             @Override
             public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The operation to create or update the availability set.
+     * Create or update an availability set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name Parameters supplied to the Create Availability Set operation.
+     * @param name The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @return the observable to the AvailabilitySetInner object
      */
@@ -161,24 +160,24 @@ public final class AvailabilitySetsInner {
     }
 
     private ServiceResponse<AvailabilitySetInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AvailabilitySetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AvailabilitySetInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The operation to delete the availability set.
+     * Delete an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      */
     public void delete(String resourceGroupName, String availabilitySetName) {
-        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
-     * The operation to delete the availability set.
+     * Delete an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -186,11 +185,11 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
-     * The operation to delete the availability set.
+     * Delete an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -200,13 +199,13 @@ public final class AvailabilitySetsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The operation to delete the availability set.
+     * Delete an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -240,25 +239,25 @@ public final class AvailabilitySetsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * The operation to get the availability set.
+     * Retrieves information about an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @return the AvailabilitySetInner object if successful.
      */
     public AvailabilitySetInner get(String resourceGroupName, String availabilitySetName) {
-        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
-     * The operation to get the availability set.
+     * Retrieves information about an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -266,11 +265,11 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AvailabilitySetInner> getAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<AvailabilitySetInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
-     * The operation to get the availability set.
+     * Retrieves information about an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -280,13 +279,13 @@ public final class AvailabilitySetsInner {
         return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
             @Override
             public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The operation to get the availability set.
+     * Retrieves information about an availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -320,35 +319,35 @@ public final class AvailabilitySetsInner {
     }
 
     private ServiceResponse<AvailabilitySetInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AvailabilitySetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AvailabilitySetInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The operation to list the availability sets.
+     * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the List&lt;AvailabilitySetInner&gt; object if successful.
      */
     public List<AvailabilitySetInner> list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
-     * The operation to list the availability sets.
+     * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AvailabilitySetInner>> listAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySetInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * The operation to list the availability sets.
+     * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AvailabilitySetInner&gt; object
@@ -357,13 +356,13 @@ public final class AvailabilitySetsInner {
         return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, List<AvailabilitySetInner>>() {
             @Override
             public List<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The operation to list the availability sets.
+     * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AvailabilitySetInner&gt; object
@@ -384,7 +383,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
-                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -394,7 +393,7 @@ public final class AvailabilitySetsInner {
     }
 
     private ServiceResponse<PageImpl<AvailabilitySetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AvailabilitySetInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AvailabilitySetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AvailabilitySetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -408,7 +407,7 @@ public final class AvailabilitySetsInner {
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName) {
-        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
@@ -420,7 +419,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
-        return ServiceCall.create(listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.fromResponse(listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
@@ -434,7 +433,7 @@ public final class AvailabilitySetsInner {
         return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
             @Override
             public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -465,7 +464,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -475,7 +474,7 @@ public final class AvailabilitySetsInner {
     }
 
     private ServiceResponse<PageImpl<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSizeInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineSizeInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

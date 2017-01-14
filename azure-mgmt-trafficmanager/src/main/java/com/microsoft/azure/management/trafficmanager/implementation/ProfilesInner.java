@@ -10,7 +10,6 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -59,31 +58,31 @@ public final class ProfilesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ProfilesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles checkTrafficManagerRelativeDnsNameAvailability" })
         @POST("providers/Microsoft.Network/checkTrafficManagerNameAvailability")
         Observable<Response<ResponseBody>> checkTrafficManagerRelativeDnsNameAvailability(@Path("subscriptionId") String subscriptionId, @Body CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listAllInResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles")
         Observable<Response<ResponseBody>> listAllInResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Body ProfileInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Body ProfileInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -96,7 +95,7 @@ public final class ProfilesInner {
      * @return the TrafficManagerNameAvailabilityInner object if successful.
      */
     public TrafficManagerNameAvailabilityInner checkTrafficManagerRelativeDnsNameAvailability(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
-        return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+        return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).toBlocking().single().body();
     }
 
     /**
@@ -107,7 +106,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, final ServiceCallback<TrafficManagerNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters), serviceCallback);
+        return ServiceCall.fromResponse(checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -120,7 +119,7 @@ public final class ProfilesInner {
         return checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<TrafficManagerNameAvailabilityInner>, TrafficManagerNameAvailabilityInner>() {
             @Override
             public TrafficManagerNameAvailabilityInner call(ServiceResponse<TrafficManagerNameAvailabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -157,7 +156,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TrafficManagerNameAvailabilityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<TrafficManagerNameAvailabilityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TrafficManagerNameAvailabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -170,7 +169,7 @@ public final class ProfilesInner {
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public List<ProfileInner> listAllInResourceGroup(String resourceGroupName) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -181,7 +180,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listAllInResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceCall.create(listAllInResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.fromResponse(listAllInResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -194,7 +193,7 @@ public final class ProfilesInner {
         return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
             @Override
             public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -221,7 +220,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listAllInResourceGroupDelegate(response);
-                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -231,7 +230,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listAllInResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -243,7 +242,7 @@ public final class ProfilesInner {
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public List<ProfileInner> listAll() {
-        return listAllWithServiceResponseAsync().toBlocking().single().getBody();
+        return listAllWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -253,7 +252,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ProfileInner>> listAllAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceCall.create(listAllWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(listAllWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -265,7 +264,7 @@ public final class ProfilesInner {
         return listAllWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
             @Override
             public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -288,7 +287,7 @@ public final class ProfilesInner {
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ProfileInner>> result = listAllDelegate(response);
-                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -298,7 +297,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<PageImpl<ProfileInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProfileInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -312,7 +311,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner get(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -324,7 +323,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -338,7 +337,7 @@ public final class ProfilesInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -378,7 +377,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -393,7 +392,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -406,7 +405,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
     }
 
     /**
@@ -421,7 +420,7 @@ public final class ProfilesInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -466,7 +465,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .register(201, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -480,7 +479,7 @@ public final class ProfilesInner {
      * @param profileName The name of the Traffic Manager profile to be deleted.
      */
     public void delete(String resourceGroupName, String profileName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -492,7 +491,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -506,7 +505,7 @@ public final class ProfilesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -546,7 +545,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -561,7 +560,7 @@ public final class ProfilesInner {
      * @return the ProfileInner object if successful.
      */
     public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -574,7 +573,7 @@ public final class ProfilesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
     }
 
     /**
@@ -589,7 +588,7 @@ public final class ProfilesInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, parameters).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -634,7 +633,7 @@ public final class ProfilesInner {
     }
 
     private ServiceResponse<ProfileInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProfileInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ProfileInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AutoStorageBaseProperties {
     /**
-     * The resource id of the storage account to be used for auto storage
+     * The resource ID of the storage account to be used for auto storage
      * account.
      */
     @JsonProperty(required = true)

@@ -21,8 +21,8 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ProfileInner extends Resource {
     /**
-     * Gets or sets the status of the Traffic Manager profile.  Possible
-     * values are 'Enabled' and 'Disabled'.
+     * Gets or sets the status of the Traffic Manager profile.  Possible values
+     * are 'Enabled' and 'Disabled'.
      */
     @JsonProperty(value = "properties.profileStatus")
     private String profileStatus;

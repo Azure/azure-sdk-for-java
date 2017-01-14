@@ -11,7 +11,6 @@ package com.microsoft.azure.management.resources.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -24,8 +23,8 @@ import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -56,39 +55,39 @@ public final class TenantsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TenantsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tenants list" })
         @GET("tenants")
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Tenants listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
     public PagedList<TenantIdDescriptionInner> list() {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.body()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TenantIdDescriptionInner>> listAsync(final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
@@ -100,7 +99,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
@@ -109,13 +108,13 @@ public final class TenantsInner {
             .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
                 @Override
                 public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
@@ -124,7 +123,7 @@ public final class TenantsInner {
             .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -134,7 +133,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -148,7 +147,7 @@ public final class TenantsInner {
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -157,30 +156,30 @@ public final class TenantsInner {
     }
 
     private ServiceResponse<PageImpl1<TenantIdDescriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<TenantIdDescriptionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
     public PagedList<TenantIdDescriptionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.body()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -188,7 +187,7 @@ public final class TenantsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<TenantIdDescriptionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TenantIdDescriptionInner>> serviceCall, final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
@@ -200,7 +199,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
@@ -210,13 +209,13 @@ public final class TenantsInner {
             .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
                 @Override
                 public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
@@ -226,7 +225,7 @@ public final class TenantsInner {
             .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -236,7 +235,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of tenants.
+     * Gets the tenants for your account.
      *
     ServiceResponse<PageImpl1<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -245,13 +244,14 @@ public final class TenantsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl1<TenantIdDescriptionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<TenantIdDescriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -260,7 +260,7 @@ public final class TenantsInner {
     }
 
     private ServiceResponse<PageImpl1<TenantIdDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<TenantIdDescriptionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<TenantIdDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

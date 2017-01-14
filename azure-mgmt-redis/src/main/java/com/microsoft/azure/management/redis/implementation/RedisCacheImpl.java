@@ -452,7 +452,7 @@ class RedisCacheImpl
             for (ScheduleEntry entry : this.scheduleEntries.values()) {
                 parameters.scheduleEntries().add(entry);
             }
-            this.patchSchedulesInner.createOrUpdate(resourceGroupName(), name(), parameters);
+            this.patchSchedulesInner.createOrUpdate(resourceGroupName(), name(), parameters.scheduleEntries());
         }
     }
 

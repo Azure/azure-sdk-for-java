@@ -10,8 +10,8 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
@@ -28,11 +28,11 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Client Api Version. */
+    /** The API version to use for the operation. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets The API version to use for the operation.
      *
      * @return the apiVersion value.
      */
@@ -151,10 +151,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

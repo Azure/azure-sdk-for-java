@@ -47,7 +47,7 @@ public class ScheduleEntry {
      * Set the dayOfWeek value.
      *
      * @param dayOfWeek the dayOfWeek value to set
-     * @return the ScheduleEntry object itself.
+     * @return the ScheduleEntryInner object itself.
      */
     public ScheduleEntry withDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
@@ -67,7 +67,7 @@ public class ScheduleEntry {
      * Set the startHourUtc value.
      *
      * @param startHourUtc the startHourUtc value to set
-     * @return the ScheduleEntry object itself.
+     * @return the ScheduleEntryInner object itself.
      */
     public ScheduleEntry withStartHourUtc(int startHourUtc) {
         this.startHourUtc = startHourUtc;
@@ -87,7 +87,7 @@ public class ScheduleEntry {
      * Set the maintenanceWindow value.
      *
      * @param maintenanceWindow the maintenanceWindow value to set
-     * @return the ScheduleEntry object itself.
+     * @return the ScheduleEntryInner object itself.
      */
     public ScheduleEntry withMaintenanceWindow(Period maintenanceWindow) {
         this.maintenanceWindow = maintenanceWindow;

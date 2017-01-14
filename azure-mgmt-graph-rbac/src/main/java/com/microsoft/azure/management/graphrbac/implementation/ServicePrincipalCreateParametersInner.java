@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for create a new service principal.
+ * Request parameters for creating a new service principal.
  */
 public class ServicePrincipalCreateParametersInner {
     /**
@@ -22,18 +22,18 @@ public class ServicePrincipalCreateParametersInner {
     private String appId;
 
     /**
-     * Specifies if the account is enabled.
+     * Whether the account is enabled.
      */
     @JsonProperty(required = true)
     private boolean accountEnabled;
 
     /**
-     * the list of KeyCredential objects.
+     * A collection of KeyCredential objects.
      */
     private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * the list of PasswordCredential objects.
+     * A collection of PasswordCredential objects.
      */
     private List<PasswordCredentialInner> passwordCredentials;
 

@@ -48,13 +48,13 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
                             version)));
         }
         Page<VirtualMachineImage> page = new Page<VirtualMachineImage>() {
-             @Override
-             public String getNextPageLink() {
-                 return null;
-             }
+            @Override
+            public String nextPageLink() {
+                return null;
+            }
 
             @Override
-            public List<VirtualMachineImage> getItems() {
+            public List<VirtualMachineImage> items() {
                 return images;
             }
         };

@@ -14,8 +14,7 @@ package com.microsoft.azure.management.dns;
  */
 public class NsRecord {
     /**
-     * Gets or sets the name server name for this record, without a
-     * terminating dot.
+     * The name server name for this NS record.
      */
     private String nsdname;
 

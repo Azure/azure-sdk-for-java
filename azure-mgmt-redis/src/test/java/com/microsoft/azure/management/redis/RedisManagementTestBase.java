@@ -8,12 +8,12 @@ package com.microsoft.azure.management.redis;
 
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 /**
  * The base for Redis cache manager tests.
@@ -33,7 +33,7 @@ public abstract class RedisManagementTestBase {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 // uncomment for Fiddler tracing
                 //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                 .build();

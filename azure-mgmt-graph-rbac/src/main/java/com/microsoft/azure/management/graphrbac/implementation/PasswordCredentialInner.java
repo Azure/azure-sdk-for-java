@@ -11,26 +11,26 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import org.joda.time.DateTime;
 
 /**
- * Active Directory PasswordCredential information.
+ * Active Directory Password Credential information.
  */
 public class PasswordCredentialInner {
     /**
-     * start date.
+     * Start date.
      */
     private DateTime startDate;
 
     /**
-     * end date.
+     * End date.
      */
     private DateTime endDate;
 
     /**
-     * key Id.
+     * Key ID.
      */
     private String keyId;
 
     /**
-     * value.
+     * Key value.
      */
     private String value;
 

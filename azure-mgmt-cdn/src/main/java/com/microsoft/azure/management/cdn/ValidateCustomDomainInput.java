@@ -11,7 +11,7 @@ package com.microsoft.azure.management.cdn;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Input of the custom domain to be validated.
+ * Input of the custom domain to be validated for DNS mapping.
  */
 public class ValidateCustomDomainInput {
     /**

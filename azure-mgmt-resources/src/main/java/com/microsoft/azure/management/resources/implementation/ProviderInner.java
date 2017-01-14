@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ProviderInner {
     /**
-     * The provider id.
+     * The provider ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The namespace of the provider.
+     * The namespace of the resource provider.
      */
     private String namespace;
 

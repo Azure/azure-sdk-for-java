@@ -73,7 +73,8 @@ public class DeploymentPropertiesExtended {
     private ParametersLink parametersLink;
 
     /**
-     * The deployment mode. Possible values include: 'Incremental', 'Complete'.
+     * The deployment mode. Possible values are Incremental and Complete.
+     * Possible values include: 'Incremental', 'Complete'.
      */
     private DeploymentMode mode;
 

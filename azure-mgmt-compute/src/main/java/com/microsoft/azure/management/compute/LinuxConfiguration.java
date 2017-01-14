@@ -10,16 +10,16 @@ package com.microsoft.azure.management.compute;
 
 
 /**
- * Describes Windows Configuration of the OS Profile.
+ * Describes Windows configuration of the OS Profile.
  */
 public class LinuxConfiguration {
     /**
-     * whether Authentication using user name and password is allowed or not.
+     * Specifies whether password authentication should be disabled.
      */
     private Boolean disablePasswordAuthentication;
 
     /**
-     * the SSH configuration for linux VMs.
+     * The SSH configuration for linux VMs.
      */
     private SshConfiguration ssh;
 

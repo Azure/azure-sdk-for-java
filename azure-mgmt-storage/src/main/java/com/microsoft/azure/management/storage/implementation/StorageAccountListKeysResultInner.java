@@ -13,11 +13,12 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ListKeys operation response.
+ * The response from the ListKeys operation.
  */
 public class StorageAccountListKeysResultInner {
     /**
-     * Gets the list of account keys and their properties.
+     * Gets the list of storage account keys and their properties for the
+     * specified storage account.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageAccountKey> keys;

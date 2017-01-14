@@ -12,11 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the list of virtual machine scale set instance IDs.
+ * Specifies a list of virtual machine instance IDs from the VM scale set.
  */
 public class VirtualMachineScaleSetVMInstanceRequiredIDs {
     /**
-     * the virtual machine scale set instance ids.
+     * The virtual machine scale set instance ids.
      */
     @JsonProperty(required = true)
     private List<String> instanceIds;

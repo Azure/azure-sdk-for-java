@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.rest.RestException;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
@@ -16,72 +17,28 @@ import retrofit2.Response;
  */
 public class ErrorResponseException extends RestException {
     /**
-     * Information about the associated HTTP response.
-     */
-    private Response response;
-    /**
-     * The actual response body.
-     */
-    private ErrorResponse body;
-    /**
-     * Initializes a new instance of the ErrorResponseException class.
-     */
-    public ErrorResponseException() { }
-    /**
      * Initializes a new instance of the ErrorResponseException class.
      *
-     * @param message The exception message.
-     */
-    public ErrorResponseException(final String message) {
-        super(message);
-    }
-    /**
-     * Initializes a new instance of the ErrorResponseException class.
-     *
-     * @param message the exception message
-     * @param cause   exception that caused this exception to occur
-     */
-    public ErrorResponseException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-    /**
-     * Initializes a new instance of the ErrorResponseException class.
-     *
-     * @param cause exception that caused this exception to occur
-     */
-    public ErrorResponseException(final Throwable cause) {
-        super(cause);
-    }
-    /**
-     * Gets information about the associated HTTP response.
-     *
-     * @return the HTTP response
-     */
-    public Response getResponse() {
-        return response;
-    }
-    /**
-     * Gets the HTTP response body.
-     *
-     * @return the response body
-     */
-    public ErrorResponse getBody() {
-        return body;
-    }
-    /**
-     * Sets the HTTP response.
-     *
+     * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public void setResponse(Response response) {
-        this.response = response;
+    public ErrorResponseException(final String message, final Response<ResponseBody> response) {
+        super(message, response);
     }
+
     /**
-     * Sets the HTTP response body.
+     * Initializes a new instance of the ErrorResponseException class.
      *
-     * @param body the response body
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param body the deserialized response body
      */
-    public void setBody(ErrorResponse body) {
-        this.body = body;
+    public ErrorResponseException(final String message, final Response<ResponseBody> response, final ErrorResponse body) {
+        super(message, response, body);
+    }
+
+    @Override
+    public ErrorResponse body() {
+        return (ErrorResponse) super.body();
     }
 }

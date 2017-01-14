@@ -10,14 +10,16 @@ package com.microsoft.azure.management.graphrbac;
 
 import java.util.List;
 import com.microsoft.azure.management.graphrbac.implementation.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request paramters for PasswordCredentials update operation.
+ * Request parameters for a PasswordCredentials update operation.
  */
 public class PasswordCredentialsUpdateParameters {
     /**
-     * PasswordCredential list.
+     * A collection of PasswordCredentials.
      */
+    @JsonProperty(required = true)
     private List<PasswordCredentialInner> value;
 
     /**

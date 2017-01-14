@@ -14,8 +14,7 @@ package com.microsoft.azure.management.dns;
  */
 public class PtrRecord {
     /**
-     * Gets or sets the PTR target domain name for this record without a
-     * terminating dot.
+     * The PTR target domain name for this PTR record.
      */
     private String ptrdname;
 

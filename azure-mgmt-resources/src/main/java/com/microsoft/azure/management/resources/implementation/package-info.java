@@ -6,5 +6,6 @@
 
 /**
  * This package contains the implementation classes for ResourceManagementClient.
+ * Provides operations for working with resources and resource groups.
  */
 package com.microsoft.azure.management.resources.implementation;

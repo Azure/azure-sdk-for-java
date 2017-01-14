@@ -35,10 +35,10 @@ public class RecommendedIndexInner extends Resource {
     /**
      * The current recommendation state. Current options are: 'Active',
      * 'Pending', 'Executing', 'Verifying', 'Pending Revert', 'Reverting',
-     * 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'. Possible
-     * values include: 'Active', 'Pending', 'Executing', 'Verifying',
-     * 'Pending Revert', 'Reverting', 'Reverted', 'Ignored', 'Expired',
-     * 'Blocked', 'Success'.
+     * 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'. Possible values
+     * include: 'Active', 'Pending', 'Executing', 'Verifying', 'Pending
+     * Revert', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Blocked',
+     * 'Success'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedIndexStates state;

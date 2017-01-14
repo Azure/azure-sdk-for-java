@@ -23,11 +23,11 @@ public final class KeyPermissions {
     /** Static value decrypt for KeyPermissions. */
     public static final KeyPermissions DECRYPT = new KeyPermissions("decrypt");
 
-    /** Static value wrapkey for KeyPermissions. */
-    public static final KeyPermissions WRAPKEY = new KeyPermissions("wrapkey");
+    /** Static value wrapKey for KeyPermissions. */
+    public static final KeyPermissions WRAP_KEY = new KeyPermissions("wrapKey");
 
-    /** Static value unwrapkey for KeyPermissions. */
-    public static final KeyPermissions UNWRAPKEY = new KeyPermissions("unwrapkey");
+    /** Static value unwrapKey for KeyPermissions. */
+    public static final KeyPermissions UNWRAP_KEY = new KeyPermissions("unwrapKey");
 
     /** Static value sign for KeyPermissions. */
     public static final KeyPermissions SIGN = new KeyPermissions("sign");

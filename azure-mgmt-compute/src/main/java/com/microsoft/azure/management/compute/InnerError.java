@@ -14,12 +14,12 @@ package com.microsoft.azure.management.compute;
  */
 public class InnerError {
     /**
-     * the exception type.
+     * The exception type.
      */
     private String exceptiontype;
 
     /**
-     * the internal error message or exception dump.
+     * The internal error message or exception dump.
      */
     private String errordetail;
 

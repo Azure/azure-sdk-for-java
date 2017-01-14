@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TemplateLink {
     /**
-     * URI referencing the template.
+     * The URI of the template to deploy.
      */
     @JsonProperty(required = true)
     private String uri;
 
     /**
-     * If included it must match the ContentVersion in the template.
+     * If included, must match the ContentVersion in the template.
      */
     private String contentVersion;
 

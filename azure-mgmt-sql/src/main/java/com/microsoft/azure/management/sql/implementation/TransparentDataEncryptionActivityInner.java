@@ -26,8 +26,8 @@ public class TransparentDataEncryptionActivityInner extends SqlSubResource {
     private TransparentDataEncryptionActivityStates status;
 
     /**
-     * The percent complete of the transparent data encryption scan for a
-     * Azure SQL Database.
+     * The percent complete of the transparent data encryption scan for a Azure
+     * SQL Database.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentComplete;

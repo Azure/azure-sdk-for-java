@@ -10,11 +10,11 @@ package com.microsoft.azure.management.storage;
 
 
 /**
- * The encrypted services.
+ * A list of services that support encryption.
  */
 public class EncryptionServices {
     /**
-     * The blob service.
+     * The encryption function of the blob storage service.
      */
     private EncryptionService blob;
 

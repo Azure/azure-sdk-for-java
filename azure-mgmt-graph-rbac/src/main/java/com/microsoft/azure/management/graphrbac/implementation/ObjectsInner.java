@@ -10,7 +10,6 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -52,33 +51,33 @@ public final class ObjectsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ObjectsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Objects getCurrentUser" })
         @GET("{tenantID}/me")
         Observable<Response<ResponseBody>> getCurrentUser(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Gets the details for current logged in user.
+     * Gets the details for the currently logged-in user.
      *
      * @return the AADObjectInner object if successful.
      */
     public AADObjectInner getCurrentUser() {
-        return getCurrentUserWithServiceResponseAsync().toBlocking().single().getBody();
+        return getCurrentUserWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
-     * Gets the details for current logged in user.
+     * Gets the details for the currently logged-in user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
-        return ServiceCall.create(getCurrentUserWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(getCurrentUserWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
-     * Gets the details for current logged in user.
+     * Gets the details for the currently logged-in user.
      *
      * @return the observable to the AADObjectInner object
      */
@@ -86,13 +85,13 @@ public final class ObjectsInner {
         return getCurrentUserWithServiceResponseAsync().map(new Func1<ServiceResponse<AADObjectInner>, AADObjectInner>() {
             @Override
             public AADObjectInner call(ServiceResponse<AADObjectInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets the details for current logged in user.
+     * Gets the details for the currently logged-in user.
      *
      * @return the observable to the AADObjectInner object
      */
@@ -118,7 +117,7 @@ public final class ObjectsInner {
     }
 
     private ServiceResponse<AADObjectInner> getCurrentUserDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AADObjectInner, GraphErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AADObjectInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AADObjectInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);

@@ -10,8 +10,8 @@ package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the BatchManagementClientImpl class.
@@ -28,11 +28,11 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** A unique identifier of a Microsoft Azure subscription. The subscription id forms part of the URI for every service call. */
+    /** A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets A unique identifier of a Microsoft Azure subscription. The subscription id forms part of the URI for every service call.
+     * Gets A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets A unique identifier of a Microsoft Azure subscription. The subscription id forms part of the URI for every service call.
+     * Sets A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +51,11 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client API Version. */
+    /** The API version to be used with the HTTP request. */
     private String apiVersion;
 
     /**
-     * Gets Client API Version.
+     * Gets The API version to be used with the HTTP request.
      *
      * @return the apiVersion value.
      */
@@ -200,10 +200,8 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public BatchManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

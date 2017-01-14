@@ -11,7 +11,6 @@ package com.microsoft.azure.management.redis.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.redis.RedisKeyType;
@@ -35,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -65,73 +65,73 @@ public final class RedisInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RedisService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Cache/Redis/")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis listKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/listKeys")
         Observable<Response<ResponseBody>> listKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis regenerateKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/regenerateKey")
         Observable<Response<ResponseBody>> regenerateKey(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisRegenerateKeyParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis forceReboot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/forceReboot")
         Observable<Response<ResponseBody>> forceReboot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisRebootParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis importData" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/import")
         Observable<Response<ResponseBody>> importData(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ImportRDBParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis beginImportData" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/import")
         Observable<Response<ResponseBody>> beginImportData(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ImportRDBParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis exportData" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/export")
         Observable<Response<ResponseBody>> exportData(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ExportRDBParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis beginExportData" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/export")
         Observable<Response<ResponseBody>> beginExportData(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ExportRDBParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.Redis listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -144,7 +144,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -157,7 +157,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisResourceInner> createAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class RedisInner {
         return createWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -215,7 +215,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner beginCreate(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -228,7 +228,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisResourceInner> beginCreateAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -243,7 +243,7 @@ public final class RedisInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -288,7 +288,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<RedisResourceInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RedisResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RedisResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<RedisResourceInner>() { }.getType())
                 .register(200, new TypeToken<RedisResourceInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -304,7 +304,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -317,7 +317,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisResourceInner> updateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -332,7 +332,7 @@ public final class RedisInner {
         return updateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -377,7 +377,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<RedisResourceInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RedisResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RedisResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -390,7 +390,7 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
     /**
@@ -402,7 +402,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -416,7 +416,7 @@ public final class RedisInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -452,7 +452,7 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      */
     public void beginDelete(String resourceGroupName, String name) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -464,7 +464,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -478,7 +478,7 @@ public final class RedisInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -518,7 +518,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -532,7 +532,7 @@ public final class RedisInner {
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -544,7 +544,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisResourceInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -558,7 +558,7 @@ public final class RedisInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
             @Override
             public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -598,7 +598,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<RedisResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RedisResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RedisResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -612,10 +612,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -628,7 +628,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RedisResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -650,7 +650,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -666,7 +666,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -697,7 +697,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -706,7 +706,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<PageImpl<RedisResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RedisResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RedisResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -719,10 +719,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> list() {
         ServiceResponse<Page<RedisResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -734,7 +734,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RedisResourceInner>> listAsync(final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -755,7 +755,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -770,7 +770,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -797,7 +797,7 @@ public final class RedisInner {
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -806,7 +806,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<PageImpl<RedisResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RedisResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RedisResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -820,7 +820,7 @@ public final class RedisInner {
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
-        return listKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -832,7 +832,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
-        return ServiceCall.create(listKeysWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listKeysWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -846,7 +846,7 @@ public final class RedisInner {
         return listKeysWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisAccessKeysInner>, RedisAccessKeysInner>() {
             @Override
             public RedisAccessKeysInner call(ServiceResponse<RedisAccessKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -886,7 +886,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<RedisAccessKeysInner> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RedisAccessKeysInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RedisAccessKeysInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisAccessKeysInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -901,7 +901,7 @@ public final class RedisInner {
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).toBlocking().single().getBody();
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).toBlocking().single().body();
     }
 
     /**
@@ -914,7 +914,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
-        return ServiceCall.create(regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType), serviceCallback);
+        return ServiceCall.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType), serviceCallback);
     }
 
     /**
@@ -929,7 +929,7 @@ public final class RedisInner {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).map(new Func1<ServiceResponse<RedisAccessKeysInner>, RedisAccessKeysInner>() {
             @Override
             public RedisAccessKeysInner call(ServiceResponse<RedisAccessKeysInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -975,7 +975,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<RedisAccessKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RedisAccessKeysInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RedisAccessKeysInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisAccessKeysInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -989,7 +989,7 @@ public final class RedisInner {
      * @param parameters Specifies which Redis node(s) to reboot.
      */
     public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
-        forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1002,7 +1002,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1017,7 +1017,7 @@ public final class RedisInner {
         return forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1062,7 +1062,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<Void> forceRebootDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1076,7 +1076,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis import operation.
      */
     public void importData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
-        importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1089,7 +1089,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> importDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(importDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(importDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1104,7 +1104,7 @@ public final class RedisInner {
         return importDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1146,7 +1146,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis import operation.
      */
     public void beginImportData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
-        beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1159,7 +1159,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginImportDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1174,7 +1174,7 @@ public final class RedisInner {
         return beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1219,7 +1219,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<Void> beginImportDataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1232,7 +1232,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis export operation.
      */
     public void exportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
-        exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().body();
     }
 
     /**
@@ -1245,7 +1245,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> exportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(exportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(exportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1260,7 +1260,7 @@ public final class RedisInner {
         return exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1302,7 +1302,7 @@ public final class RedisInner {
      * @param parameters Parameters for Redis export operation.
      */
     public void beginExportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
-        beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
+        beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1315,7 +1315,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginExportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1330,7 +1330,7 @@ public final class RedisInner {
         return beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1375,7 +1375,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<Void> beginExportDataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1388,10 +1388,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1405,7 +1405,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RedisResourceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<RedisResourceInner>> serviceCall, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -1427,7 +1427,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1443,7 +1443,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1462,13 +1462,14 @@ public final class RedisInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1477,7 +1478,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<PageImpl<RedisResourceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RedisResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RedisResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1491,10 +1492,10 @@ public final class RedisInner {
      */
     public PagedList<RedisResourceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RedisResourceInner>(response.getBody()) {
+        return new PagedList<RedisResourceInner>(response.body()) {
             @Override
             public Page<RedisResourceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1508,7 +1509,7 @@ public final class RedisInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RedisResourceInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RedisResourceInner>> serviceCall, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -1530,7 +1531,7 @@ public final class RedisInner {
             .map(new Func1<ServiceResponse<Page<RedisResourceInner>>, Page<RedisResourceInner>>() {
                 @Override
                 public Page<RedisResourceInner> call(ServiceResponse<Page<RedisResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1546,7 +1547,7 @@ public final class RedisInner {
             .concatMap(new Func1<ServiceResponse<Page<RedisResourceInner>>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(ServiceResponse<Page<RedisResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1565,13 +1566,14 @@ public final class RedisInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RedisResourceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RedisResourceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RedisResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1580,7 +1582,7 @@ public final class RedisInner {
     }
 
     private ServiceResponse<PageImpl<RedisResourceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RedisResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RedisResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

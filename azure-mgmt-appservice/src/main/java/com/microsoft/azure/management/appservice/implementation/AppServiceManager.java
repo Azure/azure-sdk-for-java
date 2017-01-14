@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -50,9 +50,10 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new AppServiceManager(AzureEnvironment.AZURE.newRestClientBuilder()
+        return new AppServiceManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .build(), credentials.getDomain(), subscriptionId);
+                .build(), credentials.domain(), subscriptionId);
     }
 
     /**
@@ -86,7 +87,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.getDomain(), subscriptionId);
+            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.domain(), subscriptionId);
         }
     }
 

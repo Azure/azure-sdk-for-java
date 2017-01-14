@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,41 +61,41 @@ public final class LoadBalancersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface LoadBalancersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Body LoadBalancerInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Body LoadBalancerInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/loadBalancers")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers listAllNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LoadBalancers listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -106,7 +106,7 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      */
     public void delete(String resourceGroupName, String loadBalancerName) {
-        deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().body();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -132,7 +132,7 @@ public final class LoadBalancersInner {
         return deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -166,7 +166,7 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      */
     public void beginDelete(String resourceGroupName, String loadBalancerName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().body();
     }
 
     /**
@@ -178,7 +178,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -192,7 +192,7 @@ public final class LoadBalancersInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -230,7 +230,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -245,7 +245,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) {
-        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().body();
     }
 
     /**
@@ -257,7 +257,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -271,7 +271,7 @@ public final class LoadBalancersInner {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -318,7 +318,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().body();
     }
 
     /**
@@ -331,7 +331,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class LoadBalancersInner {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -385,7 +385,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<LoadBalancerInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LoadBalancerInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<LoadBalancerInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<LoadBalancerInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -400,7 +400,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -413,7 +413,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -428,7 +428,7 @@ public final class LoadBalancersInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -469,7 +469,7 @@ public final class LoadBalancersInner {
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -482,7 +482,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -497,7 +497,7 @@ public final class LoadBalancersInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
             @Override
             public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -540,7 +540,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<LoadBalancerInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LoadBalancerInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<LoadBalancerInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<LoadBalancerInner>() { }.getType())
                 .register(200, new TypeToken<LoadBalancerInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -554,10 +554,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listAll() {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -569,7 +569,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<LoadBalancerInner>> listAllAsync(final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -590,7 +590,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -605,7 +605,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -630,7 +630,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -639,7 +639,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<PageImpl<LoadBalancerInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LoadBalancerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LoadBalancerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -653,10 +653,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> list(final String resourceGroupName) {
         ServiceResponse<Page<LoadBalancerInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -669,7 +669,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<LoadBalancerInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -691,7 +691,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -707,7 +707,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -736,7 +736,7 @@ public final class LoadBalancersInner {
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -745,7 +745,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<PageImpl<LoadBalancerInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LoadBalancerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LoadBalancerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -759,10 +759,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -776,7 +776,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<LoadBalancerInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -798,7 +798,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -814,7 +814,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -833,13 +833,14 @@ public final class LoadBalancersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -848,7 +849,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<PageImpl<LoadBalancerInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LoadBalancerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LoadBalancerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -862,10 +863,10 @@ public final class LoadBalancersInner {
      */
     public PagedList<LoadBalancerInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.body()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -879,7 +880,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<LoadBalancerInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -901,7 +902,7 @@ public final class LoadBalancersInner {
             .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
                 public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -917,7 +918,7 @@ public final class LoadBalancersInner {
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -936,13 +937,14 @@ public final class LoadBalancersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LoadBalancerInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<LoadBalancerInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -951,7 +953,7 @@ public final class LoadBalancersInner {
     }
 
     private ServiceResponse<PageImpl<LoadBalancerInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancerInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LoadBalancerInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LoadBalancerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
