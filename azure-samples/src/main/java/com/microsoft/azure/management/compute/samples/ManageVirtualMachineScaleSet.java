@@ -286,8 +286,8 @@ public final class ManageVirtualMachineScaleSet {
                                     break;
                                 }
                             }
+                            break;
                         }
-                        break;
                     }
                 }
 
