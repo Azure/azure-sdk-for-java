@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +25,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      * The virtual machine scale set sku.
      */
     private Sku sku;
+
+    /**
+     * The purchase plan when deploying a virtual machine scale set from VM
+     * Marketplace images.
+     */
+    private Plan plan;
 
     /**
      * The upgrade policy.
@@ -67,6 +74,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the plan value.
+     *
+     * @return the plan value
+     */
+    public Plan plan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan value.
+     *
+     * @param plan the plan value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPlan(Plan plan) {
+        this.plan = plan;
         return this;
     }
 
