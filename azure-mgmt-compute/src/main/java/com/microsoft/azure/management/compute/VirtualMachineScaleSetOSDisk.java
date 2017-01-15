@@ -18,7 +18,6 @@ public class VirtualMachineScaleSetOSDisk {
     /**
      * The disk name.
      */
-    @JsonProperty(required = true)
     private String name;
 
     /**
@@ -50,6 +49,11 @@ public class VirtualMachineScaleSetOSDisk {
      * The list of virtual hard disk container uris.
      */
     private List<String> vhdContainers;
+
+    /**
+     * The managed disk parameters.
+     */
+    private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /**
      * Get the name value.
@@ -168,6 +172,26 @@ public class VirtualMachineScaleSetOSDisk {
      */
     public VirtualMachineScaleSetOSDisk withVhdContainers(List<String> vhdContainers) {
         this.vhdContainers = vhdContainers;
+        return this;
+    }
+
+    /**
+     * Get the managedDisk value.
+     *
+     * @return the managedDisk value
+     */
+    public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk value.
+     *
+     * @param managedDisk the managedDisk value to set
+     * @return the VirtualMachineScaleSetOSDisk object itself.
+     */
+    public VirtualMachineScaleSetOSDisk withManagedDisk(VirtualMachineScaleSetManagedDiskParameters managedDisk) {
+        this.managedDisk = managedDisk;
         return this;
     }
 
