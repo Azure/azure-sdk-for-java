@@ -536,7 +536,7 @@ public class VirtualMachineScaleSetImpl
                 .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner()
                 .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
+                .storageProfile().withImageReference(imageReference.inner());
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().withWindowsConfiguration(new WindowsConfiguration());
@@ -599,7 +599,7 @@ public class VirtualMachineScaleSetImpl
                 .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner()
                 .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
+                .storageProfile().withImageReference(imageReference.inner());
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().withLinuxConfiguration(new LinuxConfiguration());
