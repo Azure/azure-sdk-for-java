@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -62,7 +63,13 @@ class AvailabilitySetsImpl
 
     @Override
     public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+        return this.innerCollection.deleteAsync(groupName, name)
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     /**************************************************************
