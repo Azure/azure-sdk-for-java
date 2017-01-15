@@ -21,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,9 +119,9 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public ImageReference platformImageReference() {
-        return this.inner().storageProfile().imageReference();
+        return new ImageReference(this.inner().storageProfile().imageReference());
     }
-
+    
     @Override
     public VirtualMachineImage getPlatformImage() {
         if (this.isOsBasedOnPlatformImage()) {
@@ -324,7 +325,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> reimageAsync() {
         return this.client.reimageAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -336,7 +343,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> deallocateAsync() {
         return this.client.deallocateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -348,7 +361,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> powerOffAsync() {
         return this.client.powerOffAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -360,7 +379,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> startAsync() {
         return this.client.startAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -372,7 +397,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> restartAsync() {
         return this.client.restartAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -384,7 +415,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> deleteAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override

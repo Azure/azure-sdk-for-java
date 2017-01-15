@@ -375,7 +375,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withSpecificWindowsImageVersion(ImageReference imageReference) {
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().withImageReference(imageReference);
+        this.inner().storageProfile().withImageReference(imageReference.inner());
         this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
@@ -386,7 +386,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withSpecificLinuxImageVersion(ImageReference imageReference) {
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().withImageReference(imageReference);
+        this.inner().storageProfile().withImageReference(imageReference.inner());
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         this.isMarketplaceLinuxImage = true;
         return this;

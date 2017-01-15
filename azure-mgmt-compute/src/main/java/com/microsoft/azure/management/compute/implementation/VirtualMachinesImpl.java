@@ -23,6 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 import rx.exceptions.Exceptions;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 

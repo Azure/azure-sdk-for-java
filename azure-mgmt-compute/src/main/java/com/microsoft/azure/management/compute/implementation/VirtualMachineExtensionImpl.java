@@ -274,12 +274,13 @@ class VirtualMachineExtensionImpl
     public Observable<Void> deleteAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name()).map(new Func1<Void, Void>() {
-            @Override
-            public Void call(Void result) {
-                return result;
-            }
-        });
+                this.name())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     /**
