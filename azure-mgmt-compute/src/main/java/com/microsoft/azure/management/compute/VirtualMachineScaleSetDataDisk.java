@@ -8,35 +8,22 @@
 
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.ManagedDiskParametersInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes a data disk.
+ * Describes a virtual machine scale set data disk.
  */
-public class DataDisk {
-    /**
-     * The logical unit number.
-     */
-    @JsonProperty(required = true)
-    private int lun;
-
+public class VirtualMachineScaleSetDataDisk {
     /**
      * The disk name.
      */
     private String name;
 
     /**
-     * The virtual hard disk.
+     * The logical unit number.
      */
-    private VirtualHardDisk vhd;
-
-    /**
-     * The source user image virtual hard disk. This virtual hard disk will be
-     * copied before using it to attach to the virtual machine. If SourceImage
-     * is provided, the destination virtual hard disk must not exist.
-     */
-    private VirtualHardDisk image;
+    @JsonProperty(required = true)
+    private int lun;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
@@ -53,34 +40,14 @@ public class DataDisk {
 
     /**
      * The initial disk size in GB for blank data disks, and the new desired
-     * size for resizing existing OS and data disks.
+     * size for existing OS and Data disks.
      */
     private Integer diskSizeGB;
 
     /**
      * The managed disk parameters.
      */
-    private ManagedDiskParametersInner managedDisk;
-
-    /**
-     * Get the lun value.
-     *
-     * @return the lun value
-     */
-    public int lun() {
-        return this.lun;
-    }
-
-    /**
-     * Set the lun value.
-     *
-     * @param lun the lun value to set
-     * @return the DataDisk object itself.
-     */
-    public DataDisk withLun(int lun) {
-        this.lun = lun;
-        return this;
-    }
+    private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /**
      * Get the name value.
@@ -95,50 +62,30 @@ public class DataDisk {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the DataDisk object itself.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withName(String name) {
+    public VirtualMachineScaleSetDataDisk withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
-     * Get the vhd value.
+     * Get the lun value.
      *
-     * @return the vhd value
+     * @return the lun value
      */
-    public VirtualHardDisk vhd() {
-        return this.vhd;
+    public int lun() {
+        return this.lun;
     }
 
     /**
-     * Set the vhd value.
+     * Set the lun value.
      *
-     * @param vhd the vhd value to set
-     * @return the DataDisk object itself.
+     * @param lun the lun value to set
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withVhd(VirtualHardDisk vhd) {
-        this.vhd = vhd;
-        return this;
-    }
-
-    /**
-     * Get the image value.
-     *
-     * @return the image value
-     */
-    public VirtualHardDisk image() {
-        return this.image;
-    }
-
-    /**
-     * Set the image value.
-     *
-     * @param image the image value to set
-     * @return the DataDisk object itself.
-     */
-    public DataDisk withImage(VirtualHardDisk image) {
-        this.image = image;
+    public VirtualMachineScaleSetDataDisk withLun(int lun) {
+        this.lun = lun;
         return this;
     }
 
@@ -155,9 +102,9 @@ public class DataDisk {
      * Set the caching value.
      *
      * @param caching the caching value to set
-     * @return the DataDisk object itself.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withCaching(CachingTypes caching) {
+    public VirtualMachineScaleSetDataDisk withCaching(CachingTypes caching) {
         this.caching = caching;
         return this;
     }
@@ -175,9 +122,9 @@ public class DataDisk {
      * Set the createOption value.
      *
      * @param createOption the createOption value to set
-     * @return the DataDisk object itself.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withCreateOption(DiskCreateOptionTypes createOption) {
+    public VirtualMachineScaleSetDataDisk withCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
         return this;
     }
@@ -195,9 +142,9 @@ public class DataDisk {
      * Set the diskSizeGB value.
      *
      * @param diskSizeGB the diskSizeGB value to set
-     * @return the DataDisk object itself.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withDiskSizeGB(Integer diskSizeGB) {
+    public VirtualMachineScaleSetDataDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
         return this;
     }
@@ -207,7 +154,7 @@ public class DataDisk {
      *
      * @return the managedDisk value
      */
-    public ManagedDiskParametersInner managedDisk() {
+    public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
         return this.managedDisk;
     }
 
@@ -215,9 +162,9 @@ public class DataDisk {
      * Set the managedDisk value.
      *
      * @param managedDisk the managedDisk value to set
-     * @return the DataDisk object itself.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
      */
-    public DataDisk withManagedDisk(ManagedDiskParametersInner managedDisk) {
+    public VirtualMachineScaleSetDataDisk withManagedDisk(VirtualMachineScaleSetManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
     }

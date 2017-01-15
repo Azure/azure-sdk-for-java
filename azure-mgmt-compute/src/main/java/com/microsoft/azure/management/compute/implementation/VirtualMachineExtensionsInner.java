@@ -147,11 +147,9 @@ public final class VirtualMachineExtensionsInner {
         if (extensionParameters == null) {
             throw new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(extensionParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualMachineExtensionInner>() { }.getType());
     }
 
@@ -225,11 +223,9 @@ public final class VirtualMachineExtensionsInner {
         if (extensionParameters == null) {
             throw new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(extensionParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.beginCreateOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualMachineExtensionInner>> call(Response<ResponseBody> response) {
@@ -257,9 +253,10 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
+     * @return the OperationStatusResponseInner object if successful.
      */
-    public void delete(String resourceGroupName, String vmName, String vmExtensionName) {
-        deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().body();
+    public OperationStatusResponseInner delete(String resourceGroupName, String vmName, String vmExtensionName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().body();
     }
 
     /**
@@ -271,7 +268,7 @@ public final class VirtualMachineExtensionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
         return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
     }
 
@@ -283,10 +280,10 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
                 return response.body();
             }
         });
@@ -300,7 +297,7 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<ServiceResponse<OperationStatusResponseInner>> deleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -313,11 +310,9 @@ public final class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -326,9 +321,10 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
+     * @return the OperationStatusResponseInner object if successful.
      */
-    public void beginDelete(String resourceGroupName, String vmName, String vmExtensionName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().body();
+    public OperationStatusResponseInner beginDelete(String resourceGroupName, String vmName, String vmExtensionName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().body();
     }
 
     /**
@@ -340,7 +336,7 @@ public final class VirtualMachineExtensionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceCall<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
         return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
     }
 
@@ -350,12 +346,12 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<Void> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
                 return response.body();
             }
         });
@@ -367,9 +363,9 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -382,15 +378,13 @@ public final class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+        final String apiVersion = "2016-04-30-preview";
+        return service.beginDelete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatusResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OperationStatusResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        ServiceResponse<OperationStatusResponseInner> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -399,10 +393,12 @@ public final class VirtualMachineExtensionsInner {
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<OperationStatusResponseInner> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatusResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatusResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -469,11 +465,9 @@ public final class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-04-30-preview";
         final String expand = null;
-        return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualMachineExtensionInner>> call(Response<ResponseBody> response) {
@@ -554,10 +548,8 @@ public final class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualMachineExtensionInner>> call(Response<ResponseBody> response) {

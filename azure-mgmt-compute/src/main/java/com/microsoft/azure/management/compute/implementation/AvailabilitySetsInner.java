@@ -141,11 +141,9 @@ public final class AvailabilitySetsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AvailabilitySetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AvailabilitySetInner>> call(Response<ResponseBody> response) {
@@ -171,9 +169,10 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
+     * @return the OperationStatusResponseInner object if successful.
      */
-    public void delete(String resourceGroupName, String availabilitySetName) {
-        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
+    public OperationStatusResponseInner delete(String resourceGroupName, String availabilitySetName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().body();
     }
 
     /**
@@ -184,7 +183,7 @@ public final class AvailabilitySetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
         return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
@@ -193,12 +192,12 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String availabilitySetName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
                 return response.body();
             }
         });
@@ -209,9 +208,9 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String availabilitySetName) {
+    public Observable<ServiceResponse<OperationStatusResponseInner>> deleteWithServiceResponseAsync(String resourceGroupName, String availabilitySetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -221,15 +220,13 @@ public final class AvailabilitySetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+        final String apiVersion = "2016-04-30-preview";
+        return service.delete(resourceGroupName, availabilitySetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatusResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OperationStatusResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<OperationStatusResponseInner> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -238,10 +235,11 @@ public final class AvailabilitySetsInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<OperationStatusResponseInner> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatusResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatusResponseInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -301,10 +299,8 @@ public final class AvailabilitySetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.get(resourceGroupName, availabilitySetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AvailabilitySetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AvailabilitySetInner>> call(Response<ResponseBody> response) {
@@ -374,10 +370,8 @@ public final class AvailabilitySetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailabilitySetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
@@ -455,10 +449,8 @@ public final class AvailabilitySetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineSizeInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
