@@ -58,6 +58,13 @@ public class VirtualMachineScaleSetInner extends Resource {
     private Boolean overprovision;
 
     /**
+     * When true this limits the scale set to a single placement group, of max
+     * size 100 virtual machines.
+     */
+    @JsonProperty(value = "properties.singlePlacementGroup")
+    private Boolean singlePlacementGroup;
+
+    /**
      * Get the sku value.
      *
      * @return the sku value
@@ -163,6 +170,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withOverprovision(Boolean overprovision) {
         this.overprovision = overprovision;
+        return this;
+    }
+
+    /**
+     * Get the singlePlacementGroup value.
+     *
+     * @return the singlePlacementGroup value
+     */
+    public Boolean singlePlacementGroup() {
+        return this.singlePlacementGroup;
+    }
+
+    /**
+     * Set the singlePlacementGroup value.
+     *
+     * @param singlePlacementGroup the singlePlacementGroup value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSinglePlacementGroup(Boolean singlePlacementGroup) {
+        this.singlePlacementGroup = singlePlacementGroup;
         return this;
     }
 

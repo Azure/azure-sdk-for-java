@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static final String LOCATION = "southcentralus";
+    private static final Region REGION = Region.US_SOUTH_CENTRAL;
     private static final String VMNAME = "javavm";
 
     @Override
@@ -43,16 +43,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Create
         computeManager.virtualMachines()
                 .define(VMNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
                 .withAdminUsername("Foo12")
-                .withAdminPassword("BaR@12")
+                .withAdminPassword("abc!@#F0orL")
+                .withUnmanagedDisks()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withOsDiskName("javatest")
                 .create();
 
@@ -65,15 +66,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             }
         }
         Assert.assertNotNull(foundVM);
-        Assert.assertEquals(LOCATION, foundVM.regionName());
+        Assert.assertEquals(REGION, foundVM.region());
         // Get
         foundVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
         Assert.assertNotNull(foundVM);
-        Assert.assertEquals(LOCATION, foundVM.regionName());
+        Assert.assertEquals(REGION, foundVM.region());
 
         // Fetch instance view
         PowerState powerState = foundVM.powerState();
-        Assert.assertTrue(powerState == PowerState.RUNNING);
+        Assert.assertEquals(powerState, PowerState.RUNNING);
         VirtualMachineInstanceView instanceView = foundVM.instanceView();
         Assert.assertNotNull(instanceView);
         Assert.assertNotNull(instanceView.statuses().size() > 0);
@@ -88,10 +89,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         String vmNamePrefix = "vmz";
         String publicIpNamePrefix = generateRandomResourceName("pip-", 15);
         String networkNamePrefix = generateRandomResourceName("vnet-", 15);
-        Region region = Region.US_EAST;
         int count = 5;
 
-        CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(region,
+        CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(REGION,
                 vmNamePrefix,
                 networkNamePrefix,
                 publicIpNamePrefix,
@@ -139,7 +139,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         String vmNamePrefix = "vmz";
         String publicIpNamePrefix = generateRandomResourceName("pip-", 15);
         String networkNamePrefix = generateRandomResourceName("vnet-", 15);
-        Region region = Region.US_EAST;
         int count = 5;
 
         final Set<String> virtualMachineNames = new HashSet<>();
@@ -157,7 +156,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             publicIpAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
 
-        final CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(region,
+        final CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(REGION,
                 vmNamePrefix,
                 networkNamePrefix,
                 publicIpNamePrefix,
@@ -200,9 +199,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                                                            String networkNamePrefix,
                                                            String publicIpNamePrefix,
                                                            int vmCount) {
-        String resourceGroupName = generateRandomResourceName("rgvmtest-", 20);
         Creatable<ResourceGroup> resourceGroupCreatable = resourceManager.resourceGroups()
-                .define(resourceGroupName)
+                .define(RG_NAME)
                 .withRegion(region);
 
         Creatable<StorageAccount> storageAccountCreatable = storageManager.storageAccounts()
@@ -238,6 +236,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
                     .withRootPassword("BaR@12!#")
+                    .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountCreatable);
 
             virtualMachineCreatables.add(virtualMachineCreatable);

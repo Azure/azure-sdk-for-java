@@ -24,7 +24,9 @@ import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.ImageDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
@@ -156,8 +158,14 @@ public final class Utils {
                 storageProfile.append("\n\t\t\tCreateOption: ").append(disk.createOption());
                 storageProfile.append("\n\t\t\tDiskSizeGB: ").append(disk.diskSizeGB());
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
-                if (disk.vhd().uri() != null) {
-                    storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                if (resource.isManagedDiskEnabled()) {
+                    if (disk.managedDisk() != null) {
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
+                    }
+                } else {
+                    if (disk.vhd().uri() != null) {
+                        storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                    }
                 }
                 if (disk.image() != null) {
                     storageProfile.append("\n\t\t\tImage Uri: ").append(disk.image().uri());
@@ -1222,7 +1230,6 @@ public final class Utils {
         System.out.println(builder.toString());
     }
 
-
     /**
      * Print an application gateway.
      * @param resource an application gateway
@@ -1385,6 +1392,55 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
+    /**
+     * Prints information of a virtual machine custom image.
+     *
+     * @param image the image
+     */
+    public static void print(VirtualMachineCustomImage image) {
+        StringBuilder builder = new StringBuilder().append("Virtual machine custom image: ").append(image.id())
+                .append("Name: ").append(image.name())
+                .append("\n\tResource group: ").append(image.resourceGroupName())
+                .append("\n\tCreated from virtual machine: ").append(image.sourceVirtualMachineId());
+
+        builder.append("\n\tOS disk image: ")
+                .append("\n\t\tOperating system: ").append(image.osDiskImage().osType())
+                .append("\n\t\tOperating system state: ").append(image.osDiskImage().osState())
+                .append("\n\t\tCaching: ").append(image.osDiskImage().caching())
+                .append("\n\t\tSize (GB): ").append(image.osDiskImage().diskSizeGB());
+        if (image.isCreatedFromVirtualMachine()) {
+            builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
+        }
+        if (image.osDiskImage().managedDisk() != null) {
+            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().id());
+        }
+        if (image.osDiskImage().snapshot() != null) {
+            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().id());
+        }
+        if (image.osDiskImage().blobUri() != null) {
+            builder.append("\n\t\tSource un-managed vhd: ").append(image.osDiskImage().blobUri());
+        }
+        if (image.dataDiskImages() != null) {
+            for (ImageDataDisk diskImage : image.dataDiskImages().values()) {
+                builder.append("\n\tDisk Image (Lun) #: ").append(diskImage.lun())
+                        .append("\n\t\tCaching: ").append(diskImage.caching())
+                        .append("\n\t\tSize (GB): ").append(diskImage.diskSizeGB());
+                if (image.isCreatedFromVirtualMachine()) {
+                    builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
+                }
+                if (diskImage.managedDisk() != null) {
+                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().id());
+                }
+                if (diskImage.snapshot() != null) {
+                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().id());
+                }
+                if (diskImage.blobUri() != null) {
+                    builder.append("\n\t\tSource un-managed vhd: ").append(diskImage.blobUri());
+                }
+            }
+        }
+        System.out.println(builder.toString());
+    }
 
     private Utils() {
 

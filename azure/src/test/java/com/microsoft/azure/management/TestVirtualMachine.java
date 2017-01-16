@@ -16,7 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.LogLevel;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
 import rx.Observable;
 import rx.functions.Action1;
@@ -55,7 +54,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
         resource = resource.update()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                .withNewDataDisk(100)
+                .withNewUnmanagedDataDisk(100)
                 .apply();
         return resource;
     }

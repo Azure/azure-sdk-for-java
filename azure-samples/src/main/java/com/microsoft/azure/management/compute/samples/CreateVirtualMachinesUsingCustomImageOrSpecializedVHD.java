@@ -65,13 +65,13 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withRootPassword(password)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", apacheInstallScriptUris)
-                    .withPublicSetting("commandToExecute", apacheInstallCommand)
-                    .attach()
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", apacheInstallScriptUris)
+                        .withPublicSetting("commandToExecute", apacheInstallCommand)
+                        .attach()
                     .create();
 
             System.out.println("Created a Linux VM: " + linuxVM.id());
@@ -126,7 +126,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             Utils.print(linuxVM2);
 
-            String specializedVhd = linuxVM2.osDiskVhdUri();
+            String specializedVhd = linuxVM2.osUnmanagedDiskVhdUri();
             //=============================================================
             // Deleting the virtual machine
             System.out.println("Deleting VM: " + linuxVM2.id());
@@ -149,7 +149,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIpAddressDynamic()
                     .withoutPrimaryPublicIpAddress()
-                    .withOsDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
+                    .withSpecializedOsUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)       // when attaching a specialized VHD
                     .create();
 

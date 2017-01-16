@@ -11,7 +11,6 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.OperatingSystemStateTypes;
 import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.EncryptionSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,13 +40,6 @@ public class SnapshotInner extends Resource {
      */
     @JsonProperty(value = "properties.osType")
     private OperatingSystemTypes osType;
-
-    /**
-     * The Operating System state. Possible values include: 'Generalized',
-     * 'Specialized'.
-     */
-    @JsonProperty(value = "properties.osState")
-    private OperatingSystemStateTypes osState;
 
     /**
      * Disk source information. CreationData information cannot be changed
@@ -130,26 +122,6 @@ public class SnapshotInner extends Resource {
      */
     public SnapshotInner withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
-        return this;
-    }
-
-    /**
-     * Get the osState value.
-     *
-     * @return the osState value
-     */
-    public OperatingSystemStateTypes osState() {
-        return this.osState;
-    }
-
-    /**
-     * Set the osState value.
-     *
-     * @param osState the osState value to set
-     * @return the SnapshotInner object itself.
-     */
-    public SnapshotInner withOsState(OperatingSystemStateTypes osState) {
-        this.osState = osState;
         return this;
     }
 
