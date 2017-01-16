@@ -10,7 +10,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineImage
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure virtual machine image.
@@ -18,6 +18,11 @@ import java.util.List;
 @Fluent
 public interface VirtualMachineImage extends
         Wrapper<VirtualMachineImageInner> {
+    /**
+     * @return the resource id of this image
+     */
+    String id();
+
     /**
      * @return the region in which virtual machine image is available
      */
@@ -59,7 +64,7 @@ public interface VirtualMachineImage extends
     OSDiskImage osDiskImage();
 
     /**
-     * @return data disk images in the virtual machine image
+     * @return data disk images in the virtual machine image, indexed by the disk lun
      */
-    List<DataDiskImage> dataDiskImages();
+    Map<Integer, DataDiskImage> dataDiskImages();
 }

@@ -8,7 +8,9 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -57,6 +59,14 @@ class AvailabilitySetImpl
     }
 
     @Override
+    public AvailabilitySetSkuTypes sku() {
+        if (this.inner().sku() != null && this.inner().sku().name() != null) {
+            return new AvailabilitySetSkuTypes(this.inner().sku().name());
+        }
+        return null;
+    }
+
+    @Override
     public List<String> virtualMachineIds() {
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new ArrayList<>();
@@ -64,7 +74,6 @@ class AvailabilitySetImpl
                 idOfVMsInSet.add(resource.id());
             }
         }
-
         return Collections.unmodifiableList(idOfVMsInSet);
     }
 
@@ -93,11 +102,26 @@ class AvailabilitySetImpl
         return this;
     }
 
+    @Override
+    public AvailabilitySetImpl withSku(AvailabilitySetSkuTypes skuType) {
+        if (this.inner().sku() == null) {
+            this.inner().withSku(new Sku());
+        }
+        this.inner().sku().withName(skuType.toString());
+        return this;
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
 
     @Override
     public Observable<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
+        if (this.inner().platformFaultDomainCount() == null) {
+            this.inner().withPlatformFaultDomainCount(2);
+        }
+        if (this.inner().platformUpdateDomainCount() == null) {
+            this.inner().withPlatformUpdateDomainCount(5);
+        }
         return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
                     @Override

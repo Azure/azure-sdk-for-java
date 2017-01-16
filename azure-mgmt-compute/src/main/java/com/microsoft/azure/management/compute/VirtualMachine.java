@@ -18,7 +18,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +30,7 @@ public interface VirtualMachine extends
         Wrapper<VirtualMachineInner>,
         Updatable<VirtualMachine.Update>,
         HasNetworkInterfaces {
-
     // Actions
-
     /**
      * Shuts down the Virtual Machine and releases the compute resources.
      * <p>
@@ -55,7 +52,7 @@ public interface VirtualMachine extends
 
     /**
      * Restart the virtual machine.
-=     */
+     */
     void restart();
 
     /**
@@ -67,6 +64,11 @@ public interface VirtualMachine extends
      * Redeploy the virtual machine.
      */
     void redeploy();
+
+    /**
+     * Migrate the virtual machine with un-managed disks to use managed disk.
+     */
+    void migrateToManaged();
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
@@ -101,6 +103,11 @@ public interface VirtualMachine extends
     //
 
     /**
+     * @return true if managed disk is used for the virtual machine's disks (os, data)
+     */
+    boolean isManagedDiskEnabled();
+
+    /**
      * @return name of this virtual machine
      */
     String computerName();
@@ -118,7 +125,7 @@ public interface VirtualMachine extends
     /**
      * @return the uri to the vhd file backing this virtual machine's operating system disk
      */
-    String osDiskVhdUri();
+    String osUnmanagedDiskVhdUri();
 
     /**
      * @return the operating system disk caching type, valid values are 'None', 'ReadOnly', 'ReadWrite'
@@ -131,9 +138,24 @@ public interface VirtualMachine extends
     int osDiskSize();
 
     /**
-     * @return the list of data disks attached to this virtual machine
+     * @return the storage account type of the managed disk backing Os disk
      */
-    List<VirtualMachineDataDisk> dataDisks();
+    StorageAccountTypes osDiskStorageAccountType();
+
+    /**
+     * @return resource id of the managed disk backing OS disk
+     */
+    String osDiskId();
+
+    /**
+     * @return the unmanaged data disks associated with this virtual machine, indexed by lun
+     */
+    Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
+
+    /**
+     * @return the managed data disks associated with this virtual machine, indexed by lun
+     */
+    Map<Integer, VirtualMachineDataDisk> dataDisks();
 
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
@@ -230,9 +252,10 @@ public interface VirtualMachine extends
     //
 
     /**
-     * The entirety of the virtual machine definition.
+     * The virtual machine scale set stages shared between managed and unmanaged based
+     * virtual machine definitions.
      */
-    interface Definition extends
+    interface DefinitionShared extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithNetwork,
@@ -241,14 +264,60 @@ public interface VirtualMachine extends
             DefinitionStages.WithPublicIpAddress,
             DefinitionStages.WithPrimaryNetworkInterface,
             DefinitionStages.WithOS,
-            DefinitionStages.WithLinuxRootUsername,
-            DefinitionStages.WithLinuxRootPasswordOrPublicKey,
-            DefinitionStages.WithWindowsAdminUsername,
-            DefinitionStages.WithWindowsAdminPassword,
-            DefinitionStages.WithFromImageCreateOptions,
-            DefinitionStages.WithLinuxCreate,
-            DefinitionStages.WithWindowsCreate,
             DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The entirety of the virtual machine definition.
+     */
+    interface DefinitionManagedOrUnmanaged extends
+            DefinitionShared,
+            DefinitionStages.WithLinuxRootUsernameManagedOrUnmanaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
+            DefinitionStages.WithWindowsAdminUsernameManagedOrUnmanaged,
+            DefinitionStages.WithWindowsAdminPasswordManagedOrUnmanaged,
+            DefinitionStages.WithFromImageCreateOptionsManagedOrUnmanaged,
+            DefinitionStages.WithLinuxCreateManagedOrUnmanaged,
+            DefinitionStages.WithWindowsCreateManagedOrUnmanaged,
+            DefinitionStages.WithManagedCreate,
+            DefinitionStages.WithUnmanagedCreate {
+    }
+
+    /**
+     * The entirety of the managed disk based virtual machine definition.
+     */
+    interface DefinitionManaged extends
+            DefinitionShared,
+            DefinitionStages.WithLinuxRootUsernameManaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManaged,
+            DefinitionStages.WithWindowsAdminUsernameManaged,
+            DefinitionStages.WithWindowsAdminPasswordManaged,
+            DefinitionStages.WithFromImageCreateOptionsManaged,
+            DefinitionStages.WithLinuxCreateManaged,
+            DefinitionStages.WithWindowsCreateManaged,
+            DefinitionStages.WithManagedCreate {
+    }
+
+    /**
+     * The entirety of the unmanaged disk based virtual machine definition.
+     */
+    interface DefinitionUnmanaged extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithGroup,
+            DefinitionStages.WithNetwork,
+            DefinitionStages.WithSubnet,
+            DefinitionStages.WithPrivateIp,
+            DefinitionStages.WithPublicIpAddress,
+            DefinitionStages.WithPrimaryNetworkInterface,
+            DefinitionStages.WithOS,
+            DefinitionStages.WithLinuxRootUsernameUnmanaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyUnmanaged,
+            DefinitionStages.WithWindowsAdminUsernameUnmanaged,
+            DefinitionStages.WithWindowsAdminPasswordUnmanaged,
+            DefinitionStages.WithFromImageCreateOptionsUnmanaged,
+            DefinitionStages.WithLinuxCreateUnmanaged,
+            DefinitionStages.WithWindowsCreateUnmanaged,
+            DefinitionStages.WithUnmanagedCreate {
     }
 
     /**
@@ -410,7 +479,7 @@ public interface VirtualMachine extends
              * @param knownImage enum value indicating known market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithWindowsAdminUsername withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Windows image needs to be used.
@@ -420,7 +489,7 @@ public interface VirtualMachine extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the virtual machine definition
              */
-            WithWindowsAdminUsername withLatestWindowsImage(String publisher, String offer, String sku);
+            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the version of a marketplace Windows image needs to be used.
@@ -428,7 +497,15 @@ public interface VirtualMachine extends
              * @param imageReference describes publisher, offer, sku and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithWindowsAdminUsername withSpecificWindowsImageVersion(ImageReference imageReference);
+            WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the id of a Windows custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the virtual machine definition
+             */
+            WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
 
             /**
              * Specifies the user (generalized) Windows image used for the virtual machine's OS.
@@ -436,7 +513,7 @@ public interface VirtualMachine extends
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine definition
              */
-            WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
+            WithWindowsAdminUsernameUnmanaged withStoredWindowsImage(String imageUrl);
 
             /**
              * Specifies the known marketplace Linux image used for the virtual machine's OS.
@@ -444,7 +521,7 @@ public interface VirtualMachine extends
              * @param knownImage enum value indicating known market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithLinuxRootUsername withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+            WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Linux image needs to be used.
@@ -454,7 +531,7 @@ public interface VirtualMachine extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the virtual machine definition
              */
-            WithLinuxRootUsername withLatestLinuxImage(String publisher, String offer, String sku);
+            WithLinuxRootUsernameManagedOrUnmanaged withLatestLinuxImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the version of a market-place Linux image needs to be used.
@@ -462,7 +539,15 @@ public interface VirtualMachine extends
              * @param imageReference describes publisher, offer, sku and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithLinuxRootUsername withSpecificLinuxImageVersion(ImageReference imageReference);
+            WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the id of a Linux custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the virtual machine definition
+             */
+            WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (generalized) Linux image used for the virtual machine's OS.
@@ -470,42 +555,77 @@ public interface VirtualMachine extends
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine definition
              */
-            WithLinuxRootUsername withStoredLinuxImage(String imageUrl);
+            WithLinuxRootUsernameUnmanaged withStoredLinuxImage(String imageUrl);
 
             /**
-             * Specifies the specialized operating system disk to be attached to the virtual machine.
+             * Specifies the specialized operating system unmanaged disk to be attached to the virtual machine.
              *
              * @param osDiskUrl osDiskUrl the url to the OS disk in the Azure Storage account
              * @param osType the OS type
              * @return the next stage of the Windows virtual machine definition
              */
-            WithCreate withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithUnmanagedCreate withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
+
+            /**
+             * Specifies the specialized operating system managed disk to be attached to the virtual machine.
+             *
+             * @param disk the managed disk to attach
+             * @param osType the OS type
+             * @return the next stage of the Windows virtual machine definition
+             */
+            WithManagedCreate withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType);
         }
 
         /**
          * The stage of the Linux virtual machine definition allowing to specify SSH root user name.
          */
-        interface WithLinuxRootUsername {
+        interface WithLinuxRootUsernameManagedOrUnmanaged {
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
              * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
              * @return the next stage of the Linux virtual machine definition
              */
-            WithLinuxRootPasswordOrPublicKey withRootUsername(String rootUserName);
+            WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged withRootUsername(String rootUserName);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition allowing to specify SSH root user name.
+         */
+        interface WithLinuxRootUsernameManaged {
+            /**
+             * Specifies the SSH root user name for the Linux virtual machine.
+             *
+             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxRootPasswordOrPublicKeyManaged withRootUsername(String rootUserName);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition allowing to specify SSH root user name.
+         */
+        interface WithLinuxRootUsernameUnmanaged {
+            /**
+             * Specifies the SSH root user name for the Linux virtual machine.
+             *
+             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxRootPasswordOrPublicKeyUnmanaged withRootUsername(String rootUserName);
         }
 
         /**
          * The stage of the Linux virtual machine definition allowing to specify SSH root password or public key.
          */
-        interface WithLinuxRootPasswordOrPublicKey {
+        interface WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
              * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
              * @return the next stage of the Linux virtual machine definition
              */
-            WithLinuxCreate withRootPassword(String rootPassword);
+            WithLinuxCreateManagedOrUnmanaged withRootPassword(String rootPassword);
 
             /**
              * Specifies the SSH public key.
@@ -515,66 +635,183 @@ public interface VirtualMachine extends
              * @param publicKey the SSH public key in PEM format.
              * @return the next stage of the Linux virtual machine definition
              */
-            WithLinuxCreate withSsh(String publicKey);
+            WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition allowing to specify SSH root password or public key.
+         */
+        interface WithLinuxRootPasswordOrPublicKeyManaged {
+            /**
+             * Specifies the SSH root password for the Linux virtual machine.
+             *
+             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreateManaged withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreateManaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition allowing to specify SSH root password or public key.
+         */
+        interface WithLinuxRootPasswordOrPublicKeyUnmanaged {
+            /**
+             * Specifies the SSH root password for the Linux virtual machine.
+             *
+             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreateUnmanaged withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreateUnmanaged withSsh(String publicKey);
         }
 
         /**
          * The stage of the Windows virtual machine definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminUsername {
+        interface WithWindowsAdminUsernameManagedOrUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
              * @return the stage representing creatable Linux VM definition
              */
-            WithWindowsAdminPassword withAdminUsername(String adminUserName);
+            WithWindowsAdminPasswordManagedOrUnmanaged withAdminUsername(String adminUserName);
         }
 
         /**
          * The stage of the Windows virtual machine definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminPassword {
+        interface WithWindowsAdminUsernameManaged {
+            /**
+             * Specifies the administrator user name for the Windows virtual machine.
+             *
+             * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithWindowsAdminPasswordManaged withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminUsernameUnmanaged {
+            /**
+             * Specifies the administrator user name for the Windows virtual machine.
+             *
+             * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithWindowsAdminPasswordUnmanaged withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPasswordManagedOrUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
              *
              * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreate withAdminPassword(String adminPassword);
+            WithWindowsCreateManagedOrUnmanaged withAdminPassword(String adminPassword);
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify the custom data.
+         * The stage of the Windows virtual machine definition allowing to specify administrator user name.
          */
-        interface WithCustomData {
+        interface WithWindowsAdminPasswordManaged {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateManaged withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPasswordUnmanaged {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateUnmanaged withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stages contains OS agnostics settings when virtual machine is created from image.
+         */
+        interface WithFromImageCreateOptionsManagedOrUnmanaged extends WithFromImageCreateOptionsManaged {
+            /**
+             * @return the next stage of a unmanaged disk based virtual machine definition
+             */
+            WithFromImageCreateOptionsUnmanaged withUnmanagedDisks();
+        }
+
+        /**
+         * The stages contains OS agnostics settings when virtual machine is created from image.
+         */
+        interface WithFromImageCreateOptionsManaged extends WithManagedCreate {
             /**
              * Specifies the custom data for the virtual machine.
              *
              * @param base64EncodedCustomData the base64 encoded custom data
              * @return the stage representing creatable Windows VM definition
              */
-            WithFromImageCreateOptions withCustomData(String base64EncodedCustomData);
-        }
+            WithFromImageCreateOptionsManaged withCustomData(String base64EncodedCustomData);
 
-        /**
-         * The stage of the virtual machine definition allowing to specify the computer name.
-         */
-        interface WithComputerName {
             /**
              * Specifies the computer name for the virtual machine.
              *
              * @param computerName the computer name
              * @return the stage representing creatable VM definition
              */
-            WithFromImageCreateOptions withComputerName(String computerName);
+            WithFromImageCreateOptionsManaged withComputerName(String computerName);
         }
 
         /**
          * The stages contains OS agnostics settings when virtual machine is created from image.
          */
-        interface WithFromImageCreateOptions extends
-                WithCustomData, WithComputerName, WithCreate {
+        interface WithFromImageCreateOptionsUnmanaged extends WithUnmanagedCreate {
+            /**
+             * Specifies the custom data for the virtual machine.
+             *
+             * @param base64EncodedCustomData the base64 encoded custom data
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithFromImageCreateOptionsUnmanaged withCustomData(String base64EncodedCustomData);
+
+            /**
+             * Specifies the computer name for the virtual machine.
+             *
+             * @param computerName the computer name
+             * @return the stage representing creatable VM definition
+             */
+            WithFromImageCreateOptionsUnmanaged withComputerName(String computerName);
         }
 
         /**
@@ -582,7 +819,7 @@ public interface VirtualMachine extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithLinuxCreate extends WithFromImageCreateOptions {
+        interface WithLinuxCreateManagedOrUnmanaged extends WithFromImageCreateOptionsManagedOrUnmanaged {
             /**
              * Specifies the SSH public key.
              * <p>
@@ -591,7 +828,49 @@ public interface VirtualMachine extends
              * @param publicKey the SSH public key in PEM format.
              * @return the stage representing creatable Linux VM definition
              */
-            WithLinuxCreate withSsh(String publicKey);
+            WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithLinuxCreateManaged extends WithFromImageCreateOptionsManaged {
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithLinuxCreateManaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithLinuxCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithLinuxCreateUnmanaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition allowing to optionally choose unmanaged disk
+         * or continue definition of vm based on managed disk.
+         */
+        interface WithWindowsCreateManagedOrUnmanaged extends WithWindowsCreateManaged {
+            WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 
         /**
@@ -599,14 +878,14 @@ public interface VirtualMachine extends
          * the resource to be created (via {@link WithCreate#create()}, but also allows
          * for any other optional settings to be specified.
          */
-        interface WithWindowsCreate extends WithFromImageCreateOptions {
+        interface WithWindowsCreateManaged extends WithFromImageCreateOptionsManaged {
             /**
              * Specifies that VM Agent should not be provisioned.
              *
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreate withoutVmAgent();
+            WithWindowsCreateManaged withoutVmAgent();
 
             /**
              * Specifies that automatic updates should be disabled.
@@ -614,7 +893,7 @@ public interface VirtualMachine extends
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreate withoutAutoUpdate();
+            WithWindowsCreateManaged withoutAutoUpdate();
 
             /**
              * Specifies the time-zone.
@@ -622,7 +901,7 @@ public interface VirtualMachine extends
              * @param timeZone the timezone
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreate withTimeZone(String timeZone);
+            WithWindowsCreateManaged withTimeZone(String timeZone);
 
             /**
              * Specifies the WINRM listener.
@@ -632,7 +911,48 @@ public interface VirtualMachine extends
              * @param listener the WinRmListener
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreate withWinRm(WinRMListener listener);
+            WithWindowsCreateManaged withWinRm(WinRMListener listener);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}, but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithWindowsCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
+            /**
+             * Specifies that VM Agent should not be provisioned.
+             *
+             * @return the stage representing creatable Windows VM definition
+             */
+            @Method
+            WithWindowsCreateUnmanaged withoutVmAgent();
+
+            /**
+             * Specifies that automatic updates should be disabled.
+             *
+             * @return the stage representing creatable Windows VM definition
+             */
+            @Method
+            WithWindowsCreateUnmanaged withoutAutoUpdate();
+
+            /**
+             * Specifies the time-zone.
+             *
+             * @param timeZone the timezone
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateUnmanaged withTimeZone(String timeZone);
+
+            /**
+             * Specifies the WINRM listener.
+             * <p>
+             * Each call to this method adds the given listener to the list of VM's WinRM listeners.
+             *
+             * @param listener the WinRmListener
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateUnmanaged withWinRm(WinRMListener listener);
         }
 
         /**
@@ -645,16 +965,7 @@ public interface VirtualMachine extends
              * @param cachingType the caching type.
              * @return the stage representing creatable VM definition
              */
-            WithCreate withOsDiskCaching(CachingTypes cachingType);
-
-            /**
-             * Specifies the name of the OS Disk Vhd file and it's parent container.
-             *
-             * @param containerName the name of the container in the selected storage account.
-             * @param vhdName the name for the OS Disk vhd.
-             * @return the stage representing creatable VM definition
-             */
-            WithCreate withOsDiskVhdLocation(String containerName, String vhdName);
+            WithCreate withOSDiskCaching(CachingTypes cachingType);
 
             /**
              * Specifies the encryption settings for the OS Disk.
@@ -670,7 +981,7 @@ public interface VirtualMachine extends
              * @param size the VHD size.
              * @return the stage representing creatable VM definition
              */
-            WithCreate withOsDiskSizeInGb(Integer size);
+            WithCreate withOSDiskSizeInGB(Integer size);
 
             /**
              * Specifies the name for the OS Disk.
@@ -703,43 +1014,159 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify data disk configuration.
+         * The stage of the virtual machine definition allowing to specify unmanaged data disk.
          */
-        interface WithDataDisk {
+        interface WithUnmanagedDataDisk {
             /**
-             * Specifies that a new blank data disk needs to be attached to virtual machine.
+             * Specifies that a new blank unmanaged data disk needs to be attached to virtual machine.
              *
              * @param sizeInGB the disk size in GB
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewDataDisk(Integer sizeInGB);
+            WithUnmanagedCreate withNewUnmanagedDataDisk(Integer sizeInGB);
 
             /**
-             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
+             * Specifies an existing unmanaged VHD that needs to be attached to the virtual machine as data disk.
              *
              * @param storageAccountName the storage account name
              * @param containerName the name of the container holding the VHD file
              * @param vhdName the name for the VHD file
              * @return the stage representing creatable VM definition
              */
-            WithCreate withExistingDataDisk(String storageAccountName, String containerName, String vhdName);
+            WithUnmanagedCreate withExistingUnmanagedDataDisk(String storageAccountName, String containerName, String vhdName);
 
             /**
-             * Specifies a new blank data disk to be attached to the virtual machine along with it's configuration.
+             * Begins definition of a unmanaged data disk to be attached to the virtual machine.
              *
              * @param name the name for the data disk
-             * @return the stage representing configuration for the data disk
+             * @return the stage representing configuration for the unmanaged data disk
              */
-            VirtualMachineDataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
+            VirtualMachineUnmanagedDataDisk.DefinitionStages.Blank<WithUnmanagedCreate> defineUnmanagedDataDisk(String name);
+        }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify managed data disk.
+         */
+        interface WithManagedDataDisk {
+            /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable);
 
             /**
-             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
-             * it's configuration.
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
              *
-             * @param name the name for the data disk
-             * @return the stage representing configuration for the data disk
+             * @param creatable the creatable disk
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine definition
              */
-            VirtualMachineDataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable,
+                                              int lun,
+                                              CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given size.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB,
+                                              int lun,
+                                              CachingTypes cachingType,
+                                              StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies an existing source managed disk.
+             *
+             * @param disk the managed disk
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withExistingDataDisk(Disk disk);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param lun the disk lun
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withExistingDataDisk(Disk disk,
+                                                   int lun,
+                                                   CachingTypes cachingType);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk lun
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withExistingDataDisk(Disk disk,
+                                        int newSizeInGB,
+                                        int lun,
+                                        CachingTypes cachingType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType,
+                                                       StorageAccountTypes storageAccountType);
         }
 
         /**
@@ -863,6 +1290,79 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to specify purchase plan.
+         */
+        interface WithPlan {
+            /**
+             * Specifies the plan for the virtual machine.
+             *
+             * @param plan describes the purchase plan
+             * @return the stage representing creatable VM definition
+             */
+            WithCreate withPlan(PurchasePlan plan);
+
+            /**
+             * Specifies the plan for the virtual machine.
+             *
+             * @param plan describes the purchase plan
+             * @param promotionCode the promotion code
+             * @return the stage representing creatable VM definition
+             */
+            WithCreate withPromotionalPlan(PurchasePlan plan, String promotionCode);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the VM to be created and optionally allow managed data disks specific settings to
+         * be specified.
+         */
+        interface WithManagedCreate extends
+                WithManagedDataDisk,
+                WithCreate {
+            /**
+             * Specifies the storage account type for managed Os disk.
+             *
+             * @param accountType the storage account type
+             * @return  the stage representing creatable VM definition
+             */
+            WithManagedCreate withOsDiskStorageAccountType(StorageAccountTypes accountType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param cachingType the caching type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param storageAccountType the storage account type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the VM to be created and optionally allow unmanaged data disk and settings specific to
+         * unmanaged os disk to be specified.
+         */
+        interface WithUnmanagedCreate extends
+                WithUnmanagedDataDisk,
+                WithCreate {
+            /**
+             * Specifies the name of the OS Disk Vhd file and it's parent container.
+             *
+             * @param containerName the name of the container in the selected storage account.
+             * @param vhdName the name for the OS Disk vhd.
+             * @return the stage representing creatable VM definition
+             */
+            WithUnmanagedCreate withOsDiskVhdLocation(String containerName, String vhdName);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -873,10 +1373,10 @@ public interface VirtualMachine extends
                 DefinitionStages.WithOsDiskSettings,
                 DefinitionStages.WithVMSize,
                 DefinitionStages.WithStorageAccount,
-                DefinitionStages.WithDataDisk,
                 DefinitionStages.WithAvailabilitySet,
                 DefinitionStages.WithSecondaryNetworkInterface,
-                DefinitionStages.WithExtension {
+                DefinitionStages.WithExtension,
+                DefinitionStages.WithPlan {
         }
     }
 
@@ -885,16 +1385,16 @@ public interface VirtualMachine extends
      */
     interface UpdateStages {
         /**
-         * The stage of the virtual machine definition allowing to specify data disk configuration.
+         * The stage of the virtual machine definition allowing to specify unmanaged data disk configuration.
          */
-        interface WithDataDisk {
+        interface WithUnmanagedDataDisk {
             /**
-             * Specifies that a new blank data disk needs to be attached to virtual machine.
+             * Specifies that a new blank unmanaged data disk needs to be attached to virtual machine.
              *
              * @param sizeInGB the disk size in GB
              * @return the stage representing creatable VM definition
              */
-            Update withNewDataDisk(Integer sizeInGB);
+            Update withNewUnmanagedDataDisk(Integer sizeInGB);
 
             /**
              * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
@@ -904,50 +1404,168 @@ public interface VirtualMachine extends
              * @param vhdName the name for the VHD file
              * @return the stage representing creatable VM definition
              */
-            Update withExistingDataDisk(String storageAccountName, String containerName, String vhdName);
+            Update withExistingUnmanagedDataDisk(String storageAccountName, String containerName, String vhdName);
 
             /**
-             * Specifies a new blank data disk to be attached to the virtual machine along with it's configuration.
+             * Specifies a new blank unmanaged data disk to be attached to the virtual machine along with it's configuration.
              *
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            VirtualMachineDataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
+            VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.Blank<Update> defineUnmanagedDataDisk(String name);
 
             /**
-             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
-             * it's configuration.
-             *
-             * @param name the name for the data disk
-             * @return the stage representing configuration for the data disk
-             */
-            VirtualMachineDataDisk
-                    .UpdateDefinitionStages
-                    .AttachExistingDataDisk<Update> defineExistingDataDisk(String name);
-
-            /**
-             * Begins the description of an update of an existing data disk of this virtual machine.
+             * Begins the description of an update of an existing unmanaged data disk of this virtual machine.
              *
              * @param name the name of the disk
              * @return the stage representing updating configuration for  data disk
              */
-            VirtualMachineDataDisk.Update updateDataDisk(String name);
+            VirtualMachineUnmanagedDataDisk.Update updateUnmanagedDataDisk(String name);
 
             /**
-             * Detaches a data disk with the given name from the virtual machine.
+             * Detaches a unmanaged data disk with the given name from the virtual machine.
              *
              * @param name the name of the data disk to remove
              * @return the stage representing updatable VM definition
              */
-            Update withoutDataDisk(String name);
+            Update withoutUnmanagedDataDisk(String name);
 
             /**
-             * Detaches a data disk with the given logical unit number from the virtual machine.
+             * Detaches a unmanaged data disk with the given logical unit number from the virtual machine.
              *
              * @param lun the logical unit number of the data disk to remove
              * @return the stage representing updatable VM definition
              */
+            Update withoutUnmanagedDataDisk(int lun);
+        }
+
+        /**
+         * The stage of the virtual machine update allowing to specify managed data disk.
+         */
+        interface WithManagedDataDisk {
+            /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(Creatable<Disk> creatable);
+
+            /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given size.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(int sizeInGB);
+
+            /**
+             * pecifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(int sizeInGB,
+                                   int lun,
+                                   CachingTypes cachingType,
+                                   StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies an existing source managed disk.
+             *
+             * @param disk the managed disk
+             * @return the next stage of virtual machine update
+             */
+            Update withExistingDataDisk(Disk disk);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param lun the disk lun
+             * @return the next stage of virtual machine update
+             */
+            Update withExistingDataDisk(Disk disk,
+                                        int lun,
+                                        CachingTypes cachingType);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk lun
+             * @return the next stage of virtual machine update
+             */
+            Update withExistingDataDisk(Disk disk,
+                                        int newSizeInGB,
+                                        int lun,
+                                        CachingTypes cachingType);
+
+            /**
+             * Detaches managed data disk with the given lun from the virtual machine.
+             *
+             * @param lun the disk lun
+             * @return the next stage of virtual machine update
+             */
             Update withoutDataDisk(int lun);
+
+            /**
+             * Updates the size of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun, int newSizeInGB);
+
+            /**
+             * Updates the size and caching type of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+
+            /**
+             * Updates the size, caching type and storage account type of a managed data disk with the given lun.
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun,
+                                          int newSizeInGB,
+                                          CachingTypes cachingType,
+                                          StorageAccountTypes storageAccountType);
         }
 
         /**
@@ -1028,24 +1646,41 @@ public interface VirtualMachine extends
     interface Update extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithDataDisk,
+            UpdateStages.WithUnmanagedDataDisk,
+            UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension {
+        /**
+         * Specifies the default caching type for the managed data disks.
+         *
+         * @param cachingType the caching type
+         * @return the stage representing updatable VM definition
+         */
+        Update withDataDiskDefaultCachingType(CachingTypes cachingType);
+
+        /**
+         * Specifies the default caching type for the managed data disks.
+         *
+         * @param storageAccountType the storage account type
+         * @return the stage representing updatable VM definition
+         */
+        Update withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+
         /**
          * Specifies the caching type for the Operating System disk.
          *
          * @param cachingType the caching type.
          * @return the stage representing updatable VM definition
          */
-        Update withOsDiskCaching(CachingTypes cachingType);
+        Update withOSDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the size of the OSDisk in GB.
          *
-         * @param size the VHD size.
+         * @param size the disk size.
          * @return the stage representing updatable VM definition
          */
-        Update withOsDiskSizeInGb(Integer size);
+        Update withOSDiskSizeInGB(Integer size);
 
         /**
          * Specifies the new size for the virtual machine.

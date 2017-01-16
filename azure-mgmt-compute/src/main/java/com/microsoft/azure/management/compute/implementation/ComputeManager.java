@@ -1,6 +1,9 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.compute.Disks;
+import com.microsoft.azure.management.compute.Snapshots;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
@@ -29,6 +32,9 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private VirtualMachineExtensionImages virtualMachineExtensionImages;
     private VirtualMachineScaleSets virtualMachineScaleSets;
     private ComputeUsages computeUsages;
+    private VirtualMachineCustomImages virtualMachineCustomImages;
+    private Disks disks;
+    private Snapshots snapshots;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -169,5 +175,38 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             computeUsages = new ComputeUsagesImpl(super.innerManagementClient);
         }
         return computeUsages;
+    }
+
+    /**
+     * @return the virtual machine custom image management API entry point
+     */
+    public VirtualMachineCustomImages virtualMachineCustomImages() {
+        if (virtualMachineCustomImages == null) {
+            virtualMachineCustomImages = new VirtualMachineCustomImagesImpl(super.innerManagementClient.images(),
+                    this);
+        }
+        return virtualMachineCustomImages;
+    }
+
+    /**
+     * @return the managed disk management API entry point
+     */
+    public Disks disks() {
+        if (disks == null) {
+            disks = new DisksImpl(super.innerManagementClient.disks(),
+                    this);
+        }
+        return disks;
+    }
+
+    /**
+     * @return the managed snapshot management API entry point
+     */
+    public Snapshots snapshots() {
+        if (snapshots == null) {
+            snapshots = new SnapshotsImpl(super.innerManagementClient.snapshots(),
+                    this);
+        }
+        return snapshots;
     }
 }

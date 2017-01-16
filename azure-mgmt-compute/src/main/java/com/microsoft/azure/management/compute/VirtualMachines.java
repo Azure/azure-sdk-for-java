@@ -92,4 +92,12 @@ public interface VirtualMachines extends
      * @return the template as JSON string
      */
     String capture(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
+
+    /**
+     * Migrate the virtual machine with un-managed disks to use managed disk.
+     *
+     * @param groupName the resource group name
+     * @param name the virtual machine name
+     */
+    void migrateToManaged(String groupName, String name);
 }

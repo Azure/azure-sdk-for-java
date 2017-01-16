@@ -1,11 +1,11 @@
 package com.microsoft.azure.management.compute;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
-    private static String RG_NAME;
-
+    private static String RG_NAME = "";
+    private static Region REGION = Region.US_SOUTH_CENTRAL;
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         RG_NAME = generateRandomResourceName("vmexttest", 15);
@@ -29,13 +29,12 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     @Test
     public void canEnableDiagnosticsExtension() throws Exception {
         final String STORAGEACCOUNTNAME = generateRandomResourceName("stg", 15);
-        final String LOCATION = "eastus";
-        final String VMNAME = "javavm";
+        final String VMNAME = "javavm1";
 
         // Creates a storage account
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(STORAGEACCOUNTNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .create();
 
@@ -43,7 +42,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         //
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withExistingResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
@@ -77,14 +76,13 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Test
     public void canResetPasswordUsingVMAccessExtension() throws Exception {
-        final String LOCATION = "eastus";
-        final String VMNAME = "javavm";
+        final String VMNAME = "javavm2";
 
         // Create a Linux VM
         //
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
@@ -125,8 +123,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Test
     public void canInstallUninstallCustomExtension() throws Exception {
-        final String LOCATION = "eastus";
-        final String VMNAME = "javavm";
+        final String VMNAME = "javavm3";
 
         final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
         final String installCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
@@ -137,7 +134,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         //
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
@@ -175,14 +172,13 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     @Test
     @Ignore("Test failed with SocketTimeoutException, during cleanup resources.")
     public void canHandleExtensionReference() throws Exception {
-        final String LOCATION = "eastus";
-        final String VMNAME = "javavm";
+        final String VMNAME = "javavm4";
 
         // Create a Linux VM
         //
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
