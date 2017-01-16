@@ -13,8 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServiceDomains;
 import com.microsoft.azure.management.appservice.DomainLegalAgreement;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link AppServiceDomains}.
@@ -41,14 +40,8 @@ class AppServiceDomainsImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

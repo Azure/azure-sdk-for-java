@@ -10,8 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * Implementation of {@link DnsZones}.
@@ -49,14 +48,8 @@ class DnsZonesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name)
-            .map(new Func1<ZoneDeleteResultInner, Void>() {
-                @Override
-                public Void call(ZoneDeleteResultInner zoneDeleteResultInner) {
-                    return null;
-                }
-            });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

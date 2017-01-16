@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.appservice.AppServicePlans;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -38,14 +39,8 @@ class AppServiceCertificateOrdersImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteCertificateOrderAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return innerCollection.deleteCertificateOrderAsync(groupName, name).toCompletable();
     }
 
     @Override
