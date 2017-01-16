@@ -39,6 +39,11 @@ public interface AvailabilitySet extends
     int faultDomainCount();
 
     /**
+     * @return the availability set sku
+     */
+    AvailabilitySetSkuTypes sku();
+
+    /**
      * @return the resource IDs of the virtual machines in the availability set
      */
     List<String> virtualMachineIds();
@@ -100,18 +105,49 @@ public interface AvailabilitySet extends
         }
 
         /**
+         * The stage of the availability set definition allowing enable or disable for managed disk.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku type for the availability set.
+             *
+             * @param skuType the sku type
+             * @return the next stage of the definition
+             */
+            WithCreate withSku(AvailabilitySetSkuTypes skuType);
+        }
+
+        /**
          * The stage of an availability set definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-            Creatable<AvailabilitySet>,
-            Resource.DefinitionWithTags<WithCreate>,
-            WithUpdateDomainCount,
-            WithFaultDomainCount {
+                Creatable<AvailabilitySet>,
+                Resource.DefinitionWithTags<WithCreate>,
+                WithUpdateDomainCount,
+                WithFaultDomainCount,
+                WithSku {
         }
     }
 
+    /**
+     * Grouping of availability set update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the availability set definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku type for the availability set.
+             *
+             * @param skuType the sku type
+             * @return the next stage of the definition
+             */
+            Update withSku(AvailabilitySetSkuTypes skuType);
+        }
+    }
     /**
      * The template for an availability set update operation, containing all the settings that
      * can be modified.
@@ -119,7 +155,8 @@ public interface AvailabilitySet extends
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-        Appliable<AvailabilitySet>,
-        Resource.UpdateWithTags<Update> {
+            Appliable<AvailabilitySet>,
+            Resource.UpdateWithTags<Update>,
+            UpdateStages.WithSku {
     }
 }

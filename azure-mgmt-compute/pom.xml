@@ -87,6 +87,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.cverges.expect4j</groupId>
+      <artifactId>expect4j</artifactId>
+      <version>1.6</version>
+    </dependency>
+    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
       <version>1.0.0-beta5-SNAPSHOT</version>
