@@ -64,7 +64,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
         }
 
         Assert.assertNotNull(firstVMImage);
-        for (DataDiskImage diskImage : firstVMImage.dataDiskImages()) {
+        for (DataDiskImage diskImage : firstVMImage.dataDiskImages().values()) {
             Assert.assertNotNull(diskImage.lun());
         }
     }

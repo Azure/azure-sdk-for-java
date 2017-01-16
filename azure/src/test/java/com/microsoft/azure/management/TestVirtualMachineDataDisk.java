@@ -30,8 +30,8 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withAdminPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A8)
                 .withNewDataDisk(30)
-                .defineNewDataDisk("disk2")
-                    .withSizeInGB(20)
+                .defineDataDisk("disk2")
+                    .withNewVhd(20)
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()
                 .create();
@@ -55,8 +55,8 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
         virtualMachine = virtualMachine.update()
                 .withoutDataDisk("disk2")
-                .defineNewDataDisk("disk3")
-                    .withSizeInGB(10)
+                .defineDataDisk("disk3")
+                    .withNewVhd(10)
                     .withLun(2)
                     .attach()
                 .apply();

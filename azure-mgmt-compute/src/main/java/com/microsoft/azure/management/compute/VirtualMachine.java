@@ -54,7 +54,7 @@ public interface VirtualMachine extends
 
     /**
      * Restart the virtual machine.
-=     */
+     */
     void restart();
 
     /**
@@ -69,7 +69,7 @@ public interface VirtualMachine extends
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
-     * 
+     *
      * @return the virtual machine sizes
      */
     @Method
@@ -438,6 +438,14 @@ public interface VirtualMachine extends
             WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
 
             /**
+             * Specifies the id of a Windows custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the virtual machine definition
+             */
+            WithWindowsAdminUsername withWindowsImage(String customImageId);
+
+            /**
              * Specifies the known marketplace Linux image used for the virtual machine's OS.
              *
              * @param knownImage enum value indicating known market-place image
@@ -462,6 +470,14 @@ public interface VirtualMachine extends
              * @return the next stage of the virtual machine definition
              */
             WithLinuxRootUsername withSpecificLinuxImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the id of a Linux custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the virtual machine definition
+             */
+            WithLinuxRootUsername withLinuxImage(String customImageId);
 
             /**
              * Specifies the user (generalized) Linux image used for the virtual machine's OS.
@@ -729,16 +745,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            VirtualMachineDataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
-
-            /**
-             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
-             * it's configuration.
-             *
-             * @param name the name for the data disk
-             * @return the stage representing configuration for the data disk
-             */
-            VirtualMachineDataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
+            VirtualMachineDataDisk.DefinitionStages.Blank<WithCreate> defineDataDisk(String name);
         }
 
         /**
@@ -862,6 +869,28 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to specify purchase plan.
+         */
+        interface WithPlan {
+            /**
+             * Specifies the plan for the virtual machine.
+             *
+             * @param plan describes the purchase plan
+             * @return the stage representing creatable VM definition
+             */
+            WithCreate withPlan(PurchasePlan plan);
+
+            /**
+             * Specifies the plan for the virtual machine.
+             *
+             * @param plan describes the purchase plan
+             * @param promotionCode the promotion code
+             * @return the stage representing creatable VM definition
+             */
+            WithCreate withPromotionalPlan(PurchasePlan plan, String promotionCode);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -875,7 +904,8 @@ public interface VirtualMachine extends
                 DefinitionStages.WithDataDisk,
                 DefinitionStages.WithAvailabilitySet,
                 DefinitionStages.WithSecondaryNetworkInterface,
-                DefinitionStages.WithExtension {
+                DefinitionStages.WithExtension,
+                DefinitionStages.WithPlan {
         }
     }
 
@@ -911,18 +941,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            VirtualMachineDataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
-
-            /**
-             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
-             * it's configuration.
-             *
-             * @param name the name for the data disk
-             * @return the stage representing configuration for the data disk
-             */
-            VirtualMachineDataDisk
-                    .UpdateDefinitionStages
-                    .AttachExistingDataDisk<Update> defineExistingDataDisk(String name);
+            VirtualMachineDataDisk.UpdateDefinitionStages.Blank<Update> defineDataDisk(String name);
 
             /**
              * Begins the description of an update of an existing data disk of this virtual machine.

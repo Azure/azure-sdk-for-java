@@ -20,44 +20,32 @@ import java.util.UUID;
  */
 @LangDefinition
 class DataDiskImpl
-    extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
-    implements
+        extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
+        implements
         VirtualMachineDataDisk,
-        VirtualMachineDataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,
-        VirtualMachineDataDisk.UpdateDefinition<VirtualMachine.Update>,
+        VirtualMachineDataDisk.DefinitionStages.Blank<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.DefinitionStages.WithDiskSource<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.DefinitionStages.WithVhdAttachedDiskSettings<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.DefinitionStages.WithNewVhdDiskSettings<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.DefinitionStages.WithFromImageDiskSettings<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.UpdateDefinitionStages.Blank<VirtualMachine.Update>,
+        VirtualMachineDataDisk.UpdateDefinitionStages.WithDiskSource<VirtualMachine.Update>,
+        VirtualMachineDataDisk.UpdateDefinitionStages.WithVhdAttachedDiskSettings<VirtualMachine.Update>,
+        VirtualMachineDataDisk.UpdateDefinitionStages.WithNewVhdDiskSettings<VirtualMachine.Update>,
         VirtualMachineDataDisk.Update {
 
     protected DataDiskImpl(DataDisk inner, VirtualMachineImpl parent) {
         super(inner, parent);
     }
 
-    protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
+    protected static DataDiskImpl prepareDataDisk(String name,
+                                                  VirtualMachineImpl parent) {
         DataDisk dataDiskInner = new DataDisk();
-        dataDiskInner.withLun(-1);
-        dataDiskInner.withName(name);
-        dataDiskInner.withCreateOption(createOption);
-        dataDiskInner.withVhd(null);
+        dataDiskInner.withLun(-1)
+                .withName(name)
+                .withVhd(null);
         return new DataDiskImpl(dataDiskInner, parent);
     }
-
-    protected static DataDiskImpl createNewDataDisk(int sizeInGB, VirtualMachineImpl parent) {
-        DataDiskImpl dataDiskImpl = prepareDataDisk(null, DiskCreateOptionTypes.EMPTY, parent);
-        dataDiskImpl.inner().withDiskSizeGB(sizeInGB);
-        return dataDiskImpl;
-    }
-
-    protected static DataDiskImpl createFromExistingDisk(String storageAccountName,
-                                                         String containerName,
-                                                         String vhdName,
-                                                         VirtualMachineImpl parent) {
-        DataDiskImpl dataDiskImpl = prepareDataDisk(null, DiskCreateOptionTypes.ATTACH, parent);
-        VirtualHardDisk diskVhd = new VirtualHardDisk();
-        diskVhd.withUri(blobUrl(storageAccountName, containerName, vhdName));
-        dataDiskImpl.inner().withVhd(diskVhd);
-        return dataDiskImpl;
-    }
-
-    // Getters
 
     @Override
     public String name() {
@@ -97,30 +85,34 @@ class DataDiskImpl
         return this.inner().createOption();
     }
 
-    // Fluent setters
+    @Override
+    public DataDiskImpl withNewVhd(int sizeInGB) {
+        this.inner()
+                .withCreateOption(DiskCreateOptionTypes.EMPTY)
+                .withDiskSizeGB(sizeInGB);
+        return this;
+    }
 
     @Override
-    public DataDiskImpl from(String storageAccountName, String containerName, String vhdName) {
-        this.inner().withVhd(new VirtualHardDisk());
-        //URL points to an existing data disk to be attached
-        this.inner().vhd().withUri(blobUrl(storageAccountName, containerName, vhdName));
+    public DataDiskImpl withExistingVhd(String storageAccountName, String containerName, String vhdName) {
+        this.inner()
+                .withCreateOption(DiskCreateOptionTypes.ATTACH)
+                .withVhd(new VirtualHardDisk()
+                        .withUri(blobUrl(storageAccountName, containerName, vhdName)));
+        return this;
+    }
+
+    @Override
+    public DataDiskImpl fromImage(int imageLun) {
+        this.inner()
+                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                .withLun(imageLun);
         return this;
     }
 
     @Override
     public DataDiskImpl withSizeInGB(Integer sizeInGB) {
-        // Note: Size can be specified only while attaching new blank disk.
-        // Size cannot be specified while attaching an existing disk.
-        // Once attached both type of data disk can be resized via VM update.
         this.inner().withDiskSizeGB(sizeInGB);
-        return this;
-    }
-
-    @Override
-    public DataDiskImpl storeAt(String storageAccountName, String containerName, String vhdName) {
-        this.inner().withVhd(new VirtualHardDisk());
-        // URL points to where the new data disk needs to be stored
-        this.inner().vhd().withUri(blobUrl(storageAccountName, containerName, vhdName));
         return this;
     }
 
@@ -136,7 +128,13 @@ class DataDiskImpl
         return this;
     }
 
-    // Verbs
+    @Override
+    public DataDiskImpl storeAt(String storageAccountName, String containerName, String vhdName) {
+        this.inner().withVhd(new VirtualHardDisk());
+        // URL points to where the underlying vhd needs to be stored
+        this.inner().vhd().withUri(blobUrl(storageAccountName, containerName, vhdName));
+        return this;
+    }
 
     @Override
     public VirtualMachineImpl attach() {
@@ -173,8 +171,9 @@ class DataDiskImpl
 
     protected static void ensureDisksVhdUri(List<VirtualMachineDataDisk> dataDisks, StorageAccount storageAccount, String namePrefix) {
         for (VirtualMachineDataDisk dataDisk : dataDisks) {
-            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY) {
-                //New data disk requires Vhd Uri to be set
+            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
+                    || dataDisk.creationMethod() == DiskCreateOptionTypes.FROM_IMAGE) {
+                //New empty and from image data disk requires Vhd Uri to be set
                 if (dataDisk.inner().vhd() == null) {
                     dataDisk.inner().withVhd(new VirtualHardDisk());
                     dataDisk.inner().vhd().withUri(storageAccount.endPoints().primary().blob()

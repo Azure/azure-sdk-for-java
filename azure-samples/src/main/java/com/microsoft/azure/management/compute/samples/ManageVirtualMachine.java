@@ -111,8 +111,8 @@ public final class ManageVirtualMachine {
 
                 windowsVM.update()
                         .withNewDataDisk(10)
-                        .defineNewDataDisk(dataDiskName)
-                            .withSizeInGB(20)
+                        .defineDataDisk(dataDiskName)
+                            .withNewVhd(20)
                             .withCaching(CachingTypes.READ_WRITE)
                             .attach()
                         .apply();

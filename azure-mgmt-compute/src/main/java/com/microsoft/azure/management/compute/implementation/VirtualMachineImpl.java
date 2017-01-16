@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.DataDiskImage;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.compute.OSProfile;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.PowerState;
+import com.microsoft.azure.management.compute.PurchasePlan;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
 import com.microsoft.azure.management.compute.StorageProfile;
@@ -30,6 +32,7 @@ import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -355,7 +358,7 @@ class VirtualMachineImpl
         userImageVhd.withUri(imageUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().osDisk().withImage(userImageVhd);
-        // For platform image osType will be null, azure will pick it from the image metadata.
+        // For platform | custom image osType will be null, azure will pick it from the image metadata.
         this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
@@ -409,6 +412,30 @@ class VirtualMachineImpl
         imageReference.withSku(sku);
         imageReference.withVersion("latest");
         return withSpecificLinuxImageVersion(imageReference);
+    }
+
+    @Override
+    public VirtualMachineImpl withWindowsImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReferenceInner);
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(User)Image", "VM(Platform | Custom)Image"
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withLinuxImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReferenceInner);
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.isMarketplaceLinuxImage = true;
+        return this;
     }
 
     @Override
@@ -579,23 +606,24 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DataDiskImpl defineNewDataDisk(String name) {
-        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
-    }
-
-    @Override
-    public DataDiskImpl defineExistingDataDisk(String name) {
-        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
+    public DataDiskImpl defineDataDisk(String name) {
+        return DataDiskImpl.prepareDataDisk(name, this);
     }
 
     @Override
     public VirtualMachineImpl withNewDataDisk(Integer sizeInGB) {
-        return withDataDisk(DataDiskImpl.createNewDataDisk(sizeInGB, this));
+        return defineDataDisk(null)
+                .withNewVhd(sizeInGB)
+                .attach();
     }
 
     @Override
-    public VirtualMachineImpl withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
-        return withDataDisk(DataDiskImpl.createFromExistingDisk(storageAccountName, containerName, vhdName, this));
+    public VirtualMachineImpl withExistingDataDisk(String storageAccountName,
+                                                   String containerName,
+                                                   String vhdName) {
+        return defineDataDisk(null)
+                .withExistingVhd(storageAccountName, containerName, vhdName)
+                .attach();
     }
 
     // Virtual machine optional storage account fluent methods
@@ -751,6 +779,24 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutExtension(String name) {
         this.virtualMachineExtensions.remove(name);
+        return this;
+    }
+
+
+    @Override
+    public VirtualMachineImpl withPlan(PurchasePlan plan) {
+        this.inner().withPlan(new Plan());
+        this.inner().plan()
+                .withPublisher(plan.publisher())
+                .withProduct(plan.product())
+                .withName(plan.name());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withPromotionalPlan(PurchasePlan plan, String promotionCode) {
+        this.withPlan(plan);
+        this.inner().plan().withPromotionCode(promotionCode);
         return this;
     }
 
@@ -983,7 +1029,7 @@ class VirtualMachineImpl
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
-                // linux image: User or marketplace linux image
+                // linux image: User, marketplace linux image, custom linux image
                 if (osProfile.linuxConfiguration() == null) {
                     osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
@@ -1143,7 +1189,8 @@ class VirtualMachineImpl
 
         boolean hasEmptyVhd = false;
         for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
-            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY) {
+            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
+                    || dataDisk.creationMethod() == DiskCreateOptionTypes.FROM_IMAGE) {
                 if (dataDisk.inner().vhd() == null) {
                     hasEmptyVhd = true;
                     break;
