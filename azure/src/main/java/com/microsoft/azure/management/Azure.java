@@ -9,6 +9,8 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.Disks;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -430,6 +432,20 @@ public final class Azure {
      */
     public VirtualMachineImages virtualMachineImages() {
         return computeManager.virtualMachineImages();
+    }
+
+    /**
+     * @return entry point to managing virtual machine custom images
+     */
+    public VirtualMachineCustomImages virtualMachineCustomImages() {
+        return computeManager.virtualMachineCustomImages();
+    }
+
+    /**
+     * @return entry point to managing managed disks
+     */
+    public Disks disks() {
+        return computeManager.disks();
     }
 
     /**
