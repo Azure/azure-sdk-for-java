@@ -21,7 +21,6 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
-import rx.Observable;
 
 /**
  * Base class for independent child collection class.
