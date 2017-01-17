@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs;
 
 import java.io.IOException;
+import java.nio.channels.UnresolvedAddressException;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -19,6 +20,8 @@ import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.IteratorUtil;
 import com.microsoft.azure.servicebus.MessageSender;
 import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.PayloadSizeExceededException;
+import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.StringUtil;
 

@@ -299,6 +299,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 	 * for event processing and error handling in a receive pump model. 
 	 * 
 	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}. Setting this handler to <code>null</code> will stop the receive pump.
+         * @return A completableFuture which sets receiveHandler
 	 */
 	public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler)
 	{
@@ -311,6 +312,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 	 * for event processing and error handling in a receive pump model. 
 	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}
 	 * @param invokeWhenNoEvents flag to indicate whether the {@link PartitionReceiveHandler#onReceive(Iterable)} should be invoked when the receive call times out
+	 * @return A completableFuture which sets receiveHandler
 	 */
 	public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents)
 	{
