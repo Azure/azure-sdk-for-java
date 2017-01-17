@@ -5,21 +5,27 @@
  *
  */
 
-package com.microsoft.azure;
+package com.microsoft.rest;
 
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
-import com.microsoft.rest.BaseUrlHandler;
-import com.microsoft.rest.CustomHeadersInterceptor;
-import com.microsoft.rest.UserAgentInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.interceptors.BaseUrlHandler;
+import com.microsoft.rest.interceptors.CustomHeadersInterceptor;
+import com.microsoft.rest.interceptors.LoggingInterceptor;
+import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
+import com.microsoft.rest.interceptors.UserAgentInterceptor;
+import com.microsoft.rest.protocol.Environment;
+import com.microsoft.rest.protocol.ResponseBuilder;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import com.microsoft.rest.retry.RetryStrategy;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
@@ -34,31 +40,37 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RestClient {
     /** The {@link okhttp3.OkHttpClient} object. */
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
     /** The {@link retrofit2.Retrofit} object. */
-    private Retrofit retrofit;
+    private final Retrofit retrofit;
     /** The credentials to authenticate. */
-    private ServiceClientCredentials credentials;
+    private final ServiceClientCredentials credentials;
     /** The interceptor to handle custom headers. */
-    private CustomHeadersInterceptor customHeadersInterceptor;
-    /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
-    private JacksonMapperAdapter mapperAdapter;
+    private final CustomHeadersInterceptor customHeadersInterceptor;
+    /** The adapter for a serializer. */
+    private final SerializerAdapter<?> serializerAdapter;
+    /** The builder factory for response builders. */
+    private final ResponseBuilder.Factory responseBuilderFactory;
+    /** The logging interceptor to use. */
+    private final LoggingInterceptor loggingInterceptor;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
-                       JacksonMapperAdapter mapperAdapter) {
+                       LoggingInterceptor loggingInterceptor,
+                       SerializerAdapter<?> serializerAdapter,
+                       ResponseBuilder.Factory responseBuilderFactory) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
-        this.mapperAdapter = mapperAdapter;
+        this.serializerAdapter = serializerAdapter;
+        this.responseBuilderFactory = responseBuilderFactory;
+        this.loggingInterceptor = loggingInterceptor;
     }
 
     /**
-     * Get the headers interceptor.
-     *
      * @return the headers interceptor.
      */
     public CustomHeadersInterceptor headers() {
@@ -66,50 +78,55 @@ public final class RestClient {
     }
 
     /**
-     * Get the adapter to {@link com.fasterxml.jackson.databind.ObjectMapper}.
-     *
-     * @return the Jackson mapper adapter.
+     * @return the current serializer adapter.
      */
-    public JacksonMapperAdapter mapperAdapter() {
-        return mapperAdapter;
+    public SerializerAdapter<?> serializerAdapter() {
+        return serializerAdapter;
     }
 
     /**
-     * Sets the mapper adapter.
-     *
-     * @param mapperAdapter an adapter to a Jackson mapper.
-     * @return the builder itself for chaining.
+     * @return the current respnose builder factory.
      */
-    public RestClient withMapperAdapater(JacksonMapperAdapter mapperAdapter) {
-        this.mapperAdapter = mapperAdapter;
-        return this;
+    public ResponseBuilder.Factory responseBuilderFactory() {
+        return responseBuilderFactory;
     }
 
     /**
-     * Get the http client.
-     *
-     * @return the {@link OkHttpClient} object.
+     * @return the {@link OkHttpClient} instance
      */
     public OkHttpClient httpClient() {
         return httpClient;
     }
 
     /**
-     * Get the retrofit instance.
-     *
-     * @return the {@link Retrofit} object.
+     * @return the {@link Retrofit} instance
      */
     public Retrofit retrofit() {
         return retrofit;
     }
 
     /**
-     * Get the credentials attached to this REST client.
-     *
-     * @return the credentials.
+     * @return the credentials attached to this REST client
      */
     public ServiceClientCredentials credentials() {
         return this.credentials;
+    }
+
+    /**
+     * @return the current HTTP traffic logging level
+     */
+    public LogLevel logLevel() {
+        return loggingInterceptor.logLevel();
+    }
+
+    /**
+     * Set the current HTTP traffic logging level.
+     * @param logLevel the logging level enum
+     * @return the RestClient itself
+     */
+    public RestClient withLogLevel(LogLevel logLevel) {
+        this.loggingInterceptor.withLogLevel(logLevel);
+        return this;
     }
 
     /**
@@ -136,6 +153,12 @@ public final class RestClient {
         private CustomHeadersInterceptor customHeadersInterceptor;
         /** The value for 'User-Agent' header. */
         private String userAgent;
+        /** The adapter for serializations and deserializations. */
+        private SerializerAdapter<?> serializerAdapter;
+        /** The builder factory for response builders. */
+        private ResponseBuilder.Factory responseBuilderFactory;
+        /** The logging interceptor to use. */
+        private LoggingInterceptor loggingInterceptor;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -176,7 +199,6 @@ public final class RestClient {
             if (retrofitBuilder == null) {
                 throw new IllegalArgumentException("retrofitBuilder == null");
             }
-            this.baseUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint();
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
@@ -185,6 +207,8 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
+            this.serializerAdapter = new JacksonAdapter();
+            this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
         }
 
         /**
@@ -199,14 +223,14 @@ public final class RestClient {
         }
 
         /**
-         * Sets the base URL with the default from the Azure Environment.
+         * Sets the base URL with the default from the Environment.
          *
-         * @param environment the Azure environment to use
+         * @param environment the environment to use
          * @param endpoint the environment endpoint the application is accessing
          * @return the builder itself for chaining
          */
-        public Builder withBaseUrl(AzureEnvironment environment, AzureEnvironment.Endpoint endpoint) {
-            this.baseUrl = environment.getEndpoint(endpoint);
+        public Builder withBaseUrl(Environment environment, Environment.Endpoint endpoint) {
+            this.baseUrl = environment.url(endpoint);
             return this;
         }
 
@@ -238,16 +262,16 @@ public final class RestClient {
         }
 
         /**
-         * Sets the log level.
+         * Sets the HTTP log level.
          *
-         * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
+         * @param logLevel the {@link LogLevel} enum.
          * @return the builder itself for chaining.
          */
-        public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
+        public Builder withLogLevel(LogLevel logLevel) {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
+            this.loggingInterceptor.withLogLevel(logLevel);
             return this;
         }
 
@@ -348,34 +372,75 @@ public final class RestClient {
         }
 
         /**
+         * Sets the serialization adapter.
+         *
+         * @param serializerAdapter the adapter to a serializer
+         * @return the builder itself for chaining
+         */
+        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+            return this;
+        }
+
+        /**
+         * Sets the response builder factory.
+         *
+         * @param responseBuilderFactory the response builder factory
+         * @return the builder itself for chaining
+         */
+        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
+            this.responseBuilderFactory = responseBuilderFactory;
+            return this;
+        }
+
+        /**
+         * Adds a retry strategy to the client.
+         * @param strategy the retry strategy to add
+         * @return the builder itself for chaining
+         */
+        public Builder withRetryStrategy(RetryStrategy strategy) {
+            this.withInterceptor(new RetryHandler(strategy));
+            return this;
+        }
+
+        /**
          * Build a RestClient with all the current configurations.
          *
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+            Logger logger = LoggerFactory.getLogger(getClass());
             UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
             if (userAgent != null) {
                 userAgentInterceptor.withUserAgent(userAgent);
+            }
+            if (baseUrl == null) {
+                baseUrl = "https://management.azure.com/";
+                logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
+            }
+            if (responseBuilderFactory == null) {
+                responseBuilderFactory = new ServiceResponseBuilder.Factory();
             }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
                     .addInterceptor(new RequestIdHeaderInterceptor())
                     .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
-                    .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
                     .addInterceptor(new RetryHandler())
+                    .addNetworkInterceptor(loggingInterceptor)
                     .build();
             return new RestClient(httpClient,
                     retrofitBuilder
                             .baseUrl(baseUrl)
                             .client(httpClient)
-                            .addConverterFactory(mapperAdapter.getConverterFactory())
+                            .addConverterFactory(serializerAdapter.converterFactory())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .build(),
                     credentials,
                     customHeadersInterceptor,
-                    mapperAdapter);
+                    loggingInterceptor,
+                    serializerAdapter,
+                    responseBuilderFactory);
         }
     }
 }

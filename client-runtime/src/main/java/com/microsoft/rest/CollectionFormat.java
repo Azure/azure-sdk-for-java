@@ -5,7 +5,7 @@
  *
  */
 
-package com.microsoft.rest.serializer;
+package com.microsoft.rest;
 
 /**
  * Swagger collection format to use for joining {@link java.util.List} parameters in

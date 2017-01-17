@@ -35,14 +35,14 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceCall<T> create(final Observable<ServiceResponse<T>> observable) {
+    public static <T> ServiceCall<T> fromResponse(final Observable<ServiceResponse<T>> observable) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
             .last()
             .subscribe(new Action1<ServiceResponse<T>>() {
                 @Override
                 public void call(ServiceResponse<T> t) {
-                    serviceCall.set(t.getBody());
+                    serviceCall.set(t.body());
                 }
             }, new Action1<Throwable>() {
                 @Override
@@ -61,27 +61,59 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceCall<T> create(final Observable<ServiceResponse<T>> observable, final ServiceCallback<T> callback) {
+    public static <T> ServiceCall<T> fromResponse(final Observable<ServiceResponse<T>> observable, final ServiceCallback<T> callback) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
-            .last()
-            .subscribe(new Action1<ServiceResponse<T>>() {
-                @Override
-                public void call(ServiceResponse<T> t) {
-                    if (callback != null) {
-                        callback.success(t.getBody());
+                .last()
+                .subscribe(new Action1<ServiceResponse<T>>() {
+                    @Override
+                    public void call(ServiceResponse<T> t) {
+                        if (callback != null) {
+                            callback.success(t.body());
+                        }
+                        serviceCall.set(t.body());
                     }
-                    serviceCall.set(t.getBody());
-                }
-            }, new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    if (callback != null) {
-                        callback.failure(throwable);
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        if (callback != null) {
+                            callback.failure(throwable);
+                        }
+                        serviceCall.setException(throwable);
                     }
-                    serviceCall.setException(throwable);
-                }
-            });
+                });
+        return serviceCall;
+    }
+
+    /**
+     * Creates a ServiceCall from an observable object and a callback.
+     *
+     * @param observable the observable to create from
+     * @param callback the callback to call when events happen
+     * @param <T> the type of the response
+     * @return the created ServiceCall
+     */
+    public static <T> ServiceCall<T> fromBody(final Observable<T> observable, final ServiceCallback<T> callback) {
+        final ServiceCall<T> serviceCall = new ServiceCall<>();
+        serviceCall.subscription = observable
+                .last()
+                .subscribe(new Action1<T>() {
+                    @Override
+                    public void call(T t) {
+                        if (callback != null) {
+                            callback.success(t);
+                        }
+                        serviceCall.set(t);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        if (callback != null) {
+                            callback.failure(throwable);
+                        }
+                        serviceCall.setException(throwable);
+                    }
+                });
         return serviceCall;
     }
 
@@ -94,7 +126,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <V> the type of the response header
      * @return the created ServiceCall
      */
-    public static <T, V> ServiceCall<T> createWithHeaders(final Observable<ServiceResponseWithHeaders<T, V>> observable, final ServiceCallback<T> callback) {
+    public static <T, V> ServiceCall<T> fromHeaderResponse(final Observable<ServiceResponseWithHeaders<T, V>> observable, final ServiceCallback<T> callback) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
             .last()
@@ -102,9 +134,9 @@ public class ServiceCall<T> extends AbstractFuture<T> {
                 @Override
                 public void call(ServiceResponse<T> t) {
                     if (callback != null) {
-                        callback.success(t.getBody());
+                        callback.success(t.body());
                     }
-                    serviceCall.set(t.getBody());
+                    serviceCall.set(t.body());
                 }
             }, new Action1<Throwable>() {
                 @Override

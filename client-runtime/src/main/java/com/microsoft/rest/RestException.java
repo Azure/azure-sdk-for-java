@@ -7,40 +7,58 @@
 
 package com.microsoft.rest;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public abstract class RestException extends RuntimeException {
+public class RestException extends RuntimeException {
     /**
-     * Initializes a new instance of the AutoRestException class.
+     * Information about the associated HTTP response.
      */
-    public RestException() { }
+    private Response<ResponseBody> response;
 
     /**
-     * Initializes a new instance of the AutoRestException class.
-     *
-     * @param message The exception message.
+     * The HTTP response body.
      */
-    public RestException(String message) {
+    private Object body;
+
+    /**
+     * Initializes a new instance of the RestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     */
+    public RestException(String message, Response<ResponseBody> response) {
         super(message);
+        this.response = response;
     }
 
     /**
-     * Initializes a new instance of the AutoRestException class.
+     * Initializes a new instance of the RestException class.
      *
-     * @param cause exception that caused this exception to occur
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param body the deserialized response body
      */
-    public RestException(Throwable cause) {
-        super(cause);
+    public RestException(String message, Response<ResponseBody> response, Object body) {
+        super(message);
+        this.response = response;
+        this.body = body;
     }
 
     /**
-     * Initializes a new instance of the AutoRestException class.
-     *
-     * @param message the exception message
-     * @param cause   exception that caused this exception to occur
+     * @return information about the associated HTTP response
      */
-    public RestException(String message, Throwable cause) {
-        super(message, cause);
+    public Response<ResponseBody> response() {
+        return response;
+    }
+
+    /**
+     * @return the HTTP response body
+     */
+    public Object body() {
+        return body;
     }
 }

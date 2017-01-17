@@ -130,10 +130,10 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
     public static ApplicationTokenCredentials fromFile(File credentialsFile) throws IOException {
         // Set defaults
         Properties authSettings = new Properties();
-        authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.getAuthenticationEndpoint());
-        authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.getResourceManagerEndpoint());
-        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getManagementEndpoint());
-        authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.getGraphEndpoint());
+        authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.authenticationEndpoint());
+        authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.resourceManagerEndpoint());
+        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.managementEndpoint());
+        authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.graphEndpoint());
 
         // Load the credentials from the file
         FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
@@ -176,7 +176,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
      * @return the tenant or domain the containing the application.
      */
     @Override
-    public String getDomain() {
+    public String domain() {
         return domain;
     }
 
@@ -199,14 +199,14 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
     }
 
     @Override
-    public AzureEnvironment getEnvironment() {
+    public AzureEnvironment environment() {
         return this.environment;
     }
 
     private AuthenticationResult acquireAccessToken(String resource) throws IOException {
-        String authorityUrl = this.getEnvironment().getAuthenticationEndpoint() + this.getDomain();
+        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
+        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
             AuthenticationResult result = context.acquireToken(
                     resource,

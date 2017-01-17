@@ -7,22 +7,35 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
-
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceClient;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
-public abstract class AzureServiceClient {
-    /**
-     * The RestClient instance storing all information needed for making REST calls.
-     */
-    private RestClient restClient;
+public abstract class AzureServiceClient extends ServiceClient {
+    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
+        this(baseUrl, credentials, new OkHttpClient.Builder(), new Retrofit.Builder());
+    }
 
-    protected AzureServiceClient(String baseUrl) {
-        this(new RestClient.Builder().withBaseUrl(baseUrl).build());
+    /**
+     * Initializes a new instance of the ServiceClient class.
+     *
+     * @param baseUrl the service base uri
+     * @param clientBuilder the http client builder
+     * @param restBuilder the retrofit rest client builder
+     */
+    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
+        this(new RestClient.Builder(clientBuilder, restBuilder)
+                .withBaseUrl(baseUrl)
+                .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .build());
     }
 
     /**
@@ -31,7 +44,7 @@ public abstract class AzureServiceClient {
      * @param restClient the REST client
      */
     protected AzureServiceClient(RestClient restClient) {
-        this.restClient = restClient;
+        super(restClient);
     }
 
     /**
@@ -41,33 +54,5 @@ public abstract class AzureServiceClient {
      */
     public String userAgent() {
         return "Azure-SDK-For-Java/" + getClass().getPackage().getImplementationVersion();
-    }
-
-    /**
-     * @return the {@link RestClient} instance.
-     */
-    public RestClient restClient() {
-        return restClient;
-    }
-
-    /**
-     * @return the Retrofit instance.
-     */
-    public Retrofit retrofit() {
-        return restClient().retrofit();
-    }
-
-    /**
-     * @return the HTTP client.
-     */
-    public OkHttpClient httpClient() {
-        return restClient().httpClient();
-    }
-
-    /**
-     * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
-     */
-    public JacksonMapperAdapter mapperAdapter() {
-        return restClient().mapperAdapter();
     }
 }

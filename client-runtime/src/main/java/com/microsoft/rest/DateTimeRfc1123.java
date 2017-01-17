@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Simple wrapper over joda.time.DateTime used for specifying RFC1123 format during serialization/deserialization.
  */
-public class DateTimeRfc1123 {
+public final class DateTimeRfc1123 {
     /**
      * The pattern of the datetime used for RFC1123 datetime format.
      */
@@ -47,7 +47,7 @@ public class DateTimeRfc1123 {
      * Returns the underlying DateTime.
      * @return The underlying DateTime.
      */
-    public DateTime getDateTime() {
+    public DateTime dateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -75,6 +75,6 @@ public class DateTimeRfc1123 {
         }
 
         DateTimeRfc1123 rhs = (DateTimeRfc1123) obj;
-        return this.dateTime.equals(rhs.getDateTime());
+        return this.dateTime.equals(rhs.dateTime());
     }
 }

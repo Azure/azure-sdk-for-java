@@ -20,12 +20,12 @@ public interface Page<E> {
      *
      * @return the link.
      */
-    String getNextPageLink();
+    String nextPageLink();
 
     /**
      * Gets the list of items.
      *
      * @return the list of items.
      */
-    List<E> getItems();
+    List<E> items();
 }

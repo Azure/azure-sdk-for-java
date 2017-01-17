@@ -48,19 +48,22 @@ public abstract class PagedList<E> implements List<E> {
         if (page == null) {
             return;
         }
-        List<E> retrievedItems = page.getItems();
+        List<E> retrievedItems = page.items();
         if (retrievedItems != null) {
             items.addAll(retrievedItems);
         }
         currentPage = page;
-        cachePage(page.getNextPageLink());
+        cachePage(page.nextPageLink());
     }
 
     private void cachePage(String nextPageLink) {
         try {
             while (nextPageLink != null) {
                 cachedPage = nextPage(nextPageLink);
-                nextPageLink = cachedPage.getNextPageLink();
+                if (cachedPage == null) {
+                    break;
+                }
+                nextPageLink = cachedPage.nextPageLink();
                 if (hasNextPage()) {
                     // a legit, non-empty page has been fetched, otherwise keep fetching
                     break;
@@ -87,7 +90,7 @@ public abstract class PagedList<E> implements List<E> {
      * @return true if there are more pages to load. False otherwise.
      */
     public boolean hasNextPage() {
-        return this.cachedPage != null && this.cachedPage.getItems() != null && !this.cachedPage.getItems().isEmpty();
+        return this.cachedPage != null && this.cachedPage.items() != null && !this.cachedPage.items().isEmpty();
     }
 
     /**
@@ -97,8 +100,8 @@ public abstract class PagedList<E> implements List<E> {
     public void loadNextPage() {
         this.currentPage = cachedPage;
         cachedPage = null;
-        this.items.addAll(currentPage.getItems());
-        cachePage(currentPage.getNextPageLink());
+        this.items.addAll(currentPage.items());
+        cachePage(currentPage.nextPageLink());
     }
 
     /**
@@ -126,11 +129,11 @@ public abstract class PagedList<E> implements List<E> {
      */
     protected void setCurrentPage(Page<E> currentPage) {
         this.currentPage = currentPage;
-        List<E> retrievedItems = currentPage.getItems();
+        List<E> retrievedItems = currentPage.items();
         if (retrievedItems != null) {
             items.addAll(retrievedItems);
         }
-        cachePage(currentPage.getNextPageLink());
+        cachePage(currentPage.nextPageLink());
     }
 
     /**

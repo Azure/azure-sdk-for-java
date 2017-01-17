@@ -31,10 +31,10 @@ public interface AzureTokenCredentials extends ServiceClientCredentials {
      *
      * @return the domain or tenant ID string
      */
-    String getDomain();
+    String domain();
 
     /**
      * @return the environment details the credential has access to.
      */
-    AzureEnvironment getEnvironment();
+    AzureEnvironment environment();
 }

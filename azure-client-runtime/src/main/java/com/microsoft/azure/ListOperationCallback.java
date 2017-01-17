@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @param <E> the item type
  */
-public abstract class ListOperationCallback<E> extends ServiceCallback<List<E>> {
+public abstract class ListOperationCallback<E> implements ServiceCallback<List<E>> {
     /**
      * A list result that stores the accumulated resources loaded from server.
      */

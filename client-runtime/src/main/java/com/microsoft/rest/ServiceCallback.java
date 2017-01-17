@@ -12,18 +12,18 @@ package com.microsoft.rest;
  *
  * @param <T> the type of the response
  */
-public abstract class ServiceCallback<T> {
+public interface ServiceCallback<T> {
     /**
      * Override this method to handle REST call failures.
      *
      * @param t the exception thrown from the pipeline.
      */
-    public abstract void failure(Throwable t);
+    void failure(Throwable t);
 
     /**
      * Override this method to handle successful REST call results.
      *
      * @param result the result object.
      */
-    public abstract void success(T result);
+    void success(T result);
 }

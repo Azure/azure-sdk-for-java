@@ -16,10 +16,10 @@ import java.io.IOException;
  */
 public class TokenCredentials implements ServiceClientCredentials {
     /** The authentication scheme. */
-    protected String scheme;
+    private String scheme;
 
     /** The secure token. */
-    protected String token;
+    private String token;
 
     /**
      * Initializes a new instance of the TokenCredentials.

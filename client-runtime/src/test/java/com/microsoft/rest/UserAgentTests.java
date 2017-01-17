@@ -7,6 +7,7 @@
 
 package com.microsoft.rest;
 
+import com.microsoft.rest.interceptors.UserAgentInterceptor;
 import org.junit.Assert;
 import org.junit.Test;
 

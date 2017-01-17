@@ -67,7 +67,7 @@ public final class Validator {
                 int mod = field.getModifiers();
                 // Skip static fields since we don't have any, skip final fields since users can't modify them
                 if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-                    return;
+                    continue;
                 }
                 JsonProperty annotation = field.getAnnotation(JsonProperty.class);
                 Object property;
@@ -109,22 +109,6 @@ public final class Validator {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Validates a user provided required parameter to be not null. Returns if
-     * the parameter passes the validation. An {@link IllegalArgumentException} is passed
-     * to the {@link ServiceCallback#failure(Throwable)} if a property fails the validation.
-     *
-     * @param parameter the parameter to validate
-     * @param serviceCallback the callback to call with the failure
-     */
-    public static void validate(Object parameter, ServiceCallback<?> serviceCallback) {
-        try {
-            validate(parameter);
-        } catch (IllegalArgumentException ex) {
-            serviceCallback.failure(ex);
         }
     }
 }

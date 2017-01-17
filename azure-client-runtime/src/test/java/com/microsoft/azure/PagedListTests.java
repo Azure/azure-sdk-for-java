@@ -109,7 +109,7 @@ public class PagedListTests {
         }
 
         @Override
-        public String getNextPageLink() {
+        public String nextPageLink() {
             if (page + 1 == max) {
                 return null;
             }
@@ -117,7 +117,7 @@ public class PagedListTests {
         }
 
         @Override
-        public List<Integer> getItems() {
+        public List<Integer> items() {
             if (page + 1 != max) {
                 List<Integer> items = new ArrayList<>();
                 items.add(page);
