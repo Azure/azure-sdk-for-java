@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
@@ -26,6 +25,7 @@ import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +152,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                             .withRegion(region)
                             .withExistingResourceGroup(rgName));
                 }
-                CreatedResources<Network> networks = azure.networks().create(creatableNetworks);
+                Collection<Network> networks = azure.networks().create(creatableNetworks).values();
 
                 // ============================================================
                 // Create virtual machines attached to different virtual networks created above.
@@ -180,7 +180,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 }
 
                 HashMap<String, String> ipAddresses = new HashMap<>();
-                for (VirtualMachine virtualMachine: azure.virtualMachines().create(creatableVirtualMachines)) {
+                for (VirtualMachine virtualMachine: azure.virtualMachines().create(creatableVirtualMachines).values()) {
                     ipAddresses.put(virtualMachine.name(), virtualMachine.getPrimaryPublicIpAddress().ipAddress());
                 }
 
@@ -232,8 +232,5 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
     }
 
     private ManageSqlDatabasesAcrossDifferentDataCenters() {
-
     }
-
-
 }

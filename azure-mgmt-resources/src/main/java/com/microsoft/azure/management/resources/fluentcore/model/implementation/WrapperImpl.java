@@ -25,7 +25,12 @@ public abstract class WrapperImpl<InnerT> implements Wrapper<InnerT> {
         return this.innerObject;
     }
 
-    @Override
+    /**
+     * Sets the inner object of the wrapper.
+     * <p>
+     * (Internal use only)
+     * @param inner an inner object
+     */
     public void setInner(InnerT inner) {
         this.innerObject = inner;
     }

@@ -14,16 +14,18 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Simple Azure traffic manager sample.
@@ -39,7 +41,7 @@ public final class ManageSimpleTrafficManager {
      */
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgCOPD", 24);
+        final String rgName = ResourceNamer.randomResourceName("rg", 9);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         final int vmCountPerRegion = 2;
@@ -99,13 +101,14 @@ public final class ManageSimpleTrafficManager {
                 //=============================================================
                 // Create the VMs !!
 
-                long t = System.currentTimeMillis();
+                StopWatch stopwatch = new StopWatch();
                 System.out.println("Creating the virtual machines...");
+                stopwatch.start();
 
-                CreatedResources<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines);
+                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines).values();
 
-                System.out.println(String.format("Created virtual machines in %d seconds.",
-                        (System.currentTimeMillis() - t) / 1000));
+                stopwatch.stop();
+                System.out.println(String.format("Created virtual machines in %d seconds.", stopwatch.getTime() / 1000));
 
                 //=============================================================
                 // Create 1 traffic manager profile
@@ -117,17 +120,22 @@ public final class ManageSimpleTrafficManager {
                         .withPerformanceBasedRouting();
 
                 TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
+                int routingPriority = 1;
                 for (VirtualMachine vm : virtualMachines) {
                     String endpointName = ResourceNamer.randomResourceName("ep", 15);
                     profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
                             .toResourceId(vm.getPrimaryPublicIpAddressId())
+                            .withRoutingPriority(routingPriority++)
                             .attach();
                 }
 
-                t = System.currentTimeMillis();
+                stopwatch.reset();
+                stopwatch.start();
+
                 TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
 
-                System.out.println(String.format("Created a traffic manager profile %s\n in %d seconds.", trafficManagerProfile.id(), (System.currentTimeMillis() - t) / 1000));
+                stopwatch.stop();
+                System.out.println(String.format("Created a traffic manager profile %s\n in %d seconds.", trafficManagerProfile.id(), stopwatch.getTime() / 1000));
 
                 //=============================================================
                 // Modify the traffic manager to use priority based routing
@@ -163,6 +171,5 @@ public final class ManageSimpleTrafficManager {
     }
 
     private ManageSimpleTrafficManager() {
-
     }
 }

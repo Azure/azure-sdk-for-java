@@ -17,7 +17,6 @@ import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -25,8 +24,10 @@ import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure Network sample for managing virtual machines with virtual network -
@@ -83,7 +84,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 // - ALLOW-SSH - allows SSH traffic into the front end subnet
                 // - ALLOW-WEB- allows HTTP traffic into the front end subnet
 
-                NetworkSecurityGroup.DefinitionStages.WithCreate frontEndNSGCreatable = azure.networkSecurityGroups()
+                Creatable<NetworkSecurityGroup> frontEndNSGCreatable = azure.networkSecurityGroups()
                         .define(frontEndNSGName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
@@ -114,7 +115,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 // - ALLOW-SQL - allows SQL traffic only from the front end subnet
                 // - DENY-WEB - denies all outbound internet traffic from the back end subnet
 
-                NetworkSecurityGroup.DefinitionStages.WithCreate backEndNSGCreatable = azure.networkSecurityGroups()
+                Creatable<NetworkSecurityGroup> backEndNSGCreatable = azure.networkSecurityGroups()
                         .define(backEndNSGName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
@@ -142,8 +143,9 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 System.out.println("Creating security group for the front ends - allows SSH and HTTP");
                 System.out.println("Creating security group for the back ends - allows SSH and denies all outbound internet traffic");
 
-                CreatedResources<NetworkSecurityGroup> networkSecurityGroups = azure.networkSecurityGroups()
-                        .create(frontEndNSGCreatable, backEndNSGCreatable);
+                @SuppressWarnings("unchecked")
+                Collection<NetworkSecurityGroup> networkSecurityGroups = azure.networkSecurityGroups()
+                        .create(frontEndNSGCreatable, backEndNSGCreatable).values();
 
                 NetworkSecurityGroup frontendNSG = null;
                 NetworkSecurityGroup backendNSG = null;
@@ -180,7 +182,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                         .create();
 
                 // Prepare Creatable Storage account definition [For storing VMs disk]
-                StorageAccount.DefinitionStages.WithCreate creatableStorageAccount = azure.storageAccounts()
+                Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
                         .define(storageAccountName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup);
@@ -188,7 +190,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 // Prepare a batch of Creatable Virtual Machines definitions
                 List<Creatable<VirtualMachine>> frontendCreatableVirtualMachines = new ArrayList<>();
                 for (int i = 0; i < frontendVmCount; i++) {
-                    VirtualMachine.DefinitionStages.WithCreate creatableVirtualMachine = azure.virtualMachines()
+                    Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
                             .define("VM-FE-" + i)
                             .withRegion(Region.US_EAST)
                             .withExistingResourceGroup(resourceGroup)
@@ -207,7 +209,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 List<Creatable<VirtualMachine>> backendCreatableVirtualMachines = new ArrayList<>();
 
                 for (int i = 0; i < backendVmCount; i++) {
-                    VirtualMachine.DefinitionStages.WithCreate creatableVirtualMachine = azure.virtualMachines()
+                    Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
                             .define("VM-BE-" + i)
                             .withRegion(Region.US_EAST)
                             .withExistingResourceGroup(resourceGroup)
@@ -223,23 +225,24 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                     backendCreatableVirtualMachines.add(creatableVirtualMachine);
                 }
 
-                Date t1 = new Date();
                 System.out.println("Creating the virtual machines");
 
                 List<Creatable<VirtualMachine>> allCreatableVirtualMachines = new ArrayList<>();
                 allCreatableVirtualMachines.addAll(frontendCreatableVirtualMachines);
                 allCreatableVirtualMachines.addAll(backendCreatableVirtualMachines);
+                StopWatch stopwatch = new StopWatch();
+                stopwatch.start();
 
-                CreatedResources<VirtualMachine> virtualMachines = azure.virtualMachines().create(allCreatableVirtualMachines);
+                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(allCreatableVirtualMachines).values();
 
-                Date t2 = new Date();
+                stopwatch.stop();
                 System.out.println("Created virtual machines");
 
                 for (VirtualMachine virtualMachine : virtualMachines) {
                     System.out.println(virtualMachine.id());
                 }
 
-                System.out.println("Virtual Machines create: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
             } catch (Exception f) {
 
                 System.out.println(f.getMessage());

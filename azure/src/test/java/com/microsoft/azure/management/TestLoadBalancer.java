@@ -6,7 +6,9 @@
 package com.microsoft.azure.management;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -88,7 +90,9 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            ensurePIPs(pips);
+            PublicIpAddress pip0 = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIpAddress pip1 = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -96,9 +100,9 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIpAddress(existingPips.get(0))
+                    .withExistingPublicIpAddress(pip0)
                     .definePublicFrontend("frontend1")
-                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .withExistingPublicIpAddress(pip1)
                         .attach()
 
                     // Backends
@@ -141,9 +145,17 @@ public class TestLoadBalancer {
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("frontend1"));
-            Assert.assertTrue(lb.frontends().containsKey("default"));
             Assert.assertTrue(lb.frontends().size() == 2);
+
+            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
+            Assert.assertTrue(frontend.isPublic());
+            LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
+            Assert.assertTrue(pip1.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
+
+            frontend = lb.frontends().get("default");
+            Assert.assertTrue(frontend.isPublic());
+            publicFrontend = (LoadBalancerPublicFrontend) frontend;
+            Assert.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             // Verify backends
             Assert.assertTrue(lb.backends().containsKey("default"));
@@ -240,7 +252,8 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            ensurePIPs(pips);
+            PublicIpAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
             NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
@@ -251,7 +264,7 @@ public class TestLoadBalancer {
 
                     // Frontends
                     .definePublicFrontend("frontend1")
-                        .withExistingPublicIpAddress(existingPips.get(0))
+                        .withExistingPublicIpAddress(pip)
                         .attach()
 
                     // Backends
@@ -309,12 +322,16 @@ public class TestLoadBalancer {
                     .equalsIgnoreCase("backend1"));
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("frontend1"));
             Assert.assertTrue(lb.frontends().size() == 1);
+            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
+            Assert.assertNotNull(frontend);
+            Assert.assertTrue(frontend.isPublic());
+            LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
+            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
-            existingPips.get(0).refresh();
-            Assert.assertTrue(existingPips.get(0).getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
-            TestPublicIpAddress.printPIP(existingPips.get(0).refresh());
+            pip.refresh();
+            Assert.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
+            TestPublicIpAddress.printPIP(pip.refresh());
 
             // Verify backends
             Assert.assertTrue(lb.backends().containsKey("backend1"));
@@ -369,10 +386,11 @@ public class TestLoadBalancer {
             Assert.assertTrue(nic2.primaryIpConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
             // Update the load balancer
-            List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            ensurePIPs(pips);
+            PublicIpAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .updateInternetFrontend("frontend1")
-                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .withExistingPublicIpAddress(pip)
                         .parent()
                     .withoutFrontend("default")
                     .withoutBackend("default")
@@ -386,9 +404,10 @@ public class TestLoadBalancer {
 
             // Verify frontends
             LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assert.assertTrue(existingPips.get(1).id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             return resource;
         }
@@ -429,14 +448,15 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            ensurePIPs(pips);
+            PublicIpAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
-                    .withExistingPublicIpAddress(existingPips.get(0))
+                    .withExistingPublicIpAddress(pip)
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
                     // Probe (default)
@@ -452,7 +472,7 @@ public class TestLoadBalancer {
             Assert.assertTrue("default".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assert.assertTrue(existingPips.get(0).id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             // Verify TCP probes
             Assert.assertTrue(lb.tcpProbes().containsKey("default"));
@@ -493,7 +513,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            Map<String, PublicIpAddress> existingPips = ensurePIPs(pips);
             PublicIpAddress pip = existingPips.get(1);
             resource =  resource.update()
                     .withExistingPublicIpAddress(pip)
@@ -757,7 +777,7 @@ public class TestLoadBalancer {
     }
 
     // Create VNet for the LB
-    private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
+    private static Map<String, PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
         List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
             creatablePips.add(pips.define(PIP_NAMES[i])
@@ -806,7 +826,7 @@ public class TestLoadBalancer {
             vmDefinitions.add(vm);
         }
 
-        List<VirtualMachine> createdVMs = vms.create(vmDefinitions);
+        Collection<VirtualMachine> createdVMs = vms.create(vmDefinitions).values();
         return createdVMs.toArray(new VirtualMachine[createdVMs.size()]);
     }
 

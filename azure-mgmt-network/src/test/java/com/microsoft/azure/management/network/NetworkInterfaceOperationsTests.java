@@ -3,12 +3,13 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -76,10 +77,11 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.8");
 
-        CreatedResources<NetworkInterface> batchNics = networkInterfaces.create(networkInterface1Creatable,
+        @SuppressWarnings("unchecked")
+        Collection<NetworkInterface> batchNics = networkInterfaces.create(networkInterface1Creatable,
                 networkInterface2Creatable,
                 networkInterface3Creatable,
-                networkInterface4Creatable);
+                networkInterface4Creatable).values();
 
         Assert.assertTrue(batchNics.size() == 4);
         HashMap<String, Boolean> found = new LinkedHashMap<>();

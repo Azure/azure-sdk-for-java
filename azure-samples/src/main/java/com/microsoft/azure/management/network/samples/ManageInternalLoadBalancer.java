@@ -24,8 +24,10 @@ import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure Network sample for managing internal load balancers -
@@ -222,19 +224,10 @@ public final class ManageInternalLoadBalancer {
                 Utils.print(loadBalancer3);
 
                 //=============================================================
-                // Create two network interfaces in the backend subnet
-                //  associate network interfaces to NAT rules, backend pools
+                // Define two network interfaces in the backend subnet
+                // associate network interfaces to NAT rules, backend pools
 
-                System.out.println("Creating two network interfaces in the backend subnet ...");
-                System.out.println("- And associating network interfaces to backend pools and NAT rules");
-
-                List<Creatable<NetworkInterface>> networkInterfaceCreatables2 = new ArrayList<Creatable<NetworkInterface>>();
-
-                Creatable<NetworkInterface> networkInterface3Creatable;
-                Creatable<NetworkInterface> networkInterface4Creatable;
-
-
-                networkInterface3Creatable = azure.networkInterfaces()
+                Creatable<NetworkInterface> networkInterface3Creatable = azure.networkInterfaces()
                         .define(networkInterfaceName3)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
@@ -245,9 +238,7 @@ public final class ManageInternalLoadBalancer {
                         .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
                         .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
 
-                networkInterfaceCreatables2.add(networkInterface3Creatable);
-
-                networkInterface4Creatable = azure.networkInterfaces()
+                Creatable<NetworkInterface> networkInterface4Creatable = azure.networkInterfaces()
                         .define(networkInterfaceName4)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
@@ -258,34 +249,14 @@ public final class ManageInternalLoadBalancer {
                         .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6002to22forVM4)
                         .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6003to23forVM4);
 
-                networkInterfaceCreatables2.add(networkInterface4Creatable);
-
-                List <NetworkInterface> networkInterfaces2 = azure.networkInterfaces().create(networkInterfaceCreatables2);
-
-                // Print network interface details
-                System.out.println("Created two network interfaces");
-                System.out.println("Network Interface THREE -");
-                Utils.print(networkInterfaces2.get(0));
-                System.out.println();
-                System.out.println("Network Interface FOUR -");
-                Utils.print(networkInterfaces2.get(1));
-
-
                 //=============================================================
-                // Create an availability set
+                // Define an availability set
 
-                System.out.println("Creating an availability set ...");
-
-                AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName)
+                Creatable<AvailabilitySet> availSet2Definition = azure.availabilitySets().define(availSetName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
                         .withFaultDomainCount(2)
-                        .withUpdateDomainCount(4)
-                        .create();
-
-                System.out.println("Created first availability set: " + availSet2.id());
-                Utils.print(availSet2);
-
+                        .withUpdateDomainCount(4);
 
                 //=============================================================
                 // Create two virtual machines and assign network interfaces
@@ -294,49 +265,47 @@ public final class ManageInternalLoadBalancer {
                 System.out.println("- And assigning network interfaces");
 
                 List <Creatable<VirtualMachine>> virtualMachineCreateables2 = new ArrayList<Creatable<VirtualMachine>>();
-                Creatable<VirtualMachine> virtualMachine3Creatable;
-                Creatable<VirtualMachine> virtualMachine4Creatable;
 
-                virtualMachine3Creatable = azure.virtualMachines()
+                Creatable<VirtualMachine> virtualMachine3Creatable = azure.virtualMachines()
                         .define(vmName3)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetworkInterface(networkInterfaces2.get(0))
+                        .withNewPrimaryNetworkInterface(networkInterface3Creatable)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .withExistingAvailabilitySet(availSet2);
+                        .withNewAvailabilitySet(availSet2Definition);
 
                 virtualMachineCreateables2.add(virtualMachine3Creatable);
 
-                virtualMachine4Creatable = azure.virtualMachines()
+                Creatable<VirtualMachine> virtualMachine4Creatable = azure.virtualMachines()
                         .define(vmName4)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetworkInterface(networkInterfaces2.get(1))
+                        .withNewPrimaryNetworkInterface(networkInterface4Creatable)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .withExistingAvailabilitySet(availSet2);
+                        .withNewAvailabilitySet(availSet2Definition);
 
                 virtualMachineCreateables2.add(virtualMachine4Creatable);
 
-                Date t1 = new Date();
-                List <VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineCreateables2);
+                StopWatch stopwatch = new StopWatch();
+                stopwatch.start();
 
-                Date t2 = new Date();
-                System.out.println("Created 2 Linux VMs: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineCreateables2).values();
+
+                stopwatch.stop();
+                System.out.println("Created 2 Linux VMs: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
                 System.out.println();
 
                 // Print virtual machine details
-                System.out.println("Virtual Machine THREE -");
-                Utils.print(virtualMachines.get(0));
-                System.out.println();
-                System.out.println("Virtual Machine FOUR - ");
-                Utils.print(virtualMachines.get(1));
-
+                for (VirtualMachine vm : virtualMachines) {
+                    Utils.print(vm);
+                    System.out.println();
+                }
 
                 //=============================================================
                 // Update a load balancer
@@ -348,7 +317,7 @@ public final class ManageInternalLoadBalancer {
                         .updateLoadBalancingRule(tcpLoadBalancingRule)
                             .withIdleTimeoutInMinutes(15)
                             .parent()
-                            .apply();
+                        .apply();
 
                 System.out.println("Update the load balancer with a TCP idle timeout to 15 minutes");
 
@@ -442,6 +411,7 @@ public final class ManageInternalLoadBalancer {
 
                 for (LoadBalancer loadBalancer : loadBalancers) {
                     Utils.print(loadBalancer);
+                    System.out.println();
                 }
 
 
