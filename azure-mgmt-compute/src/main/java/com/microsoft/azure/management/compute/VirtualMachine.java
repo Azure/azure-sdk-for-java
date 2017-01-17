@@ -430,20 +430,20 @@ public interface VirtualMachine extends
             WithWindowsAdminUsername withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
+             * Specifies the id of a Windows custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the virtual machine definition
+             */
+            WithWindowsAdminUsername withWindowsCustomImage(String customImageId);
+
+            /**
              * Specifies the user (generalized) Windows image used for the virtual machine's OS.
              *
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine definition
              */
             WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
-
-            /**
-             * Specifies the id of a Windows custom image to be used.
-             *
-             * @param customImageId the resource id of the custom image
-             * @return the next stage of the virtual machine definition
-             */
-            WithWindowsAdminUsername withWindowsImage(String customImageId);
 
             /**
              * Specifies the known marketplace Linux image used for the virtual machine's OS.
@@ -477,7 +477,7 @@ public interface VirtualMachine extends
              * @param customImageId the resource id of the custom image
              * @return the next stage of the virtual machine definition
              */
-            WithLinuxRootUsername withLinuxImage(String customImageId);
+            WithLinuxRootUsername withLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (generalized) Linux image used for the virtual machine's OS.

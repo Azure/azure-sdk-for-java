@@ -9,7 +9,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.DataDiskImage;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
@@ -27,12 +26,12 @@ import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.PurchasePlan;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -147,8 +146,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() {
-        VirtualMachineInner response =
-                this.client.get(this.resourceGroupName(), this.name());
+        VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
@@ -359,6 +357,8 @@ class VirtualMachineImpl
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().osDisk().withImage(userImageVhd);
         // For platform | custom image osType will be null, azure will pick it from the image metadata.
+        // But for stored image, osType needs to be specified explicitly
+        //
         this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
@@ -415,7 +415,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWindowsImage(String customImageId) {
+    public VirtualMachineImpl withWindowsCustomImage(String customImageId) {
         ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
         imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -428,7 +428,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withLinuxImage(String customImageId) {
+    public VirtualMachineImpl withLinuxCustomImage(String customImageId) {
         ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
         imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -440,10 +440,10 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withOsDisk(String osDiskUrl, OperatingSystemTypes osType) {
-        VirtualHardDisk osDisk = new VirtualHardDisk();
-        osDisk.withUri(osDiskUrl);
+        VirtualHardDisk osVhd = new VirtualHardDisk();
+        osVhd.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
-        this.inner().storageProfile().osDisk().withVhd(osDisk);
+        this.inner().storageProfile().osDisk().withVhd(osVhd);
         this.inner().storageProfile().osDisk().withOsType(osType);
         return this;
     }
@@ -558,26 +558,47 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
+        // Sets the native (un-managed) disk backing virtual machine OS disk
+        //
+        if (isManagedDiskEnabled()) {
+            return this;
+        }
+
         StorageProfile storageProfile = this.inner().storageProfile();
         OSDisk osDisk = storageProfile.osDisk();
-        if (this.isOSDiskFromImage(osDisk)) {
+        // Setting native (un-managed) disk backing virtual machine OS disk is valid only when
+        // the virtual machine is created from image.
+        //
+        if (!this.isOSDiskFromImage(osDisk)) {
+            return this;
+        }
+        // Exclude custom user image as they won't support using native (un-managed) disk to back
+        // virtual machine OS disk.
+        //
+        if (this.isOsDiskFromCustomImage(storageProfile)) {
+            return this;
+        }
+        // OS Disk from 'Platform image' requires explicit storage account to be specified.
+        //
+        if (this.isOSDiskFromPlatformImage(storageProfile)) {
             VirtualHardDisk osVhd = new VirtualHardDisk();
-            if (this.isOSDiskFromPlatformImage(storageProfile)) {
-                // OS Disk from 'Platform image' requires explicit storage account to be specified.
-                osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
-            } else if (this.isOSDiskFromCustomImage(osDisk)) {
-                // 'Captured image' and 'Bring your own feature image' has a restriction that the
-                // OS disk based on these images should reside in the same storage account as the
-                // image.
-                try {
-                    URL sourceCustomImageUrl = new URL(osDisk.image().uri());
-                    URL destinationVhdUrl = new URL(sourceCustomImageUrl.getProtocol(),
-                            sourceCustomImageUrl.getHost(),
-                            "/" + containerName + "/" + vhdName);
-                    osVhd.withUri(destinationVhdUrl.toString());
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
-                }
+            osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
+            this.inner().storageProfile().osDisk().withVhd(osVhd);
+            return this;
+        }
+        // 'Stored image' and 'Bring your own feature image' has a restriction that the native
+        // disk backing OS disk based on these images should reside in the same storage account
+        // as the image.
+        if (this.isOSDiskFromStoredImage(storageProfile)) {
+            VirtualHardDisk osVhd = new VirtualHardDisk();
+            try {
+                URL sourceCustomImageUrl = new URL(osDisk.image().uri());
+                URL destinationVhdUrl = new URL(sourceCustomImageUrl.getProtocol(),
+                        sourceCustomImageUrl.getHost(),
+                        "/" + containerName + "/" + vhdName);
+                osVhd.withUri(destinationVhdUrl.toString());
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
             }
             this.inner().storageProfile().osDisk().withVhd(osVhd);
         }
@@ -962,7 +983,8 @@ class VirtualMachineImpl
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
-            setOSDiskAndOSProfileDefaults();
+            setOsDiskDefaults();
+            setOsProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
@@ -1014,50 +1036,108 @@ class VirtualMachineImpl
         return this;
     }
 
-    private void setOSDiskAndOSProfileDefaults() {
+    private void setOsDiskDefaults() {
         if (!isInCreateMode()) {
             return;
         }
-
-        OSDisk osDisk = this.inner().storageProfile().osDisk();
+        StorageProfile storageProfile = this.inner().storageProfile();
+        OSDisk osDisk = storageProfile.osDisk();
         if (isOSDiskFromImage(osDisk)) {
-            if (osDisk.vhd() == null) {
-                // Sets the OS disk container and VHD for "CustomImage (Captured BringYourOwn)" or "PlatformImage"
-                String osDiskVhdContainerName = "vhds";
-                String osDiskVhdName = this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd";
-                withOsDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
-            }
-            OSProfile osProfile = this.inner().osProfile();
-            if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
-                // linux image: User, marketplace linux image, custom linux image
-                if (osProfile.linuxConfiguration() == null) {
-                    osProfile.withLinuxConfiguration(new LinuxConfiguration());
+            // ODDisk CreateOption: FROM_IMAGE
+            //
+            if (isManagedDiskEnabled()) {
+                // Note:
+                // Managed disk
+                //     Supported: PlatformImage and CustomImage
+                //     UnSupported: StoredImage
+                //
+                if (isOSDiskFromPlatformImage(storageProfile)
+                        || isOsDiskFromCustomImage(storageProfile)) {
+                    if (osDisk.managedDisk() == null) {
+                        ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
+                        managedDiskParameters
+                                .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                                .withId(null);
+                        osDisk.withManagedDisk(managedDiskParameters);
+                    }
+                    osDisk.withVhd(null);
+                    // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
+                    // name for the disk resource within the resource group.
                 }
-                this.inner().osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
-            }
-
-            if (this.inner().osProfile().computerName() == null) {
-                // VM name cannot contain only numeric values and cannot exceed 15 chars
-                if (vmName.matches("[0-9]+")) {
-                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
-                } else if (vmName.length() <= 15) {
-                    this.inner().osProfile().withComputerName(vmName);
-                } else {
-                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+            } else {
+                // Note:
+                // Native (un-managed) disk
+                //     Supported: PlatformImage and StoredImage
+                //     UnSupported: CustomImage
+                //
+                if (isOSDiskFromPlatformImage(storageProfile)
+                        || isOSDiskFromStoredImage(storageProfile)) {
+                    if (osDisk.vhd() == null) {
+                        String osDiskVhdContainerName = "vhds";
+                        String osDiskVhdName = this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd";
+                        withOsDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
+                    }
+                    osDisk.withManagedDisk(null);
+                }
+                if (osDisk.name() == null) {
+                    withOsDiskName(this.vmName + "-os-disk");
                 }
             }
         } else {
-            // Compute has a new restriction that OS Profile property need to set null
-            // when an VM's OS disk is ATTACH-ed to a Specialized VHD
-            this.inner().withOsProfile(null);
+            // ODDisk CreateOption: ATTACH
+            //
+            if (isManagedDiskEnabled()) {
+                osDisk.withVhd(null);
+            } else {
+                osDisk.withManagedDisk(null);
+            }
         }
-
         if (osDisk.caching() == null) {
             withOsDiskCaching(CachingTypes.READ_WRITE);
         }
+    }
 
-        if (osDisk.name() == null) {
-            withOsDiskName(this.vmName + "-os-disk");
+    private void setOsProfileDefaults() {
+        if (!isInCreateMode()) {
+            return;
+        }
+        StorageProfile storageProfile = this.inner().storageProfile();
+        OSDisk osDisk = storageProfile.osDisk();
+        if (isOSDiskFromImage(osDisk)) {
+            // ODDisk CreateOption: FROM_IMAGE
+            //
+            if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
+                // linux image: PlatformImage | CustomImage | StoredImage
+                //
+                OSProfile osProfile = this.inner().osProfile();
+                if (osProfile.linuxConfiguration() == null) {
+                    osProfile.withLinuxConfiguration(new LinuxConfiguration());
+                }
+                this.inner().osProfile()
+                        .linuxConfiguration()
+                        .withDisablePasswordAuthentication(osProfile.adminPassword() == null);
+            }
+            if (this.inner().osProfile().computerName() == null) {
+                // VM name cannot contain only numeric values and cannot exceed 15 chars
+                //
+                if (vmName.matches("[0-9]+")) {
+                    this.inner().osProfile()
+                            .withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                } else if (vmName.length() <= 15) {
+                    this.inner().osProfile()
+                            .withComputerName(vmName);
+                } else {
+                    this.inner().osProfile()
+                            .withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                }
+            }
+        } else {
+            // ODDisk CreateOption: ATTACH
+            //
+            // OS Profile must be set to null when an VM's OS disk is ATTACH-ed to a managed disk or
+            // Specialized VHD
+            //
+            this.inner().withOsProfile(null);
         }
     }
 
@@ -1065,7 +1145,6 @@ class VirtualMachineImpl
         if (!isInCreateMode()) {
             return;
         }
-
         HardwareProfile hardwareProfile = this.inner().hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.withVmSize(VirtualMachineSizeTypes.BASIC_A0);
@@ -1073,35 +1152,36 @@ class VirtualMachineImpl
     }
 
     private Observable<StorageAccount> handleStorageSettingsAsync() {
-        final Func1<StorageAccount, StorageAccount> storageAccountFunc = new Func1<StorageAccount, StorageAccount>() {
+        final Func1<StorageAccount, StorageAccount> onStorageAccountReady = new Func1<StorageAccount, StorageAccount>() {
             @Override
             public StorageAccount call(StorageAccount storageAccount) {
-                if (isInCreateMode()) {
-                    if (isOSDiskFromPlatformImage(inner().storageProfile())) {
-                        String uri = inner()
-                                .storageProfile()
-                                .osDisk().vhd().uri()
-                                .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                        inner().storageProfile().osDisk().vhd().withUri(uri);
-                    }
-                    DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
-                } else {
-                    if (storageAccount != null) {
+                if (!isManagedDiskEnabled()) {
+                    if (isInCreateMode()) {
+                        if (isOSDiskFromPlatformImage(inner().storageProfile())) {
+                            String uri = inner()
+                                    .storageProfile()
+                                    .osDisk().vhd().uri()
+                                    .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                            inner().storageProfile().osDisk().vhd().withUri(uri);
+                        }
                         DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                     } else {
-                        DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
+                        if (storageAccount != null) {
+                            DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
+                        } else {
+                            DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
+                        }
                     }
                 }
                 return storageAccount;
             }
         };
-
         if (this.creatableStorageAccountKey != null) {
             return Observable.just((StorageAccount) this.createdResource(this.creatableStorageAccountKey))
-                    .map(storageAccountFunc);
+                    .map(onStorageAccountReady);
         } else if (this.existingStorageAccountToAssociate != null) {
             return Observable.just(this.existingStorageAccountToAssociate)
-                    .map(storageAccountFunc);
+                    .map(onStorageAccountReady);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
@@ -1109,7 +1189,7 @@ class VirtualMachineImpl
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync())
-                    .map(storageAccountFunc);
+                    .map(onStorageAccountReady);
         }
         return Observable.just(null);
     }
@@ -1171,22 +1251,26 @@ class VirtualMachineImpl
     }
 
     private boolean osDiskRequiresImplicitStorageAccountCreation() {
+        if (isManagedDiskEnabled()) {
+            return false;
+        }
         if (this.creatableStorageAccountKey != null
                 || this.existingStorageAccountToAssociate != null
                 || !isInCreateMode()) {
             return false;
         }
-
         return isOSDiskFromPlatformImage(this.inner().storageProfile());
     }
 
     private boolean dataDisksRequiresImplicitStorageAccountCreation() {
+        if (isManagedDiskEnabled()) {
+            return false;
+        }
         if (this.creatableStorageAccountKey != null
                 || this.existingStorageAccountToAssociate != null
                 || this.dataDisks.size() == 0) {
             return false;
         }
-
         boolean hasEmptyVhd = false;
         for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
@@ -1197,11 +1281,9 @@ class VirtualMachineImpl
                 }
             }
         }
-
         if (isInCreateMode()) {
             return hasEmptyVhd;
         }
-
         if (hasEmptyVhd) {
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
@@ -1212,7 +1294,6 @@ class VirtualMachineImpl
             }
             return true;
         }
-
         return false;
     }
 
@@ -1243,17 +1324,43 @@ class VirtualMachineImpl
      * @return true if the OS disk is configured to be based on platform image.
      */
     private boolean isOSDiskFromPlatformImage(StorageProfile storageProfile) {
-        return isOSDiskFromImage(storageProfile.osDisk()) && storageProfile.imageReference() != null;
+        ImageReferenceInner imageReference  = storageProfile.imageReference();
+        return isOSDiskFromImage(storageProfile.osDisk())
+                && imageReference != null
+                && imageReference.publisher() != null
+                && imageReference.offer() != null
+                && imageReference.sku() != null
+                && imageReference.version() != null;
     }
 
     /**
-     * Checks whether the OS disk is based on an custom image ('captured' or 'bring your own feature').
+     * Checks whether the OS disk is based on a CustomImage.
+     * <p>
+     * A custom image is represented by {@link com.microsoft.azure.management.compute.VirtualMachineCustomImage}.
      *
-     * @param osDisk the osDisk value in the storage profile
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to be based on custom image.
+     */
+    private boolean isOsDiskFromCustomImage(StorageProfile storageProfile) {
+        ImageReferenceInner imageReference  = storageProfile.imageReference();
+        return isOSDiskFromImage(storageProfile.osDisk())
+                && imageReference != null
+                && imageReference.id() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is based on a stored image ('captured' or 'bring your own feature').
+     * <p>
+     * A stored image is created by calling {@link VirtualMachine#capture(String, String, boolean)}.
+     *
+     * @param storageProfile the storage profile
      * @return true if the OS disk is configured to use custom image ('captured' or 'bring your own feature')
      */
-    private boolean isOSDiskFromCustomImage(OSDisk osDisk) {
-        return isOSDiskFromImage(osDisk) && osDisk.image() != null && osDisk.image().uri() != null;
+    private boolean isOSDiskFromStoredImage(StorageProfile storageProfile) {
+        OSDisk osDisk = storageProfile.osDisk();
+        return isOSDiskFromImage(osDisk)
+                && osDisk.image() != null
+                && osDisk.image().uri() != null;
     }
 
     private String temporaryBlobUrl(String containerName, String blobName) {
@@ -1303,5 +1410,15 @@ class VirtualMachineImpl
 
     private void clearCachedRelatedResources() {
         this.virtualMachineInstanceView = null;
+    }
+
+    private boolean isManagedDiskEnabled() {
+        if (isInCreateMode()) {
+            return true;
+        }
+        // For an existing VM, osDisk.vhd() will be always set if the OS Disk is based on
+        // native disk. This must be null for managed disk.
+        //
+        return this.inner().storageProfile().osDisk().vhd() == null;
     }
 }
