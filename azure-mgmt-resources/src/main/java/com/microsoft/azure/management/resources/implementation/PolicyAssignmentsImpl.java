@@ -12,8 +12,7 @@ import com.microsoft.azure.management.resources.PolicyAssignments;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -38,13 +37,8 @@ final class PolicyAssignmentsImpl
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return client.deleteByIdAsync(id).map(new Func1<PolicyAssignmentInner, Void>() {
-            @Override
-            public Void call(PolicyAssignmentInner policyAssignmentInner) {
-                return null;
-            }
-        });
+    public Completable deleteByIdAsync(String id) {
+        return client.deleteByIdAsync(id).toCompletable();
     }
 
     @Override

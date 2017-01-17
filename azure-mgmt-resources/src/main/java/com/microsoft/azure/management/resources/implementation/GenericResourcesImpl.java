@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -196,20 +197,20 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByGroupAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(final String id) {
+    public Completable deleteByIdAsync(final String id) {
         return getApiVersionFromId(id)
                 .flatMap(new Func1<String, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(String apiVersion) {
                         return innerCollection.deleteByIdAsync(id, apiVersion);
                     }
-                });
+                }).toCompletable();
     }
 
     private Observable<String> getApiVersionFromId(final String id) {

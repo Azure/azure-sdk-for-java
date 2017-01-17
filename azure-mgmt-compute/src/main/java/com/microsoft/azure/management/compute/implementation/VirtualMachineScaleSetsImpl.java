@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.ArrayList;
 
@@ -59,8 +59,8 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Base class for independent child collection class.
@@ -73,16 +73,16 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public void deleteByParent(String groupName, String parentName, String name) {
-        deleteByParentAsync(groupName, parentName, name).toBlocking().subscribe();
+        deleteByParentAsync(groupName, parentName, name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByParentAsync(groupName, parentName, name), callback);
+        return ServiceCall.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
+    public Completable deleteByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
         return deleteByParentAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }

@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -70,8 +70,8 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.innerCollection.deleteAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override

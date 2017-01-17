@@ -12,8 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebApps;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link WebApps}.
@@ -85,13 +84,7 @@ class WebAppsImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 }
