@@ -12,7 +12,6 @@ import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Completable;
-import rx.Observable;
 
 import java.util.List;
 

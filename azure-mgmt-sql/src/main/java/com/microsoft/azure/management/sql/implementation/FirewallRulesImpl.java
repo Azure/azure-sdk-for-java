@@ -11,7 +11,6 @@ import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Completable;
-import rx.Observable;
 
 import java.util.List;
 
