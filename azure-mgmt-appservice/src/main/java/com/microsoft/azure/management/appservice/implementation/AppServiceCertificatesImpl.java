@@ -12,8 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificates;
 import com.microsoft.azure.management.appservice.AppServicePlans;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link AppServicePlans}.
@@ -61,13 +60,7 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 }

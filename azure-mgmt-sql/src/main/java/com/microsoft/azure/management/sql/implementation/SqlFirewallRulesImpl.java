@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
 import org.apache.commons.lang3.NotImplementedException;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -61,8 +61,8 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override

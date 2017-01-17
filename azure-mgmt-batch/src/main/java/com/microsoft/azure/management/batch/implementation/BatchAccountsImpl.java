@@ -13,7 +13,7 @@ import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Implementation for BatchAccounts and its parent interfaces.
@@ -42,8 +42,8 @@ public class BatchAccountsImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

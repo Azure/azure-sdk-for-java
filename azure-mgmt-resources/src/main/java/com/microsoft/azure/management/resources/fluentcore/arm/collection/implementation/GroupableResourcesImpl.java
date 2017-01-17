@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Base class for resource collection classes.
@@ -62,16 +62,16 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public void deleteByGroup(String groupName, String name) {
-        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
+        deleteByGroupAsync(groupName, name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name), callback);
+        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
+    public Completable deleteByIdAsync(String id) {
         return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 }

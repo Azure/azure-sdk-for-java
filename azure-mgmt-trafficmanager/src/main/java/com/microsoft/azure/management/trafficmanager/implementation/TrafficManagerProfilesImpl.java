@@ -13,7 +13,7 @@ import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.ArrayList;
 
@@ -64,8 +64,8 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
