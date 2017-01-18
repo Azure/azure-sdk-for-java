@@ -138,7 +138,7 @@ class NativeDataDiskImpl
 
     @Override
     public VirtualMachineImpl attach() {
-        return this.parent().withDataDisk(this);
+        return this.parent().withNativeDataDisk(this);
     }
 
     protected static void setDataDisksDefaults(List<VirtualMachineNativeDataDisk> dataDisks, String namePrefix) {

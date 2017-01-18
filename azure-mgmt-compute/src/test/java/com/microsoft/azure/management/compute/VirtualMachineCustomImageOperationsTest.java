@@ -83,7 +83,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withGeneralizedLinuxOsDiskImage()
                 .fromVhd(linuxVM.osDiskVhdUri())
                 .withOsDiskCaching(linuxVM.osDiskCachingType());
-        for (VirtualMachineNativeDataDisk disk : linuxVM.dataDisks()) {
+        for (VirtualMachineNativeDataDisk disk : linuxVM.nativeDataDisks()) {
             creatableDisk.defineDataDiskImage(disk.lun())
                     .fromVhd(disk.vhdUri())
                     .withDiskCaching(disk.cachingType())
@@ -102,10 +102,10 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertEquals(customImage.osDiskImage().osState(), OperatingSystemStateTypes.GENERALIZED);
         Assert.assertEquals(customImage.osDiskImage().osType(), OperatingSystemTypes.LINUX);
         Assert.assertNotNull(customImage.dataDiskImages());
-        Assert.assertEquals(customImage.dataDiskImages().size(), linuxVM.dataDisks().size());
+        Assert.assertEquals(customImage.dataDiskImages().size(), linuxVM.nativeDataDisks().size());
         for (ImageDataDisk diskImage : customImage.dataDiskImages().values()) {
             VirtualMachineNativeDataDisk matchedDisk = null;
-            for (VirtualMachineNativeDataDisk vmDisk : linuxVM.dataDisks()) {
+            for (VirtualMachineNativeDataDisk vmDisk : linuxVM.nativeDataDisks()) {
                 if (vmDisk.lun() == diskImage.lun()) {
                     matchedDisk = vmDisk;
                     break;
@@ -169,7 +169,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertNotNull(customImage.sourceVirtualMachineId());
         Assert.assertTrue(customImage.sourceVirtualMachineId().equalsIgnoreCase(vm.id()));
 
-        for (VirtualMachineNativeDataDisk vmDisk : vm.dataDisks()) {
+        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals(diskImage.caching(), vmDisk.cachingType());
@@ -210,7 +210,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create managed disk with Data from vm's lun0 data disk
         //
         final String dataDiskName1 = ResourceNamer.randomResourceName("dsk", 15);
-        VirtualMachineNativeDataDisk vmNativeDataDisk1 = vm.dataDisks().get(0);
+        VirtualMachineNativeDataDisk vmNativeDataDisk1 = vm.nativeDataDisks().get(0);
         Disk managedDataDisk1 = computeManager.disks().define(dataDiskName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -221,7 +221,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create managed disk with Data from vm's lun1 data disk
         //
         final String dataDiskName2 = ResourceNamer.randomResourceName("dsk", 15);
-        VirtualMachineNativeDataDisk vmNativeDataDisk2 = vm.dataDisks().get(1);
+        VirtualMachineNativeDataDisk vmNativeDataDisk2 = vm.nativeDataDisks().get(1);
         Disk managedDataDisk2 = computeManager.disks().define(dataDiskName2)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -262,7 +262,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertTrue(customImage.dataDiskImages().containsKey(vmNativeDataDisk2.lun()));
         Assert.assertEquals(customImage.dataDiskImages().get(vmNativeDataDisk2.lun()).caching(), CachingTypes.NONE);
 
-        for (VirtualMachineNativeDataDisk vmDisk : vm.dataDisks()) {
+        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals((long) diskImage.diskSizeGB(), vmDisk.size() + 10);

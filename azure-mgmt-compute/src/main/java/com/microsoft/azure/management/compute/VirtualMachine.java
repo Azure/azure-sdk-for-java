@@ -128,9 +128,9 @@ public interface VirtualMachine extends
     int osDiskSize();
 
     /**
-     * @return the list of data disks attached to this virtual machine
+     * @return the list of native data disks attached to this virtual machine
      */
-    List<VirtualMachineNativeDataDisk> dataDisks();
+    List<VirtualMachineNativeDataDisk> nativeDataDisks();
 
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
@@ -244,7 +244,7 @@ public interface VirtualMachine extends
     /**
      * The entirety of the virtual machine definition.
      */
-    interface Definition extends
+    interface DefinitionManagedOrNative extends
             DefinitionShared,
             DefinitionStages.WithLinuxRootUsernameManagedOrNative,
             DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrNative,
@@ -1011,6 +1011,26 @@ public interface VirtualMachine extends
          */
         interface WithManagedDataDisk {
             /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable);
+
+            /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
+
+            /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
@@ -1307,6 +1327,26 @@ public interface VirtualMachine extends
          */
         interface WithManagedDataDisk {
             /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(Creatable<Disk> creatable);
+
+            /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
+
+            /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
@@ -1431,6 +1471,7 @@ public interface VirtualMachine extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithNativeDataDisk,
+            UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension {
         /**
