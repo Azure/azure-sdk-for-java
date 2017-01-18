@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,7 @@ import com.microsoft.azure.storage.core.Utility;
 final class FileResponse extends BaseResponse {
     /**
      * Gets the copyState
-     * 
+     *
      * @param request
      *            The response from server.
      * @return The CopyState.
@@ -45,7 +45,7 @@ final class FileResponse extends BaseResponse {
         String copyStatusString = request.getHeaderField(Constants.HeaderConstants.COPY_STATUS);
         if (!Utility.isNullOrEmpty(copyStatusString)) {
             final CopyState copyState = new CopyState();
-            
+
             copyState.setStatus(CopyStatus.parse(copyStatusString));
             copyState.setCopyId(request.getHeaderField(Constants.HeaderConstants.COPY_ID));
             copyState.setStatusDescription(request.getHeaderField(Constants.HeaderConstants.COPY_STATUS_DESCRIPTION));
@@ -67,17 +67,17 @@ final class FileResponse extends BaseResponse {
             if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
                 copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
             }
-            
+
             return copyState;
         }
         else {
             return null;
         }
     }
-    
+
     /**
      * Gets the FileShareAttributes from the given request.
-     * 
+     *
      * @param request
      *            the request to get attributes from
      * @param usePathStyleUris
@@ -88,17 +88,6 @@ final class FileResponse extends BaseResponse {
     public static FileShareAttributes getFileShareAttributes(final HttpURLConnection request,
             final boolean usePathStyleUris) throws StorageException {
         final FileShareAttributes shareAttributes = new FileShareAttributes();
-        URI tempURI;
-        try {
-            tempURI = PathUtility.stripSingleURIQueryAndFragment(request.getURL().toURI());
-        }
-        catch (final URISyntaxException e) {
-            final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
-            throw wrappedUnexpectedException;
-        }
-
-        shareAttributes.setName(PathUtility.getShareNameFromUri(tempURI, usePathStyleUris));
-
         final FileShareProperties shareProperties = shareAttributes.getProperties();
         shareProperties.setEtag(BaseResponse.getEtag(request));
         shareProperties.setShareQuota(parseShareQuota(request));
@@ -110,7 +99,7 @@ final class FileResponse extends BaseResponse {
 
     /**
      * Gets the FileDirectoryAttributes from the given request.
-     * 
+     *
      * @param request
      *            the request to get attributes from.
      * @param usePathStyleUris
@@ -142,15 +131,14 @@ final class FileResponse extends BaseResponse {
 
     /**
      * Gets the CloudFileAttributes from the given request
-     * 
+     *
      * @param request
      *            The response from server.
      * @param resourceURI
      *            The file uri to set.
-     * 
      * @return the CloudFileAttributes from the given request
-     * @throws ParseException 
-     * @throws URISyntaxException 
+     * @throws ParseException
+     * @throws URISyntaxException
      */
     public static FileAttributes getFileAttributes(final HttpURLConnection request, final StorageUri resourceURI)
             throws URISyntaxException, ParseException {
@@ -161,7 +149,15 @@ final class FileResponse extends BaseResponse {
         properties.setContentDisposition(request.getHeaderField(Constants.HeaderConstants.CONTENT_DISPOSITION));
         properties.setContentEncoding(request.getHeaderField(Constants.HeaderConstants.CONTENT_ENCODING));
         properties.setContentLanguage(request.getHeaderField(Constants.HeaderConstants.CONTENT_LANGUAGE));
-        properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+
+        // For range gets, only look at 'x-ms-content-md5' for overall MD5
+        if (!Utility.isNullOrEmpty(request.getHeaderField(Constants.HeaderConstants.CONTENT_RANGE))) {
+            properties.setContentMD5(request.getHeaderField(FileConstants.FILE_CONTENT_MD5_HEADER));
+        }
+        else {
+            properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+        }
+
         properties.setContentType(request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE));
         properties.setEtag(BaseResponse.getEtag(request));
         properties.setCopyState(FileResponse.getCopyState(request));
@@ -191,6 +187,7 @@ final class FileResponse extends BaseResponse {
         }
 
         fileAttributes.setStorageUri(resourceURI);
+        
         fileAttributes.setMetadata(BaseResponse.getMetadata(request));
 
         return fileAttributes;
@@ -198,7 +195,7 @@ final class FileResponse extends BaseResponse {
 
     /**
      * Parses out the share quota value from a <code>java.net.HttpURLConnection</code>.
-     * 
+     *
      * @param request
      *            the request to get attributes from
      * @return the share quota (in GB) or <code>null</code> if none is specified

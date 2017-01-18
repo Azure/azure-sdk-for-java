@@ -14,7 +14,13 @@
  */
 package com.microsoft.azure.storage.file;
 
+
 import static org.junit.Assert.*;
+
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageUri;
+import com.microsoft.azure.storage.TestHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,11 +29,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.UUID;
-
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageUri;
-import com.microsoft.azure.storage.TestHelper;
 
 /**
  * File Test Base

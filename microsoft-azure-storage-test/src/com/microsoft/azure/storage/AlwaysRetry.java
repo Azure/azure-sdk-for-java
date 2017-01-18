@@ -14,10 +14,11 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class AlwaysRetry extends RetryPolicy implements RetryPolicyFactory {
 

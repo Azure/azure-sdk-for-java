@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 package com.microsoft.azure.storage.table;
-
-import static org.junit.Assert.*;
 
 import java.net.URISyntaxException;
 import java.util.UUID;
@@ -36,6 +34,8 @@ import com.microsoft.azure.storage.table.TableTestHelper.IgnoreOnSetter;
 import com.microsoft.azure.storage.table.TableTestHelper.InvalidStoreAsEntity;
 import com.microsoft.azure.storage.table.TableTestHelper.StoreAsEntity;
 import com.microsoft.azure.storage.table.TableTestHelper.StrangeDoubles;
+
+import static org.junit.Assert.*;
 
 /**
  * Table Serializer Tests

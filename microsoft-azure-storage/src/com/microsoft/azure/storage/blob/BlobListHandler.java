@@ -315,5 +315,14 @@ final class BlobListHandler extends DefaultHandler {
             }
             this.copyState.setStatusDescription(value);
         }
+        else if (Constants.INCREMENTAL_COPY_ELEMENT.equals(currentNode)) {
+            this.properties.setIncrementalCopy(Constants.TRUE.equals(value));
+        }
+        else if (Constants.COPY_DESTINATION_SNAPSHOT_ID_ELEMENT.equals(currentNode)) {
+            if (this.copyState == null) {
+                this.copyState = new CopyState();
+            }
+            this.copyState.setCopyDestinationSnapshotID(value);
+        }
     }
 }

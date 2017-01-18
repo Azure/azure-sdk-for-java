@@ -216,8 +216,14 @@ public final class CloudAppendBlob extends CloudBlob {
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopy(
-                sourceBlob.getQualifiedUri(), sourceAccessCondition, destinationAccessCondition, options, opContext);
+
+        URI source = sourceBlob.getSnapshotQualifiedUri();
+        if (sourceBlob.getServiceClient() != null && sourceBlob.getServiceClient().getCredentials() != null)
+        {
+            source = sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getSnapshotQualifiedUri());
+        }
+
+        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
     }
 
     /**
@@ -1008,7 +1014,7 @@ public final class CloudAppendBlob extends CloudBlob {
      */
     @Override
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
+        if (streamWriteSizeInBytes > Constants.MAX_APPEND_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 

@@ -14,9 +14,9 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class MultiLocationTestHelper {
     public final StorageLocation initialLocation;

@@ -73,20 +73,7 @@ public final class CloudBlobContainer {
      * @return A {@link BlobContainerPermissions} object which represents the ACLs.
      */
     static BlobContainerPermissions getContainerAcl(final String aclString) {
-        BlobContainerPublicAccessType accessType = BlobContainerPublicAccessType.OFF;
-
-        if (!Utility.isNullOrEmpty(aclString)) {
-            final String lowerAclString = aclString.toLowerCase();
-            if (SR.CONTAINER.equals(lowerAclString)) {
-                accessType = BlobContainerPublicAccessType.CONTAINER;
-            }
-            else if (SR.BLOB.equals(lowerAclString)) {
-                accessType = BlobContainerPublicAccessType.BLOB;
-            }
-            else {
-                throw new IllegalArgumentException(String.format(SR.INVALID_ACL_ACCESS_TYPE, aclString));
-            }
-        }
+        BlobContainerPublicAccessType accessType = BlobContainerPublicAccessType.parse(aclString);
 
         final BlobContainerPermissions retVal = new BlobContainerPermissions();
         retVal.setPublicAccess(accessType);
@@ -217,12 +204,12 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public void create() throws StorageException {
-        this.create(null /* options */, null /* opContext */);
+        this.create(BlobContainerPublicAccessType.OFF, null /* options */, null /* opContext */);
     }
 
     /**
      * Creates the container using the specified options and operation context.
-     * 
+     *
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -237,6 +224,33 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public void create(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        this.create(BlobContainerPublicAccessType.OFF, options, opContext);
+    }
+
+    /**
+     * Creates the container using the specified options and operation context.
+     *
+     * @param accessType
+     *            A {@link BlobContainerPublicAccessType} object that specifies whether data in the container may be
+     *            accessed publicly and what level of access is to be allowed.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void create(BlobContainerPublicAccessType accessType, BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (accessType == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", accessType));
+        }
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -244,19 +258,20 @@ public final class CloudBlobContainer {
         opContext.initialize();
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
 
-        ExecutionEngine.executeWithRetry(this.blobServiceClient, this, createImpl(options),
+        ExecutionEngine.executeWithRetry(
+                this.blobServiceClient, this, createImpl(options, accessType),
                 options.getRetryPolicyFactory(), opContext);
-
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlobContainer, Void> createImpl(final BlobRequestOptions options) {
+    private StorageRequest<CloudBlobClient, CloudBlobContainer, Void> createImpl(
+            final BlobRequestOptions options, final BlobContainerPublicAccessType accessType) {
         final StorageRequest<CloudBlobClient, CloudBlobContainer, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlobContainer, Void>(
                 options, this.getStorageUri()) {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
                 final HttpURLConnection request = BlobRequest.createContainer(
-                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context);
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context, accessType);
                 return request;
             }
 
@@ -284,6 +299,13 @@ public final class CloudBlobContainer {
                         this.getConnection(), client.isUsePathStyleUris());
                 container.properties = attributes.getProperties();
                 container.name = attributes.getName();
+                if (accessType != null) {
+                    container.properties.setPublicAccess(accessType);
+                }
+                else {
+                    container.properties.setPublicAccess(BlobContainerPublicAccessType.OFF);
+                }
+
                 return null;
             }
         };
@@ -301,12 +323,12 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public boolean createIfNotExists() throws StorageException {
-        return this.createIfNotExists(null /* options */, null /* opContext */);
+        return this.createIfNotExists(BlobContainerPublicAccessType.OFF, null /* options */, null /* opContext */);
     }
 
     /**
      * Creates the container if it does not exist, using the specified request options and operation context.
-     * 
+     *
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
      *            Specifying <code>null</code> will use the default request options from the associated service client
@@ -323,6 +345,35 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        return this.createIfNotExists(BlobContainerPublicAccessType.OFF, options, opContext);
+    }
+
+    /**
+     * Creates the container if it does not exist, using the specified request options and operation context.
+     * 
+     * @param accessType
+     *            A {@link BlobContainerPublicAccessType} object that specifies whether data in the container may be
+     *            accessed publicly and what level of access is to be allowed.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
+     *            Specifying <code>null</code> will use the default request options from the associated service client
+     *            ({@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return <code>true</code> if the container did not already exist and was created; otherwise, <code>false</code>.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public boolean createIfNotExists(BlobContainerPublicAccessType accessType, BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (accessType == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", accessType));
+        }
+
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
@@ -331,7 +382,7 @@ public final class CloudBlobContainer {
         }
         else {
             try {
-                this.create(options, opContext);
+                this.create(accessType, options, opContext);
                 return true;
             }
             catch (StorageException e) {
@@ -644,6 +695,7 @@ public final class CloudBlobContainer {
                 container.updatePropertiesFromResponse(this.getConnection());
                 final String aclString = BlobResponse.getAcl(this.getConnection());
                 final BlobContainerPermissions containerAcl = getContainerAcl(aclString);
+                container.properties.setPublicAccess(containerAcl.getPublicAccess());
                 return containerAcl;
             }
 
@@ -747,7 +799,12 @@ public final class CloudBlobContainer {
             public Boolean preProcessResponse(CloudBlobContainer container, CloudBlobClient client,
                     OperationContext context) throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                    container.updatePropertiesFromResponse(this.getConnection());
+                    // Set attributes
+                    final BlobContainerAttributes attributes = BlobResponse.getBlobContainerAttributes(
+                            this.getConnection(), client.isUsePathStyleUris());
+                    container.metadata = attributes.getMetadata();
+                    container.properties = attributes.getProperties();
+                    container.name = attributes.getName();
                     return Boolean.valueOf(true);
                 }
                 else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -1771,6 +1828,10 @@ public final class CloudBlobContainer {
     @DoesServiceRequest
     public void uploadPermissions(final BlobContainerPermissions permissions, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (permissions.getPublicAccess() == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", permissions.getPublicAccess()));
+        }
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -1817,6 +1878,7 @@ public final class CloudBlobContainer {
                     }
 
                     container.updatePropertiesFromResponse(this.getConnection());
+                    container.getProperties().setPublicAccess(permissions.getPublicAccess());
                     return null;
                 }
             };
