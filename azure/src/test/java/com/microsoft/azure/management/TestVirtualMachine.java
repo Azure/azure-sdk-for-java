@@ -55,7 +55,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
         resource = resource.update()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                .withNewDataDisk(100)
+                .withNewNativeDataDisk(100)
                 .apply();
         return resource;
     }

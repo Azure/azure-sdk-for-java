@@ -19,7 +19,7 @@ import java.io.File;
 public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
     private static ApplicationTokenCredentials credentials;
     private static RestClient restClient;
-    private static Region region = Region.fromName("eastus2euap");   // Special region for canary deployment
+    private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
 
     @BeforeClass
     public static void setup() throws Exception {

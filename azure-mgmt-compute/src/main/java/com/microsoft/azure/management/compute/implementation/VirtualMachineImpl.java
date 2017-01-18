@@ -10,6 +10,7 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.HardwareProfile;
@@ -30,7 +31,7 @@ import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineNativeDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
@@ -74,6 +75,8 @@ class VirtualMachineImpl
         implements
         VirtualMachine,
         VirtualMachine.Definition,
+        VirtualMachine.DefinitionManaged,
+        VirtualMachine.DefinitionNative,
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
@@ -103,8 +106,8 @@ class VirtualMachineImpl
     private List<NetworkInterface> existingSecondaryNetworkInterfacesToAssociate;
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private boolean isMarketplaceLinuxImage;
-    // The data disks associated with the virtual machine
-    private List<VirtualMachineDataDisk> dataDisks;
+    // The native data disks associated with the virtual machine
+    private List<VirtualMachineNativeDataDisk> nativeDataDisks;
     // Intermediate state of network interface definition to which private IP can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
@@ -115,6 +118,12 @@ class VirtualMachineImpl
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
     // The entry point to manage extensions associated with the virtual machine
     private VirtualMachineExtensionsImpl virtualMachineExtensions;
+    // Flag indicates native disk is selected for OS and Data disks
+    private boolean isNativeDiskSelected;
+    //
+    private final String cannotHaveBothManagedAndNativeDisk = "This virtual machine is based on managed disk(s), both native and managed cannot exists together in a virtual machine";
+    private final String noNativeDiskToRemove = "This virtual machine is based on managed disk(s) and there is no native disk to remove";
+    private final String noNativeDiskToUpdate = "This virtual machine is based on managed disk(s) and there is no native disk to update";
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -139,7 +148,7 @@ class VirtualMachineImpl
             }
         };
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
-        initializeDataDisks();
+        initializeNativeDataDisks();
     }
 
     // Verbs
@@ -149,7 +158,7 @@ class VirtualMachineImpl
         VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
-        initializeDataDisks();
+        initializeNativeDataDisks();
         this.virtualMachineExtensions.refresh();
         return this;
     }
@@ -224,12 +233,10 @@ class VirtualMachineImpl
         return this.virtualMachineInstanceView;
     }
 
-    /**************************************************
-     * .
-     * Setters
-     **************************************************/
+    // SETTERS
 
     // Fluent methods for defining virtual network association for the new primary network interface
+    //
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
@@ -259,7 +266,7 @@ class VirtualMachineImpl
     }
 
     // Fluent methods for defining private IP association for the new primary network interface
-
+    //
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
         this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
@@ -275,7 +282,7 @@ class VirtualMachineImpl
     }
 
     // Fluent methods for defining public IP association for the new primary network interface
-
+    //
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
@@ -334,7 +341,6 @@ class VirtualMachineImpl
 
     // Virtual machine image specific fluent methods
     //
-
     @Override
     public VirtualMachineImpl withStoredWindowsImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
@@ -450,7 +456,6 @@ class VirtualMachineImpl
 
     // Virtual machine user name fluent methods
     //
-
     @Override
     public VirtualMachineImpl withRootUsername(String rootUserName) {
         this.inner().osProfile().withAdminUsername(rootUserName);
@@ -465,7 +470,6 @@ class VirtualMachineImpl
 
     // Virtual machine optional fluent methods
     //
-
     @Override
     public VirtualMachineImpl withSsh(String publicKeyData) {
         OSProfile osProfile = this.inner().osProfile();
@@ -606,6 +610,22 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withOsDiskStorageAccountType(StorageAccountTypes accountType) {
+        if (this.inner().storageProfile().osDisk().managedDisk() == null) {
+            this.inner()
+                    .storageProfile()
+                    .osDisk()
+                    .withManagedDisk(new ManagedDiskParametersInner());
+        }
+        this.inner()
+                .storageProfile()
+                .osDisk()
+                .managedDisk()
+                .withStorageAccountType(accountType);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withOsDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
@@ -623,28 +643,60 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Virtual machine optional data disk fluent methods
+    // Virtual machine optional native data disk fluent methods
     //
 
     @Override
-    public DataDiskImpl defineDataDisk(String name) {
-        return DataDiskImpl.prepareDataDisk(name, this);
+    public NativeDataDiskImpl defineNativeDataDisk(String name) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(cannotHaveBothManagedAndNativeDisk);
+        }
+        return NativeDataDiskImpl.prepareDataDisk(name, this);
     }
 
     @Override
-    public VirtualMachineImpl withNewDataDisk(Integer sizeInGB) {
-        return defineDataDisk(null)
+    public VirtualMachineImpl withNewNativeDataDisk(Integer sizeInGB) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(cannotHaveBothManagedAndNativeDisk);
+        }
+        return defineNativeDataDisk(null)
                 .withNewVhd(sizeInGB)
                 .attach();
     }
 
     @Override
-    public VirtualMachineImpl withExistingDataDisk(String storageAccountName,
-                                                   String containerName,
-                                                   String vhdName) {
-        return defineDataDisk(null)
+    public VirtualMachineImpl withExistingNativeDataDisk(String storageAccountName,
+                                                         String containerName,
+                                                         String vhdName) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(cannotHaveBothManagedAndNativeDisk);
+        }
+        return defineNativeDataDisk(null)
                 .withExistingVhd(storageAccountName, containerName, vhdName)
                 .attach();
+    }
+
+    // Virtual machine optional managed data disk fluent methods
+    //
+
+    @Override
+    public VirtualMachineImpl withNewDataDisk(int sizeInGB) {
+        return null;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType) {
+        return null;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingDataDisk(Disk disk) {
+        return null;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType) {
+        return null;
     }
 
     // Virtual machine optional storage account fluent methods
@@ -738,12 +790,15 @@ class VirtualMachineImpl
     // Virtual machine update only settings
 
     @Override
-    public VirtualMachineImpl withoutDataDisk(String name) {
+    public VirtualMachineImpl withoutNativeDataDisk(String name) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(noNativeDiskToRemove);
+        }
         int idx = -1;
-        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
             idx++;
             if (dataDisk.name().equalsIgnoreCase(name)) {
-                this.dataDisks.remove(idx);
+                this.nativeDataDisks.remove(idx);
                 this.inner().storageProfile().dataDisks().remove(idx);
                 break;
             }
@@ -752,12 +807,15 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withoutDataDisk(int lun) {
+    public VirtualMachineImpl withoutNativeDataDisk(int lun) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(noNativeDiskToRemove);
+        }
         int idx = -1;
-        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
             idx++;
             if (dataDisk.lun() == lun) {
-                this.dataDisks.remove(idx);
+                this.nativeDataDisks.remove(idx);
                 this.inner().storageProfile().dataDisks().remove(idx);
                 break;
             }
@@ -766,10 +824,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DataDiskImpl updateDataDisk(String name) {
-        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
+    public NativeDataDiskImpl updateNativeDataDisk(String name) {
+        if (isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(noNativeDiskToUpdate);
+        }
+        for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
             if (dataDisk.name().equalsIgnoreCase(name)) {
-                return (DataDiskImpl) dataDisk;
+                return (NativeDataDiskImpl) dataDisk;
             }
         }
         throw new RuntimeException("A data disk with name  '" + name + "' not found");
@@ -821,10 +882,13 @@ class VirtualMachineImpl
         return this;
     }
 
-    /**************************************************
-     * .
-     * Getters
-     **************************************************/
+    @Override
+    public VirtualMachineImpl withNativeDisks() {
+        this.isNativeDiskSelected = true;
+        return this;
+    }
+
+    // GETTERS
 
     @Override
     public String computerName() {
@@ -861,8 +925,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineDataDisk> dataDisks() {
-        return this.dataDisks;
+    public List<VirtualMachineNativeDataDisk> dataDisks() {
+        return this.nativeDataDisks;
     }
 
     @Override
@@ -980,6 +1044,7 @@ class VirtualMachineImpl
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
+    //
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
@@ -987,7 +1052,7 @@ class VirtualMachineImpl
             setOsProfileDefaults();
             setHardwareProfileDefaults();
         }
-        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
+        NativeDataDiskImpl.setDataDisksDefaults(this.nativeDataDisks, this.vmName);
         final VirtualMachineImpl self = this;
         return handleStorageSettingsAsync()
                 .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
@@ -1001,7 +1066,7 @@ class VirtualMachineImpl
                                     public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
                                         self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
-                                        initializeDataDisks();
+                                        initializeNativeDataDisks();
                                         return self;
                                     }
                                 });
@@ -1026,12 +1091,12 @@ class VirtualMachineImpl
         return this;
     }
 
-    VirtualMachineImpl withDataDisk(DataDiskImpl dataDisk) {
+    VirtualMachineImpl withDataDisk(NativeDataDiskImpl dataDisk) {
         this.inner()
                 .storageProfile()
                 .dataDisks()
                 .add(dataDisk.inner());
-        this.dataDisks
+        this.nativeDataDisks
                 .add(dataDisk);
         return this;
     }
@@ -1164,12 +1229,12 @@ class VirtualMachineImpl
                                     .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                             inner().storageProfile().osDisk().vhd().withUri(uri);
                         }
-                        DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
+                        NativeDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, storageAccount, vmName);
                     } else {
                         if (storageAccount != null) {
-                            DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
+                            NativeDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, storageAccount, vmName);
                         } else {
-                            DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
+                            NativeDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, vmName);
                         }
                     }
                 }
@@ -1268,11 +1333,11 @@ class VirtualMachineImpl
         }
         if (this.creatableStorageAccountKey != null
                 || this.existingStorageAccountToAssociate != null
-                || this.dataDisks.size() == 0) {
+                || this.nativeDataDisks.size() == 0) {
             return false;
         }
         boolean hasEmptyVhd = false;
-        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
             if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
                     || dataDisk.creationMethod() == DiskCreateOptionTypes.FROM_IMAGE) {
                 if (dataDisk.inner().vhd() == null) {
@@ -1287,7 +1352,7 @@ class VirtualMachineImpl
         if (hasEmptyVhd) {
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
-            for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
+            for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
                 if (dataDisk.creationMethod() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
                     return false;
                 }
@@ -1383,15 +1448,15 @@ class VirtualMachineImpl
                 .withPrimaryPrivateIpAddressDynamic();
     }
 
-    private void initializeDataDisks() {
+    private void initializeNativeDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
                     .withDataDisks(new ArrayList<DataDisk>());
         }
-        this.dataDisks = new ArrayList<>();
+        this.nativeDataDisks = new ArrayList<>();
         for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
-            this.dataDisks().add(new DataDiskImpl(dataDiskInner, this));
+            this.dataDisks().add(new NativeDataDiskImpl(dataDiskInner, this));
         }
     }
 
@@ -1415,6 +1480,9 @@ class VirtualMachineImpl
     private boolean isManagedDiskEnabled() {
         if (isInCreateMode()) {
             return true;
+        }
+        if (this.isNativeDiskSelected) {
+            return false;
         }
         // For an existing VM, osDisk.vhd() will be always set if the OS Disk is based on
         // native disk. This must be null for managed disk.

@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineNativeDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -110,8 +110,8 @@ public final class ManageVirtualMachine {
                 // Update - Attach data disks
 
                 windowsVM.update()
-                        .withNewDataDisk(10)
-                        .defineDataDisk(dataDiskName)
+                        .withNewNativeDataDisk(10)
+                        .defineNativeDataDisk(dataDiskName)
                             .withNewVhd(20)
                             .withCaching(CachingTypes.READ_WRITE)
                             .attach()
@@ -125,7 +125,7 @@ public final class ManageVirtualMachine {
                 // Update - detach data disk
 
                 windowsVM.update()
-                        .withoutDataDisk(dataDiskName)
+                        .withoutNativeDataDisk(dataDiskName)
                         .apply();
 
                 System.out.println("Detached data disk " + dataDiskName + " from VM " + windowsVM.id());
@@ -141,10 +141,10 @@ public final class ManageVirtualMachine {
 
                 System.out.println("De-allocated VM: " + windowsVM.id());
 
-                VirtualMachineDataDisk dataDisk = windowsVM.dataDisks().get(0);
+                VirtualMachineNativeDataDisk dataDisk = windowsVM.dataDisks().get(0);
 
                 windowsVM.update()
-                            .updateDataDisk(dataDisk.name())
+                            .updateNativeDataDisk(dataDisk.name())
                             .withSizeInGB(30)
                             .parent()
                         .apply();

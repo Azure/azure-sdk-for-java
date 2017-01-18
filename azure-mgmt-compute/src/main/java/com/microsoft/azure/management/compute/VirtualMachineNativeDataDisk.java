@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An non-managed data disk of a virtual machine.
  */
 @Fluent
-public interface VirtualMachineDataDisk extends
+public interface VirtualMachineNativeDataDisk extends
         Wrapper<DataDisk>,
         ChildResource<VirtualMachine> {
     /**
@@ -81,7 +81,6 @@ public interface VirtualMachineDataDisk extends
             WithVhdAttachedDiskSettings<ParentT> withExistingVhd(String storageAccountName,
                                                                  String containerName,
                                                                  String vhdName);
-
             /**
              * specifies that disk needs to be created with a new vhd of given size.
              *

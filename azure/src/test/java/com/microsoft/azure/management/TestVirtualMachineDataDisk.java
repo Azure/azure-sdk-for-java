@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineNativeDataDisk;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -28,18 +28,19 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
                 .withAdminPassword("12NewPA$$w0rd!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A8)
-                .withNewDataDisk(30)
-                .defineDataDisk("disk2")
+                .withNativeDisks()
+                .withNewNativeDataDisk(30)
+                .defineNativeDataDisk("disk2")
                     .withNewVhd(20)
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()
+                .withSize(VirtualMachineSizeTypes.STANDARD_A8)
                 .create();
 
         Assert.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
         Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
-        VirtualMachineDataDisk disk2 = null;
-        for (VirtualMachineDataDisk dataDisk : virtualMachine.dataDisks()) {
+        VirtualMachineNativeDataDisk disk2 = null;
+        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.dataDisks()) {
             if (dataDisk.name().equalsIgnoreCase("disk2")) {
                 disk2 = dataDisk;
                 break;
@@ -54,15 +55,15 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
     @Override
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
         virtualMachine = virtualMachine.update()
-                .withoutDataDisk("disk2")
-                .defineDataDisk("disk3")
+                .withoutNativeDataDisk("disk2")
+                .defineNativeDataDisk("disk3")
                     .withNewVhd(10)
                     .withLun(2)
                     .attach()
                 .apply();
         Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
-        VirtualMachineDataDisk disk3 = null;
-        for (VirtualMachineDataDisk dataDisk : virtualMachine.dataDisks()) {
+        VirtualMachineNativeDataDisk disk3 = null;
+        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.dataDisks()) {
             if (dataDisk.name().equalsIgnoreCase("disk3")) {
                 disk3 = dataDisk;
                 break;
