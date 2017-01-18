@@ -1,4 +1,4 @@
-2016.XX.XX Version 5.0.0
+2017.01.18 Version 5.0.0
  * Prefix support for listing files and directories.
  * Added support for setting public access when creating a blob container
  * The public access setting on a blob container is now a container property returned from downloadProperties.
