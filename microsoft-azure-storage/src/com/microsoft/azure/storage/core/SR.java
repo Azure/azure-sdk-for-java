@@ -26,6 +26,7 @@ public class SR {
     public static final String ARGUMENT_OUT_OF_RANGE_ERROR = "The argument is out of range. Argument name: %s, Value passed: %s.";
     public static final String ATTEMPTED_TO_SERIALIZE_INACCESSIBLE_PROPERTY = "An attempt was made to access an inaccessible member of the entity during serialization.";
     public static final String BLOB = "blob";
+    public static final String BLOB_OVER_MAX_BLOCK_LIMIT = "The total blocks for this upload exceeds the maximum allowable limit. Please increase the block size.";
     public static final String BLOB_DATA_CORRUPTED = "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s";
     public static final String BLOB_ENDPOINT_NOT_CONFIGURED = "No blob endpoint configured.";
     public static final String BLOB_HASH_MISMATCH = "Blob hash mismatch (integrity check failed), Expected value is %s, retrieved %s.";
@@ -168,7 +169,9 @@ public class SR {
     public static final String STOREAS_DIFFERENT_FOR_GETTER_AND_SETTER = "StoreAs Annotation found for both getter and setter for property %s with unequal values.";
     public static final String STOREAS_USED_ON_EMPTY_PROPERTY = "StoreAs Annotation found for property %s with empty value.";
     public static final String STREAM_CLOSED = "Stream is already closed.";
+    public static final String STREAM_SKIP_FAILED = "The supplied stream has failed to skip to the correct position after successive attempts. Please ensure there are bytes available and try your upload again.";
     public static final String STREAM_LENGTH_GREATER_THAN_4MB = "Invalid stream length, length must be less than or equal to 4 MB in size.";
+    public static final String STREAM_LENGTH_GREATER_THAN_100MB = "Invalid stream length, length must be less than or equal to 100 MB in size.";
     public static final String STREAM_LENGTH_NEGATIVE = "Invalid stream length, specify -1 for unknown length stream, or a positive number of bytes.";
     public static final String STRING_NOT_VALID = "The String is not a valid Base64-encoded string.";
     public static final String TABLE = "table";

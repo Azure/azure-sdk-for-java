@@ -111,6 +111,11 @@ public final class BlobProperties {
      * Represents the blob's server-side encryption status.
      */
     private boolean serverEncrypted;
+
+    /**
+     * Represents whether the blob is an incremental copy.
+     */
+    private boolean isIncrementalCopy;
     
     /**
      * Creates an instance of the <code>BlobProperties</code> class.
@@ -144,6 +149,7 @@ public final class BlobProperties {
         this.lastModified = other.lastModified;
         this.pageBlobSequenceNumber = other.pageBlobSequenceNumber;
         this.serverEncrypted = other.serverEncrypted;
+        this.isIncrementalCopy = other.isIncrementalCopy;
     }
 
     /**
@@ -313,10 +319,19 @@ public final class BlobProperties {
     /**
      * Gets the blob's server-side encryption status;
      * 
-     * @return The blob's server-side encryption status.
+     * @return A <code>boolean</code> which specifies the blob's encryption status.
      */
     public boolean isServerEncrypted() {
         return serverEncrypted;
+    }
+
+    /**
+     * Gets if the blob is an incremental copy
+     * 
+     * @return A <code>boolean</code> which specifies if the blob is an incremental copy.
+     */
+    public boolean isIncrementalCopy() {
+        return this.isIncrementalCopy;
     }
 
     /**
@@ -476,7 +491,7 @@ public final class BlobProperties {
      *        A long containing the blob's current sequence number.
      */
     protected void setPageBlobSequenceNumber(final Long pageBlobSequenceNumber) {
-    	this.pageBlobSequenceNumber = pageBlobSequenceNumber;
+        this.pageBlobSequenceNumber = pageBlobSequenceNumber;
     }
 
     /**
@@ -485,7 +500,16 @@ public final class BlobProperties {
      * @param serverEncrypted
      *        A <code>boolean</code> which specifies the encryption status to set.
      */
-    void setServerEncrypted(boolean serverEncrypted) {
+    protected void setServerEncrypted(boolean serverEncrypted) {
         this.serverEncrypted = serverEncrypted;
+    }
+
+    /**
+     * Sets whether the blob is an incremental copy.
+     * @param isIncrementalCopy
+     *        A <code>boolean</code> which specifies if the blob is an incremental copy.
+     */
+    protected void setIncrementalCopy(boolean isIncrementalCopy) {
+        this.isIncrementalCopy = isIncrementalCopy;
     }
 }

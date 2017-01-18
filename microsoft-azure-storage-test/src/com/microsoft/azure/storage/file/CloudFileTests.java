@@ -715,6 +715,13 @@ public class CloudFileTests {
             assertEquals(e.getCause().getMessage(),
                     "The conditionals specified for this operation did not match server.");
         }
+
+        final CloudFile fileRef2 = this.share.getRootDirectoryReference().getFileReference(fileName);
+        assertNull(fileRef2.getProperties().getContentMD5());
+
+        byte[] target = new byte[4];
+        fileRef2.downloadRangeToByteArray(0L, 4L, target, 0);
+        assertEquals(calculatedMD5, fileRef2.getProperties().getContentMD5());
     }
 
     @Test
@@ -735,17 +742,8 @@ public class CloudFileTests {
             }
         });
 
-        try {
-            fileRef.upload(srcStream, length, null, null, context);
-            fileRef.download(new ByteArrayOutputStream(), null, null, context);
-            fail("Shouldn't sign empty header, expected a 403.");
-        }
-        catch (StorageException e) {
-            assertEquals(e.getHttpStatusCode(), 403);
-            assertEquals(
-                    e.getMessage(),
-                    "Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.");
-        }
+        fileRef.upload(srcStream, length, null, null, context);
+        fileRef.download(new ByteArrayOutputStream(), null, null, context);
     }
 
     /**
@@ -1388,6 +1386,26 @@ public class CloudFileTests {
         assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
         assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
         assertEquals(prop1.getContentType(), prop2.getContentType());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testFileGetRangeContentMD5Bounds() throws StorageException, IOException, URISyntaxException {
+        {
+            CloudFile file = FileTestHelper.uploadNewFile(this.share, 5 * Constants.MB, null);
+
+            FileRequestOptions options = new FileRequestOptions();
+            OperationContext opContext = new OperationContext();
+            try {
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB + 1, true);
+                fail("The request for range ContentMD5 should have thrown an Exception for exceeding the limit.");
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertEquals(e.getMessage(), String.format("The value of the parameter 'count' should be between 1 and %1d.", Constants.MAX_RANGE_CONTENT_MD5));
+            }
+        }
     }
     
     private CloudFile doCloudBlobCopy(CloudBlob source, int length) throws Exception {

@@ -58,6 +58,11 @@ public final class CopyState {
     private String statusDescription;
 
     /**
+     * Holds the snapshot ID of the last successful incremental copy snapshot.
+     */
+    private String copyDestinationSnapshotID;
+
+    /**
      * Gets the ID of the copy operation.
      * 
      * @return A <code>String</code> which represents the ID of the copy operation.
@@ -105,7 +110,7 @@ public final class CopyState {
     /**
      * Gets the number of bytes total number of bytes to copy.
      * 
-     * @return A <code>long</code> which represents the total number of bytes to copy/ 
+     * @return A <code>long</code> which represents the total number of bytes to copy.
      */
     public Long getTotalBytes() {
         return this.totalBytes;
@@ -118,6 +123,15 @@ public final class CopyState {
      */
     public String getStatusDescription() {
         return this.statusDescription;
+    }
+    
+    /**
+     * Gets the snapshot ID of the last successful incremental copy snapshot.
+     * 
+     * @return A <code>String</code> which represents the snapshot ID of the last successful incremental copy snapshot.
+     */
+    public String getCopyDestinationSnapshotID() {
+        return this.copyDestinationSnapshotID;
     }
 
     /**
@@ -189,4 +203,15 @@ public final class CopyState {
      */
     void setStatusDescription(final String statusDescription) {
         this.statusDescription = statusDescription;
-    }}
+    }
+    
+    /**
+     * Sets the snapshot ID of the last successful incremental copy snapshot.
+     * 
+     * @param statusDescriptionID
+     *        A <code>String</code> which specifies the snapshot ID of the last successful incremental copy snapshot.
+     */
+    void setCopyDestinationSnapshotID(final String copyDestinationSnapshotID) {
+        this.copyDestinationSnapshotID = copyDestinationSnapshotID;
+    }
+}

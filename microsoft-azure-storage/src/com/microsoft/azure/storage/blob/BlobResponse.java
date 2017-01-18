@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the ACL for the container from the response.
-     * 
+     *
      * @param request
      *            the request object for this operation
      * @return the ACL value indicating the public access level for the container
@@ -46,7 +46,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the BlobAttributes from the given request
-     * 
+     *
      * @param request
      *            The response from server.
      * @param resourceURI
@@ -68,10 +68,18 @@ final class BlobResponse extends BaseResponse {
         properties.setContentDisposition(request.getHeaderField(Constants.HeaderConstants.CONTENT_DISPOSITION));
         properties.setContentEncoding(request.getHeaderField(Constants.HeaderConstants.CONTENT_ENCODING));
         properties.setContentLanguage(request.getHeaderField(Constants.HeaderConstants.CONTENT_LANGUAGE));
-        properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+
+        // For range gets, only look at 'x-ms-blob-content-md5' for overall MD5
+        if (!Utility.isNullOrEmpty(request.getHeaderField(Constants.HeaderConstants.CONTENT_RANGE))) {
+            properties.setContentMD5(request.getHeaderField(BlobConstants.BLOB_CONTENT_MD5_HEADER));
+        }
+        else {
+            properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+        }
+
         properties.setContentType(request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE));
         properties.setEtag(BaseResponse.getEtag(request));
-        
+
         properties.setServerEncrypted(
                 Constants.TRUE.equals(request.getHeaderField(Constants.HeaderConstants.SERVER_ENCRYPTED)));
 
@@ -102,18 +110,24 @@ final class BlobResponse extends BaseResponse {
                 properties.setLength(Long.parseLong(contentLength));
             }
         }
-        
+
         // Get sequence number
         final String sequenceNumber = request.getHeaderField(Constants.HeaderConstants.BLOB_SEQUENCE_NUMBER);
         if (!Utility.isNullOrEmpty(sequenceNumber)) {
             properties.setPageBlobSequenceNumber(Long.parseLong(sequenceNumber));
         }
-        
+
         // Get committed block count
         final String comittedBlockCount = request.getHeaderField(Constants.HeaderConstants.BLOB_COMMITTED_BLOCK_COUNT);
         if (!Utility.isNullOrEmpty(comittedBlockCount))
         {
             properties.setAppendBlobCommittedBlockCount(Integer.parseInt(comittedBlockCount));
+        }
+
+        final String incrementalCopyHeaderString =
+                request.getHeaderField(Constants.HeaderConstants.INCREMENTAL_COPY);
+        if (!Utility.isNullOrEmpty(incrementalCopyHeaderString)) {
+            properties.setIncrementalCopy(Constants.TRUE.equals(incrementalCopyHeaderString));
         }
 
         attributes.setStorageUri(resourceURI);
@@ -127,7 +141,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the BlobContainerAttributes from the given request.
-     * 
+     *
      * @param request
      *            the request to get attributes from.
      * @param usePathStyleUris
@@ -158,12 +172,14 @@ final class BlobResponse extends BaseResponse {
         containerProperties.setLeaseState(getLeaseState(request));
         containerProperties.setLeaseDuration(getLeaseDuration(request));
 
+        containerProperties.setPublicAccess(getPublicAccessLevel(request));
+
         return containerAttributes;
     }
 
     /**
      * Gets the copyState
-     * 
+     *
      * @param request
      *            The response from server.
      * @return The CopyState.
@@ -174,7 +190,7 @@ final class BlobResponse extends BaseResponse {
         String copyStatusString = request.getHeaderField(Constants.HeaderConstants.COPY_STATUS);
         if (!Utility.isNullOrEmpty(copyStatusString)) {
             final CopyState copyState = new CopyState();
-            
+
             copyState.setStatus(CopyStatus.parse(copyStatusString));
             copyState.setCopyId(request.getHeaderField(Constants.HeaderConstants.COPY_ID));
             copyState.setStatusDescription(request.getHeaderField(Constants.HeaderConstants.COPY_STATUS_DESCRIPTION));
@@ -196,7 +212,13 @@ final class BlobResponse extends BaseResponse {
             if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
                 copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
             }
-            
+
+            final String copyDestinationSnapshotString =
+                    request.getHeaderField(Constants.HeaderConstants.COPY_DESTINATION_SNAPSHOT_ID);
+            if (!Utility.isNullOrEmpty(copyDestinationSnapshotString)) {
+                copyState.setCopyDestinationSnapshotID(copyDestinationSnapshotString);
+            }
+
             return copyState;
         }
         else {
@@ -206,7 +228,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the LeaseDuration
-     * 
+     *
      * @param request
      *            The response from server.
      * @return The LeaseDuration.
@@ -222,7 +244,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the lease id from the request header.
-     * 
+     *
      * @param request
      *            The response from server.
      * @return the lease id from the request header.
@@ -233,7 +255,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the LeaseState
-     * 
+     *
      * @param request
      *            The response from server.
      * @return The LeaseState.
@@ -249,7 +271,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the LeaseStatus
-     * 
+     *
      * @param request
      *            The response from server.
      * @return The Etag.
@@ -265,7 +287,7 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the lease Time from the request header.
-     * 
+     *
      * @param request
      *            The response from server.
      * @return the lease Time from the request header.
@@ -276,12 +298,30 @@ final class BlobResponse extends BaseResponse {
 
     /**
      * Gets the snapshot ID from the request header.
-     * 
+     *
      * @param request
      *            The response from server.
      * @return the snapshot ID from the request header.
      */
     public static String getSnapshotTime(final HttpURLConnection request) {
         return request.getHeaderField(Constants.HeaderConstants.SNAPSHOT_ID_HEADER);
+    }
+
+    /**
+     * Gets the public access type for the container
+     *
+     * @param request
+     *            The response from server.
+     * @return the blob container public access type from the request header.
+     */
+    public static BlobContainerPublicAccessType getPublicAccessLevel(
+            final HttpURLConnection request) {
+        final String publicAccess = request
+                .getHeaderField(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER);
+        if (!Utility.isNullOrEmpty(publicAccess)) {
+            return BlobContainerPublicAccessType.parse(publicAccess);
+        }
+
+        return BlobContainerPublicAccessType.OFF;
     }
 }

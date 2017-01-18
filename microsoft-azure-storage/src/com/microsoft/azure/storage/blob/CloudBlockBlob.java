@@ -14,6 +14,12 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.*;
+import com.microsoft.azure.storage.core.*;
+import com.microsoft.azure.storage.file.CloudFile;
+
+import javax.crypto.Cipher;
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,31 +28,18 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-import javax.crypto.Cipher;
-import javax.xml.stream.XMLStreamException;
-
-import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.DoesServiceRequest;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageUri;
-import com.microsoft.azure.storage.core.Base64;
-import com.microsoft.azure.storage.core.ExecutionEngine;
-import com.microsoft.azure.storage.core.RequestLocationMode;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.core.StorageRequest;
-import com.microsoft.azure.storage.core.StreamMd5AndLength;
-import com.microsoft.azure.storage.core.Utility;
-import com.microsoft.azure.storage.file.CloudFile;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Represents a blob that is uploaded as a set of blocks.
  */
 public final class CloudBlockBlob extends CloudBlob {
+
+    /**
+     * Flag that indicates if the default streamWriteSize has been modified.
+     */
+    private boolean isStreamWriteSizeModified = false;
 
     /**
      * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute URI.
@@ -217,8 +210,14 @@ public final class CloudBlockBlob extends CloudBlob {
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopy(
-                sourceBlob.getQualifiedUri(), sourceAccessCondition, destinationAccessCondition, options, opContext);
+
+        URI source = sourceBlob.getSnapshotQualifiedUri();
+        if (sourceBlob.getServiceClient() != null && sourceBlob.getServiceClient().getCredentials() != null)
+        {
+            source = sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getSnapshotQualifiedUri());
+        }
+
+        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
     }
 
     /**
@@ -660,10 +659,11 @@ public final class CloudBlockBlob extends CloudBlob {
         // data is under the threshold.
         // Note this will abort at
         // options.getSingleBlobPutThresholdInBytes() bytes and return -1.        
-        if (!skipPutBlob && options.getEncryptionPolicy() != null)
-        {
+        if (!skipPutBlob && options.getEncryptionPolicy() != null) {
             class GettableByteArrayOutputStream extends ByteArrayOutputStream {
-                public byte[] getByteArray() { return this.buf; }
+                public byte[] getByteArray() {
+                    return this.buf;
+                }
             }
             
             Cipher cipher = options.getEncryptionPolicy().createAndSetEncryptionContext(this.getMetadata(), false /* noPadding */);
@@ -676,8 +676,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 inputDataStream = new ByteArrayInputStream(targetStream.getByteArray());
                 descriptor.setLength(byteCount);
             }
-            else
-            {
+            else {
                 // If the encrypted data is over the threshold, skip PutBlob.
                 skipPutBlob = true;
             }
@@ -713,12 +712,130 @@ public final class CloudBlockBlob extends CloudBlob {
             this.uploadFullBlob(inputDataStream, descriptor.getLength(), accessCondition, options, opContext);
         }
         else {
-            final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
-            try {
-                writeStream.write(inputDataStream, length);
+            int totalBlocks = (int) Math.ceil((double) length / (double) this.streamWriteSizeInBytes);
+
+            // Check if the upload will fail because the total blocks exceeded the maximum allowable limit.
+            if (length != -1 && totalBlocks > Constants.MAX_BLOCK_NUMBER) {
+                if (this.isStreamWriteSizeModified()) {
+                    // User has set the block write size explicitly and will need to adjust it manually.
+                    throw new IOException(SR.BLOB_OVER_MAX_BLOCK_LIMIT);
+                }
+                else {
+                    // Scale so the upload succeeds (only if the block write size was not modified).
+                    this.streamWriteSizeInBytes = (int) Math.ceil((double) length / (double) Constants.MAX_BLOCK_NUMBER);
+                    totalBlocks = (int) Math.ceil((double) length / (double) this.streamWriteSizeInBytes);
+                }
             }
-            finally {
-                writeStream.close();
+
+            boolean useOpenWrite = options.getEncryptionPolicy() != null
+                                   || !inputDataStream.markSupported()
+                                   || this.streamWriteSizeInBytes < Constants.MIN_LARGE_BLOCK_SIZE
+                                   || options.getStoreBlobContentMD5()
+                                   || descriptor.getLength() == -1;
+
+            if (useOpenWrite) {
+                final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
+                try {
+                    writeStream.write(inputDataStream, length);
+                }
+                finally {
+                    writeStream.close();
+                }
+            }
+            else {
+                int blocksAllowedPerBatch = Integer.MAX_VALUE / this.streamWriteSizeInBytes;
+                List<BlockEntry> blockList = new ArrayList<BlockEntry>();
+
+                while (totalBlocks > 0) {
+                    sourceStream.mark(Integer.MAX_VALUE);
+                    int blocksInBatch = Math.min(totalBlocks, blocksAllowedPerBatch);
+                    SubStreamGenerator subStreamGenerator = new SubStreamGenerator(sourceStream, blocksInBatch, this.streamWriteSizeInBytes);
+                    if (totalBlocks == blocksInBatch && (length % this.streamWriteSizeInBytes != 0)) {
+                        subStreamGenerator.setLastBlockSize(length % this.streamWriteSizeInBytes);
+                    }
+
+                    totalBlocks -= blocksInBatch;
+                    this.uploadFromMultiStream(subStreamGenerator, accessCondition, options, opContext, blockList);
+                }
+
+                this.commitBlockList(blockList,accessCondition, options, opContext);
+            }
+        }
+    }
+
+    /**
+     * Uploads an Iterable collection of streams using PutBlock.
+     *
+     * @param streamList
+     *            An <code>Iterable</code> object of type <code>InputStream</code> that represent the
+     *            source streams to be uploaded.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param requestOptions
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param operationContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param blockList
+     *            An List object of type (@link BlockEntry} that will be populated with the BlockEntry for each uploaded block.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws IOException
+     *             If an I/O error occurred.
+     */
+    private void uploadFromMultiStream(Iterable<InputStream> streamList, AccessCondition accessCondition, BlobRequestOptions requestOptions, OperationContext operationContext, List<BlockEntry> blockList)
+            throws StorageException, IOException {
+        int concurrentOpsCount = requestOptions.getConcurrentRequestCount();
+
+        // The ExecutorService used to schedule putblock tasks for this stream.
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
+                concurrentOpsCount,
+                concurrentOpsCount,
+                10,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>());
+
+        ExecutorCompletionService<Void> completionService = new ExecutorCompletionService<Void>(threadPool);
+        final BlobRequestOptions _requestOptions = requestOptions;
+        final OperationContext _operationContext = operationContext;
+        final AccessCondition _accessCondition = accessCondition;
+        int blockNum = 0;
+        for (InputStream block : streamList) {
+
+            // Pad block id up to digits in MaxBlockSize
+            final String blockId = Base64.encode(
+                    String.format("Block_%05d", ++blockNum).getBytes()
+            );
+
+            BlockEntry blockEntry = new BlockEntry(blockId);
+            blockList.add(blockEntry);
+            final InputStream sourceStream = block;
+            final long blockSize = block instanceof SubStream ? ((SubStream) block).getLength() : this.streamWriteSizeInBytes;
+
+            Future<Void> uploadTask = completionService.submit(new Callable<Void>() {
+                @Override
+                public Void call() throws IOException, StorageException {
+                    uploadBlock(blockId, sourceStream, blockSize, _accessCondition, _requestOptions, _operationContext);
+                    sourceStream.close();
+                    return null;
+                }
+            });
+        }
+
+        for (int i = 0; i < blockNum; i++) {
+            this.waitAny(completionService);
+        }
+
+        try {
+            // Shutdown the thread pool executor.
+            threadPool.shutdown();
+        }
+        finally {
+            if (!threadPool.isShutdown()) {
+                threadPool.shutdownNow();
             }
         }
     }
@@ -874,6 +991,7 @@ public final class CloudBlockBlob extends CloudBlob {
     public void uploadBlock(final String blockId, final InputStream sourceStream, final long length,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, IOException {
+
         if (length < -1) {
             throw new IllegalArgumentException(SR.STREAM_LENGTH_NEGATIVE);
         }
@@ -918,8 +1036,9 @@ public final class CloudBlockBlob extends CloudBlob {
                     options.getUseTransactionalContentMD5());
         }
 
-        if (descriptor.getLength() > 4 * Constants.MB) {
-            throw new IllegalArgumentException(SR.STREAM_LENGTH_GREATER_THAN_4MB);
+        if (descriptor.getLength() > Constants.MAX_BLOCK_SIZE)
+        {
+            throw new IllegalArgumentException(SR.STREAM_LENGTH_GREATER_THAN_100MB);
         }
 
         this.uploadBlockInternal(blockId, descriptor.getMd5(), bufferedStreamReference, descriptor.getLength(),
@@ -1098,20 +1217,46 @@ public final class CloudBlockBlob extends CloudBlob {
 
     /**
      * Sets the number of bytes to buffer when writing to a {@link BlobOutputStream}.
-     * 
-     * @param streamWriteSizeInBytes
-     *            An <code>int</code> which represents the maximum block size, in bytes, for writing to a block blob
-     *            while using a {@link BlobOutputStream} object, ranging from 16 KB to 4 MB, inclusive.
-     * 
-     * @throws IllegalArgumentException
-     *             If <code>streamWriteSizeInBytes</code> is less than 16 KB or greater than 4 MB.
+     *
+     * @param streamWriteSizeInBytes An <code>int</code> which represents the maximum block size, in bytes, for writing to a block blob
+     *                               while using a {@link BlobOutputStream} object, ranging from 16 KB to 100 MB, inclusive.
+     * @throws IllegalArgumentException If <code>streamWriteSizeInBytes</code> is less than 16 KB or greater than 100 MB.
      */
     @Override
-    public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
+    public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes)
+    {
+        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < Constants.MIN_PERMITTED_BLOCK_SIZE)
+        {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 
         this.streamWriteSizeInBytes = streamWriteSizeInBytes;
+        this.isStreamWriteSizeModified = true;
+    }
+
+    /**
+     * Gets the flag that indicates whether the default streamWriteSize was modified.
+     */
+    public boolean isStreamWriteSizeModified()
+    {
+        return this.isStreamWriteSizeModified;
+    }
+
+    private void waitAny(ExecutorCompletionService<Void> completionService) throws StorageException, IOException {
+        try {
+            completionService.take().get();
+        }
+        catch (Exception e) {
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                if (cause instanceof StorageException) {
+                    throw (StorageException) cause;
+                }
+
+                cause = cause.getCause();
+            }
+
+            throw Utility.initIOException(e);
+        }
     }
 }

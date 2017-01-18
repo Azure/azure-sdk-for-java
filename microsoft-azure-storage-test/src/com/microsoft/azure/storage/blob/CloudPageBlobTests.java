@@ -14,25 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.core.Utility;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-
 import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,15 +24,44 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.microsoft.azure.storage.AccessCondition;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.RetryNoRetry;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessAccountPermissions;
+import com.microsoft.azure.storage.SharedAccessAccountPolicy;
+import com.microsoft.azure.storage.SharedAccessAccountResourceType;
+import com.microsoft.azure.storage.SharedAccessAccountService;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
+import com.microsoft.azure.storage.core.Utility;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudPageBlobTests {
@@ -247,6 +258,13 @@ public class CloudPageBlobTests {
 
         options.setDisableContentMD5Validation(true);
         pageBlobRef.download(new ByteArrayOutputStream(), null, options, null);
+        
+        final CloudPageBlob pageBlobRef2 = this.container.getPageBlobReference(pageBlobName);
+        assertNull(pageBlobRef2.getProperties().getContentMD5());
+
+        byte[] target = new byte[4];
+        pageBlobRef2.downloadRangeToByteArray(0L, 4L, target, 0);
+        assertEquals("MDAwMDAwMDA=", pageBlobRef2.properties.getContentMD5());
     }
 
     @Test
@@ -490,7 +508,7 @@ public class CloudPageBlobTests {
         BlobTestHelper.waitForCopy(copy);
 
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
-        assertEquals(source.getQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
+        assertEquals(source.getSnapshotQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
         assertEquals(buffer.length, copy.getCopyState().getTotalBytes().intValue());
         assertEquals(buffer.length, copy.getCopyState().getBytesCopied().intValue());
         assertEquals(copyId, copy.getCopyState().getCopyId());
@@ -548,7 +566,7 @@ public class CloudPageBlobTests {
         BlobTestHelper.waitForCopy(copy);
 
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
-        assertEquals(source.getQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
+        assertEquals(source.getSnapshotQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
         assertEquals(buffer.length, copy.getCopyState().getTotalBytes().intValue());
         assertEquals(buffer.length, copy.getCopyState().getBytesCopied().intValue());
         assertEquals(copyId, copy.getCopyState().getCopyId());
@@ -1085,5 +1103,75 @@ public class CloudPageBlobTests {
         pageBlob2.downloadAttributes();
         assertEquals(1024, pageBlob2.getProperties().getLength());
         assertEquals(BlobType.PAGE_BLOB, pageBlob2.getProperties().getBlobType());
+    }
+    
+    @Test
+    public void testCopyPageBlobIncrementalSnapshot() throws URISyntaxException, StorageException, IOException, InvalidKeyException, InterruptedException {
+        for (int i = 0; i < 4; i++) {
+            testCopyPageBlobIncrementalSnapshotImpl(i);
+        }
+    }
+
+    private void testCopyPageBlobIncrementalSnapshotImpl(int overload) throws URISyntaxException, StorageException, IOException, InvalidKeyException, InterruptedException {
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudPageBlob source = this.container.getPageBlobReference(blobName);
+        source.create(1024);
+        
+        final Random randGenerator = new Random();
+        final byte[] buffer = new byte[1024];
+        randGenerator.nextBytes(buffer);
+
+        source.upload(new ByteArrayInputStream(buffer), buffer.length);
+        CloudPageBlob snapshot = (CloudPageBlob) source.createSnapshot();
+        
+        SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+        policy.setPermissions( EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE));
+
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.SECOND, 5000);
+        policy.setSharedAccessExpiryTime(cal.getTime());
+
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(cal.getTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudPageBlob sasSnapshotBlob = (CloudPageBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasSnapshotBlob.exists();
+        CloudPageBlob copy = this.container.getPageBlobReference(BlobTestHelper.generateRandomBlobNameWithPrefix("copy"));
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.SNAPSHOT, sasSnapshotBlob.snapshotID);
+        URI sourceUri = TestHelper.defiddler(builder.addToURI(sasSnapshotBlob.getTransformedAddress(null).getPrimaryUri()));
+
+        String copyId = null;
+        if (overload == 0) {
+            copyId = copy.startIncrementalCopy(BlobTestHelper.defiddler(sasSnapshotBlob));
+        }
+        else if (overload == 1) {
+            copyId = copy.startIncrementalCopy(BlobTestHelper.defiddler(sasSnapshotBlob), null, null, null);
+        }
+        else if (overload == 2) {
+            copyId = copy.startIncrementalCopy(sourceUri);
+        }
+        else {
+            copyId = copy.startIncrementalCopy(sourceUri, null, null, null);
+        }
+
+        BlobTestHelper.waitForCopy(copy);
+
+        assertEquals(BlobType.PAGE_BLOB, copy.getProperties().getBlobType());
+        assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
+        assertEquals(sourceUri.getSchemeSpecificPart(), copy.getCopyState().getSource().getSchemeSpecificPart());
+        assertTrue(buffer.length == copy.getCopyState().getTotalBytes());
+        assertTrue(buffer.length == copy.getCopyState().getBytesCopied());
+        assertEquals(copyId, copy.getCopyState().getCopyId());
+        assertTrue(copy.properties.isIncrementalCopy());
+        assertNotNull(copy.properties.getCopyState().getCopyDestinationSnapshotID());
+        assertNotNull(copy.getCopyState().getCompletionTime());
     }
 }

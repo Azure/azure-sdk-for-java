@@ -352,8 +352,14 @@ public final class CloudFile implements ListFileItem {
             final AccessCondition destinationAccessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopy(
-                sourceBlob.getQualifiedUri(), sourceAccessCondition, destinationAccessCondition, options, opContext);
+
+        URI source = sourceBlob.getSnapshotQualifiedUri();
+        if (sourceBlob.getServiceClient() != null && sourceBlob.getServiceClient().getCredentials() != null)
+        {
+            source = sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getSnapshotQualifiedUri());
+        }
+
+        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
     }
 
     /**
@@ -1298,7 +1304,6 @@ public final class CloudFile implements ListFileItem {
             final FileRequestOptions options, OperationContext opContext) {
 
         final long startingOffset = fileOffset == null ? 0 : fileOffset;
-        final boolean isRangeGet = fileOffset != null;
         final StorageRequest<CloudFileClient, CloudFile, Integer> getRequest = new StorageRequest<CloudFileClient, CloudFile, Integer>(
                 options, this.getStorageUri()) {
 
@@ -1346,18 +1351,8 @@ public final class CloudFile implements ListFileItem {
                 }
 
                 if (!this.getArePropertiesPopulated()) {
-                    String originalContentMD5 = null;
-
                     final FileAttributes retrievedAttributes = FileResponse.getFileAttributes(this.getConnection(),
                             file.getStorageUri());
-
-                    // Do not update Content-MD5 if it is a range get. 
-                    if (isRangeGet) {
-                        originalContentMD5 = file.properties.getContentMD5();
-                    }
-                    else {
-                        originalContentMD5 = retrievedAttributes.getProperties().getContentMD5();
-                    }
 
                     if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
                             && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
@@ -1367,8 +1362,11 @@ public final class CloudFile implements ListFileItem {
 
                     file.properties = retrievedAttributes.getProperties();
                     file.metadata = retrievedAttributes.getMetadata();
-                    this.setContentMD5(retrievedAttributes.getProperties().getContentMD5());
-                    file.properties.setContentMD5(originalContentMD5);
+
+                    // Need to store the Content MD5 in case we fail part way through.
+                    // We would still need to verify the entire range.
+                    this.setContentMD5(this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+
                     this.setLockedETag(file.properties.getEtag());
                     this.setArePropertiesPopulated(true);
                 }
@@ -1944,6 +1942,7 @@ public final class CloudFile implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
+
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
         if (length != null) {
@@ -2907,7 +2906,7 @@ public final class CloudFile implements ListFileItem {
      *             If <code>streamWriteSizeInBytes</code> is less than 512 bytes or greater than 4 MB.
      */
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < Constants.PAGE_SIZE) {
+        if (streamWriteSizeInBytes > Constants.MAX_FILE_WRITE_SIZE || streamWriteSizeInBytes < Constants.MIN_PERMITTED_FILE_WRITE_SIZE) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 

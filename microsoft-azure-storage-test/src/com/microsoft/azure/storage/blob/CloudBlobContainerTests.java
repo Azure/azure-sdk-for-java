@@ -14,30 +14,12 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import static org.junit.Assert.*;
 
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResultContinuation;
-import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.Calendar;
@@ -47,10 +29,37 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
+import com.microsoft.azure.storage.NameValidator;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResultContinuation;
+import com.microsoft.azure.storage.ResultSegment;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessAccountPermissions;
+import com.microsoft.azure.storage.SharedAccessAccountPolicy;
+import com.microsoft.azure.storage.SharedAccessAccountResourceType;
+import com.microsoft.azure.storage.SharedAccessAccountService;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
 
 /**
  * Blob Container Tests
@@ -753,6 +762,74 @@ public class CloudBlobContainerTests {
         testPermissions = this.container.downloadPermissions();
         assertPermissionsEqual(expectedPermissions, testPermissions);
     }
+    
+    /**
+     * @throws StorageException
+     * @throws InterruptedException
+     * @throws URISyntaxException 
+     * @throws IOException 
+     * @throws InvalidKeyException 
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testListBlobsWithIncrementalCopiedBlob() throws StorageException, InterruptedException, URISyntaxException, IOException, InvalidKeyException {
+        this.container.create();
+        
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudPageBlob source = this.container.getPageBlobReference(blobName);
+        source.create(1024);
+        
+        final Random randGenerator = new Random();
+        final byte[] buffer = new byte[1024];
+        randGenerator.nextBytes(buffer);
+
+        source.upload(new ByteArrayInputStream(buffer), buffer.length);
+        CloudPageBlob snapshot = (CloudPageBlob) source.createSnapshot();
+        
+        SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+        policy.setPermissions( EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE));
+
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.SECOND, 5000);
+        policy.setSharedAccessExpiryTime(cal.getTime());
+
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(cal.getTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudPageBlob sasSnapshotBlob = (CloudPageBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasSnapshotBlob.exists();
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.SNAPSHOT, sasSnapshotBlob.snapshotID);
+
+        copy.startIncrementalCopy(BlobTestHelper.defiddler(sasSnapshotBlob));
+        
+        BlobTestHelper.waitForCopy(copy);
+        
+        boolean incrementalCopyFound = false;
+        for (ListBlobItem blobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null, null)) {
+            CloudPageBlob blob = (CloudPageBlob) blobItem;
+            
+            if (blob.getName().equals("copy") && blob.isSnapshot()) {
+                // Check that the incremental copied blob is found exactly once
+                assertFalse(incrementalCopyFound);
+                assertTrue(blob.properties.isIncrementalCopy());
+                incrementalCopyFound = true;
+            }
+            else if (blob.getName().equals("copy")) {
+                assertNotNull(blob.getCopyState().getCopyDestinationSnapshotID());
+            }
+        }
+
+        assertTrue(incrementalCopyFound);
+    }
 
     // Helper Method
     private static void assertPermissionsEqual(BlobContainerPermissions expected, BlobContainerPermissions actual) {
@@ -787,7 +864,7 @@ public class CloudBlobContainerTests {
         assertEquals(createdBlob.getContainer().getName(), listedBlob.getContainer().getName());
         assertEquals(createdBlob.getMetadata(), listedBlob.getMetadata());
         assertEquals(createdBlob.getName(), listedBlob.getName());
-        assertEquals(createdBlob.getQualifiedUri(), listedBlob.getQualifiedUri());
+        assertEquals(createdBlob.getSnapshotQualifiedUri(), listedBlob.getSnapshotQualifiedUri());
         assertEquals(createdBlob.getSnapshotID(), listedBlob.getSnapshotID());
         assertEquals(createdBlob.getUri(), listedBlob.getUri());
 

@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,6 +49,11 @@ public final class BlobContainerProperties {
     private LeaseDuration leaseDuration;
 
     /**
+     * Represents the level of public access that is allowed on the container.
+     */
+    private BlobContainerPublicAccessType publicAccess;
+
+    /**
      * Gets the ETag value of the container.
      * <p>
      * The ETag value is a unique identifier that is updated when a write operation is performed against the container.
@@ -57,7 +62,7 @@ public final class BlobContainerProperties {
      * The {@link AccessCondition#generateIfMatchCondition(String)} and
      * {@link AccessCondition#generateIfNoneMatchCondition(String)} methods take an ETag value and return an
      * {@link AccessCondition} object that may be specified on the request.
-     * 
+     *
      * @return A <code>String</code> which represents the ETag.
      */
     public String getEtag() {
@@ -66,7 +71,7 @@ public final class BlobContainerProperties {
 
     /**
      * Gets the last modified time on the container.
-     * 
+     *
      * @return A <code>java.util.Date</code> object which represents the last modified time.
      */
     public Date getLastModified() {
@@ -75,8 +80,8 @@ public final class BlobContainerProperties {
 
     /**
      * Gets the lease status of the container.
-     * 
-     * @return A <code>{@link LeaseStatus}</code> object which represents the lease status of the container. 
+     *
+     * @return A <code>{@link LeaseStatus}</code> object which represents the lease status of the container.
      */
     public LeaseStatus getLeaseStatus() {
         return this.leaseStatus;
@@ -84,7 +89,7 @@ public final class BlobContainerProperties {
 
     /**
      * Gets the lease state of the container.
-     * 
+     *
      * @return A <code>{@link LeaseState}</code> object which represents the lease state of the container.
      */
     public LeaseState getLeaseState() {
@@ -93,7 +98,7 @@ public final class BlobContainerProperties {
 
     /**
      * Gets the lease duration of the container.
-     * 
+     *
      * @return A <code>{@link LeaseDuration}</code> object which represents the lease duration of the container.
      */
     public LeaseDuration getLeaseDuration() {
@@ -101,8 +106,21 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Sets the ETag value on the container.
+     * Gets the public access level for the container.
+     * This field should only be set using the container's {@link #create(BlobContainerPublicAccessType,
+     * BlobRequestOptions, OperationContext) create} method or
+     * {@link #uploadPermissions(BlobContainerPermissions) uploadPermissions} method.
      * 
+     * @return A <code>{@link BlobContainerPublicAccessLevel}</code> that specifies the level of public access
+     * that is allowed on the container.
+     */
+    public BlobContainerPublicAccessType getPublicAccess() {
+        return this.publicAccess;
+    }
+
+    /**
+     * Sets the ETag value on the container.
+     *
      * @param etag
      *        A <code>String</code> which represents the ETag to set.
      */
@@ -112,7 +130,7 @@ public final class BlobContainerProperties {
 
     /**
      * Sets the last modified time on the container.
-     * 
+     *
      * @param lastModified
      *        A <code>java.util.Date</code> object which represents the last modified time to set.
      */
@@ -122,7 +140,7 @@ public final class BlobContainerProperties {
 
     /**
      * Sets the lease status on the container.
-     * 
+     *
      * @param leaseStatus
      *        A <code>{@link LeaseStatus}</code> object which represents the lease status of the container.
      */
@@ -132,7 +150,7 @@ public final class BlobContainerProperties {
 
     /**
      * Sets the lease status on the container.
-     * 
+     *
      * @param leaseState
      *        A <code>{@link LeaseState}</code> object which represents the lease state of the container.
      */
@@ -142,11 +160,25 @@ public final class BlobContainerProperties {
 
     /**
      * Sets the lease duration on the container.
-     * 
+     *
      * @param leaseDuration
      *        A <code>{@link LeaseDuration}</code> object which represents the lease duration of the container.
      */
     protected void setLeaseDuration(final LeaseDuration leaseDuration) {
         this.leaseDuration = leaseDuration;
+    }
+
+    /**
+     * Sets the public access level on the container.
+     * This should only be set using the container's {@link #create(BlobContainerPublicAccessType,
+     * BlobRequestOptions, OperationContext) create} method or
+     * {@link #uploadPermissions(BlobContainerPermissions) uploadPermissions} method.
+     * @param publicAccess
+     *            A <code>{@link BlobContainerPublicAccessType}</code> object
+     *            which represents the public access level on the container.
+     */
+    protected void setPublicAccess(
+            final BlobContainerPublicAccessType publicAccess) {
+        this.publicAccess = publicAccess;
     }
 }

@@ -426,6 +426,16 @@ public final class Constants {
         public static final String COPY_STATUS_DESCRIPTION = PREFIX_FOR_STORAGE_HEADER + "copy-status-description";
 
         /**
+         * The header that specifies copy type.
+         */
+        public static final String INCREMENTAL_COPY = PREFIX_FOR_STORAGE_HEADER + "incremental-copy";
+
+        /**
+         * The header that specifies the snapshot ID of the last successful incremental snapshot.
+         */
+        public static final String COPY_DESTINATION_SNAPSHOT_ID = PREFIX_FOR_STORAGE_HEADER + "copy-destination-snapshot";
+
+        /**
          * The header that specifies the date.
          */
         public static final String DATE = PREFIX_FOR_STORAGE_HEADER + "date";
@@ -626,7 +636,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2015-12-11";
+        public static final String TARGET_STORAGE_VERSION = "2016-05-31";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -646,7 +656,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "4.4.0";
+        public static final String USER_AGENT_VERSION = "5.0.0";
 
         /**
          * The default type for content-type and accept
@@ -910,6 +920,16 @@ public final class Constants {
     public static final String COPY_STATUS_ELEMENT = "CopyStatus";
 
     /**
+     * XML element for the copy type.
+     */
+    public static final String INCREMENTAL_COPY_ELEMENT = "IncrementalCopy";
+
+    /**
+     * XML element for the snapshot ID for the last successful incremental copy.
+     */
+    public static final String COPY_DESTINATION_SNAPSHOT_ID_ELEMENT = "CopyDestinationSnapshot";
+
+    /**
      * Default read timeout. 5 min * 60 seconds * 1000 ms
      */
     public static final int DEFAULT_READ_TIMEOUT = 5 * 60 * 1000;
@@ -1090,25 +1110,75 @@ public final class Constants {
     public static final String MARKER_ELEMENT = "Marker";
 
     /**
-     * The maximum size of a single block.
+     * The maximum size for Range ContentMD5.
      */
-    public static int MAX_BLOCK_SIZE = 4 * MB;
+    public static int MAX_RANGE_CONTENT_MD5 = 4 * MB;
+
+    /**
+     * The maximum size of a BlockBlob block.
+     */
+    public static int MAX_BLOCK_SIZE = 100 * MB;
+
+    /**
+     * The maximum size of an AppendBlob block.
+     */
+    public static int MAX_APPEND_BLOCK_SIZE = 4 * MB;
+
+    /**
+     * The maximum write size that can uploaded to a PageBlob at once.
+     */
+    public static int MAX_PAGE_WRITE_SIZE = 4 * MB;
+
+    /**
+     * The maximum write size for Files
+     */
+    public static int MAX_FILE_WRITE_SIZE = 4 * MB;
+
+    /**
+     * The minimum suggested write size for Files.
+     */
+    public static int MIN_PERMITTED_FILE_WRITE_SIZE = 512;
+
+    /**
+     * The maximum number of blocks.
+     */
+    public static final long MAX_BLOCK_NUMBER = 50000;
+
+    /**
+     * The maximum size of a Block Blob.
+     */
+    public static final long MAX_BLOB_SIZE = Constants.MAX_BLOCK_NUMBER * Constants.MAX_BLOCK_SIZE;
+
+    /**
+     * The minimum suggested size of a block.
+     */
+    public static final int MIN_PERMITTED_BLOCK_SIZE = 16 * Constants.KB;
+
+    /**
+     * The minimum size of a block for the large block upload strategy to be employed.
+     */
+    public static int MIN_LARGE_BLOCK_SIZE =  (4 * Constants.MB) + 1;
+
+    /**
+     * The default read buffer size used by the SubStream class.
+     */
+    public static final int SUBSTREAM_BUFFER_SIZE = 4 * Constants.MB;
 
     /**
      * The default write size, in bytes, used by {@link BlobOutputStream} or {@link FileOutputStream}.
      */
-    public static final int DEFAULT_STREAM_WRITE_IN_BYTES = Constants.MAX_BLOCK_SIZE;
+    public static final int DEFAULT_STREAM_WRITE_IN_BYTES =  4 * Constants.MB;
 
     /**
      * The default minimum read size, in bytes, for a {@link BlobInputStream} or {@link FileInputStream}.
      */
-    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = Constants.MAX_BLOCK_SIZE;
+    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = 4 * Constants.MB;
 
     /**
      * The maximum size, in bytes, of a given stream mark operation.
      */
     // Note if BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES is updated then this needs to be as well.
-    public static final int MAX_MARK_LENGTH = 64 * MB;
+    public static final int MAX_MARK_LENGTH = 256 * MB;
 
     /**
      * XML element for maximum results.
@@ -1159,6 +1229,11 @@ public final class Constants {
      * XML element for properties.
      */
     public static final String PROPERTIES = "Properties";
+
+    /**
+     * XML element for  public access
+     */
+    public static final String PUBLIC_ACCESS_ELEMENT = "PublicAccess";
 
     /**
      * XML element for the server encryption status.

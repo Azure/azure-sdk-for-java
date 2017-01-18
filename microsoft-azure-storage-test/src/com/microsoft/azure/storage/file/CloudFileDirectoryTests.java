@@ -261,6 +261,74 @@ public class CloudFileDirectoryTests {
     }
 
     /**
+     * Test listFilesAndDirectories with prefix
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     */
+    @Test
+    @Category({ DevFabricTests.class, CloudTests.class })
+    public void testCloudFileDirectoryListFilesAndDirectoriesWithPrefix() throws URISyntaxException, StorageException
+    {
+        if (doCloudFileDirectorySetup(this.share)) {
+            CloudFileDirectory topDir1 = this.share.getRootDirectoryReference().getDirectoryReference("TopDir1");
+            Iterable<ListFileItem> list = topDir1.listFilesAndDirectories("file", null, null);
+            ArrayList<ListFileItem> simpleList = new ArrayList<ListFileItem>();
+            for (ListFileItem i : list) {
+                simpleList.add(i);
+            }
+
+            assertTrue(simpleList.size() == 1);
+            ListFileItem item = simpleList.get(0);
+            assertEquals(this.share.getUri() + "/TopDir1/File1", item.getUri().toString());
+            assertEquals("File1", ((CloudFile) item).getName());
+
+            list = topDir1.listFilesAndDirectories("mid", null, null);
+            simpleList = new ArrayList<ListFileItem>();
+            for (ListFileItem i : list) {
+                simpleList.add(i);
+            }
+
+            assertTrue(simpleList.size() == 2);
+            item = simpleList.get(0);
+            ListFileItem item2 = simpleList.get(1);
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir1", item.getUri().toString());
+            assertEquals("MidDir1", ((CloudFileDirectory) item).getName());
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir2", item2.getUri().toString());
+            assertEquals("MidDir2", ((CloudFileDirectory) item2).getName());
+
+            ResultSegment<ListFileItem> segmentResults = topDir1.listFilesAndDirectoriesSegmented(
+                    "mid",
+                    1,
+                    null,
+                    null,
+                    null);
+
+            assertNotNull(segmentResults.getContinuationToken().getNextMarker());
+            assertEquals(1, segmentResults.getResults().size());
+            item = segmentResults.getResults().get(0);
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir1", item.getUri().toString());
+            assertEquals("MidDir1", ((CloudFileDirectory)item).getName());
+
+            segmentResults = topDir1.listFilesAndDirectoriesSegmented(
+                "mid" /* prefix */,
+                null /* maxResults */,
+                null /* currentToken */,
+                null /* options */,
+                null /* operationContext */);
+
+            assertNull(segmentResults.getContinuationToken());
+            assertEquals(2, segmentResults.getResults().size());
+            item = segmentResults.getResults().get(0);
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir1", item.getUri().toString());
+            assertEquals("MidDir1", ((CloudFileDirectory)item).getName());
+            item = segmentResults.getResults().get(1);
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir2", item.getUri().toString());
+            assertEquals("MidDir2", ((CloudFileDirectory)item).getName());
+        }
+    }
+
+    /**
      * Test listFilesAndDirectories for maxResults validation.
      * 
      * @throws StorageException
@@ -277,7 +345,7 @@ public class CloudFileDirectoryTests {
             // Validation should cause each of these to fail
             for (int i = 0; i >= -2; i--) {
                 try {
-                    topDir.listFilesAndDirectoriesSegmented(i, null, null, null);
+                    topDir.listFilesAndDirectoriesSegmented(null, i, null, null, null);
                     fail();
                 }
                 catch (IllegalArgumentException e) {
