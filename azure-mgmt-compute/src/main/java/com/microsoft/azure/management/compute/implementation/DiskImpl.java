@@ -87,10 +87,10 @@ class DiskImpl
     }
 
     @Override
-    public String grantAccess(AccessLevel accessLevel, int accessDuration) {
+    public String grantAccess(int accessDurationInSeconds) {
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
+        grantAccessDataInner.withAccess(AccessLevel.READ)
+                .withDurationInSeconds(accessDurationInSeconds);
 
         AccessUriInner accessUriInner = this.client.grantAccess(this.resourceGroupName(),
                 this.name(), grantAccessDataInner);

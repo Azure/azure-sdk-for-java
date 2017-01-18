@@ -105,11 +105,8 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertNotNull(myDisks);
         Assert.assertTrue(myDisks.size() > 0);
 
-        String sasUrl = disk.grantAccess(AccessLevel.READ, 100);
-        // TODO: Ensure this works after the runtime fixes for POST LRO
-        // GrantAccess is a LRO POST, with the current runtime LRO POST is not returning
-        // final response body
-        // Assert.assertTrue(sasUrl != null && sasUrl != "");
+        String sasUrl = disk.grantAccess(100);
+        Assert.assertTrue(sasUrl != null && sasUrl != "");
 
         // Requires access to be revoked before deleting the disk
         //

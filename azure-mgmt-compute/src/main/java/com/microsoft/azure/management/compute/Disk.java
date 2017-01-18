@@ -70,11 +70,10 @@ public interface Disk extends
     /**
      * Grants access to the disk.
      *
-     * @param accessLevel the access level
-     * @param accessDuration the access duration
+     * @param accessDurationInSeconds the access duration in seconds
      * @return the readonly SAS uri to the disk
      */
-    String grantAccess(AccessLevel accessLevel, int accessDuration);
+    String grantAccess(int accessDurationInSeconds);
 
     /**
      * Revoke access granted to the disk.
