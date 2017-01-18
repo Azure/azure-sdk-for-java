@@ -1,6 +1,19 @@
+2017.01.18 Version 5.0.0
+ * Prefix support for listing files and directories.
+ * Added support for setting public access when creating a blob container
+ * The public access setting on a blob container is now a container property returned from downloadProperties.
+ * Add Message now modifies the PopReceipt, Id, NextVisibleTime, InsertionTime, and ExpirationTime properties of its CloudQueueMessage parameter.
+ * Populate content MD5 for range gets on Blobs and Files.
+ * Added support in Page Blob for incremental copy.
+ * Added large BlockBlob upload support. Blocks can now support sizes up to 100 MB.
+ * Added a new, memory-optimized upload strategy for the upload* APIs. This algorithm only applies for blocks greater than 4MB and when storeBlobContentMD5 and Client-Side Encryption are disabled.
+ * getQualifiedUri() has been deprecated for Blobs. Please use getSnapshotQualifiedUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
+ * getQualifiedStorageUri() has been deprecated for Blobs. Please use getSnapshotQualifiedStorageUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
+ * Fixed a bug where copying from a blob that included a SAS token and a snapshot ommitted the SAS token.
+
 2016.08.30 Version 4.4.0
  * Fixed a bug in client-side encryption for tables that was preventing the Java client from decrypting entities encrypted with the .NET client, and vice versa.
-
+ 
 2016.07.06 Version 4.3.0
  * Added support for server-side encryption.
  * Added support for getBlobReferenceFromServer methods on CloudBlobContainer to support retrieving a blob without knowing its type.

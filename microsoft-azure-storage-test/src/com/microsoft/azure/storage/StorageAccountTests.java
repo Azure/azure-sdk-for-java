@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,20 +14,6 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.util.Locale;
-import java.util.UUID;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.core.Base64;
@@ -38,6 +24,21 @@ import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.util.Locale;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
+
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class StorageAccountTests {
@@ -75,12 +76,12 @@ public class StorageAccountTests {
         cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
         assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
     }
-    
+
     @Test
     public void testStorageCredentialsSharedKeyUpdateKey() throws URISyntaxException, StorageException {
         StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
         assertEquals(ACCOUNT_KEY, cred.exportBase64EncodedKey());
-        
+
         // Validate update with byte array
         byte[] dummyKey = { 0, 1, 2 };
         cred.updateKey(dummyKey);
@@ -312,7 +313,7 @@ public class StorageAccountTests {
         CloudTableClient table = account.createCloudTableClient();
         CloudFileClient file = account.createCloudFileClient();
 
-        // check endpoints  
+        // check endpoints
         assertEquals("Blob endpoint doesn't match account", account.getBlobEndpoint(), blob.getEndpoint());
         assertEquals("Queue endpoint doesn't match account", account.getQueueEndpoint(), queue.getEndpoint());
         assertEquals("Table endpoint doesn't match account", account.getTableEndpoint(), table.getEndpoint());
@@ -409,7 +410,7 @@ public class StorageAccountTests {
             assertEquals(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE, ex.getMessage());
         }
     }
-    
+
     @Test
     public void testCloudStorageAccountDevStoreFalsePlusEndpointSuffixFails()
             throws InvalidKeyException, URISyntaxException {
@@ -521,7 +522,7 @@ public class StorageAccountTests {
 
         AccountsAreEqual(account, CloudStorageAccount.parse(account.toString(true)));
     }
-    
+
     @Test
     public void testCloudStorageAccountInvalidAnonymousRoundtrip()
             throws InvalidKeyException, URISyntaxException {
@@ -544,13 +545,13 @@ public class StorageAccountTests {
 
         assertEquals(validAccountString, CloudStorageAccount.parse(accountString).toString(true));
     }
-    
+
     @Test
     public void testCloudStorageAccountEndpointSuffix()
             throws InvalidKeyException, URISyntaxException, StorageException {
         final String mooncake = "core.chinacloudapi.cn";
         final String fairfax = "core.usgovcloudapi.net";
-        
+
         // Endpoint suffix for mooncake
         CloudStorageAccount accountParse = CloudStorageAccount.parse(
                 "DefaultEndpointsProtocol=http;AccountName=test;"
@@ -562,7 +563,7 @@ public class StorageAccountTests {
         assertNotNull(accountParse.getBlobEndpoint());
         assertEquals(accountParse.getBlobEndpoint(), accountConstruct.getBlobEndpoint());
         assertTrue(accountParse.getBlobEndpoint().toString().endsWith(mooncake));
-        
+
         // Endpoint suffix for fairfax
         accountParse = CloudStorageAccount.parse(
                 "TableEndpoint=http://tables/;DefaultEndpointsProtocol=http;"
@@ -574,7 +575,7 @@ public class StorageAccountTests {
         assertNotNull(accountParse.getBlobEndpoint());
         assertEquals(accountParse.getBlobEndpoint(), accountConstruct.getBlobEndpoint());
         assertTrue(accountParse.getBlobEndpoint().toString().endsWith(fairfax));
-        
+
         // Explicit table endpoint should override endpoint suffix for fairfax
         CloudTableClient tableClientParse = accountParse.createCloudTableClient();
         assertNotNull(tableClientParse);

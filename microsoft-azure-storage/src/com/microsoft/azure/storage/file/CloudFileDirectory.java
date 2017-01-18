@@ -716,12 +716,12 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     @DoesServiceRequest
     public Iterable<ListFileItem> listFilesAndDirectories() {
-        return this.listFilesAndDirectories(null /* options */, null /* opContext */);
+        return this.listFilesAndDirectories(null /* prefix */, null /* options */, null /* opContext */);
     }
 
     /**
      * Returns an enumerable collection of file and directory items for the directory.
-     * 
+     *
      * @param options
      *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -741,6 +741,34 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     @DoesServiceRequest
     public Iterable<ListFileItem> listFilesAndDirectories(FileRequestOptions options, OperationContext opContext) {
+        return listFilesAndDirectories(null /* prefix */, options, opContext);
+    }
+
+    /**
+     * Returns an enumerable collection of file and directory items for the directory.
+     *
+     * @param prefix
+     *            A string containing the file or directory name prefix.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return An enumerable collection of {@link ListFileItem} objects that represent the file and directory items in
+     *         this directory.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    @DoesServiceRequest
+    public Iterable<ListFileItem> listFilesAndDirectories(
+            String prefix, FileRequestOptions options, OperationContext opContext) {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -751,7 +779,8 @@ public final class CloudFileDirectory implements ListFileItem {
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
         return new LazySegmentedIterable<CloudFileClient, CloudFileDirectory, ListFileItem>(
-                this.listFilesAndDirectoriesSegmentedImpl(null, options, segmentedRequest), this.fileServiceClient, this,
+                this.listFilesAndDirectoriesSegmentedImpl(prefix, null /* maxResults */, options, segmentedRequest),
+                this.fileServiceClient, this,
                 options.getRetryPolicyFactory(), opContext);
     }
 
@@ -764,14 +793,14 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     @DoesServiceRequest
     public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented() throws StorageException {
-        return this.listFilesAndDirectoriesSegmented(
-                null, null /* continuationToken */, null /* options */, null /* opContext */);
+        return this.listFilesAndDirectoriesSegmented(null /* prefix */, null /* maxResults */,
+                null /* continuationToken */, null /* options */, null /* opContext */);
     }
 
     /**
      * Returns a result segment of an enumerable collection of files and directories for this directory, using the
      * specified listing details options, request options, and operation context.
-     * 
+     *
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater
      *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
@@ -797,6 +826,40 @@ public final class CloudFileDirectory implements ListFileItem {
     public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented(final Integer maxResults,
             final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
+        return listFilesAndDirectoriesSegmented(null, maxResults, continuationToken, options, opContext);
+    }
+
+    /**
+     * Returns a result segment of an enumerable collection of files and directories for this directory, using the
+     * specified listing details options, request options, and operation context.
+     *
+     * @param prefix
+     *            A string containing the file or directory name prefix.
+     * @param maxResults
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
+     * @param continuationToken
+     *            A {@link ResultContinuation} object that represents a continuation token
+     *            returned by a previous listing operation.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for
+     *            the request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ( {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
+     * 
+     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
+     *         {@link ListFileItem} objects that represent the files and directories in this directory.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented(final String prefix, final Integer maxResults,
+            final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
+            throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -810,16 +873,16 @@ public final class CloudFileDirectory implements ListFileItem {
         segmentedRequest.setToken(continuationToken);
 
         return ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
-                this.listFilesAndDirectoriesSegmentedImpl(maxResults, options, segmentedRequest),
+                this.listFilesAndDirectoriesSegmentedImpl(prefix, maxResults, options, segmentedRequest),
                 options.getRetryPolicyFactory(), opContext);
     }
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>> listFilesAndDirectoriesSegmentedImpl(
-            final Integer maxResults, final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
+            final String prefix, final Integer maxResults, final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.FILE);
 
-        final ListingContext listingContext = new ListingContext(null, maxResults);
+        final ListingContext listingContext = new ListingContext(prefix, maxResults);
 
         final StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>> getRequest =
                 new StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>>(

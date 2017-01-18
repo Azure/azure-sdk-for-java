@@ -15,8 +15,6 @@
 
 package com.microsoft.azure.storage.table;
 
-import static org.junit.Assert.*;
-
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,15 +48,16 @@ import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.core.PathUtility;
 import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 
+import static org.junit.Assert.*;
+
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableTests {
-	
-	/**
-	 * Tests name validation of tables. 
-	 */
-	@Test
-    public void testCloudTableNameValidation()
-    {
+
+    /**
+     * Tests name validation of tables.
+     */
+    @Test
+    public void testCloudTableNameValidation() {
         NameValidator.validateTableName("alpha");
         NameValidator.validateTableName("alphanum3r1c");
         NameValidator.validateTableName("CapsLock");
@@ -78,19 +77,16 @@ public class TableTests {
         invalidTableTestHelper(new String(new char[64]).replace("\0", "n"), "Between 3 and 63 characters.", "Invalid table name length. The name must be between 3 and 63 characters long.");
     }
 
-    private void invalidTableTestHelper(String tableName, String failMessage, String exceptionMessage)
-    {
-        try
-        {
+    private void invalidTableTestHelper(String tableName, String failMessage, String exceptionMessage) {
+        try {
             NameValidator.validateTableName(tableName);
             fail(failMessage);
         }
-        catch (IllegalArgumentException e)
-        {
+        catch (IllegalArgumentException e) {
             assertEquals(exceptionMessage, e.getMessage());
         }
     }
-    
+
     @Test
     public void testIsUsePathStyleUri() throws InvalidKeyException, URISyntaxException, StorageException {
         // normal account
@@ -176,7 +172,6 @@ public class TableTests {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -202,7 +197,6 @@ public class TableTests {
 
     @Test
     public void testTableCreateExistsAndDelete() throws StorageException, URISyntaxException {
-
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
 
@@ -222,7 +216,6 @@ public class TableTests {
 
     @Test
     public void testTableCreateIfNotExists() throws StorageException, URISyntaxException {
-
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
 
@@ -242,10 +235,8 @@ public class TableTests {
 
     @Test
     public void testTableDeleteIfExists() throws StorageException, URISyntaxException {
-
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -446,7 +437,7 @@ public class TableTests {
                         "javatables_batch_9", "9")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), tableFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
-        
+
         // create credentials from sas
         StorageCredentials creds = new StorageCredentialsSharedAccessSignature(
                 table.generateSharedAccessSignature((SharedAccessTablePolicy) null, identifier, "javatables_batch_0", "0",

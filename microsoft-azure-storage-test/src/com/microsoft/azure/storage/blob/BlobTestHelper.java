@@ -14,7 +14,10 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,10 +30,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestHelper;
+import static org.junit.Assert.*;
 
 /**
  * Blob Test Base
@@ -388,7 +388,7 @@ public class BlobTestHelper extends TestHelper {
             assertEquals(blob1.getUri(), blob2.getUri());
             assertEquals(blob1.getSnapshotID(), blob2.getSnapshotID());
             assertEquals(blob1.isSnapshot(), blob2.isSnapshot());
-            assertEquals(blob1.getQualifiedStorageUri(), blob2.getQualifiedStorageUri());
+            assertEquals(blob1.getSnapshotQualifiedStorageUri(), blob2.getSnapshotQualifiedStorageUri());
             assertAreEqual(blob1.getProperties(), blob2.getProperties());
             assertAreEqual(blob1.getCopyState(), blob2.getCopyState());
         }

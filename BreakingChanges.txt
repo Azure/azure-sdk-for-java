@@ -1,3 +1,16 @@
+Changes in 5.0.0
+
+BLOB
+ * getQualifiedUri() has been deprecated. Please use getSnapshotQualifiedUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
+ * getQualifiedStorageUri() has been deprecated. Please use getSnapshotQualifiedStorageUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
+ * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
+ 
+ FILE
+ * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
+ 
+QUEUE
+ * For addMessage() the CloudQueueMessage message passed in will be populated with the pop receipt, insertion/expiration time, and message ID.
+
 Changes in 4.0.0
 
 TABLE

@@ -691,12 +691,12 @@ public abstract class CloudBlob implements ListBlobItem {
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.startCopyImpl(source, sourceAccessCondition, destinationAccessCondition, options),
+                this.startCopyImpl(source, false /* incrementalCopy */, sourceAccessCondition, destinationAccessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, String> startCopyImpl(
-            final URI source, final AccessCondition sourceAccessCondition,
+    protected StorageRequest<CloudBlobClient, CloudBlob, String> startCopyImpl(
+            final URI source, final boolean incrementalCopy, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, final BlobRequestOptions options) {
 
         final StorageRequest<CloudBlobClient, CloudBlob, String> putRequest =
@@ -708,7 +708,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 // toASCIIString() must be used in order to appropriately encode the URI
                 return BlobRequest.copyFrom(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
                         options, context, sourceAccessCondition, destinationAccessCondition, source.toASCIIString(),
-                        blob.snapshotID);
+                        blob.snapshotID, incrementalCopy);
             }
 
             @Override
@@ -1351,18 +1351,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 if (!this.getArePropertiesPopulated()) {
-                    String originalContentMD5 = null;
-
                     final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(this.getConnection(),
                             blob.getStorageUri(), blob.snapshotID);
-
-                    // Do not update Content-MD5 if it is a range get.
-                    if (isRangeGet) {
-                        originalContentMD5 = blob.properties.getContentMD5();
-                    }
-                    else {
-                        originalContentMD5 = retrievedAttributes.getProperties().getContentMD5();
-                    }
 
                     if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
                             && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
@@ -1372,8 +1362,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
                     blob.properties = retrievedAttributes.getProperties();
                     blob.metadata = retrievedAttributes.getMetadata();
-                    this.setContentMD5(retrievedAttributes.getProperties().getContentMD5());
-                    blob.properties.setContentMD5(originalContentMD5);
+                    
+                    // Need to store the Content MD5 in case we fail part way through.
+                    // We would still need to verify the entire range.
+                    String contentMD5 = this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+                    this.setContentMD5(contentMD5);
                     this.setLockedETag(blob.properties.getEtag());
                     this.setArePropertiesPopulated(true);
                 }
@@ -2125,7 +2118,48 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Returns the snapshot or shared access signature qualified URI for this blob.
+     * Returns the blob's URI for both the primary and secondary locations, including query string information if the blob is a snapshot.
+     *
+     * @return A {@link StorageUri} object containing the blob's URIs for both the primary and secondary locations, 
+     *         including snapshot query information if the blob is a snapshot.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public final StorageUri getSnapshotQualifiedStorageUri() throws URISyntaxException, StorageException {
+        if (this.isSnapshot()) {
+            return PathUtility.addToQuery(this.getStorageUri(),
+                    String.format("snapshot=%s", this.snapshotID));
+        }
+
+        return this.getStorageUri();
+    }
+    
+    /**
+     * Returns the absolute URI to the blob, including query string information if the blob is a snapshot.
+     *
+     * @return A <code>java.net.URI</code> object specifying the absolute URI to the blob,
+     *         including snapshot query information if the blob is a snapshot.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public final URI getSnapshotQualifiedUri() throws URISyntaxException, StorageException {
+        if (this.isSnapshot()) {
+            return PathUtility.addToQuery(this.getUri(), String.format("snapshot=%s", this.snapshotID));
+        }
+
+        return this.getUri();
+    }
+
+    /**
+     * Returns the snapshot and/or shared access signature qualified URI for this blob.
+     *
+     * @deprecated use {@link #getSnapshotQualifiedStorageUri()} instead.
      *
      * @return A {@link StorageUri} object that represents the snapshot or shared access signature.
      *
@@ -2134,6 +2168,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Deprecated
     public final StorageUri getQualifiedStorageUri() throws URISyntaxException, StorageException {
         if (this.isSnapshot()) {
             StorageUri snapshotQualifiedUri = PathUtility.addToQuery(this.getStorageUri(),
@@ -2146,6 +2181,8 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Returns the snapshot or shared access signature qualified URI for this blob.
      *
+     * @deprecated use {@link #getSnapshotQualifiedUri()} instead.
+     *
      * @return A <code>java.net.URI</code> object that represents the snapshot or shared access signature.
      *
      * @throws StorageException
@@ -2153,6 +2190,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Deprecated
     public final URI getQualifiedUri() throws URISyntaxException, StorageException {
         if (this.isSnapshot()) {
             return PathUtility.addToQuery(this.getUri(), String.format("snapshot=%s", this.snapshotID));

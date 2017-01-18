@@ -209,14 +209,16 @@ final class BlobRequest {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * @param sourceAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the source blob.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
      * @param source
      *            The canonical path to the source blob, in the form /<account-name>/<container-name>/<blob-name>.
      * @param sourceSnapshotID
      *            The snapshot version, if the source blob is a snapshot.
-     * @param sourceAccessConditionType
-     *            A type of condition to check on the source blob.
-     * @param sourceAccessConditionValue
-     *            The value of the condition to check on the source blob
+     * @param incrementalCopy
+     *            A boolean indicating whether or not this is an incremental copy.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
@@ -226,7 +228,8 @@ final class BlobRequest {
      */
     public static HttpURLConnection copyFrom(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition sourceAccessCondition,
-            final AccessCondition destinationAccessCondition, String source, final String sourceSnapshotID)
+            final AccessCondition destinationAccessCondition, String source, final String sourceSnapshotID,
+            final boolean incrementalCopy)
             throws StorageException, IOException, URISyntaxException {
 
         if (sourceSnapshotID != null) {
@@ -234,7 +237,14 @@ final class BlobRequest {
             source = source.concat(sourceSnapshotID);
         }
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, blobOptions, null, opContext);
+        UriQueryBuilder builder = null;
+        if (incrementalCopy)
+        {
+            builder = new UriQueryBuilder();
+            builder.add(Constants.QueryConstants.COMPONENT, "incrementalcopy");
+        }
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, blobOptions, builder, opContext);
 
         request.setFixedLengthStreamingMode(0);
         request.setDoOutput(true);
@@ -266,14 +276,26 @@ final class BlobRequest {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * @param publicAccess
+     *            The type of public access to allow for the container.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection createContainer(final URI uri, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+            final OperationContext opContext, final BlobContainerPublicAccessType publicAccess) throws IOException, URISyntaxException, StorageException {
+        if (publicAccess == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", publicAccess));
+        }
+        
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
-        return BaseRequest.create(uri, blobOptions, containerBuilder, opContext);
+        final HttpURLConnection request = BaseRequest.create(uri, blobOptions, containerBuilder, opContext);
+
+        if (publicAccess != null && publicAccess != BlobContainerPublicAccessType.OFF) {
+            request.setRequestProperty(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER, publicAccess.toString().toLowerCase());
+        }
+
+        return request;
     }
 
     /**
@@ -467,7 +489,7 @@ final class BlobRequest {
 
         if (offset != null && requestRangeContentMD5) {
             Utility.assertNotNull("count", count);
-            Utility.assertInBounds("count", count, 1, Constants.MAX_BLOCK_SIZE);
+            Utility.assertInBounds("count", count, 1, Constants.MAX_RANGE_CONTENT_MD5);
         }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
@@ -1380,6 +1402,10 @@ final class BlobRequest {
     public static HttpURLConnection setAcl(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition,
             final BlobContainerPublicAccessType publicAccess) throws IOException, URISyntaxException, StorageException {
+        if (publicAccess == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", publicAccess));
+        }
+
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.ACL);
 

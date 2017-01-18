@@ -350,7 +350,7 @@ final class FileRequest {
 
         if (offset != null && requestRangeContentMD5) {
             Utility.assertNotNull("count", count);
-            Utility.assertInBounds("count", count, 1, Constants.MAX_BLOCK_SIZE);
+            Utility.assertInBounds("count", count, 1, Constants.MAX_RANGE_CONTENT_MD5);
         }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
@@ -787,6 +787,10 @@ final class FileRequest {
 
             if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
                 builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
+            }
+
+            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
+                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix().toString());
             }
         }
 

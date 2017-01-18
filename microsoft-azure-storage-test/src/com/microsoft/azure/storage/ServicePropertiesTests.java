@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,33 +14,33 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.file.CloudFileClient;
 import com.microsoft.azure.storage.file.FileServiceProperties;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class ServicePropertiesTests {
 
     /**
      * Test Analytics Disable Service Properties
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -83,7 +83,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Analytics Default Service Version
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -143,7 +143,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Analytics Logging Operations
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -183,7 +183,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Analytics Hour Metrics Level
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -201,7 +201,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testAnalyticsHourMetricsLevel(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         FileServiceProperties fileProps = new FileServiceProperties();
         testAnalyticsHourMetricsLevel(client, null, fileProps);
@@ -212,7 +212,7 @@ public class ServicePropertiesTests {
             throws StorageException, InterruptedException {
 
         final MetricsProperties hours = (props == null) ? fileProps.getHourMetrics() : props.getHourMetrics();
-        
+
         // None
         hours.setMetricsLevel(MetricsLevel.DISABLED);
         hours.setRetentionIntervalInDays(null);
@@ -251,7 +251,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Analytics Minute Metrics Level
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -269,7 +269,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testAnalyticsMinuteMetricsLevel(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         FileServiceProperties fileProps = new FileServiceProperties();
         testAnalyticsMinuteMetricsLevel(client, null, fileProps);
@@ -278,9 +278,9 @@ public class ServicePropertiesTests {
     private void testAnalyticsMinuteMetricsLevel(
             final ServiceClient client, final ServiceProperties props, final FileServiceProperties fileProps)
             throws StorageException, InterruptedException {
-        
+
         final MetricsProperties minutes = (props == null) ? fileProps.getMinuteMetrics() : props.getMinuteMetrics();
-        
+
         // None
         minutes.setMetricsLevel(MetricsLevel.DISABLED);
         minutes.setRetentionIntervalInDays(null);
@@ -319,7 +319,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Analytics Retention Policies
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -399,7 +399,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test CORS with different rules.
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -417,7 +417,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testCloudValidCorsRules(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         testCloudValidCorsRules(client, null, new FileServiceProperties());
     }
@@ -540,7 +540,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testCorsExpectedExceptions(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         testCorsExpectedExceptions(client, null, new FileServiceProperties());
     }
@@ -585,7 +585,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test CORS with a valid and invalid number of origin values sent to server.
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -603,7 +603,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testCorsMaxOrigins(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         testCorsMaxOrigins(client, null, new FileServiceProperties());
     }
@@ -636,7 +636,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test CORS with a valid and invalid number of header values sent to server.
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -654,7 +654,7 @@ public class ServicePropertiesTests {
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
         testCorsMaxHeaders(client, props, null);
-        
+
         client = TestHelper.createCloudFileClient();
         testCorsMaxHeaders(client, null, new FileServiceProperties());
     }
@@ -739,7 +739,7 @@ public class ServicePropertiesTests {
 
     /**
      * Test Optional Service Properties
-     * 
+     *
      * @throws StorageException
      * @throws InterruptedException
      */
@@ -813,7 +813,7 @@ public class ServicePropertiesTests {
     private void callUploadServiceProps(
             ServiceClient client, ServiceProperties props, FileServiceProperties fileProps)
             throws StorageException, InterruptedException {
-        
+
         if (client.getClass().equals(CloudBlobClient.class)) {
             ((CloudBlobClient) client).uploadServiceProperties(props);
         }
@@ -829,7 +829,7 @@ public class ServicePropertiesTests {
         else {
             fail();
         }
-        
+
         Thread.sleep(30000);
     }
 
@@ -906,7 +906,7 @@ public class ServicePropertiesTests {
             assertNotNull(propsA);
             assertNotNull(propsB);
         }
-        
+
         if (propsA.getLogging() != null && propsB.getLogging() != null) {
             assertTrue(propsA.getLogging().getLogOperationTypes().equals(propsB.getLogging().getLogOperationTypes()));
             assertEquals(propsA.getLogging().getRetentionIntervalInDays(), propsB.getLogging()
@@ -975,10 +975,10 @@ public class ServicePropertiesTests {
             assertNull(propsB.getCors());
         }
     }
-    
+
     /**
      * Checks the CORS rules of two <code>FileServiceProperties</code> objects to ensure they match.
-     * 
+     *
      * @param original
      *          The <code>FileServiceProperties</code> used as a point of comparison
      * @param target
@@ -991,7 +991,7 @@ public class ServicePropertiesTests {
             assertNotNull(original);
             assertNotNull(target);
         }
-        
+
         if (original.getCors() != null && target.getCors() != null) {
             assertEquals(original.getCors().getCorsRules().size(), target.getCors().getCorsRules().size());
 

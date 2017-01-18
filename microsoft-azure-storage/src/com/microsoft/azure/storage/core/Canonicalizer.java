@@ -80,7 +80,7 @@ abstract class Canonicalizer {
             // Go through values, unfold them, and then append them to the
             // canonicalized element string.
             for (final String value : values) {
-                if (!Utility.isNullOrEmpty(value)) {
+                if (value != null) {
                     appendCanonicalizedElement = true;
                 }
 

@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,7 +53,7 @@ final class ContainerListHandler extends DefaultHandler {
 
     /**
      * Parses a {@link ContainerListResponse} form the given XML stream.
-     * 
+     *
      * @param serviceClient
      *            a reference to the client object associated with this object.
      * @param stream
@@ -78,6 +78,7 @@ final class ContainerListHandler extends DefaultHandler {
         if (BlobConstants.CONTAINER_ELEMENT.equals(localName)) {
             this.containerName = Constants.EMPTY_STRING;
             this.attributes = new BlobContainerAttributes();
+            this.attributes.getProperties().setPublicAccess(BlobContainerPublicAccessType.OFF);
         }
     }
 
@@ -188,6 +189,15 @@ final class ContainerListHandler extends DefaultHandler {
             final LeaseDuration tempDuration = LeaseDuration.parse(value);
             if (!tempDuration.equals(LeaseDuration.UNSPECIFIED)) {
                 this.attributes.getProperties().setLeaseDuration(tempDuration);
+            }
+            else {
+                throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);
+            }
+        }
+        else if (currentNode.equals(Constants.PUBLIC_ACCESS_ELEMENT)) {
+            final BlobContainerPublicAccessType tempAccessType = BlobContainerPublicAccessType.parse(value);
+            if (!tempAccessType.equals(BlobContainerPublicAccessType.OFF)) {
+                this.attributes.getProperties().setPublicAccess(tempAccessType);
             }
             else {
                 throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);

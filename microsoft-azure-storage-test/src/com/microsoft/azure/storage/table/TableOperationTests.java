@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 package com.microsoft.azure.storage.table;
-
-import static org.junit.Assert.*;
 
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
@@ -39,6 +37,8 @@ import com.microsoft.azure.storage.table.TableTestHelper.Class2;
 import com.microsoft.azure.storage.table.TableTestHelper.EmptyClass;
 import com.microsoft.azure.storage.table.TableTestHelper.EmptyClassDynamic;
 import com.microsoft.azure.storage.table.TableTestHelper.class1class2PropertyResolver;
+
+import static org.junit.Assert.*;
 
 /**
  * Table Operation Tests
@@ -87,7 +87,7 @@ public class TableOperationTests {
                     String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
         }
     }
-    
+
     @Test
     public void testEntityWithSingleQuote() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
@@ -96,14 +96,14 @@ public class TableOperationTests {
         EmptyClass ref = new EmptyClass();
         ref.setPartitionKey("partition'key");
         ref.setRowKey("row'key");
-        
-       this.table.execute(TableOperation.insert(ref), options, null);
-       this.table.execute(TableOperation.merge(ref), options, null);
-       this.table.execute(TableOperation.insertOrReplace(ref), options, null);
-       this.table.execute(TableOperation.insertOrMerge(ref), options, null);
-       this.table.execute(TableOperation.replace(ref), options, null);
-       this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), EmptyClass.class), options, null);       
-       this.table.execute(TableOperation.delete(ref), options, null);
+
+        this.table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.merge(ref), options, null);
+        this.table.execute(TableOperation.insertOrReplace(ref), options, null);
+        this.table.execute(TableOperation.insertOrMerge(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), EmptyClass.class), options, null);
+        this.table.execute(TableOperation.delete(ref), options, null);
     }
 
     @Test
@@ -229,7 +229,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -283,7 +283,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -343,7 +343,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -371,7 +371,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -385,7 +385,7 @@ public class TableOperationTests {
                         DynamicTableEntity.class), options, null);
 
         // Retrieve entity
-        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity>getResultAsType();
         assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
         assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
 
@@ -435,7 +435,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -485,7 +485,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -522,7 +522,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -554,7 +554,7 @@ public class TableOperationTests {
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
-        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity>getResultAsType();
 
         assertNotNull("Property A", retrievedEntity.getProperties().get("A"));
         assertEquals(baseEntity.getA(), retrievedEntity.getProperties().get("A").getValueAsString());
@@ -601,7 +601,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -673,7 +673,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -747,7 +747,7 @@ public class TableOperationTests {
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
         baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setD(new byte[]{0, 1, 2});
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
@@ -758,7 +758,7 @@ public class TableOperationTests {
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
         // Retrieve entity
-        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity>getResultAsType();
         assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
         assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
 
@@ -775,7 +775,7 @@ public class TableOperationTests {
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
-        retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        retrievedEntity = queryResult.<DynamicTableEntity>getResultAsType();
 
         // Validate
         assertNotNull("Property A", retrievedEntity.getProperties().get("A"));
@@ -849,7 +849,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -907,7 +907,7 @@ public class TableOperationTests {
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setD(new byte[]{0, 1, 2});
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
@@ -924,7 +924,7 @@ public class TableOperationTests {
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                     @Override
                     public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
-                            HashMap<String, EntityProperty> properties, String etag) {
+                                          HashMap<String, EntityProperty> properties, String etag) {
                         Class1 result = new Class1();
                         result.setA(properties.get("A").getValueAsString());
                         result.setD(properties.get("D").getValueAsByteArray());
@@ -943,7 +943,7 @@ public class TableOperationTests {
                     TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                         @Override
                         public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
-                                HashMap<String, EntityProperty> properties, String etag) {
+                                              HashMap<String, EntityProperty> properties, String etag) {
                             Class1 result = new Class1();
                             result.setA(properties.get("A").getValueAsString());
                             result.setD(properties.get("D").getValueAsByteArray());

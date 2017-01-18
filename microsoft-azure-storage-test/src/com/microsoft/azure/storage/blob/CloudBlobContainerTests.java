@@ -16,8 +16,10 @@ package com.microsoft.azure.storage.blob;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.Calendar;
@@ -27,6 +29,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -37,27 +40,32 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessAccountPermissions;
+import com.microsoft.azure.storage.SharedAccessAccountPolicy;
+import com.microsoft.azure.storage.SharedAccessAccountResourceType;
+import com.microsoft.azure.storage.SharedAccessAccountService;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.SR;
 
 /**
  * Blob Container Tests
  */
 @Category({ CloudTests.class })
 public class CloudBlobContainerTests {
-
     protected static CloudBlobClient client;
     protected CloudBlobContainer container;
 
@@ -70,7 +78,7 @@ public class CloudBlobContainerTests {
     public void blobContainerTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
     }
-    
+
     /**
      * Test container name validation.
      */
@@ -218,7 +226,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Create a container
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -251,7 +259,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Try to delete a non-existing container
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -299,7 +307,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Check a container's existence
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -437,28 +445,28 @@ public class CloudBlobContainerTests {
         CloudBlobContainer container2 = this.container.getServiceClient().getContainerReference(
                 this.container.getName());
         container2.downloadAttributes();
-        Assert.assertEquals(0, container2.getMetadata().size());
+        assertEquals(0, container2.getMetadata().size());
 
         this.container.getMetadata().put("key1", "value1");
         this.container.uploadMetadata();
 
         container2.downloadAttributes();
-        Assert.assertEquals(1, container2.getMetadata().size());
-        Assert.assertEquals("value1", container2.getMetadata().get("key1"));
+        assertEquals(1, container2.getMetadata().size());
+        assertEquals("value1", container2.getMetadata().get("key1"));
 
         Iterable<CloudBlobContainer> containers = this.container.getServiceClient().listContainers(
                 this.container.getName(), ContainerListingDetails.METADATA, null, null);
 
         for (CloudBlobContainer container3 : containers) {
-            Assert.assertEquals(1, container3.getMetadata().size());
-            Assert.assertEquals("value1", container3.getMetadata().get("key1"));
+            assertEquals(1, container3.getMetadata().size());
+            assertEquals("value1", container3.getMetadata().get("key1"));
         }
 
         this.container.getMetadata().clear();
         this.container.uploadMetadata();
 
         container2.downloadAttributes();
-        Assert.assertEquals(0, container2.getMetadata().size());
+        assertEquals(0, container2.getMetadata().size());
     }
 
     @Test
@@ -550,10 +558,10 @@ public class CloudBlobContainerTests {
 
         assertTrue(blobNames.size() == 0);
     }
-    
+
     /**
      * List the blobs in a container with a prefix
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -568,7 +576,7 @@ public class CloudBlobContainerTests {
 
         BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob1", 128, null);
         blobNames.add("pref/blob1");
-        
+
         BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob2", 128, null);
         blobNames.add("pref/blob2");
 
@@ -580,7 +588,7 @@ public class CloudBlobContainerTests {
             count++;
         }
         assertEquals(1, count);
-        
+
         // Flat listing true
         count = 0;
         for (ListBlobItem blob : this.container.listBlobs("pref", true)) {
@@ -590,12 +598,12 @@ public class CloudBlobContainerTests {
         }
         assertEquals(2, count);
     }
-    
+
     /**
-     * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all 
-     * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if 
+     * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all
+     * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if
      * there were more elements to iterate on."
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -604,7 +612,7 @@ public class CloudBlobContainerTests {
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testCloudBlobContainerListBlobsNext() throws StorageException, IOException, URISyntaxException {
         this.container.create();
-        
+
         int numBlobs = 10;
         List<String> blobNames = BlobTestHelper.uploadNewBlobs(this.container, BlobType.PAGE_BLOB, 10, 512, null);
         assertEquals(numBlobs, blobNames.size());
@@ -614,16 +622,16 @@ public class CloudBlobContainerTests {
         iter.hasNext();
         iter.next();
         iter.next();
-        
+
         // next without hasNext
         iter = this.container.listBlobs().iterator();
         iter.next();
         iter.next();
     }
-    
+
     /**
      * Try to list the blobs in a container to ensure maxResults validation is working.
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -754,6 +762,74 @@ public class CloudBlobContainerTests {
         testPermissions = this.container.downloadPermissions();
         assertPermissionsEqual(expectedPermissions, testPermissions);
     }
+    
+    /**
+     * @throws StorageException
+     * @throws InterruptedException
+     * @throws URISyntaxException 
+     * @throws IOException 
+     * @throws InvalidKeyException 
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testListBlobsWithIncrementalCopiedBlob() throws StorageException, InterruptedException, URISyntaxException, IOException, InvalidKeyException {
+        this.container.create();
+        
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudPageBlob source = this.container.getPageBlobReference(blobName);
+        source.create(1024);
+        
+        final Random randGenerator = new Random();
+        final byte[] buffer = new byte[1024];
+        randGenerator.nextBytes(buffer);
+
+        source.upload(new ByteArrayInputStream(buffer), buffer.length);
+        CloudPageBlob snapshot = (CloudPageBlob) source.createSnapshot();
+        
+        SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+        policy.setPermissions( EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE));
+
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.SECOND, 5000);
+        policy.setSharedAccessExpiryTime(cal.getTime());
+
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(cal.getTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudPageBlob sasSnapshotBlob = (CloudPageBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasSnapshotBlob.exists();
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.SNAPSHOT, sasSnapshotBlob.snapshotID);
+
+        copy.startIncrementalCopy(BlobTestHelper.defiddler(sasSnapshotBlob));
+        
+        BlobTestHelper.waitForCopy(copy);
+        
+        boolean incrementalCopyFound = false;
+        for (ListBlobItem blobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null, null)) {
+            CloudPageBlob blob = (CloudPageBlob) blobItem;
+            
+            if (blob.getName().equals("copy") && blob.isSnapshot()) {
+                // Check that the incremental copied blob is found exactly once
+                assertFalse(incrementalCopyFound);
+                assertTrue(blob.properties.isIncrementalCopy());
+                incrementalCopyFound = true;
+            }
+            else if (blob.getName().equals("copy")) {
+                assertNotNull(blob.getCopyState().getCopyDestinationSnapshotID());
+            }
+        }
+
+        assertTrue(incrementalCopyFound);
+    }
 
     // Helper Method
     private static void assertPermissionsEqual(BlobContainerPermissions expected, BlobContainerPermissions actual) {
@@ -788,7 +864,7 @@ public class CloudBlobContainerTests {
         assertEquals(createdBlob.getContainer().getName(), listedBlob.getContainer().getName());
         assertEquals(createdBlob.getMetadata(), listedBlob.getMetadata());
         assertEquals(createdBlob.getName(), listedBlob.getName());
-        assertEquals(createdBlob.getQualifiedUri(), listedBlob.getQualifiedUri());
+        assertEquals(createdBlob.getSnapshotQualifiedUri(), listedBlob.getSnapshotQualifiedUri());
         assertEquals(createdBlob.getSnapshotID(), listedBlob.getSnapshotID());
         assertEquals(createdBlob.getUri(), listedBlob.getUri());
 

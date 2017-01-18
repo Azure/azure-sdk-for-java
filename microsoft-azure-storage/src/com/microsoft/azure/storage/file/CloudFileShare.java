@@ -243,8 +243,12 @@ public final class CloudFileShare {
                 // Set attributes
                 final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
                         client.isUsePathStyleUris());
+                
+                // The response from the service does not include the share quota.
+                // Instead, we keep the existing value.
+                Integer oldShareQuota = share.properties.getShareQuota();
                 share.properties = attributes.getProperties();
-                share.name = attributes.getName();
+                share.properties.setShareQuota(oldShareQuota);
                 return null;
             }
         };
@@ -519,7 +523,6 @@ public final class CloudFileShare {
                         client.isUsePathStyleUris());
                 share.metadata = attributes.getMetadata();
                 share.properties = attributes.getProperties();
-                share.name = attributes.getName();
                 return null;
             }
         };

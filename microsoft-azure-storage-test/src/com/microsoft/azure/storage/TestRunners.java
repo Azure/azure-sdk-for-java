@@ -1,19 +1,26 @@
+/**
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microsoft.azure.storage;
-
-import org.junit.experimental.categories.Categories;
-import org.junit.experimental.categories.Categories.ExcludeCategory;
-import org.junit.experimental.categories.Categories.IncludeCategory;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClientTests;
 import com.microsoft.azure.storage.blob.BlobOutputStreamTests;
 import com.microsoft.azure.storage.blob.CloudAppendBlobTests;
+import com.microsoft.azure.storage.blob.CloudBlobClientEncryptionTests;
 import com.microsoft.azure.storage.blob.CloudBlobClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobContainerTests;
 import com.microsoft.azure.storage.blob.CloudBlobDirectoryTests;
-import com.microsoft.azure.storage.blob.CloudBlobClientEncryptionTests;
 import com.microsoft.azure.storage.blob.CloudBlobServerEncryptionTests;
 import com.microsoft.azure.storage.blob.CloudBlockBlobTests;
 import com.microsoft.azure.storage.blob.CloudPageBlobTests;
@@ -39,9 +46,16 @@ import com.microsoft.azure.storage.table.TableQueryTests;
 import com.microsoft.azure.storage.table.TableSerializerTests;
 import com.microsoft.azure.storage.table.TableTests;
 
+import org.junit.experimental.categories.Categories;
+import org.junit.experimental.categories.Categories.ExcludeCategory;
+import org.junit.experimental.categories.Categories.IncludeCategory;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
 /**
  * Contains the various test suites and test categories used to run JUnit tests
- * 
+ *
  * To run with junit from command line:
  * 1. Install junit and add it to the classpath.
  * 2. Add any project dependencies to the classpath. (ex CLASSPATH=%CLASSPATH%;{path to dependency};)
@@ -52,15 +66,15 @@ import com.microsoft.azure.storage.table.TableTests;
  * 4. Suite: java org.junit.runner.JUnitCore com.microsoft.azure.storage.TestRunners$FastTestSuite
  * 5. Class: java org.junit.runner.JUnitCore com.microsoft.azure.storage.TableOperationTests
  * 6. Test: can't do this natively; must make a runner
- * 
+ *
  * To run with maven from command line:
  * 1. Suite: mvn test -DrunSuite="TestRunners.FastTestSuite"
  * 2. Class: mvn test -Dtest=TableOperationTests
  * 3. Test: mvn test -Dtest=TableOperationTests$testDelete
- * 
+ *
  * To run with eclipse:
  * 1. Right click the suite/class/test you'd like to run in the package explorer and click Run As > JUnit Test
- * 
+ *
  * Other notes about suites:
  * 1. Can't include or exclude multipe categories, instead make two suites and merge them into one.
  * 2. With maven you cannot (easily) run tests from inside a jar.
@@ -100,7 +114,7 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class, 
+    @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class,
             CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
             CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
@@ -129,7 +143,7 @@ public class TestRunners {
     @SuiteClasses({ CloudAnalyticsClientTests.class })
     public static class AnalyticsTestSuite {
     }
-    
+
     @RunWith(Suite.class)
     @SuiteClasses({ CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class,
             CloudQueueEncryptionTests.class, TableEncryptionTests.class })
@@ -138,7 +152,7 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ CoreTestSuite.class, BlobTestSuite.class, QueueTestSuite.class, TableTestSuite.class,
-            FileTestSuite.class, AnalyticsTestSuite.class, EncryptionTestSuite.class })
+            FileTestSuite.class, AnalyticsTestSuite.class })
     public static class AllTestSuite {
     }
 

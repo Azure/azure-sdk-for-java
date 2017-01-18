@@ -14,22 +14,23 @@
  */
 package com.microsoft.azure.storage.file;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.ResultContinuation;
+import com.microsoft.azure.storage.ResultSegment;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.ResultContinuation;
-import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.core.SR;
+import static org.junit.Assert.*;
 
 /**
  * File Client Tests

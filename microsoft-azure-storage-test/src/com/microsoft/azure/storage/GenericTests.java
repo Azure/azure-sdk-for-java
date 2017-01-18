@@ -14,31 +14,6 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.blob.BlobOutputStream;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.BlobTestHelper;
@@ -51,6 +26,33 @@ import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class GenericTests {
@@ -128,18 +130,17 @@ public class GenericTests {
             container2.createIfNotExists();
 
             blockBlobRef2.upload(inputStream2, length2);
-        }
-        finally {
+        } finally {
             inputStream2.close();
             container2.deleteIfExists();
         }
     }
-    
+
     @Test
     public void testProxy() throws URISyntaxException, StorageException {
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference("container1");
-        
+
         // Use a request-level proxy
         OperationContext opContext = new OperationContext();
         opContext.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
@@ -147,8 +148,8 @@ public class GenericTests {
         // Turn of retries to make the failure happen faster
         BlobRequestOptions opt = new BlobRequestOptions();
         opt.setRetryPolicyFactory(new RetryNoRetry());
-        
-        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't 
+
+        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't
         // work as one would expect and will always for us return false. So, we validate by making sure the request
         // fails when we set a bad proxy rather than check the proxy setting itself.
         try {
@@ -156,24 +157,26 @@ public class GenericTests {
             fail("Bad proxy should throw an exception.");
         }
         catch (StorageException e) {
-            assertEquals(ConnectException.class, e.getCause().getClass());
-            assertEquals("Connection timed out: connect", e.getCause().getMessage());
+            if (e.getCause().getClass() != ConnectException.class &&
+                    e.getCause().getClass() != SocketTimeoutException.class) {
+                Assert.fail("Unepected exception for bad proxy");
+            }
         }
     }
 
     @Test
-    public void testDefaultProxy() throws URISyntaxException, StorageException {        
+    public void testDefaultProxy() throws URISyntaxException, StorageException {
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference("container1");
-        
+
         // Use a default proxy
         OperationContext.setDefaultProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
 
         // Turn of retries to make the failure happen faster
         BlobRequestOptions opt = new BlobRequestOptions();
         opt.setRetryPolicyFactory(new RetryNoRetry());
-        
-        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't 
+
+        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't
         // work as one would expect and will always for us return false. So, we validate by making sure the request
         // fails when we set a bad proxy rather than check the proxy setting itself succeeding.
         try {
@@ -181,8 +184,10 @@ public class GenericTests {
             fail("Bad proxy should throw an exception.");
         }
         catch (StorageException e) {
-            assertEquals(ConnectException.class, e.getCause().getClass());
-            assertEquals("Connection timed out: connect", e.getCause().getMessage());
+            if (e.getCause().getClass() != ConnectException.class && 
+                    e.getCause().getClass() != SocketTimeoutException.class) {
+                Assert.fail("Unepected exception for bad proxy");
+            }
         }
     }
     
@@ -190,21 +195,38 @@ public class GenericTests {
     public void testProxyOverridesDefault() throws URISyntaxException, StorageException {
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference("container1");
-        
+
         // Set a default proxy
         OperationContext.setDefaultProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
+
+        // Turn off retries to make the failure happen faster
+        BlobRequestOptions opt = new BlobRequestOptions();
+        opt.setRetryPolicyFactory(new RetryNoRetry());
+
+        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't
+        // work as one would expect and will always for us return false. So, we validate by making sure the request
+        // fails when we set a bad proxy rather than check the proxy setting itself succeeding.
+        try {
+            container.exists(null, opt, null);
+            fail("Bad proxy should throw an exception.");
+        } catch (StorageException e) {
+            if (e.getCause().getClass() != ConnectException.class &&
+                    e.getCause().getClass() != SocketTimeoutException.class) {
+                Assert.fail("Unepected exception for bad proxy");
+            }
+        }
 
         // Override it with no proxy
         OperationContext opContext = new OperationContext();
         opContext.setProxy(Proxy.NO_PROXY);
-        
+
         // Should succeed as request-level proxy should override the bad default proxy
         container.exists(null, null, opContext);
     }
     
     /**
      * Make sure that if a request throws an error when it is being built that the request is not sent.
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      */
@@ -347,7 +369,7 @@ public class GenericTests {
         milliDate = Utility.parseDate(fullDateString);
         assertEquals(milliDate.getTime(), millisSinceEpoch);
     }
-    
+
     @Test
     public void testDateStringParsing() throws ParseException {
         // 2014-12-07T09:15:12.123Z  from Java
@@ -377,7 +399,7 @@ public class GenericTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testDate("2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false);
     }
-    
+
     @Test
     public void testDateStringParsingWithBackwardCompatibility() throws ParseException {
         // 2014-12-07T09:15:12.123Z  from Java
@@ -409,11 +431,11 @@ public class GenericTests {
     }
 
     private static void testDate(final String dateString, final long intendedMilliseconds, final int ticks,
-            final boolean writtenPre2, final boolean dateBackwardCompatibility) {
+                                 final boolean writtenPre2, final boolean dateBackwardCompatibility) {
         assertTrue(ticks >= 0);     // ticks is non-negative
         assertTrue(ticks <= 9999);  // ticks do not overflow into milliseconds
         long expectedMilliseconds = intendedMilliseconds;
-        
+
         if (dateBackwardCompatibility && (intendedMilliseconds % 1000 == 0) && (ticks < 1000)) {
             // when no milliseconds are present dateBackwardCompatibility causes up to 3 digits of ticks
             // to be read as milliseconds
@@ -422,7 +444,7 @@ public class GenericTests {
             // without DateBackwardCompatibility, milliseconds stored by Java prior to 2.0.0 are lost
             expectedMilliseconds -= expectedMilliseconds % 1000;
         }
-        
+
         assertEquals(expectedMilliseconds, Utility.parseDate(dateString, dateBackwardCompatibility).getTime());
     }
 
@@ -431,17 +453,17 @@ public class GenericTests {
         String fullDateString = "2014-12-07T09:15:12.123Z";
         String outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
         assertEquals(fullDateString, outDateString);
-        
+
         fullDateString = "2015-01-14T14:53:32.800Z";
         outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
         assertEquals(fullDateString, outDateString);
-        
+
         // Ensure that trimming of trailing zeroes by the service does not affect this
         fullDateString = "2015-01-14T14:53:32.8Z";
         outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
         fullDateString = fullDateString.replace("Z", "00Z");
         assertEquals(fullDateString, outDateString);
-        
+
         // Ensure that trimming of trailing zeroes by the service does not affect this
         // even with dateBackwardCompatibility
         fullDateString = "2015-01-14T14:53:32.0000800Z";
