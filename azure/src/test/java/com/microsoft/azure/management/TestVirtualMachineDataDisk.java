@@ -38,9 +38,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .create();
 
         Assert.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
-        Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
+        Assert.assertTrue(virtualMachine.nativeDataDisks().size() == 2);
         VirtualMachineNativeDataDisk disk2 = null;
-        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.dataDisks()) {
+        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.nativeDataDisks()) {
             if (dataDisk.name().equalsIgnoreCase("disk2")) {
                 disk2 = dataDisk;
                 break;
@@ -61,9 +61,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                     .withLun(2)
                     .attach()
                 .apply();
-        Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
+        Assert.assertTrue(virtualMachine.nativeDataDisks().size() == 2);
         VirtualMachineNativeDataDisk disk3 = null;
-        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.dataDisks()) {
+        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.nativeDataDisks()) {
             if (dataDisk.name().equalsIgnoreCase("disk3")) {
                 disk3 = dataDisk;
                 break;

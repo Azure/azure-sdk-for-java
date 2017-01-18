@@ -141,7 +141,7 @@ public final class ManageVirtualMachine {
 
                 System.out.println("De-allocated VM: " + windowsVM.id());
 
-                VirtualMachineNativeDataDisk dataDisk = windowsVM.dataDisks().get(0);
+                VirtualMachineNativeDataDisk dataDisk = windowsVM.nativeDataDisks().get(0);
 
                 windowsVM.update()
                             .updateNativeDataDisk(dataDisk.name())
