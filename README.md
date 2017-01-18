@@ -30,7 +30,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage</artifactId>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 </dependency>
 ```
 
