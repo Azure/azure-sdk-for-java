@@ -98,6 +98,11 @@ public interface VirtualMachine extends
     //
 
     /**
+     * @return true if managed disk is used for the virtual machine's disks (os, data)
+     */
+    boolean isManagedDiskEnabled();
+
+    /**
      * @return name of this virtual machine
      */
     String computerName();
@@ -115,7 +120,7 @@ public interface VirtualMachine extends
     /**
      * @return the uri to the vhd file backing this virtual machine's operating system disk
      */
-    String osDiskVhdUri();
+    String osNativeDiskVhdUri();
 
     /**
      * @return the operating system disk caching type, valid values are 'None', 'ReadOnly', 'ReadWrite'
@@ -126,6 +131,16 @@ public interface VirtualMachine extends
      * @return the size of the operating system disk in GB
      */
     int osDiskSize();
+
+    /**
+     * @return the storage account type of the managed disk backing Os disk
+     */
+    StorageAccountTypes osDiskStorageAccountType();
+
+    /**
+     * @return resource id of the managed disk backing Os disk
+     */
+    String osDiskId();
 
     /**
      * @return the list of native data disks attached to this virtual machine
@@ -1031,6 +1046,18 @@ public interface VirtualMachine extends
             WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
 
             /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType);
+
+            /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
@@ -1066,6 +1093,19 @@ public interface VirtualMachine extends
             WithManagedCreate withExistingDataDisk(Disk disk,
                                                    int lun,
                                                    CachingTypes cachingType);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk lun
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withExistingDataDisk(Disk disk,
+                                        int newSizeInGB,
+                                        int lun,
+                                        CachingTypes cachingType);
         }
 
         /**
@@ -1347,6 +1387,18 @@ public interface VirtualMachine extends
             Update withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
 
             /**
+             * Specifies that a managed disk needs to be created explicitly with the given definition and
+             * attach to the virtual machine as data disk.
+             *
+             * @param creatable the creatable disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the data disk lun
+             * @param cachingType the data disk caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType);
+
+            /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
@@ -1380,6 +1432,19 @@ public interface VirtualMachine extends
              * @return the next stage of virtual machine update
              */
             Update withExistingDataDisk(Disk disk,
+                                        int lun,
+                                        CachingTypes cachingType);
+
+            /**
+             * Specifies an existing source managed disk and settings.
+             *
+             * @param disk the managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk lun
+             * @return the next stage of virtual machine update
+             */
+            Update withExistingDataDisk(Disk disk,
+                                        int newSizeInGB,
                                         int lun,
                                         CachingTypes cachingType);
 

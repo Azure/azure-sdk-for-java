@@ -141,7 +141,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
                 Utils.print(linuxVM2);
 
-                String specializedVhd = linuxVM2.osDiskVhdUri();
+                String specializedVhd = linuxVM2.osNativeDiskVhdUri();
                 //=============================================================
                 // Deleting the virtual machine
                 System.out.println("Deleting VM: " + linuxVM2.id());

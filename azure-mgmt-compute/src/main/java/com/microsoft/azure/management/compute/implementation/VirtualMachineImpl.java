@@ -698,6 +698,17 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType) {
+        addCreatableDependency(creatable);
+        this.managedDataDisks.newDisksToAttach.put(creatable.key(),
+                new DataDisk()
+                        .withLun(lun)
+                        .withDiskSizeGB(newSizeInGB)
+                        .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withNewDataDisk(int sizeInGB) {
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
                 .withLun(-1)
@@ -708,7 +719,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType) {
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
-                .withLun(-1)
+                .withLun(lun)
                 .withDiskSizeGB(sizeInGB)
                 .withCaching(cachingType));
         return this;
@@ -730,6 +741,18 @@ class VirtualMachineImpl
         managedDiskParameters.withId(disk.id());
         this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
                 .withLun(lun)
+                .withManagedDisk(managedDiskParameters)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType) {
+        ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
+        managedDiskParameters.withId(disk.id());
+        this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
+                .withLun(lun)
+                .withDiskSizeGB(newSizeInGB)
                 .withManagedDisk(managedDiskParameters)
                 .withCaching(cachingType));
         return this;
@@ -927,6 +950,20 @@ class VirtualMachineImpl
     // GETTERS
 
     @Override
+    public boolean isManagedDiskEnabled() {
+        if (this.isNativeDiskSelected) {
+            return false;
+        }
+        if (isInCreateMode()) {
+            return true;
+        }
+        // For an existing VM, osDisk.vhd() will be always set if the OS Disk is based on
+        // native disk. This must be null for managed disk.
+        //
+        return this.inner().storageProfile().osDisk().vhd() == null;
+    }
+
+    @Override
     public String computerName() {
         if (inner().osProfile() == null) {
             // VM created by attaching a specialized OS Disk VHD will not have the osProfile.
@@ -946,7 +983,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public String osDiskVhdUri() {
+    public String osNativeDiskVhdUri() {
         if (isManagedDiskEnabled()) {
             return null;
         }
@@ -961,6 +998,22 @@ class VirtualMachineImpl
     @Override
     public int osDiskSize() {
         return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
+    }
+
+    @Override
+    public StorageAccountTypes osDiskStorageAccountType() {
+        if (!isManagedDiskEnabled() || this.storageProfile().osDisk().managedDisk() == null) {
+            return null;
+        }
+        return this.storageProfile().osDisk().managedDisk().storageAccountType();
+    }
+
+    @Override
+    public String osDiskId() {
+        if (!isManagedDiskEnabled()) {
+            return null;
+        }
+        return this.storageProfile().osDisk().managedDisk().id();
     }
 
     @Override
@@ -1162,11 +1215,11 @@ class VirtualMachineImpl
                 if (isOSDiskFromPlatformImage(storageProfile)
                         || isOsDiskFromCustomImage(storageProfile)) {
                     if (osDisk.managedDisk() == null) {
-                        ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
-                        managedDiskParameters
-                                .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                                .withId(null);
-                        osDisk.withManagedDisk(managedDiskParameters);
+                        osDisk.withManagedDisk(new ManagedDiskParametersInner());
+                    }
+                    if (osDisk.managedDisk().storageAccountType() == null) {
+                        osDisk.managedDisk()
+                                .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
                     }
                     osDisk.withVhd(null);
                     // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
@@ -1195,6 +1248,12 @@ class VirtualMachineImpl
             // ODDisk CreateOption: ATTACH
             //
             if (isManagedDiskEnabled()) {
+                // In case of attach, it is not allowed to change the storage account type of the
+                // managed disk.
+                //
+                if (osDisk.managedDisk() != null) {
+                    osDisk.managedDisk().withStorageAccountType(null);
+                }
                 osDisk.withVhd(null);
             } else {
                 osDisk.withManagedDisk(null);
@@ -1525,19 +1584,6 @@ class VirtualMachineImpl
         this.virtualMachineInstanceView = null;
     }
 
-    private boolean isManagedDiskEnabled() {
-        if (this.isNativeDiskSelected) {
-            return false;
-        }
-        if (isInCreateMode()) {
-            return true;
-        }
-        // For an existing VM, osDisk.vhd() will be always set if the OS Disk is based on
-        // native disk. This must be null for managed disk.
-        //
-        return this.inner().storageProfile().osDisk().vhd() == null;
-    }
-
     private void throwIfManagedDiskEnabled(String message) {
         if (this.isManagedDiskEnabled()) {
             throw new UnsupportedOperationException(message);
@@ -1563,11 +1609,30 @@ class VirtualMachineImpl
                 }
                 List<DataDisk> dataDisks = vmInner.storageProfile().dataDisks();
                 final List<Integer> usedLuns = new ArrayList<>();
+                // Get all used luns
+                //
                 for (DataDisk dataDisk : dataDisks) {
                     if (dataDisk.lun() != -1) {
                         usedLuns.add(dataDisk.lun());
                     }
                 }
+                for (DataDisk dataDisk : this.newDisksToAttach.values()) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                for (DataDisk dataDisk : this.existingDisksToAttach) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                for (DataDisk dataDisk : this.implicitDisksToAssociate) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                // Func to get the next available lun
+                //
                 Func0<Integer> nextLun = new Func0<Integer>() {
                     @Override
                     public Integer call() {
@@ -1579,50 +1644,10 @@ class VirtualMachineImpl
                         return lun;
                     }
                 };
-                for (Map.Entry<String, DataDisk> entry : this.newDisksToAttach.entrySet()) {
-                    Disk managedDisk = (Disk) vm.createdResource(entry.getKey());
-                    DataDisk dataDisk = entry.getValue();
-                    dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
-                    if (dataDisk.lun() == -1) {
-                        dataDisk.withLun(nextLun.call());
-                    }
-                    if (dataDisk.caching() == null) {
-                        dataDisk.withCaching(CachingTypes.READ_WRITE);
-                    }
-                    dataDisk.withManagedDisk(new ManagedDiskParametersInner());
-                    dataDisk.managedDisk().withId(managedDisk.id());
-                    dataDisks.add(dataDisk);
-                }
-                for (DataDisk dataDisk : this.existingDisksToAttach) {
-                    dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
-                    if (dataDisk.lun() == -1) {
-                        dataDisk.withLun(nextLun.call());
-                    }
-                    if (dataDisk.caching() == null) {
-                        dataDisk.withCaching(CachingTypes.READ_WRITE);
-                    }
-                    dataDisks.add(dataDisk);
-                }
-                for (DataDisk dataDisk : this.implicitDisksToAssociate) {
-                    dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
-                    if (dataDisk.lun() == -1) {
-                        dataDisk.withLun(nextLun.call());
-                    }
-                    if (dataDisk.caching() == null) {
-                        dataDisk.withCaching(CachingTypes.READ_WRITE);
-                    }
-                    dataDisks.add(dataDisk);
-                }
-                for (Integer lun : this.diskLunsToRemove) {
-                    int indexToRemove = 0;
-                    for (DataDisk dataDisk : dataDisks) {
-                        if (dataDisk.lun() == lun) {
-                            dataDisks.remove(indexToRemove);
-                            break;
-                        }
-                        indexToRemove++;
-                    }
-                }
+                setAttachableNewDataDisks(nextLun);
+                setAttachableExistingDataDisks(nextLun);
+                setImplicitDataDisks(nextLun);
+                removeDataDisks();
             }
             this.clear();
         }
@@ -1639,6 +1664,68 @@ class VirtualMachineImpl
                     || existingDisksToAttach.size() > 0
                     || implicitDisksToAssociate.size() > 0
                     || diskLunsToRemove.size() > 0;
+        }
+
+        private void setAttachableNewDataDisks(Func0<Integer> nextLun) {
+            List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
+            for (Map.Entry<String, DataDisk> entry : this.newDisksToAttach.entrySet()) {
+                Disk managedDisk = (Disk) vm.createdResource(entry.getKey());
+                DataDisk dataDisk = entry.getValue();
+                dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
+                if (dataDisk.lun() == -1) {
+                    dataDisk.withLun(nextLun.call());
+                }
+                dataDisk.withManagedDisk(new ManagedDiskParametersInner());
+                dataDisk.managedDisk().withId(managedDisk.id());
+                setDataDiskDefaults(dataDisk);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void setAttachableExistingDataDisks(Func0<Integer> nextLun) {
+            List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
+            for (DataDisk dataDisk : this.existingDisksToAttach) {
+                dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
+                if (dataDisk.lun() == -1) {
+                    dataDisk.withLun(nextLun.call());
+                }
+                setDataDiskDefaults(dataDisk);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void setImplicitDataDisks(Func0<Integer> nextLun) {
+            List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
+            for (DataDisk dataDisk : this.implicitDisksToAssociate) {
+                dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
+                if (dataDisk.lun() == -1) {
+                    dataDisk.withLun(nextLun.call());
+                }
+                setDataDiskDefaults(dataDisk);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void removeDataDisks() {
+            List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
+            for (Integer lun : this.diskLunsToRemove) {
+                int indexToRemove = 0;
+                for (DataDisk dataDisk : dataDisks) {
+                    if (dataDisk.lun() == lun) {
+                        dataDisks.remove(indexToRemove);
+                        break;
+                    }
+                    indexToRemove++;
+                }
+            }
+        }
+
+        private void setDataDiskDefaults(DataDisk dataDisk) {
+            if (dataDisk.caching() == null) {
+                dataDisk.withCaching(CachingTypes.READ_WRITE);
+            }
+            // It is recommended to set name to null, CRP will use managed disk resource name
+            dataDisk.withName(null);
         }
     }
 }

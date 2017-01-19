@@ -81,7 +81,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgHoldingVhdBasedImage)
                 .withGeneralizedLinuxOsDiskImage()
-                .fromVhd(linuxVM.osDiskVhdUri())
+                .fromVhd(linuxVM.osNativeDiskVhdUri())
                 .withOsDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineNativeDataDisk disk : linuxVM.nativeDataDisks()) {
             creatableDisk.defineDataDiskImage(disk.lun())
@@ -204,7 +204,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withOs()
-                .importedFromGeneralizedOsVhd(vm.osDiskVhdUri(), OperatingSystemTypes.LINUX)
+                .importedFromGeneralizedOsVhd(vm.osNativeDiskVhdUri(), OperatingSystemTypes.LINUX)
                 .create();
 
         // Create managed disk with Data from vm's lun0 data disk
