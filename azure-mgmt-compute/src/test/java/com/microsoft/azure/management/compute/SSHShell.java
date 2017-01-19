@@ -26,6 +26,17 @@ public class SSHShell {
     private final StringBuilder shellBuffer = new StringBuilder();
     private List<Match> linuxPromptMatches =  new ArrayList<>();
 
+    /**
+     * Creates SSHShell.
+     *
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
+     * @param password the ssh password
+     * @return the shell
+     * @throws JSchException
+     * @throws IOException
+     */
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
         Closure expectClosure = getExpectClosure();
@@ -49,11 +60,29 @@ public class SSHShell {
         channel.connect();
     }
 
+    /**
+     * Opens a SSH shell.
+     *
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
+     * @param password the ssh password
+     * @return the shell
+     * @throws JSchException
+     * @throws IOException
+     */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
         return new SSHShell(host, port, userName, password);
     }
 
+    /**
+     * Runs a given list of commands in the shell.
+     *
+     * @param commands the commands
+     * @return the result
+     * @throws Exception
+     */
     public String runCommands(List<String> commands) throws Exception {
         String output = null;
         try {
@@ -70,6 +99,9 @@ public class SSHShell {
         return output;
     }
 
+    /**
+     * Closes shell.
+     */
     public void close() {
         if (expect != null) {
             expect.close();

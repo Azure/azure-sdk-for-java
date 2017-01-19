@@ -111,6 +111,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     public void canCreateVirtualMachineWithEmptyManagedDataDisks() {
         VirtualMachineImage image = getImage();
         final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         // Create with implicit + explicit empty disks, check default and override
@@ -153,7 +154,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
                 .withSpecificLinuxImageVersion(image.imageReference())
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -167,6 +168,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
+
         // TODO: Validate the data disks - requires VirtualMachine.dataDisks() to be implemented
         //
         resourceManager.resourceGroups().deleteByName(rgName);

@@ -63,16 +63,12 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Test
     public void canCreateImageFromNativeVhd() throws IOException {
-        final String rgName = "customimages6512ert";
+        final String rgName = ResourceNamer.randomResourceName("customimg6512ert", 20);
         final String vmName = "multidiskvm";
-
-        VirtualMachine linuxVM = computeManager
-                .virtualMachines()
-                .getByGroup(rgName, vmName);
-        Assert.assertNotNull("Expected VM not found, create one  \n "
-                + "'prepareGeneralizedVmWithImageBasedDataDisk(" + rgName + ", " + vmName + ", " + region + ", computeManager)' \n", linuxVM);
-        //
-        // prepareGeneralizedVmWithImageBasedDataDisk(rgName, vmName, region, computeManager);
+        VirtualMachine linuxVM = prepareGeneralizedVmWithImageBasedDataDisk(rgName,
+                vmName,
+                region,
+                computeManager);
         //
         VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOsDiskSettings
                 creatableDisk = computeManager
@@ -142,14 +138,10 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Test
     public void canCreateImageByCapturingVM() {
-        String vmRgName = "rgb4864716e2";
+        final String vmRgName = ResourceNamer.randomResourceName("captrg", 20);
         String vmName = "vm670214";
 
-        VirtualMachine vm = computeManager.virtualMachines().getByGroup(vmRgName, vmName);
-        Assert.assertNotNull("Expected VM not found, create one  \n "
-                + "'prepareGeneralizedVmWith2EmptyDataDisks(" + vmRgName + ", " + vmName + ", " + region + ", computeManager)' \n", vm);
-        //
-        // prepareGeneralizedVmWith2EmptyDataDisks(rgName, vmRgName, region, computeManager);
+        VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(vmRgName, vmName, region, computeManager);
         //
         final String rgName = ResourceNamer.randomResourceName("rg", 15);
         final String imageName = ResourceNamer.randomResourceName("img", 15);
@@ -340,7 +332,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             String output = runCommand.call(session, command, password);
             System.out.println(output);
         } catch (Exception e) {
-            Assert.fail("SSH connection failed" + e.getMessage());
+            Assert.fail(e.getMessage());
         } finally {
             if (session != null) {
                 session.disconnect();
@@ -387,7 +379,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
      * @param region the resource region
      * @param computeManager the client
      */
-    private void prepareGeneralizedVmWithImageBasedDataDisk(String rgName,
+    private VirtualMachine prepareGeneralizedVmWithImageBasedDataDisk(String rgName,
                                                             String vmName,
                                                             Region region,
                                                             ComputeManager computeManager) {
@@ -406,6 +398,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 }
             }
         }
+
 //        linuxVmImage = computeManager.virtualMachineImages().getImage(region,
 //                "alienvault",
 //                "unified-security-management-anywhere",
@@ -459,21 +452,13 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         // Create the virtual Machine
         VirtualMachine linuxVM = creatableVm.create();
-        //
-        System.out.println("SSH into the VM [" + uname + "@" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
-        System.out.println("with password: " + password);
-        System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
-        System.out.println("after that press 'Enter' to continue.");
-        try {
-            System.in.read();
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
-        }
+        deprovisionLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);
         linuxVM.deallocate();
         linuxVM.generalize();
+        return linuxVM;
     }
 
-    private void prepareGeneralizedVmWith2EmptyDataDisks(String rgName,
+    private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(String rgName,
                                                          String vmName,
                                                          Region region,
                                                          ComputeManager computeManager) {
@@ -511,16 +496,9 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-        System.out.println("SSH into the VM [" + uname + "@" + virtualMachine.getPrimaryPublicIpAddress().fqdn() + "]");
-        System.out.println("with password: " + password);
-        System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
-        System.out.println("after that press 'Enter' to continue.");
-        try {
-            System.in.read();
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
-        }
+         deprovisionLinuxVM(virtualMachine.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);
          virtualMachine.deallocate();
          virtualMachine.generalize();
+        return virtualMachine;
     }
 }
