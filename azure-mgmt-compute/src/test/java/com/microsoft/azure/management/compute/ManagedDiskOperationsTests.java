@@ -83,7 +83,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertFalse(disk.isAttachedToVirtualMachine());
         Assert.assertEquals(disk.sizeInGB(), 100);
         Assert.assertNull(disk.osType());
-        Assert.assertNull(disk.osState());
         Assert.assertNotNull(disk.source());
         Assert.assertEquals(disk.source().type(), DiskSourceType.EMPTY);
         Assert.assertNull(disk.source().sourceId());
@@ -160,7 +159,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertFalse(disk.isAttachedToVirtualMachine());
         Assert.assertEquals(disk.sizeInGB(), 200);
         Assert.assertNull(disk.osType());
-        Assert.assertNull(disk.osState());
         Assert.assertNotNull(disk.source());
         Assert.assertEquals(disk.source().type(), DiskSourceType.COPIED_FROM_DISK);
         Assert.assertTrue(disk.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
@@ -218,7 +216,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertFalse(osDisk.isAttachedToVirtualMachine());
         Assert.assertEquals(osDisk.sizeInGB(), 200);
         Assert.assertEquals(osDisk.osType(), OperatingSystemTypes.LINUX);
-        Assert.assertEquals(osDisk.osState(), OperatingSystemStateTypes.GENERALIZED);
         Assert.assertNotNull(osDisk.source());
         Assert.assertEquals(osDisk.source().type(), DiskSourceType.FROM_OS_DISK_IMAGE);
         Assert.assertEquals(osDisk.source().sourceId(), linuxVmImage.id());
@@ -246,7 +243,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
             Assert.assertFalse(dataDisk.isAttachedToVirtualMachine());
             Assert.assertEquals(dataDisk.sizeInGB(), 200);
             Assert.assertNull(dataDisk.osType());
-            Assert.assertNull(dataDisk.osState());
             Assert.assertNotNull(dataDisk.source());
             Assert.assertEquals(dataDisk.source().type(), DiskSourceType.FROM_DATA_DISK_IMAGE);
             Assert.assertEquals(dataDisk.source().sourceId(), linuxVmImage.id());

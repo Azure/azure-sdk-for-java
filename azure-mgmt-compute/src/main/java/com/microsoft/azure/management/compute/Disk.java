@@ -53,11 +53,6 @@ public interface Disk extends
     int sizeInGB();
 
     /**
-     * @return the state of the operating system in the disk
-     */
-    OperatingSystemStateTypes osState();
-
-    /**
      * @return the type of operating system in the disk
      */
     OperatingSystemTypes osType();
@@ -163,12 +158,10 @@ public interface Disk extends
              *
              * @param imageId image resource id
              * @param osType operating system type
-             * @param osState operating system state
              * @return the next stage of the managed disk definition
              */
             WithCreateAndSize fromImage(String imageId,
-                                        OperatingSystemTypes osType,
-                                        OperatingSystemStateTypes osState);
+                                        OperatingSystemTypes osType);
 
             /**
              * Specifies the image containing source Os disk image.
@@ -199,15 +192,6 @@ public interface Disk extends
              * @return the next stage of the managed disk definition
              */
             WithCreateAndSize importedFromSpecializedOsVhd(String vhdUrl, OperatingSystemTypes osType);
-
-            /**
-             * Specifies the source generalized Os vhd for os disk.
-             *
-             * @param vhdUrl the source vhd url
-             * @param osType operating system type
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndSize importedFromGeneralizedOsVhd(String vhdUrl, OperatingSystemTypes osType);
         }
 
         /**
@@ -348,14 +332,6 @@ public interface Disk extends
              * @return the next stage of the managed disk definition
              */
             WithCreateAndOsSettings withOsType(OperatingSystemTypes osType);
-
-            /**
-             * Specifies the operating system state.
-             *
-             * @param osState operating system state
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndOsSettings withOsState(OperatingSystemStateTypes osState);
         }
 
         /**
@@ -424,14 +400,6 @@ public interface Disk extends
              * @return the next stage of the managed disk update
              */
             Update withOsType(OperatingSystemTypes osType);
-
-            /**
-             * Specifies the operating system state.
-             *
-             * @param osState operating system state
-             * @return the next stage of the managed disk update
-             */
-            Update withOsState(OperatingSystemStateTypes osState);
         }
     }
 

@@ -95,25 +95,11 @@ public interface VirtualMachineCustomImage extends
             WithOsDiskImageSource withGeneralizedWindowsOsDiskImage();
 
             /**
-             * Specifies that OS disk image is a specialized Windows image.
-             *
-             * @return the next stage of the image definition
-             */
-            WithOsDiskImageSource withSpecializedWindowsOsDiskImage();
-
-            /**
              * Specifies that OS disk image is a generalized Linux image.
              *
              * @return the next stage of the image definition
              */
             WithOsDiskImageSource withGeneralizedLinuxOsDiskImage();
-
-            /**
-             * Specifies that OS disk image is a specialized Linux image.
-             *
-             * @return the next stage of the image definition
-             */
-            WithOsDiskImageSource withSpecializedLinuxOsDiskImage();
         }
 
         /**

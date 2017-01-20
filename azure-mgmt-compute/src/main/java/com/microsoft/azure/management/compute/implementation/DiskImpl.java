@@ -13,7 +13,6 @@ import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.DiskSource;
 import com.microsoft.azure.management.compute.ImageDiskReference;
-import com.microsoft.azure.management.compute.OperatingSystemStateTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
@@ -72,11 +71,6 @@ class DiskImpl
     }
 
     @Override
-    public OperatingSystemStateTypes osState() {
-        return this.inner().osState();
-    }
-
-    @Override
     public OperatingSystemTypes osType() {
         return this.inner().osType();
     }
@@ -122,10 +116,9 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl fromImage(String imageId, OperatingSystemTypes osType, OperatingSystemStateTypes osState) {
+    public DiskImpl fromImage(String imageId, OperatingSystemTypes osType) {
         this.inner()
                 .withOsType(osType)
-                .withOsState(osState)
                 .creationData()
                 .withCreateOption(DiskCreateOption.FROM_IMAGE)
                 .withImageReference(new ImageDiskReference().withId(imageId));
@@ -135,33 +128,19 @@ class DiskImpl
     @Override
     public DiskImpl fromImage(VirtualMachineImage image) {
         return this.fromImage(image.id(),
-                image.osDiskImage().operatingSystem(),
-                OperatingSystemStateTypes.GENERALIZED);
+                image.osDiskImage().operatingSystem());
     }
 
     @Override
     public DiskImpl fromImage(VirtualMachineCustomImage image) {
         return this.fromImage(image.id(),
-                image.osDiskImage().osType(),
-                image.osDiskImage().osState());
+                image.osDiskImage().osType());
     }
 
     @Override
     public DiskImpl importedFromSpecializedOsVhd(String vhdUrl, OperatingSystemTypes osType) {
         this.inner()
                 .withOsType(osType)
-                .withOsState(OperatingSystemStateTypes.SPECIALIZED)
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
-        return this;
-    }
-
-    @Override
-    public DiskImpl importedFromGeneralizedOsVhd(String vhdUrl, OperatingSystemTypes osType) {
-        this.inner()
-                .withOsType(osType)
-                .withOsState(OperatingSystemStateTypes.GENERALIZED)
                 .creationData()
                 .withCreateOption(DiskCreateOption.IMPORT)
                 .withSourceUri(vhdUrl);
@@ -223,7 +202,6 @@ class DiskImpl
     @Override
     public DiskImpl copiedFromManagedDisk(Disk managedDisk) {
         return copiedFromManagedDisk(managedDisk.id())
-                .withOsState(managedDisk.osState())
                 .withOsType(managedDisk.osType())
                 .withAccountType(managedDisk.accountType());
     }
@@ -237,12 +215,6 @@ class DiskImpl
     @Override
     public DiskImpl withOsType(OperatingSystemTypes osType) {
         this.inner().withOsType(osType);
-        return this;
-    }
-
-    @Override
-    public DiskImpl withOsState(OperatingSystemStateTypes osState) {
-        this.inner().withOsState(osState);
         return this;
     }
 

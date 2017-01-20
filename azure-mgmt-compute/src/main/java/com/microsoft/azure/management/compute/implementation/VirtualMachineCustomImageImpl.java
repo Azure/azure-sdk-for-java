@@ -101,25 +101,9 @@ class VirtualMachineCustomImageImpl
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withSpecializedWindowsOsDiskImage() {
-        this.ensureOsDiskImage()
-                .withOsState(OperatingSystemStateTypes.SPECIALIZED)
-                .withOsType(OperatingSystemTypes.WINDOWS);
-        return this;
-    }
-
-    @Override
     public VirtualMachineCustomImageImpl withGeneralizedLinuxOsDiskImage() {
         this.ensureOsDiskImage()
                 .withOsState(OperatingSystemStateTypes.GENERALIZED)
-                .withOsType(OperatingSystemTypes.LINUX);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineCustomImageImpl withSpecializedLinuxOsDiskImage() {
-        this.ensureOsDiskImage()
-                .withOsState(OperatingSystemStateTypes.SPECIALIZED)
                 .withOsType(OperatingSystemTypes.LINUX);
         return this;
     }

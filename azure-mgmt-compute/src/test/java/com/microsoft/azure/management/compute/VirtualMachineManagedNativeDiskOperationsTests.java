@@ -95,7 +95,6 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Disk osDisk = computeManager.disks().getById(virtualMachine.osDiskId());
         Assert.assertTrue(osDisk.isAttachedToVirtualMachine());
         Assert.assertEquals(osDisk.osType(), OperatingSystemTypes.LINUX);
-        Assert.assertEquals(osDisk.osState(), OperatingSystemStateTypes.GENERALIZED);
         // Check the auto created public ip
         //
         String publicIpId = virtualMachine.getPrimaryPublicIpAddressId();
@@ -511,36 +510,6 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertTrue(managedVm.osDiskId().equalsIgnoreCase(osDisk.id().toLowerCase()));
         resourceManager.resourceGroups().deleteByName(rgName);
     }
-
-    @Test
-    public void Bar() {
-        resourceManager.resourceGroups().deleteByName("rg-e6432929db");
-        computeManager.virtualMachines().deleteByGroup("rg-e6432929db", "myvm4");
-        networkManager.networkInterfaces().deleteByGroup("rg-e6432929db", "nicmyvm4bab3950907");
-        networkManager.networks().deleteByGroup("rg-e6432929db", "vnet40658268c0");
-    }
-
-    @Test
-    public void Foo() {
-        final String uname = "juser";
-        final String password = "123tEst!@|ac";
-        final String vmName2 = "myvm4";
-        VirtualMachine virtualMachine2 = computeManager.virtualMachines()
-                .define(vmName2)
-                .withRegion(region)
-                .withExistingResourceGroup("rg-e6432929db")
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
-                .withLinuxCustomImage("/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rg-e6432929db/providers/Microsoft.Compute/images/img-99926")
-                .withRootUsername(uname)
-                .withRootPassword(password)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
-                .create();
-    }
-
-
 
     private VirtualMachineImage getImage() {
         VirtualMachineImage linuxVmImage = computeManager.virtualMachineImages().getImage(region,
