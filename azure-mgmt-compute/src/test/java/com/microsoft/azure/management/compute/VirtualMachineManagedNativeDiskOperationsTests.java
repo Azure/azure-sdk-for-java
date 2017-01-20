@@ -17,8 +17,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Map;
 
 public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTestBase {
@@ -520,17 +518,5 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertNotNull(linuxVmImage);
         Assert.assertNotNull(linuxVmImage.inner());
         return linuxVmImage;
-    }
-
-    private void writeToFile(String content) {
-        try
-        {
-            String filename= "C:\\rgnames\\rg-names.txt";
-            FileWriter fw = new FileWriter(filename,true);
-            fw.write("\n" + content + "\n");
-            fw.close();
-        } catch(IOException ioe) {
-            System.err.println("IOException: " + ioe.getMessage());
-        }
     }
 }

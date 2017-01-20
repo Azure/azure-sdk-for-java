@@ -11,6 +11,7 @@ import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,18 @@ public abstract class ComputeManagementTestBase {
         try {
             Thread.sleep(milli);
         } catch (InterruptedException exception) {
+        }
+    }
+
+    protected void writeToFile(String content) {
+        try
+        {
+            String filename= "C:\\rgnames\\rg-names.txt";
+            FileWriter fw = new FileWriter(filename,true);
+            fw.write("\n" + content + "\n");
+            fw.close();
+        } catch(IOException ioe) {
+            System.err.println("IOException: " + ioe.getMessage());
         }
     }
 }

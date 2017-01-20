@@ -54,6 +54,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
     public void canCreateImageFromNativeVhd() throws IOException {
         final String rgName = ResourceNamer.randomResourceName("custo512ert", 20);
         final String vhdBasedImageName = ResourceNamer.randomResourceName("img", 15);
+        writeToFile(rgName);
 
         VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
                 ResourceNamer.randomResourceName("multidvm", 15),
@@ -134,12 +135,12 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Test
     public void canCreateImageByCapturingVM() {
-        final String vmRgName = ResourceNamer.randomResourceName("captrg", 20);
-        String vmName = ResourceNamer.randomResourceName("vm67-", 20);
-
-        VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(vmRgName, vmName, region, computeManager);
-        //
         final String rgName = ResourceNamer.randomResourceName("rg", 15);
+        String vmName = ResourceNamer.randomResourceName("vm67-", 20);
+        writeToFile(rgName);
+
+        VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(rgName, vmName, region, computeManager);
+        //
         final String imageName = ResourceNamer.randomResourceName("img", 15);
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
                 .define(imageName)
@@ -177,6 +178,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
     public void canCreateImageFromManagedDisk() {
         String rgName = ResourceNamer.randomResourceName("rg-", 20);
         String vmName = ResourceNamer.randomResourceName("vm7-", 20);
+        writeToFile(rgName);
+
         final String uname = "juser";
         final String password = "123tEst!@|ac";
 
