@@ -48,7 +48,7 @@ public interface Snapshot extends
     /**
      * @return the details of the source from which snapshot is created
      */
-    DiskSource source();
+    CreationSource source();
 
     /**
      * Grants access to the snapshot.
@@ -152,7 +152,7 @@ public interface Snapshot extends
              * @param managedDiskId source managed disk resource id
              * @return the next stage of the managed snapshot definition
              */
-            WithCreateAndOsSettings copiedFromManagedDisk(String managedDiskId);
+            WithCreateAndOsSettings copiedFromDisk(String managedDiskId);
 
             /**
              * Specifies the source operating system managed disk.
@@ -160,7 +160,7 @@ public interface Snapshot extends
              * @param managedDisk source managed disk
              * @return the next stage of the managed snapshot definition
              */
-            WithCreateAndOsSettings copiedFromManagedDisk(Disk managedDisk);
+            WithCreateAndOsSettings copiedFromDisk(Disk managedDisk);
         }
 
         /**
@@ -230,7 +230,7 @@ public interface Snapshot extends
              * @param managedDiskId source managed disk resource id
              * @return the next stage of the managed snapshot definition
              */
-            WithCreateAndSize copiedFromManagedDisk(String managedDiskId);
+            WithCreateAndSize copiedFromDisk(String managedDiskId);
 
             /**
              * Specifies the source data managed disk.
@@ -238,7 +238,7 @@ public interface Snapshot extends
              * @param managedDisk source managed disk
              * @return the next stage of the managed snapshot definition
              */
-            WithCreateAndSize copiedFromManagedDisk(Disk managedDisk);
+            WithCreateAndSize copiedFromDisk(Disk managedDisk);
         }
 
         /**

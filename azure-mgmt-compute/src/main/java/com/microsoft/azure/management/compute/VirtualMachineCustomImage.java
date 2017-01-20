@@ -130,7 +130,7 @@ public interface VirtualMachineCustomImage extends
          */
         interface WithOsDiskImageSource {
             /**
-             * Specifies the source VHD for the OS disk image.
+             * Specifies the source native VHD for the OS disk image.
              *
              * @param sourceVhdUrl source virtual hard disk url
              * @return the next stage of the image definition
@@ -159,7 +159,7 @@ public interface VirtualMachineCustomImage extends
              * @param sourceManagedDiskId source managed disk resource id
              * @return the next stage of the image definition
              */
-            WithCreateAndDataDiskImageOsDiskSettings fromManagedDisk(String sourceManagedDiskId);
+            WithCreateAndDataDiskImageOsDiskSettings fromDisk(String sourceManagedDiskId);
 
             /**
              * Specifies the source managed disk for the OS disk image.
@@ -167,7 +167,7 @@ public interface VirtualMachineCustomImage extends
              * @param sourceManagedDisk source managed disk
              * @return the next stage of the image definition
              */
-            WithCreateAndDataDiskImageOsDiskSettings fromManagedDisk(Disk sourceManagedDisk);
+            WithCreateAndDataDiskImageOsDiskSettings fromDisk(Disk sourceManagedDisk);
         }
 
         /**

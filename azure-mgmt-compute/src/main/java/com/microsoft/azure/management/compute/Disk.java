@@ -60,7 +60,7 @@ public interface Disk extends
     /**
      * @return the details of the source from which disk is created
      */
-    DiskSource source();
+    CreationSource source();
 
     /**
      * Grants access to the disk.
@@ -171,7 +171,7 @@ public interface Disk extends
              * @param managedDiskId source managed disk resource id
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndOsSettings copiedFromManagedDisk(String managedDiskId);
+            WithCreateAndOsSettings copiedFromDisk(String managedDiskId);
 
             /**
              * Specifies the source operating system managed disk.
@@ -179,7 +179,7 @@ public interface Disk extends
              * @param managedDisk source managed disk
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndOsSettings copiedFromManagedDisk(Disk managedDisk);
+            WithCreateAndOsSettings copiedFromDisk(Disk managedDisk);
         }
 
         /**
@@ -250,7 +250,7 @@ public interface Disk extends
              * @param managedDiskId source managed disk resource id
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndSize copiedFromManagedDisk(String managedDiskId);
+            WithCreateAndSize copiedFromDisk(String managedDiskId);
 
             /**
              * Specifies the source data managed disk.
@@ -258,7 +258,7 @@ public interface Disk extends
              * @param managedDisk source managed disk
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndSize copiedFromManagedDisk(Disk managedDisk);
+            WithCreateAndSize copiedFromDisk(Disk managedDisk);
         }
 
         /**

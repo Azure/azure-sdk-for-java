@@ -84,7 +84,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertEquals(disk.sizeInGB(), 100);
         Assert.assertNull(disk.osType());
         Assert.assertNotNull(disk.source());
-        Assert.assertEquals(disk.source().type(), DiskSourceType.EMPTY);
+        Assert.assertEquals(disk.source().type(), CreationSourceType.EMPTY);
         Assert.assertNull(disk.source().sourceId());
 
         // Resize and change storage account type
@@ -143,7 +143,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup.name())
                 .withData()
-                .copiedFromManagedDisk(emptyDisk)
+                .copiedFromDisk(emptyDisk)
                 // Start Option
                 .withSizeInGB(200)
                 .withAccountType(StorageAccountTypes.STANDARD_LRS)
@@ -160,7 +160,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         Assert.assertEquals(disk.sizeInGB(), 200);
         Assert.assertNull(disk.osType());
         Assert.assertNotNull(disk.source());
-        Assert.assertEquals(disk.source().type(), DiskSourceType.COPIED_FROM_DISK);
+        Assert.assertEquals(disk.source().type(), CreationSourceType.COPIED_FROM_DISK);
         Assert.assertTrue(disk.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
 
         computeManager.disks().deleteById(emptyDisk.id());

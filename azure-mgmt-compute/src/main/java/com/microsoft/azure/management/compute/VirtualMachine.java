@@ -558,7 +558,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the Windows virtual machine definition
              */
-            WithNativeCreate withSpecializedOsNativeDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithNativeCreate withSpecializedOsNativeVhd(String osDiskUrl, OperatingSystemTypes osType);
 
             /**
              * Specifies the specialized operating system managed disk to be attached to the virtual machine.

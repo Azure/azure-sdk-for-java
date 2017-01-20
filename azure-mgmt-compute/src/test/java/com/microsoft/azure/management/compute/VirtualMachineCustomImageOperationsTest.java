@@ -252,7 +252,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withGeneralizedLinuxOsDiskImage()
-                .fromManagedDisk(managedOsDisk)
+                .fromDisk(managedOsDisk)
                 .defineDataDiskImage(vmNativeDataDisk1.lun())
                     .fromManagedDisk(managedDataDisk1)
                     .withDiskCaching(vmNativeDataDisk1.cachingType())

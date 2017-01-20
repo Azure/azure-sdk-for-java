@@ -131,15 +131,15 @@ class VirtualMachineCustomImageImpl
     }
 
     @Override
-    public VirtualMachineCustomImageImpl fromManagedDisk(String sourceManagedDiskId) {
+    public VirtualMachineCustomImageImpl fromDisk(String sourceManagedDiskId) {
         this.ensureOsDiskImage()
                 .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl fromManagedDisk(Disk sourceManagedDisk) {
-        return this.fromManagedDisk(sourceManagedDisk.id());
+    public VirtualMachineCustomImageImpl fromDisk(Disk sourceManagedDisk) {
+        return this.fromDisk(sourceManagedDisk.id());
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
-import com.microsoft.azure.management.compute.DiskSource;
+import com.microsoft.azure.management.compute.CreationSource;
 import com.microsoft.azure.management.compute.ImageDiskReference;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
@@ -67,10 +67,8 @@ class SnapshotImpl
     }
 
     @Override
-    public DiskSource source() {
-        // TODO
-        return null;
-        // return new DiskSource(this);
+    public CreationSource source() {
+        return new CreationSource(this.inner().creationData());
     }
 
     @Override
@@ -139,7 +137,7 @@ class SnapshotImpl
     }
 
     @Override
-    public SnapshotImpl copiedFromManagedDisk(String managedDiskId) {
+    public SnapshotImpl copiedFromDisk(String managedDiskId) {
         this.inner()
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
@@ -148,8 +146,8 @@ class SnapshotImpl
     }
 
     @Override
-    public SnapshotImpl copiedFromManagedDisk(Disk managedDisk) {
-        return copiedFromManagedDisk(managedDisk.id())
+    public SnapshotImpl copiedFromDisk(Disk managedDisk) {
+        return copiedFromDisk(managedDisk.id())
                 .withOsType(managedDisk.osType())
                 .withAccountType(managedDisk.accountType());
     }

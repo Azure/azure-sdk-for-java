@@ -452,7 +452,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withSpecializedOsNativeDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOsNativeVhd(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
