@@ -452,12 +452,24 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOsNativeDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
         this.inner().storageProfile().osDisk().withVhd(osVhd);
         this.inner().storageProfile().osDisk().withOsType(osType);
+        this.inner().storageProfile().osDisk().withManagedDisk(null);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType) {
+        ManagedDiskParametersInner diskParametersInner = new ManagedDiskParametersInner();
+        diskParametersInner.withId(disk.id());
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
+        this.inner().storageProfile().osDisk().withManagedDisk(diskParametersInner);
+        this.inner().storageProfile().osDisk().withOsType(osType);
+        this.inner().storageProfile().osDisk().withVhd(null);
         return this;
     }
 

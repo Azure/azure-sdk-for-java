@@ -454,6 +454,65 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     }
 
     @Test
+    public void canCreateVirtualMachineByAttachingManagedOsDisk() {
+        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String uname = "juser";
+        final String password = "123tEst!@|ac";
+        final String vmName = "myvm6";
+        writeToFile(rgName);
+
+        // Creates a native virtual machine
+        //
+        VirtualMachine nativeVm = computeManager.virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
+                .withRootUsername(uname)
+                .withRootPassword(password)
+                .withNativeDisks()                  /* UN-MANAGED OS and DATA DISKS */
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        Assert.assertFalse(nativeVm.isManagedDiskEnabled());
+        String osVhdUri = nativeVm.osNativeDiskVhdUri();
+        Assert.assertNotNull(osVhdUri);
+
+        computeManager.virtualMachines().deleteById(nativeVm.id());
+
+        final String diskName = ResourceNamer.randomResourceName("dsk-", 15);
+        Disk osDisk = computeManager.disks().define(diskName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withOs()
+                .importedFromSpecializedOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
+                .create();
+
+        // Creates a managed virtual machine
+        //
+        VirtualMachine managedVm = computeManager.virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        Assert.assertTrue(managedVm.isManagedDiskEnabled());
+        Assert.assertTrue(managedVm.osDiskId().equalsIgnoreCase(osDisk.id().toLowerCase()));
+        resourceManager.resourceGroups().deleteByName(rgName);
+    }
+
+    @Test
     public void Bar() {
         resourceManager.resourceGroups().deleteByName("rg-e6432929db");
         computeManager.virtualMachines().deleteByGroup("rg-e6432929db", "myvm4");

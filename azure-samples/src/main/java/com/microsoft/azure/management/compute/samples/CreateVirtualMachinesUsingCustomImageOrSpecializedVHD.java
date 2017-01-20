@@ -164,7 +164,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
-                        .withOsDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
+                        .withSpecializedOsNativeDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)       // when attaching a specialized VHD
                         .create();
 

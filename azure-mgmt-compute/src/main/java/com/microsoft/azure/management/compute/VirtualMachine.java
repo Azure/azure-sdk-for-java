@@ -552,13 +552,22 @@ public interface VirtualMachine extends
             WithLinuxRootUsernameNative withStoredLinuxImage(String imageUrl);
 
             /**
-             * Specifies the specialized operating system disk to be attached to the virtual machine.
+             * Specifies the specialized operating system native disk to be attached to the virtual machine.
              *
              * @param osDiskUrl osDiskUrl the url to the OS disk in the Azure Storage account
              * @param osType the OS type
              * @return the next stage of the Windows virtual machine definition
              */
-            WithNativeCreate withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithNativeCreate withSpecializedOsNativeDisk(String osDiskUrl, OperatingSystemTypes osType);
+
+            /**
+             * Specifies the specialized operating system managed disk to be attached to the virtual machine.
+             *
+             * @param disk the managed disk to attach
+             * @param osType the OS type
+             * @return the next stage of the Windows virtual machine definition
+             */
+            WithManagedCreate withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType);
         }
 
         /**
