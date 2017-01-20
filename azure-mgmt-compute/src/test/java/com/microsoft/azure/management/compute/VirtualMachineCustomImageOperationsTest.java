@@ -219,7 +219,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withOs()
-                .importedFromSpecializedOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
+                .importedFromOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
                 .create();
 
         // Create managed disk with Data from vm's lun0 data disk

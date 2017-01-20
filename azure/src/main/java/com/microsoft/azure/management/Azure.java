@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Disks;
+import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
@@ -446,6 +447,13 @@ public final class Azure {
      */
     public Disks disks() {
         return computeManager.disks();
+    }
+
+    /**
+     * @return entry point to managing managed snapshots
+     */
+    public Snapshots snapshots() {
+        return computeManager.snapshots();
     }
 
     /**

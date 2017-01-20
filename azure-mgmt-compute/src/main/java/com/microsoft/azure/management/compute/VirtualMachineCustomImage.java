@@ -140,6 +140,14 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the source snapshot for the OS disk image.
              *
+             * @param sourceSnapshot source snapshot resource
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings fromSnapshot(Snapshot sourceSnapshot);
+
+            /**
+             * Specifies the source snapshot for the OS disk image.
+             *
              * @param sourceSnapshotId source snapshot resource id
              * @return the next stage of the image definition
              */

@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.compute.implementation.DiskInner;
+import com.microsoft.azure.management.compute.implementation.SnapshotInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -17,159 +17,140 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An immutable client-side representation of an Azure managed disk.
+ * An immutable client-side representation of an Azure managed snapshot.
  */
 @Fluent
-public interface Disk extends
+public interface Snapshot extends
         GroupableResource,
-        Refreshable<Disk>,
-        Wrapper<DiskInner>,
-        Updatable<Disk.Update> {
+        Refreshable<Snapshot>,
+        Wrapper<SnapshotInner>,
+        Updatable<Snapshot.Update> {
     /**
-     * @return the disk account type
+     * @return the snapshot storage account type
      */
     StorageAccountTypes accountType();
 
     /**
-     * @return the disk creation method
+     * @return the snapshot creation method
      */
     DiskCreateOption creationMethod();
 
     /**
-     * @return true if the disk is attached to a virtual machine, false if is
-     * in detached state
-     */
-    boolean isAttachedToVirtualMachine();
-
-    /**
-     * @return resource id of the virtual machine this disk is attached to, null
-     * if the disk is in detached state
-     */
-    String virtualMachineId();
-
-    /**
-     * @return disk size in GB
+     * @return snapshot size in GB
      */
     int sizeInGB();
 
     /**
-     * @return the type of operating system in the disk
+     * @return the type of operating system in the snapshot
      */
     OperatingSystemTypes osType();
 
     /**
-     * @return the details of the source from which disk is created
+     * @return the details of the source from which snapshot is created
      */
     DiskSource source();
 
     /**
-     * Grants access to the disk.
+     * Grants access to the snapshot.
      *
      * @param accessDurationInSeconds the access duration in seconds
-     * @return the readonly SAS uri to the disk
+     * @return the readonly SAS uri to the snapshot
      */
     String grantAccess(int accessDurationInSeconds);
 
     /**
-     * Revoke access granted to the disk.
+     * Revoke access granted to the snapshot.
      */
     void revokeAccess();
 
     /**
-     * The entirety of the managed disk definition.
+     * The entirety of the managed snapshot definition.
      */
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithDiskType,
-            DefinitionStages.WithOsDisk,
-            DefinitionStages.WithDataDisk,
+            DefinitionStages.WithSnapshotType,
+            DefinitionStages.WithOsSnapshot,
+            DefinitionStages.WithDataSnapshot,
             DefinitionStages.WithCreateAndOsSettings {
     }
 
     /**
-     * Grouping of managed disk definition stages.
+     * Grouping of managed snapshot definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a managed disk definition.
+         * The first stage of a managed snapshot definition.
          */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the managed disk definition allowing to specify the resource group.
+         * The stage of the managed snapshot definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithDiskType> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSnapshotType> {
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose disk type.
+         * The stage of the managed snapshot definition allowing to choose snapshot type.
          */
-        interface WithDiskType {
+        interface WithSnapshotType {
             /**
-             * Begins definition of managed disk containing operating system.
+             * Begins definition of managed snapshot containing operating system.
              *
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
-            WithOsDisk withOs();
+            WithOsSnapshot withOs();
 
             /**
              * Begins definition of managed snapshot containing data.
              *
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
-            WithDataDisk withData();
+            WithDataSnapshot withData();
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose Os source.
+         * The stage of the managed snapshot definition allowing to choose Os source.
          */
-        interface WithOsDisk extends
-                WithOsDiskFromVhd,
-                WithOsDiskFromManagedDisk,
-                WithOsDiskFromSnapshot {
+        interface WithOsSnapshot extends
+                WithOsSnapshotFromVhd,
+                WithOsSnapshotFromManagedDisk,
+                WithOsSnapshotFromSnapshot {
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose data source.
+         * The stage of the managed snapshot definition allowing to choose data source.
          */
-        interface WithDataDisk extends
-                WithDataDiskFromVhd,
-                WithDataDiskFromManagedDisk,
-                WithDataDiskFromSnapshot {
-            /**
-             * Specifies the disk size for an empty disk.
-             *
-             * @param sizeInGB the disk size in GB
-             * @return the next stage of the managed disk definition
-             */
-            WithCreate withSizeInGB(int sizeInGB);
+        interface WithDataSnapshot extends
+                WithDataSnapshotFromVhd,
+                WithDataSnapshotFromManagedDisk,
+                WithDataSnapshotFromSnapshot {
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose source vhd containing Os.
+         * The stage of the managed snapshot definition allowing to choose source vhd containing Os.
          */
-        interface WithOsDiskFromVhd {
+        interface WithOsSnapshotFromVhd {
             /**
              * Specifies the source specialized or generalized operating system vhd.
              *
              * @param vhdUrl the source vhd url
              * @param osType operating system type
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed disk containing Os.
+         * The stage of the managed snapshot definition allowing to choose managed disk containing os.
          */
-        interface WithOsDiskFromManagedDisk {
+        interface WithOsSnapshotFromManagedDisk {
             /**
              * Specifies the source operating system managed disk.
              *
              * @param managedDiskId source managed disk resource id
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndOsSettings copiedFromManagedDisk(String managedDiskId);
 
@@ -177,35 +158,34 @@ public interface Disk extends
              * Specifies the source operating system managed disk.
              *
              * @param managedDisk source managed disk
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndOsSettings copiedFromManagedDisk(Disk managedDisk);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing os.
+         * The stage of the managed snapshot definition allowing to choose managed snapshot containing os.
          */
-        interface WithOsDiskFromSnapshot {
+        interface WithOsSnapshotFromSnapshot {
             /**
              * Specifies the source operating system managed snapshot.
              *
              * @param snapshotId snapshot resource id
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndOsSettings copiedFromSnapshot(String snapshotId);
         }
 
-
         /**
-         * The stage of the managed disk definition allowing to choose source operating system image.
+         * The stage of the managed snapshot definition allowing to choose source operating system image.
          */
-        interface WithOsDiskFromImage {
+        interface WithOsDSnapshotFromImage {
             /**
              * Specifies id of the image containing operating system.
              *
              * @param imageId image resource id
              * @param osType operating system type
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(String imageId,
                                         OperatingSystemTypes osType);
@@ -214,7 +194,7 @@ public interface Disk extends
              * Specifies the image containing operating system.
              *
              * @param image the image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(VirtualMachineImage image);
 
@@ -222,33 +202,33 @@ public interface Disk extends
              * Specifies the custom image containing operating system.
              *
              * @param image the image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose source data disk vhd.
+         * The stage of the managed snapshot definition allowing to choose source data disk vhd.
          */
-        interface WithDataDiskFromVhd {
+        interface WithDataSnapshotFromVhd {
             /**
              * Specifies the source data vhd.
              *
              * @param vhdUrl the source vhd url
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize importedFromDataVhd(String vhdUrl);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed disk containing data.
+         * The stage of the managed snapshot definition allowing to choose managed disk containing data.
          */
-        interface WithDataDiskFromManagedDisk {
+        interface WithDataSnapshotFromManagedDisk {
             /**
              * Specifies the id of source data managed disk.
              *
              * @param managedDiskId source managed disk resource id
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize copiedFromManagedDisk(String managedDiskId);
 
@@ -256,34 +236,34 @@ public interface Disk extends
              * Specifies the source data managed disk.
              *
              * @param managedDisk source managed disk
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize copiedFromManagedDisk(Disk managedDisk);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing data.
+         * The stage of the managed snapshot definition allowing to choose managed snapshot containing data.
          */
-        interface WithDataDiskFromSnapshot {
+        interface WithDataSnapshotFromSnapshot {
             /**
              * Specifies the source data managed snapshot.
              *
              * @param snapshotId snapshot resource id
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize copiedFromSnapshot(String snapshotId);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose source data disk image.
+         * The stage of the managed snapshot definition allowing to choose source data disk image.
          */
-        interface WithDataDiskFromImage {
+        interface WithDataSnapshotFromImage {
             /**
              * Specifies id of the image containing source data disk image.
              *
              * @param imageId image resource id
              * @param diskLun lun of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(String imageId,
                                         int diskLun);
@@ -293,7 +273,7 @@ public interface Disk extends
              *
              * @param image the image
              * @param diskLun lun of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(VirtualMachineImage image, int diskLun);
 
@@ -302,46 +282,46 @@ public interface Disk extends
              *
              * @param image the image
              * @param diskLun lun of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image, int diskLun);
         }
 
         /**
-         * The stage of the managed disk definition that allowing to create or optionally specify size.
+         * The stage of the managed snapshot definition that allowing to create or optionally specify size.
          */
         interface WithCreateAndSize extends WithCreate {
             /**
              * Specifies the disk size.
              *
-             * @param sizeInGB the disk size in GB
-             * @return the next stage of the managed disk definition
+             * @param sizeInGB the snapshot size in GB
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndSize withSizeInGB(int sizeInGB);
         }
 
         /**
-         * The stage of the managed disk definition that allowing to create or optionally specify Os settings.
+         * The stage of the managed snapshot definition that allowing to create or optionally specify Os settings.
          */
         interface WithCreateAndOsSettings extends WithCreateAndSize {
             /**
              * Specifies the operating system type.
              *
              * @param osType operating system type
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreateAndOsSettings withOsType(OperatingSystemTypes osType);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose account type.
+         * The stage of the managed snapshot definition allowing to choose account type.
          */
         interface WithAccountType {
             /**
              * Specifies the account type.
              *
              * @param accountType account type
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the managed snapshot definition
              */
             WithCreate withAccountType(StorageAccountTypes accountType);
         }
@@ -352,51 +332,38 @@ public interface Disk extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Disk>,
-                Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
+                Creatable<Snapshot>,
+                Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
                 WithAccountType {
         }
     }
 
     /**
-     * Grouping of managed disk update stages.
+     * Grouping of managed snapshot update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the managed disk update allowing to choose account type.
+         * The stage of the managed snapshot update allowing to choose account type.
          */
         interface WithAccountType {
             /**
              * Specifies the account type.
              *
              * @param accountType account type
-             * @return the next stage of the managed disk update
+             * @return the next stage of the managed snapshot update
              */
             Update withAccountType(StorageAccountTypes accountType);
         }
 
         /**
-         * The stage of the managed disk definition allowing to specify new size.
-         */
-        interface WithSize {
-            /**
-             * Specifies the disk size.
-             *
-             * @param sizeInGB the disk size in GB
-             * @return the next stage of the managed disk update
-             */
-            Update withSizeInGB(int sizeInGB);
-        }
-
-        /**
-         * The stage of the managed disk update allowing to specify Os settings.
+         * The stage of the managed snapshot update allowing to specify Os settings.
          */
         interface WithOsSettings {
             /**
              * Specifies the operating system type.
              *
              * @param osType operating system type
-             * @return the next stage of the managed disk update
+             * @return the next stage of the managed snapshot update
              */
             Update withOsType(OperatingSystemTypes osType);
         }
@@ -409,10 +376,9 @@ public interface Disk extends
      * Call {@link Disk.Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<Disk>,
-            Resource.UpdateWithTags<Disk.Update>,
+            Appliable<Snapshot>,
+            Resource.UpdateWithTags<Snapshot.Update>,
             UpdateStages.WithAccountType,
-            UpdateStages.WithSize,
             UpdateStages.WithOsSettings {
     }
 }

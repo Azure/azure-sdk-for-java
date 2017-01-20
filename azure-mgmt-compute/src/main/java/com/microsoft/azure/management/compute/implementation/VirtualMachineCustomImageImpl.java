@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.ImageOSDisk;
 import com.microsoft.azure.management.compute.ImageStorageProfile;
 import com.microsoft.azure.management.compute.OperatingSystemStateTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -112,6 +113,13 @@ class VirtualMachineCustomImageImpl
     public VirtualMachineCustomImageImpl fromVhd(String sourceVhdUrl) {
         this.ensureOsDiskImage()
                 .withBlobUri(sourceVhdUrl);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineCustomImageImpl fromSnapshot(Snapshot sourceSnapshot) {
+        this.ensureOsDiskImage()
+                .withSnapshot(new SubResource().withId(sourceSnapshot.id()));
         return this;
     }
 

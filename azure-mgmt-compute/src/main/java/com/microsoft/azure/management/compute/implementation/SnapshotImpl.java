@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.DiskSource;
 import com.microsoft.azure.management.compute.ImageDiskReference;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
@@ -22,25 +23,25 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- * The implementation for {@link Disk} and its create and update interfaces.
+ * The implementation for {@link Snapshot} and its create and update interfaces.
  */
 @LangDefinition
-class DiskImpl
+class SnapshotImpl
         extends GroupableResourceImpl<
-        Disk,
-        DiskInner,
-        DiskImpl,
+        Snapshot,
+        SnapshotInner,
+        SnapshotImpl,
         ComputeManager>
         implements
-        Disk,
-        Disk.Definition,
-        Disk.Update  {
-    private final DisksInner client;
+        Snapshot,
+        Snapshot.Definition,
+        Snapshot.Update  {
+    private final SnapshotsInner client;
 
-    DiskImpl(String name,
-             DiskInner innerModel,
-             DisksInner client,
-             final ComputeManager computeManager) {
+    SnapshotImpl(String name,
+                 SnapshotInner innerModel,
+                 SnapshotsInner client,
+                 final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
         this.client = client;
     }
@@ -56,16 +57,6 @@ class DiskImpl
     }
 
     @Override
-    public boolean isAttachedToVirtualMachine() {
-        return this.virtualMachineId() != null;
-    }
-
-    @Override
-    public String virtualMachineId() {
-        return this.inner().ownerId();
-    }
-
-    @Override
     public int sizeInGB() {
         return Utils.toPrimitiveInt(this.inner().diskSizeGB());
     }
@@ -77,17 +68,21 @@ class DiskImpl
 
     @Override
     public DiskSource source() {
-        return new DiskSource(this);
+        // TODO
+        return null;
+        // return new DiskSource(this);
     }
 
     @Override
     public String grantAccess(int accessDurationInSeconds) {
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(AccessLevel.READ)
-                .withDurationInSeconds(accessDurationInSeconds);
+        grantAccessDataInner
+                .withDurationInSeconds(accessDurationInSeconds)
+                .withAccess(AccessLevel.READ);
 
         AccessUriInner accessUriInner = this.client.grantAccess(this.resourceGroupName(),
-                this.name(), grantAccessDataInner);
+                this.name(),
+                grantAccessDataInner);
         if (accessUriInner == null) {
             return null;
         }
@@ -100,14 +95,14 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl withOs() {
+    public SnapshotImpl withOs() {
         this.inner()
                 .withCreationData(new CreationData());
         return this;
     }
 
     @Override
-    public DiskImpl withData() {
+    public SnapshotImpl withData() {
         this.inner()
                 .withCreationData(new CreationData())
                 .creationData()
@@ -116,7 +111,7 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType) {
+    public SnapshotImpl importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType) {
         this.inner()
                 .withOsType(osType)
                 .creationData()
@@ -126,7 +121,7 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl importedFromDataVhd(String vhdUrl) {
+    public SnapshotImpl importedFromDataVhd(String vhdUrl) {
         this.inner()
                 .creationData()
                 .withCreateOption(DiskCreateOption.IMPORT)
@@ -135,7 +130,7 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl copiedFromSnapshot(String snapshotId) {
+    public SnapshotImpl copiedFromSnapshot(String snapshotId) {
         this.inner()
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
@@ -144,7 +139,7 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl copiedFromManagedDisk(String managedDiskId) {
+    public SnapshotImpl copiedFromManagedDisk(String managedDiskId) {
         this.inner()
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
@@ -153,44 +148,54 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl copiedFromManagedDisk(Disk managedDisk) {
+    public SnapshotImpl copiedFromManagedDisk(Disk managedDisk) {
         return copiedFromManagedDisk(managedDisk.id())
                 .withOsType(managedDisk.osType())
                 .withAccountType(managedDisk.accountType());
     }
 
     @Override
-    public DiskImpl withSizeInGB(int sizeInGB) {
+    public SnapshotImpl withSizeInGB(int sizeInGB) {
         this.inner().withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
-    public DiskImpl withOsType(OperatingSystemTypes osType) {
+    public SnapshotImpl withOsType(OperatingSystemTypes osType) {
         this.inner().withOsType(osType);
         return this;
     }
 
     @Override
-    public DiskImpl withAccountType(StorageAccountTypes accountType) {
+    public SnapshotImpl withAccountType(StorageAccountTypes accountType) {
         this.inner().withAccountType(accountType);
         return this;
     }
 
     @Override
-    public Observable<Disk> createResourceAsync() {
+    public Observable<Snapshot> createResourceAsync() {
         return client.createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    public Disk refresh() {
-        DiskInner diskInner = this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(diskInner);
+    public Snapshot refresh() {
+        SnapshotInner snapshotInner = this.client.get(this.resourceGroupName(), this.name());
+        this.setInner(snapshotInner);
         return this;
     }
 
-    public DiskImpl fromImage(String imageId, OperatingSystemTypes osType) {
+    public SnapshotImpl fromImage(VirtualMachineImage image) {
+        return this.fromImage(image.id(),
+                image.osDiskImage().operatingSystem());
+    }
+
+    public SnapshotImpl fromImage(VirtualMachineCustomImage image) {
+        return this.fromImage(image.id(),
+                image.osDiskImage().osType());
+    }
+
+    public SnapshotImpl fromImage(String imageId, OperatingSystemTypes osType) {
         this.inner()
                 .withOsType(osType)
                 .creationData()
@@ -199,17 +204,7 @@ class DiskImpl
         return this;
     }
 
-    public DiskImpl fromImage(VirtualMachineImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().operatingSystem());
-    }
-
-    public DiskImpl fromImage(VirtualMachineCustomImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().osType());
-    }
-
-    public DiskImpl fromImage(String imageId, int diskLun) {
+    public SnapshotImpl fromImage(String imageId, int diskLun) {
         this.inner()
                 .creationData()
                 .withCreateOption(DiskCreateOption.FROM_IMAGE)
@@ -217,14 +212,14 @@ class DiskImpl
         return this;
     }
 
-    public DiskImpl fromImage(VirtualMachineImage image, int diskLun) {
+    public SnapshotImpl fromImage(VirtualMachineImage image, int diskLun) {
         if (!image.dataDiskImages().containsKey(diskLun)) {
             throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
         }
         return fromImage(image.id(), diskLun);
     }
 
-    public DiskImpl fromImage(VirtualMachineCustomImage image, int diskLun) {
+    public SnapshotImpl fromImage(VirtualMachineCustomImage image, int diskLun) {
         if (!image.dataDiskImages().containsKey(diskLun)) {
             throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
         }

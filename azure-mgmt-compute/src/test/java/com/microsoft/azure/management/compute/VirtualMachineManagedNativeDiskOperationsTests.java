@@ -487,7 +487,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withOs()
-                .importedFromSpecializedOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
+                .importedFromOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
                 .create();
 
         // Creates a managed virtual machine
