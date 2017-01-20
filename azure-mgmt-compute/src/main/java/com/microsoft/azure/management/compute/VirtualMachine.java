@@ -143,9 +143,14 @@ public interface VirtualMachine extends
     String osDiskId();
 
     /**
-     * @return the list of native data disks attached to this virtual machine
+     * @return the native data disks associated with this virtual machine, indexed by lun
      */
-    List<VirtualMachineNativeDataDisk> nativeDataDisks();
+    Map<Integer, VirtualMachineNativeDataDisk> nativeDataDisks();
+
+    /**
+     * @return the managed data disks associated with this virtual machine, indexed by lun
+     */
+    Map<Integer, VirtualMachineDataDisk> dataDisks();
 
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
@@ -553,7 +558,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the Windows virtual machine definition
              */
-            WithCreate withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithNativeCreate withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
         }
 
         /**
@@ -1043,19 +1048,9 @@ public interface VirtualMachine extends
              * @param cachingType the data disk caching type
              * @return the next stage of virtual machine definition
              */
-            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
-
-            /**
-             * Specifies that a managed disk needs to be created explicitly with the given definition and
-             * attach to the virtual machine as data disk.
-             *
-             * @param creatable the creatable disk
-             * @param newSizeInGB the disk resize size in GB
-             * @param lun the data disk lun
-             * @param cachingType the data disk caching type
-             * @return the next stage of virtual machine definition
-             */
-            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType);
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable,
+                                              int lun,
+                                              CachingTypes cachingType);
 
             /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
@@ -1066,7 +1061,7 @@ public interface VirtualMachine extends
             WithManagedCreate withNewDataDisk(int sizeInGB);
 
             /**
-             * pecifies that a managed disk needs to be created implicitly with the given settings.
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
              *
              * @param sizeInGB the size of the managed disk
              * @param lun the disk lun
@@ -1074,6 +1069,20 @@ public interface VirtualMachine extends
              * @return the next stage of virtual machine definition
              */
             WithManagedCreate withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB,
+                                              int lun,
+                                              CachingTypes cachingType,
+                                              StorageAccountTypes storageAccountType);
 
             /**
              * Specifies an existing source managed disk.
@@ -1106,6 +1115,40 @@ public interface VirtualMachine extends
                                         int newSizeInGB,
                                         int lun,
                                         CachingTypes cachingType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the lun of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType,
+                                                       StorageAccountTypes storageAccountType);
         }
 
         /**
@@ -1265,6 +1308,22 @@ public interface VirtualMachine extends
              * @return  the stage representing creatable VM definition
              */
             WithManagedCreate withOsDiskStorageAccountType(StorageAccountTypes accountType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param cachingType the caching type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param storageAccountType the storage account type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
         }
 
         /**
@@ -1387,18 +1446,6 @@ public interface VirtualMachine extends
             Update withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
 
             /**
-             * Specifies that a managed disk needs to be created explicitly with the given definition and
-             * attach to the virtual machine as data disk.
-             *
-             * @param creatable the creatable disk
-             * @param newSizeInGB the disk resize size in GB
-             * @param lun the data disk lun
-             * @param cachingType the data disk caching type
-             * @return the next stage of virtual machine update
-             */
-            Update withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType);
-
-            /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
@@ -1415,6 +1462,20 @@ public interface VirtualMachine extends
              * @return the next stage of virtual machine update
              */
             Update withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk lun
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine update
+             */
+            Update withNewDataDisk(int sizeInGB,
+                                   int lun,
+                                   CachingTypes cachingType,
+                                   StorageAccountTypes storageAccountType);
 
             /**
              * Specifies an existing source managed disk.
@@ -1539,6 +1600,22 @@ public interface VirtualMachine extends
             UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension {
+        /**
+         * Specifies the default caching type for the managed data disks.
+         *
+         * @param cachingType the caching type
+         * @return the stage representing updatable VM definition
+         */
+        Update withDataDiskDefaultCachingType(CachingTypes cachingType);
+
+        /**
+         * Specifies the default caching type for the managed data disks.
+         *
+         * @param storageAccountType the storage account type
+         * @return the stage representing updatable VM definition
+         */
+        Update withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+
         /**
          * Specifies the caching type for the Operating System disk.
          *

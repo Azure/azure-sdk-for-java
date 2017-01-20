@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -16,6 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
 
 public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTestBase {
     private static ApplicationTokenCredentials credentials;
@@ -43,6 +47,9 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         resourceManager = ResourceManager
                 .authenticate(restClient)
                 .withSubscription(credentials.defaultSubscriptionId());
+        networkManager = NetworkManager
+                .authenticate(restClient, credentials.defaultSubscriptionId());
+
     }
 
     @AfterClass
@@ -52,7 +59,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     @Test
     public void canCreateVirtualMachineFromPIRImageWithManagedOsDisk() {
         final VirtualMachineImage image = getImage();
-        final String vmName = "myvm";
+        final String vmName1 = "myvm1";
         final String rgName = ResourceNamer.randomResourceName("rg-", 15);
         final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
         final String uname = "juser";
@@ -61,7 +68,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         System.out.println(rgName);
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(vmName)
+                .define(vmName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -158,21 +165,323 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withSpecificLinuxImageVersion(image.imageReference())
                 .withRootUsername(uname)
                 .withRootPassword(password)
+                // Start: Add 5 empty managed disks
+                .withNewDataDisk(100)                                             // CreateOption: EMPTY
+                .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)                  // CreateOption: EMPTY
+                .withNewDataDisk(creatableEmptyDisk1)                             // CreateOption: ATTACH
+                .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE)       // CreateOption: ATTACH
+                .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE)       // CreateOption: ATTACH
+                // End : Add 5 empty managed disks
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        Assert.assertTrue(virtualMachine.isManagedDiskEnabled());
+        // There should not be any native data disks
+        //
+        Assert.assertNotNull(virtualMachine.nativeDataDisks());
+        Assert.assertEquals(virtualMachine.nativeDataDisks().size(), 0);
+        // Validate the managed data disks
+        //
+        Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
+        Assert.assertNotNull(dataDisks);
+        Assert.assertTrue(dataDisks.size() == 5);
+        Assert.assertTrue(dataDisks.containsKey(1));
+        VirtualMachineDataDisk dataDiskLun1 = dataDisks.get(1);
+        Assert.assertNotNull(dataDiskLun1.id());
+        Assert.assertEquals(dataDiskLun1.cachingType(), CachingTypes.READ_ONLY);
+        Assert.assertEquals(dataDiskLun1.size(), 100);
+
+        Assert.assertTrue(dataDisks.containsKey(2));
+        VirtualMachineDataDisk dataDiskLun2 = dataDisks.get(2);
+        Assert.assertNotNull(dataDiskLun2.id());
+        Assert.assertEquals(dataDiskLun2.cachingType(), CachingTypes.NONE);
+        Assert.assertEquals(dataDiskLun2.size(), 150);
+
+        Assert.assertTrue(dataDisks.containsKey(3));
+        VirtualMachineDataDisk dataDiskLun3 = dataDisks.get(3);
+        Assert.assertNotNull(dataDiskLun3.id());
+        Assert.assertEquals(dataDiskLun3.cachingType(), CachingTypes.NONE);
+        Assert.assertEquals(dataDiskLun3.size(), 150);
+        // Validate the defaults assigned
+        //
+        for (VirtualMachineDataDisk dataDisk : dataDisks.values()) {
+            if (dataDisk.lun() != 1 && dataDisk.lun() != 2 && dataDisk.lun() != 3) {
+                Assert.assertEquals(dataDisk.cachingType(), CachingTypes.READ_WRITE);
+                Assert.assertEquals(dataDisk.storageAccountType(), StorageAccountTypes.STANDARD_LRS);
+            }
+        }
+        resourceManager.resourceGroups().deleteByName(rgName);
+    }
+
+    @Test
+    public void canCreateVirtualMachineFromCustomImageWithManagedDisks() {
+        VirtualMachineImage image = getImage();
+        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String uname = "juser";
+        final String password = "123tEst!@|ac";
+        // Create with implicit + explicit empty disks, check default and override
+        //
+        final String vmName1 = "myvm1";
+        final String explicitlyCreatedEmptyDiskName1 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName2 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName3 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        writeToFile(rgName);
+
+        ResourceGroup resourceGroup = resourceManager.resourceGroups()
+                .define(rgName)
+                .withRegion(region)
+                .create();
+
+        Creatable<Disk> creatableEmptyDisk1 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        Creatable<Disk> creatableEmptyDisk2 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName2)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        Creatable<Disk> creatableEmptyDisk3 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName3)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        VirtualMachine virtualMachine1 = computeManager.virtualMachines()
+                .define(vmName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withSpecificLinuxImageVersion(image.imageReference())
+                .withRootUsername(uname)
+                .withRootPassword(password)
                 // Start: Add bunch of empty managed disks
                 .withNewDataDisk(100)                                             // CreateOption: EMPTY
                 .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)                  // CreateOption: EMPTY
                 .withNewDataDisk(creatableEmptyDisk1)                             // CreateOption: ATTACH
                 .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE)       // CreateOption: ATTACH
-                .withNewDataDisk(creatableEmptyDisk3, 200, 3, CachingTypes.NONE)  // CreateOption: ATTACH (Changing size)
+                .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE)       // CreateOption: ATTACH
                 // End : Add bunch of empty managed disks
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
+        System.out.println("Waiting for some time before de-provision");
+        sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
+        deprovisionLinuxVM(virtualMachine1.getPrimaryPublicIpAddress().fqdn(),
+                22,
+                uname,
+                password);
 
-        // TODO: Validate the data disks - requires VirtualMachine.dataDisks() to be implemented
+        virtualMachine1.deallocate();
+        virtualMachine1.generalize();
+
+        final String customImageName = ResourceNamer.randomResourceName("img-", 10);
+        VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages().define(customImageName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .fromVirtualMachine(virtualMachine1)
+                .create();
+        Assert.assertNotNull(customImage);
+        Assert.assertNotNull(customImage.sourceVirtualMachineId());
+        Assert.assertTrue(customImage.sourceVirtualMachineId().equalsIgnoreCase(virtualMachine1.id().toLowerCase()));
+        Assert.assertNotNull(customImage.osDiskImage());
+        Assert.assertEquals(customImage.osDiskImage().osState(), OperatingSystemStateTypes.GENERALIZED);
+        Assert.assertEquals(customImage.osDiskImage().osType(), OperatingSystemTypes.LINUX);
+        Assert.assertNotNull(customImage.dataDiskImages());
+        Assert.assertEquals(customImage.dataDiskImages().size(), 5);
+        for (ImageDataDisk imageDataDisk : customImage.dataDiskImages().values()) {
+            Assert.assertNull(imageDataDisk.blobUri());
+            Assert.assertNotNull(imageDataDisk.managedDisk().id());
+        }
+
+        // Create virtual machine from the custom image
+        // This one relies on CRP's capability to create implicit data disks from the virtual machine
+        // image data disk images.
         //
-        resourceManager.resourceGroups().deleteByName(rgName);
+        final String vmName2 = "myvm2";
+        VirtualMachine virtualMachine2 = computeManager.virtualMachines()
+                .define(vmName2)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withLinuxCustomImage(customImage.id())
+                .withRootUsername(uname)
+                .withRootPassword(password)
+                // No explicit data disks, let CRP create it from the image's data disk images
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine2.dataDisks();
+        Assert.assertNotNull(dataDisks);
+        Assert.assertEquals(dataDisks.size(), customImage.dataDiskImages().size());
+        for (ImageDataDisk imageDataDisk : customImage.dataDiskImages().values()) {
+            Assert.assertTrue(dataDisks.containsKey(imageDataDisk.lun()));
+            VirtualMachineDataDisk dataDisk = dataDisks.get(imageDataDisk.lun());
+            Assert.assertEquals(dataDisk.cachingType(), imageDataDisk.caching());
+            Assert.assertEquals(dataDisk.size(), (long) imageDataDisk.diskSizeGB());
+        }
+
+        // Create virtual machine from the custom image
+        // This one override the size and caching type of data disks from data disk images and
+        // adds one additional disk
+        //
+
+        final String vmName3 = "myvm3";
+        VirtualMachine.DefinitionStages.WithManagedCreate creatableVirtualMachine3 = computeManager.virtualMachines()
+                .define(vmName3)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withLinuxCustomImage(customImage.id())
+                .withRootUsername(uname)
+                .withRootPassword(password);
+        for (ImageDataDisk dataDiskImage : customImage.dataDiskImages().values()) {
+            // Explicitly override the properties of the data disks created from disk image
+            //
+            // CreateOption: FROM_IMAGE
+            creatableVirtualMachine3.withNewDataDiskFromImage(dataDiskImage.lun(),
+                    dataDiskImage.diskSizeGB() + 10,    // increase size by 10 GB
+                    CachingTypes.READ_ONLY);
+        }
+        VirtualMachine virtualMachine3 = creatableVirtualMachine3
+                .withNewDataDisk(200)                               // CreateOption: EMPTY
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        dataDisks = virtualMachine3.dataDisks();
+        Assert.assertNotNull(dataDisks);
+        Assert.assertEquals(dataDisks.size(), customImage.dataDiskImages().size() + 1 /* count one extra empty disk */);
+        for (ImageDataDisk imageDataDisk : customImage.dataDiskImages().values()) {
+            Assert.assertTrue(dataDisks.containsKey(imageDataDisk.lun()));
+            VirtualMachineDataDisk dataDisk = dataDisks.get(imageDataDisk.lun());
+            Assert.assertEquals(dataDisk.cachingType(), CachingTypes.READ_ONLY);
+            Assert.assertEquals(dataDisk.size(), (long) imageDataDisk.diskSizeGB() + 10);
+        }
+        resourceManager.resourceGroups().deleteByName(resourceGroup.name());
     }
+
+    @Test
+    public void canUpdateVirtualMachineByAddingAndRemovingManagedDisks() {
+        VirtualMachineImage image = getImage();
+        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String uname = "juser";
+        final String password = "123tEst!@|ac";
+        // Create with implicit + explicit empty disks, check default and override
+        //
+        final String vmName1 = "myvm1";
+        final String explicitlyCreatedEmptyDiskName1 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName2 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName3 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        writeToFile(rgName);
+
+        ResourceGroup resourceGroup = resourceManager.resourceGroups()
+                .define(rgName)
+                .withRegion(region)
+                .create();
+
+        Creatable<Disk> creatableEmptyDisk1 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        Creatable<Disk> creatableEmptyDisk2 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName2)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        Creatable<Disk> creatableEmptyDisk3 = computeManager.disks()
+                .define(explicitlyCreatedEmptyDiskName3)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(150);
+
+        VirtualMachine virtualMachine1 = computeManager.virtualMachines()
+                .define(vmName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withSpecificLinuxImageVersion(image.imageReference())
+                .withRootUsername(uname)
+                .withRootPassword(password)
+                // Start: Add bunch of empty managed disks
+                .withNewDataDisk(100)                                             // CreateOption: EMPTY
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)                 // CreateOption: EMPTY
+                .withNewDataDisk(creatableEmptyDisk1)                             // CreateOption: ATTACH
+                .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE)       // CreateOption: ATTACH
+                .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE)       // CreateOption: ATTACH
+                // End : Add bunch of empty managed disks
+                .withDataDiskDefaultCachingType(CachingTypes.READ_ONLY)
+                .withDataDiskDefaultStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        virtualMachine1.update()
+                .withoutDataDisk(1)
+                .withNewDataDisk(100, 6, CachingTypes.READ_WRITE)                 // CreateOption: EMPTY
+                .apply();
+
+        Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine1.dataDisks();
+        Assert.assertNotNull(dataDisks);
+        Assert.assertEquals(dataDisks.size(), 5); // Removed one added another
+        Assert.assertTrue(dataDisks.containsKey(6));
+        Assert.assertFalse(dataDisks.containsKey(1));
+        resourceManager.resourceGroups().deleteByName(resourceGroup.name());
+    }
+
+    @Test
+    public void Bar() {
+        resourceManager.resourceGroups().deleteByName("rg-e6432929db");
+        computeManager.virtualMachines().deleteByGroup("rg-e6432929db", "myvm4");
+        networkManager.networkInterfaces().deleteByGroup("rg-e6432929db", "nicmyvm4bab3950907");
+        networkManager.networks().deleteByGroup("rg-e6432929db", "vnet40658268c0");
+    }
+
+    @Test
+    public void Foo() {
+        final String uname = "juser";
+        final String password = "123tEst!@|ac";
+        final String vmName2 = "myvm4";
+        VirtualMachine virtualMachine2 = computeManager.virtualMachines()
+                .define(vmName2)
+                .withRegion(region)
+                .withExistingResourceGroup("rg-e6432929db")
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withLinuxCustomImage("/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rg-e6432929db/providers/Microsoft.Compute/images/img-99926")
+                .withRootUsername(uname)
+                .withRootPassword(password)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+    }
+
+
 
     private VirtualMachineImage getImage() {
         VirtualMachineImage linuxVmImage = computeManager.virtualMachineImages().getImage(region,
@@ -183,5 +492,17 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertNotNull(linuxVmImage);
         Assert.assertNotNull(linuxVmImage.inner());
         return linuxVmImage;
+    }
+
+    private void writeToFile(String content) {
+        try
+        {
+            String filename= "C:\\rgnames\\rg-names.txt";
+            FileWriter fw = new FileWriter(filename,true);
+            fw.write("\n" + content + "\n");
+            fw.close();
+        } catch(IOException ioe) {
+            System.err.println("IOException: " + ioe.getMessage());
+        }
     }
 }

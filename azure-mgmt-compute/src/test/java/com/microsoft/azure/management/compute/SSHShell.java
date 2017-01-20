@@ -40,9 +40,9 @@ public class SSHShell {
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
         Closure expectClosure = getExpectClosure();
-        for (String regexElement : new String[]{"\\>","#", "~#", "~\\$"}) {
+        for (String linuxPromptPattern : new String[]{"\\>","#", "~#", "~\\$"}) {
             try {
-                Match match = new RegExpMatch(regexElement, expectClosure);
+                Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
                 linuxPromptMatches.add(match);
             } catch (MalformedPatternException malformedEx) {
                 throw new RuntimeException(malformedEx);

@@ -31,6 +31,7 @@ import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineNativeDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
@@ -59,6 +60,7 @@ import rx.functions.Func1;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,7 +155,7 @@ class VirtualMachineImpl
         };
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
-        initializeDataDisks();
+        initializeNativeDataDisks();
     }
 
     // Verbs
@@ -163,7 +165,7 @@ class VirtualMachineImpl
         VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
-        initializeDataDisks();
+        initializeNativeDataDisks();
         this.virtualMachineExtensions.refresh();
         return this;
     }
@@ -631,6 +633,18 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withDataDiskDefaultCachingType(CachingTypes cachingType) {
+        this.managedDataDisks.setDefaultCachingType(cachingType);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType) {
+        this.managedDataDisks.setDefaultStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withOsDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
@@ -698,17 +712,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withNewDataDisk(Creatable<Disk> creatable, int newSizeInGB, int lun, CachingTypes cachingType) {
-        addCreatableDependency(creatable);
-        this.managedDataDisks.newDisksToAttach.put(creatable.key(),
-                new DataDisk()
-                        .withLun(lun)
-                        .withDiskSizeGB(newSizeInGB)
-                        .withCaching(cachingType));
-        return this;
-    }
-
-    @Override
     public VirtualMachineImpl withNewDataDisk(int sizeInGB) {
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
                 .withLun(-1)
@@ -722,6 +725,21 @@ class VirtualMachineImpl
                 .withLun(lun)
                 .withDiskSizeGB(sizeInGB)
                 .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDisk(int sizeInGB,
+                                              int lun,
+                                              CachingTypes cachingType,
+                                              StorageAccountTypes storageAccountType) {
+        ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
+        managedDiskParameters.withStorageAccountType(storageAccountType);
+        this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
+                .withLun(lun)
+                .withDiskSizeGB(sizeInGB)
+                .withCaching(cachingType)
+                .withManagedDisk(managedDiskParameters));
         return this;
     }
 
@@ -752,6 +770,35 @@ class VirtualMachineImpl
         managedDiskParameters.withId(disk.id());
         this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
                 .withLun(lun)
+                .withDiskSizeGB(newSizeInGB)
+                .withManagedDisk(managedDiskParameters)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDiskFromImage(int imageLun) {
+        this.managedDataDisks.newDisksFromImage.add(new DataDisk()
+                .withLun(imageLun));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType) {
+        this.managedDataDisks.newDisksFromImage.add(new DataDisk()
+                .withLun(imageLun)
+                .withDiskSizeGB(newSizeInGB)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType,
+                                                       StorageAccountTypes storageAccountType) {
+        ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
+        managedDiskParameters.withStorageAccountType(storageAccountType);
+        this.managedDataDisks.newDisksFromImage.add(new DataDisk()
+                .withLun(imageLun)
                 .withDiskSizeGB(newSizeInGB)
                 .withManagedDisk(managedDiskParameters)
                 .withCaching(cachingType));
@@ -1017,8 +1064,28 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineNativeDataDisk> nativeDataDisks() {
-        return this.nativeDataDisks;
+    public Map<Integer, VirtualMachineNativeDataDisk> nativeDataDisks() {
+        Map<Integer, VirtualMachineNativeDataDisk> dataDisks = new HashMap<>();
+        if (!isManagedDiskEnabled()) {
+            for (VirtualMachineNativeDataDisk dataDisk : this.nativeDataDisks) {
+                dataDisks.put(dataDisk.lun(), dataDisk);
+            }
+        }
+        return Collections.unmodifiableMap(dataDisks);
+    }
+
+    @Override
+    public Map<Integer, VirtualMachineDataDisk> dataDisks() {
+        Map<Integer, VirtualMachineDataDisk> dataDisks = new HashMap<>();
+        if (isManagedDiskEnabled()) {
+            List<DataDisk> innerDataDisks = this.inner().storageProfile().dataDisks();
+            if (innerDataDisks != null) {
+                for (DataDisk innerDataDisk : innerDataDisks) {
+                    dataDisks.put(innerDataDisk.lun(), new VirtualMachineDataDiskImpl(innerDataDisk));
+                }
+            }
+        }
+        return Collections.unmodifiableMap(dataDisks);
     }
 
     @Override
@@ -1162,7 +1229,7 @@ class VirtualMachineImpl
                                     public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
                                         self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
-                                        initializeDataDisks();
+                                        initializeNativeDataDisks();
                                         return self;
                                     }
                                 });
@@ -1550,17 +1617,14 @@ class VirtualMachineImpl
                 .withPrimaryPrivateIpAddressDynamic();
     }
 
-    private void initializeDataDisks() {
+    private void initializeNativeDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
                     .withDataDisks(new ArrayList<DataDisk>());
         }
         this.nativeDataDisks = new ArrayList<>();
-        if (isManagedDiskEnabled()) {
-            // TODO: Init managed data disks
-            //
-        } else {
+        if (!isManagedDiskEnabled()) {
             for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
                 this.nativeDataDisks.add(new NativeDataDiskImpl(dataDiskInner, this));
             }
@@ -1595,10 +1659,21 @@ class VirtualMachineImpl
         public final List<DataDisk> existingDisksToAttach = new ArrayList<>();
         public final List<DataDisk> implicitDisksToAssociate = new ArrayList<>();
         public final List<Integer> diskLunsToRemove = new ArrayList<>();
+        public final List<DataDisk> newDisksFromImage= new ArrayList<>();
         private final VirtualMachineImpl vm;
+        private CachingTypes defaultCachingType;
+        private StorageAccountTypes defaultStorageAccountType;
 
         ManagedDataDiskCollection(VirtualMachineImpl vm) {
             this.vm = vm;
+        }
+
+        void setDefaultCachingType(CachingTypes cachingType) {
+            this.defaultCachingType = cachingType;
+        }
+
+        void setDefaultStorageAccountType(StorageAccountTypes defaultStorageAccountType) {
+            this.defaultStorageAccountType = defaultStorageAccountType;
         }
 
         void setDataDisks() {
@@ -1631,6 +1706,11 @@ class VirtualMachineImpl
                         usedLuns.add(dataDisk.lun());
                     }
                 }
+                for (DataDisk dataDisk : this.newDisksFromImage) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
                 // Func to get the next available lun
                 //
                 Func0<Integer> nextLun = new Func0<Integer>() {
@@ -1647,7 +1727,16 @@ class VirtualMachineImpl
                 setAttachableNewDataDisks(nextLun);
                 setAttachableExistingDataDisks(nextLun);
                 setImplicitDataDisks(nextLun);
+                setImageBasedDataDisks();
                 removeDataDisks();
+            }
+            if (vmInner.storageProfile().dataDisks() != null
+                    && vmInner.storageProfile().dataDisks().size() == 0) {
+                // If there is no data disks at all, then setting it to null rather than [] is necessary.
+                // This is for take advantage of CRP's implicit creation of the data disks if the image has
+                // more than one data disk image(s).
+                //
+                vmInner.storageProfile().withDataDisks(null);
             }
             this.clear();
         }
@@ -1677,7 +1766,12 @@ class VirtualMachineImpl
                 }
                 dataDisk.withManagedDisk(new ManagedDiskParametersInner());
                 dataDisk.managedDisk().withId(managedDisk.id());
-                setDataDiskDefaults(dataDisk);
+                if (dataDisk.caching() == null) {
+                    dataDisk.withCaching(getDefaultCachingType());
+                }
+                // Don't set default storage account type for the attachable managed disks, it is already
+                // defined in the managed disk and not allowed to change.
+                dataDisk.withName(null);
                 dataDisks.add(dataDisk);
             }
         }
@@ -1689,7 +1783,12 @@ class VirtualMachineImpl
                 if (dataDisk.lun() == -1) {
                     dataDisk.withLun(nextLun.call());
                 }
-                setDataDiskDefaults(dataDisk);
+                if (dataDisk.caching() == null) {
+                    dataDisk.withCaching(getDefaultCachingType());
+                }
+                // Don't set default storage account type for the attachable managed disks, it is already
+                // defined in the managed disk and not allowed to change.
+                dataDisk.withName(null);
                 dataDisks.add(dataDisk);
             }
         }
@@ -1701,7 +1800,29 @@ class VirtualMachineImpl
                 if (dataDisk.lun() == -1) {
                     dataDisk.withLun(nextLun.call());
                 }
-                setDataDiskDefaults(dataDisk);
+                if (dataDisk.caching() == null) {
+                    dataDisk.withCaching(getDefaultCachingType());
+                }
+                if (dataDisk.managedDisk() == null) {
+                    dataDisk.withManagedDisk(new ManagedDiskParametersInner());
+                }
+                if (dataDisk.managedDisk().storageAccountType() == null) {
+                    dataDisk.managedDisk().withStorageAccountType(getDefaultStorageAccountType());
+                }
+                dataDisk.withName(null);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void setImageBasedDataDisks() {
+            List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
+            for (DataDisk dataDisk : this.newDisksFromImage) {
+                dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+                // Don't set default caching type for the disk, either user has to specify it explicitly or let CRP pick
+                // it from the image
+                // Don't set default storage account type for the disk, either user has to specify it explicitly or let
+                // CRP pick it from the image
+                dataDisk.withName(null);
                 dataDisks.add(dataDisk);
             }
         }
@@ -1720,12 +1841,18 @@ class VirtualMachineImpl
             }
         }
 
-        private void setDataDiskDefaults(DataDisk dataDisk) {
-            if (dataDisk.caching() == null) {
-                dataDisk.withCaching(CachingTypes.READ_WRITE);
+        private CachingTypes getDefaultCachingType() {
+            if (defaultCachingType == null) {
+                return CachingTypes.READ_WRITE;
             }
-            // It is recommended to set name to null, CRP will use managed disk resource name
-            dataDisk.withName(null);
+            return defaultCachingType;
+        }
+
+        private StorageAccountTypes getDefaultStorageAccountType() {
+            if (defaultStorageAccountType == null) {
+                return StorageAccountTypes.STANDARD_LRS;
+            }
+            return defaultStorageAccountType;
         }
     }
 }

@@ -79,7 +79,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withGeneralizedLinuxOsDiskImage()
                 .fromVhd(linuxVM.osNativeDiskVhdUri())
                 .withOsDiskCaching(linuxVM.osDiskCachingType());
-        for (VirtualMachineNativeDataDisk disk : linuxVM.nativeDataDisks()) {
+        for (VirtualMachineNativeDataDisk disk : linuxVM.nativeDataDisks().values()) {
             creatableDisk.defineDataDiskImage(disk.lun())
                     .fromVhd(disk.vhdUri())
                     .withDiskCaching(disk.cachingType())
@@ -101,7 +101,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertEquals(customImage.dataDiskImages().size(), linuxVM.nativeDataDisks().size());
         for (ImageDataDisk diskImage : customImage.dataDiskImages().values()) {
             VirtualMachineNativeDataDisk matchedDisk = null;
-            for (VirtualMachineNativeDataDisk vmDisk : linuxVM.nativeDataDisks()) {
+            for (VirtualMachineNativeDataDisk vmDisk : linuxVM.nativeDataDisks().values()) {
                 if (vmDisk.lun() == diskImage.lun()) {
                     matchedDisk = vmDisk;
                     break;
@@ -161,7 +161,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertNotNull(customImage.sourceVirtualMachineId());
         Assert.assertTrue(customImage.sourceVirtualMachineId().equalsIgnoreCase(vm.id()));
 
-        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks()) {
+        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks().values()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals(diskImage.caching(), vmDisk.cachingType());
@@ -254,7 +254,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertTrue(customImage.dataDiskImages().containsKey(vmNativeDataDisk2.lun()));
         Assert.assertEquals(customImage.dataDiskImages().get(vmNativeDataDisk2.lun()).caching(), CachingTypes.NONE);
 
-        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks()) {
+        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks().values()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals((long) diskImage.diskSizeGB(), vmDisk.size() + 10);

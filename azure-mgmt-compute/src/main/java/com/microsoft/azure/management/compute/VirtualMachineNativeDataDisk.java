@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An non-managed data disk of a virtual machine.
+ * A native data disk of a virtual machine.
  */
 @Fluent
 public interface VirtualMachineNativeDataDisk extends
