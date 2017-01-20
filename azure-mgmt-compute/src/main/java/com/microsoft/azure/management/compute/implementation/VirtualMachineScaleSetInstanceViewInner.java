@@ -19,19 +19,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetInstanceViewInner {
     /**
-     * the instance view status summary for the virtual machine scale set.
+     * The instance view status summary for the virtual machine scale set.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine;
 
     /**
-     * the extensions information.
+     * The extensions information.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineScaleSetVMExtensionsSummary> extensions;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
     private List<InstanceViewStatus> statuses;
 

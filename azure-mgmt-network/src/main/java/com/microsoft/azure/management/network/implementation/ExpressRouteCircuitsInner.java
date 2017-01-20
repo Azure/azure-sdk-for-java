@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -32,6 +31,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -62,119 +62,119 @@ public final class ExpressRouteCircuitsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ExpressRouteCircuitsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listArpTable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/arpTables/{devicePath}")
         Observable<Response<ResponseBody>> listArpTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits beginListArpTable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/arpTables/{devicePath}")
         Observable<Response<ResponseBody>> beginListArpTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listRoutesTable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTables/{devicePath}")
         Observable<Response<ResponseBody>> listRoutesTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits beginListRoutesTable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTables/{devicePath}")
         Observable<Response<ResponseBody>> beginListRoutesTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listRoutesTableSummary" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTablesSummary/{devicePath}")
         Observable<Response<ResponseBody>> listRoutesTableSummary(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits beginListRoutesTableSummary" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTablesSummary/{devicePath}")
         Observable<Response<ResponseBody>> beginListRoutesTableSummary(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits getStats" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/stats")
         Observable<Response<ResponseBody>> getStats(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits getPeeringStats" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/stats")
         Observable<Response<ResponseBody>> getPeeringStats(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCircuits")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuits listAllNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      */
     public void delete(String resourceGroupName, String circuitName) {
-        deleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().last().body();
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String circuitName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String circuitName) {
         return deleteWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String circuitName) {
@@ -187,56 +187,54 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      */
     public void beginDelete(String resourceGroupName, String circuitName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String circuitName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String circuitName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
+     * Deletes the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route Circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String circuitName) {
@@ -249,10 +247,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -267,7 +263,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -275,49 +271,49 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The Get ExpressRouteCircuit operation retrieves information about the specified ExpressRouteCircuit.
+     * Gets information about the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of express route circuit.
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner get(String resourceGroupName, String circuitName) {
-        return getWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
-     * The Get ExpressRouteCircuit operation retrieves information about the specified ExpressRouteCircuit.
+     * Gets information about the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitInner> getAsync(String resourceGroupName, String circuitName, final ServiceCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
     }
 
     /**
-     * The Get ExpressRouteCircuit operation retrieves information about the specified ExpressRouteCircuit.
+     * Gets information about the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of express route circuit.
      * @return the observable to the ExpressRouteCircuitInner object
      */
     public Observable<ExpressRouteCircuitInner> getAsync(String resourceGroupName, String circuitName) {
         return getWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Get ExpressRouteCircuit operation retrieves information about the specified ExpressRouteCircuit.
+     * Gets information about the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of express route circuit.
      * @return the observable to the ExpressRouteCircuitInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitInner>> getWithServiceResponseAsync(String resourceGroupName, String circuitName) {
@@ -330,10 +326,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitInner>> call(Response<ResponseBody> response) {
@@ -348,60 +342,60 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().last().body();
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, final ServiceCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters), serviceCallback);
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
@@ -417,62 +411,60 @@ public final class ExpressRouteCircuitsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitInner>() { }.getType());
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the ExpressRouteCircuitInner object if successful.
      */
     public ExpressRouteCircuitInner beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().single().body();
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, final ServiceCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters), serviceCallback);
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the observable to the ExpressRouteCircuitInner object
      */
     public Observable<ExpressRouteCircuitInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).map(new Func1<ServiceResponse<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>() {
             @Override
             public ExpressRouteCircuitInner call(ServiceResponse<ExpressRouteCircuitInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit.
+     * Creates or updates an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
+     * @param parameters Parameters supplied to the create or update express route circuit operation.
      * @return the observable to the ExpressRouteCircuitInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
@@ -488,11 +480,9 @@ public final class ExpressRouteCircuitsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, circuitName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, circuitName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitInner>> call(Response<ResponseBody> response) {
@@ -507,7 +497,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .register(200, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -515,37 +505,37 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) {
-        return ServiceCall.create(listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -554,16 +544,16 @@ public final class ExpressRouteCircuitsInner {
         return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsArpTableListResultInner call(ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -584,45 +574,43 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.listArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.listArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ExpressRouteCircuitsArpTableListResultInner>() { }.getType());
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsArpTableListResultInner beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsArpTableListResultInner> beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) {
-        return ServiceCall.create(beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsArpTableListResultInner object
@@ -631,16 +619,16 @@ public final class ExpressRouteCircuitsInner {
         return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsArpTableListResultInner call(ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsArpTableListResultInner object
@@ -661,10 +649,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginListArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginListArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitsArpTableListResultInner>> call(Response<ResponseBody> response) {
@@ -679,7 +665,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> beginListArpTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitsArpTableListResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitsArpTableListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitsArpTableListResultInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -687,37 +673,37 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) {
-        return ServiceCall.create(listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -726,16 +712,16 @@ public final class ExpressRouteCircuitsInner {
         return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -756,45 +742,43 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.listRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.listRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ExpressRouteCircuitsRoutesTableListResultInner>() { }.getType());
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableListResultInner beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) {
-        return ServiceCall.create(beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsRoutesTableListResultInner object
@@ -803,16 +787,16 @@ public final class ExpressRouteCircuitsInner {
         return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsRoutesTableListResultInner object
@@ -833,10 +817,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginListRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginListRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner>> call(Response<ResponseBody> response) {
@@ -851,7 +833,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitsRoutesTableListResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitsRoutesTableListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitsRoutesTableListResultInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -859,37 +841,37 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
+        return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().body();
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) {
-        return ServiceCall.create(listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -898,16 +880,16 @@ public final class ExpressRouteCircuitsInner {
         return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableSummaryListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable for the request
@@ -928,45 +910,43 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.listRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.listRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ExpressRouteCircuitsRoutesTableSummaryListResultInner>() { }.getType());
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
-        return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
+        return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().body();
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) {
-        return ServiceCall.create(beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
+        return ServiceCall.fromResponse(beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath), serviceCallback);
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsRoutesTableSummaryListResultInner object
@@ -975,16 +955,16 @@ public final class ExpressRouteCircuitsInner {
         return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).map(new Func1<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>() {
             @Override
             public ExpressRouteCircuitsRoutesTableSummaryListResultInner call(ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @return the observable to the ExpressRouteCircuitsRoutesTableSummaryListResultInner object
@@ -1005,10 +985,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginListRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginListRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner>> call(Response<ResponseBody> response) {
@@ -1023,7 +1001,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummaryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitsRoutesTableSummaryListResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitsRoutesTableSummaryListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitsRoutesTableSummaryListResultInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1031,49 +1009,49 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all the stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
     public ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName) {
-        return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
+        return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().body();
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all the stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitStatsInner> getStatsAsync(String resourceGroupName, String circuitName, final ServiceCallback<ExpressRouteCircuitStatsInner> serviceCallback) {
-        return ServiceCall.create(getStatsWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
+        return ServiceCall.fromResponse(getStatsWithServiceResponseAsync(resourceGroupName, circuitName), serviceCallback);
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all the stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable to the ExpressRouteCircuitStatsInner object
      */
     public Observable<ExpressRouteCircuitStatsInner> getStatsAsync(String resourceGroupName, String circuitName) {
         return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).map(new Func1<ServiceResponse<ExpressRouteCircuitStatsInner>, ExpressRouteCircuitStatsInner>() {
             @Override
             public ExpressRouteCircuitStatsInner call(ServiceResponse<ExpressRouteCircuitStatsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all the stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable to the ExpressRouteCircuitStatsInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitStatsInner>> getStatsWithServiceResponseAsync(String resourceGroupName, String circuitName) {
@@ -1086,10 +1064,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getStats(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.getStats(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitStatsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitStatsInner>> call(Response<ResponseBody> response) {
@@ -1104,42 +1080,42 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitStatsInner> getStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitStatsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitStatsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitStatsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
     public ExpressRouteCircuitStatsInner getPeeringStats(String resourceGroupName, String circuitName, String peeringName) {
-        return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().getBody();
+        return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().body();
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitStatsInner> getPeeringStatsAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<ExpressRouteCircuitStatsInner> serviceCallback) {
-        return ServiceCall.create(getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName), serviceCallback);
+        return ServiceCall.fromResponse(getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName), serviceCallback);
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @return the observable to the ExpressRouteCircuitStatsInner object
      */
@@ -1147,16 +1123,16 @@ public final class ExpressRouteCircuitsInner {
         return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).map(new Func1<ServiceResponse<ExpressRouteCircuitStatsInner>, ExpressRouteCircuitStatsInner>() {
             @Override
             public ExpressRouteCircuitStatsInner call(ServiceResponse<ExpressRouteCircuitStatsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The List stats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * Gets all stats from an express route circuit in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @return the observable to the ExpressRouteCircuitStatsInner object
      */
@@ -1173,10 +1149,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getPeeringStats(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.getPeeringStats(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitStatsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitStatsInner>> call(Response<ResponseBody> response) {
@@ -1191,37 +1165,37 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitStatsInner> getPeeringStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitStatsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitStatsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitStatsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteCircuitInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
@@ -1233,7 +1207,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1243,13 +1217,13 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1259,7 +1233,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1269,7 +1243,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1281,16 +1255,14 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1299,35 +1271,35 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitInner> listAll() {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteCircuitInner>> listAllAsync(final ListOperationCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
@@ -1339,7 +1311,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
      */
@@ -1348,13 +1320,13 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
      */
@@ -1363,7 +1335,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1373,7 +1345,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1381,16 +1353,14 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1399,30 +1369,30 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1430,7 +1400,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteCircuitInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteCircuitInner>> serviceCall, final ListOperationCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
@@ -1442,7 +1412,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1452,13 +1422,13 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1468,7 +1438,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1478,7 +1448,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+     * Gets all the express route circuits in a resource group.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1487,13 +1457,14 @@ public final class ExpressRouteCircuitsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1502,30 +1473,30 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1533,7 +1504,7 @@ public final class ExpressRouteCircuitsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteCircuitInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteCircuitInner>> serviceCall, final ListOperationCallback<ExpressRouteCircuitInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
@@ -1545,7 +1516,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1555,13 +1526,13 @@ public final class ExpressRouteCircuitsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Page<ExpressRouteCircuitInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitInner> call(ServiceResponse<Page<ExpressRouteCircuitInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitInner&gt; object
@@ -1571,7 +1542,7 @@ public final class ExpressRouteCircuitsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(ServiceResponse<Page<ExpressRouteCircuitInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1581,7 +1552,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+     * Gets all the express route circuits in a subscription.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1590,13 +1561,14 @@ public final class ExpressRouteCircuitsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1605,7 +1577,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

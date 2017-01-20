@@ -11,7 +11,6 @@ package com.microsoft.azure.management.resources.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -27,6 +26,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -57,68 +57,68 @@ public final class DeploymentOperationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DeploymentOperationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.DeploymentOperations get" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.DeploymentOperations list" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.DeploymentOperations listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Get a list of deployments operations.
+     * Gets a deployments operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param operationId Operation Id.
+     * @param operationId The ID of the operation to get.
      * @return the DeploymentOperationInner object if successful.
      */
     public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
-        return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).toBlocking().single().body();
     }
 
     /**
-     * Get a list of deployments operations.
+     * Gets a deployments operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param operationId Operation Id.
+     * @param operationId The ID of the operation to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId, final ServiceCallback<DeploymentOperationInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId), serviceCallback);
     }
 
     /**
-     * Get a list of deployments operations.
+     * Gets a deployments operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param operationId Operation Id.
+     * @param operationId The ID of the operation to get.
      * @return the observable to the DeploymentOperationInner object
      */
     public Observable<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId) {
         return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).map(new Func1<ServiceResponse<DeploymentOperationInner>, DeploymentOperationInner>() {
             @Override
             public DeploymentOperationInner call(ServiceResponse<DeploymentOperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Get a list of deployments operations.
+     * Gets a deployments operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param operationId Operation Id.
+     * @param operationId The ID of the operation to get.
      * @return the observable to the DeploymentOperationInner object
      */
     public Observable<ServiceResponse<DeploymentOperationInner>> getWithServiceResponseAsync(String resourceGroupName, String deploymentName, String operationId) {
@@ -152,39 +152,39 @@ public final class DeploymentOperationsInner {
     }
 
     private ServiceResponse<DeploymentOperationInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentOperationInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentOperationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentOperationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment with the operation to get.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment with the operation to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentOperationInner>> listAsync(final String resourceGroupName, final String deploymentName, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName, deploymentName),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
@@ -196,10 +196,10 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment with the operation to get.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<Page<DeploymentOperationInner>> listAsync(final String resourceGroupName, final String deploymentName) {
@@ -207,16 +207,16 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment with the operation to get.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String deploymentName) {
@@ -224,7 +224,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -234,10 +234,10 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment with the operation to get.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listSinglePageAsync(final String resourceGroupName, final String deploymentName) {
@@ -260,7 +260,7 @@ public final class DeploymentOperationsInner {
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -269,34 +269,34 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top Query parameters.
+     * @param deploymentName The name of the deployment with the operation to get.
+     * @param top The number of results to return.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName, final Integer top) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName, top).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top Query parameters.
+     * @param deploymentName The name of the deployment with the operation to get.
+     * @param top The number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentOperationInner>> listAsync(final String resourceGroupName, final String deploymentName, final Integer top, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName, deploymentName, top),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
@@ -308,11 +308,11 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top Query parameters.
+     * @param deploymentName The name of the deployment with the operation to get.
+     * @param top The number of results to return.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<Page<DeploymentOperationInner>> listAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -320,17 +320,17 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top Query parameters.
+     * @param deploymentName The name of the deployment with the operation to get.
+     * @param top The number of results to return.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -338,7 +338,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -348,11 +348,11 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
-    ServiceResponse<PageImpl<DeploymentOperationInner>> * @param deploymentName The name of the deployment.
-    ServiceResponse<PageImpl<DeploymentOperationInner>> * @param top Query parameters.
+    ServiceResponse<PageImpl<DeploymentOperationInner>> * @param deploymentName The name of the deployment with the operation to get.
+    ServiceResponse<PageImpl<DeploymentOperationInner>> * @param top The number of results to return.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listSinglePageAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -374,7 +374,7 @@ public final class DeploymentOperationsInner {
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -383,30 +383,30 @@ public final class DeploymentOperationsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentOperationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentOperationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentOperationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentOperationInner>(response.getBody()) {
+        return new PagedList<DeploymentOperationInner>(response.body()) {
             @Override
             public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -414,7 +414,7 @@ public final class DeploymentOperationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentOperationInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentOperationInner>> serviceCall, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
@@ -426,7 +426,7 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
@@ -436,13 +436,13 @@ public final class DeploymentOperationsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Page<DeploymentOperationInner>>() {
                 @Override
                 public Page<DeploymentOperationInner> call(ServiceResponse<Page<DeploymentOperationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
@@ -452,7 +452,7 @@ public final class DeploymentOperationsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentOperationInner>>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(ServiceResponse<Page<DeploymentOperationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -462,7 +462,7 @@ public final class DeploymentOperationsInner {
     }
 
     /**
-     * Gets a list of deployments operations.
+     * Gets all deployments operations for a deployment.
      *
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -471,13 +471,14 @@ public final class DeploymentOperationsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentOperationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentOperationInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentOperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -486,7 +487,7 @@ public final class DeploymentOperationsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentOperationInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentOperationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentOperationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

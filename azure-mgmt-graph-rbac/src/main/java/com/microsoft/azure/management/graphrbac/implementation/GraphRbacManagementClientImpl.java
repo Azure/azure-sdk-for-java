@@ -10,8 +10,8 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the GraphRbacManagementClientImpl class.
@@ -28,11 +28,11 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Client Api Version. */
+    /** Client API version. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets Client API version.
      *
      * @return the apiVersion value.
      */
@@ -40,11 +40,11 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** the tenant Id. */
+    /** The tenant ID. */
     private String tenantID;
 
     /**
-     * Gets the tenant Id.
+     * Gets The tenant ID.
      *
      * @return the tenantID value.
      */
@@ -53,7 +53,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets the tenant Id.
+     * Sets The tenant ID.
      *
      * @param tenantID the tenantID value.
      * @return the service client itself
@@ -213,10 +213,8 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public GraphRbacManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

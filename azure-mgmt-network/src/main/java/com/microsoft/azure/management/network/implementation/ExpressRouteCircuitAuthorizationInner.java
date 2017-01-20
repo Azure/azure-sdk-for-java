@@ -14,26 +14,26 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Authorization in a ExpressRouteCircuit resource.
+ * Authorization in an ExpressRouteCircuit resource.
  */
 @JsonFlatten
 public class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /**
-     * Gets or sets the authorization key.
+     * The authorization key.
      */
     @JsonProperty(value = "properties.authorizationKey")
     private String authorizationKey;
 
     /**
-     * Gets or sets AuthorizationUseStatus. Possible values include:
-     * 'Available', 'InUse'.
+     * AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
+     * Possible values include: 'Available', 'InUse'.
      */
     @JsonProperty(value = "properties.authorizationUseStatus")
     private AuthorizationUseStatus authorizationUseStatus;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

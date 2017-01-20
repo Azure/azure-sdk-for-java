@@ -8,6 +8,7 @@ import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -219,6 +220,28 @@ public interface VirtualMachineScaleSet extends
      * @return the extensions attached to the virtual machines in the scale set
      */
     Map<String, VirtualMachineScaleSetExtension> extensions();
+
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return the network interface
+     */
+    VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
+
+    /**
+     * @return the network interfaces associated with all virtual machine instances in a scale set
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
+
+    /**
+     * List the network interface associated with a specific virtual machine instance in the scale set.
+     *
+     * @param virtualMachineInstanceId the instance id
+     * @return the network interfaces
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId);
 
     /**
      * The entirety of the load balancer definition.

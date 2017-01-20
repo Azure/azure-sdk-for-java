@@ -8,39 +8,38 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.appservice.CsmPublishingProfileOptions;
 import com.microsoft.azure.management.appservice.PublishingProfileFormat;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
+import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
-import rx.Observable;
+import retrofit2.http.Url;
+import retrofit2.Response;
 import rx.functions.Func1;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -68,959 +67,959 @@ public final class WebAppsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface WebAppsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/sites")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("includeSlots") Boolean includeSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("skipCustomDomainVerification") Boolean skipCustomDomainVerification, @Query("forceDnsRegistration") Boolean forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("skipCustomDomainVerification") Boolean skipCustomDomainVerification, @Query("forceDnsRegistration") Boolean forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") Boolean deleteMetrics, @Query("deleteEmptyServerFarm") Boolean deleteEmptyServerFarm, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps analyzeCustomHostname" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/analyzeCustomHostname")
         Observable<Response<ResponseBody>> analyzeCustomHostname(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("hostName") String hostName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps applySlotConfigToProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig")
         Observable<Response<ResponseBody>> applySlotConfigToProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps backup" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backup")
         Observable<Response<ResponseBody>> backup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackups" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups")
         Observable<Response<ResponseBody>> listBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps discoverRestore" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/discover")
         Observable<Response<ResponseBody>> discoverRestore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getBackupStatus" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}")
         Observable<Response<ResponseBody>> getBackupStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteBackup" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteBackup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackupStatusSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/list")
         Observable<Response<ResponseBody>> listBackupStatusSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restore" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore")
         Observable<Response<ResponseBody>> restore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRestore" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore")
         Observable<Response<ResponseBody>> beginRestore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateApplicationSettings" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings")
         Observable<Response<ResponseBody>> updateApplicationSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listApplicationSettings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list")
         Observable<Response<ResponseBody>> listApplicationSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateAuthSettings" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings")
         Observable<Response<ResponseBody>> updateAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getAuthSettings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateBackupConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup")
         Observable<Response<ResponseBody>> updateBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteBackupConfiguration" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getBackupConfiguration" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup/list")
         Observable<Response<ResponseBody>> getBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConnectionStrings" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings")
         Observable<Response<ResponseBody>> updateConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConnectionStrings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list")
         Observable<Response<ResponseBody>> listConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDiagnosticLogsConfiguration" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs")
         Observable<Response<ResponseBody>> getDiagnosticLogsConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateDiagnosticLogsConfig" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs")
         Observable<Response<ResponseBody>> updateDiagnosticLogsConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateMetadata" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata")
         Observable<Response<ResponseBody>> updateMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetadata" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata/list")
         Observable<Response<ResponseBody>> listMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingCredentials" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list")
         Observable<Response<ResponseBody>> listPublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginListPublishingCredentials" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list")
         Observable<Response<ResponseBody>> beginListPublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateSitePushSettings" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings")
         Observable<Response<ResponseBody>> updateSitePushSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body PushSettingsInner pushSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSitePushSettings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings/list")
         Observable<Response<ResponseBody>> listSitePushSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotConfigurationNames" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
         Observable<Response<ResponseBody>> listSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateSlotConfigurationNames" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
         Observable<Response<ResponseBody>> updateSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getConfiguration" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
         Observable<Response<ResponseBody>> getConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
         Observable<Response<ResponseBody>> createOrUpdateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConfiguration" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
         Observable<Response<ResponseBody>> updateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeployments" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments")
         Observable<Response<ResponseBody>> listDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDeployment" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
         Observable<Response<ResponseBody>> getDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createDeployment" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
         Observable<Response<ResponseBody>> createDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteDeployment" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDomainOwnershipIdentifiers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers")
         Observable<Response<ResponseBody>> listDomainOwnershipIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDomainOwnershipIdentifier" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> getDomainOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateDomainOwnershipIdentifier" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> createOrUpdateDomainOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteDomainOwnershipIdentifier" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteDomainOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateDomainOwnershipIdentifier" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> updateDomainOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindings" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings")
         Observable<Response<ResponseBody>> listHostNameBindings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostNameBinding" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}")
         Observable<Response<ResponseBody>> getHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateHostNameBinding" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}")
         Observable<Response<ResponseBody>> createOrUpdateHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteHostNameBinding" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHybridConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> getHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateHybridConnection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> createOrUpdateHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteHybridConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateHybridConnection" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> updateHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHybridConnectionKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
         Observable<Response<ResponseBody>> listHybridConnectionKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHybridConnections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionRelays")
         Observable<Response<ResponseBody>> listHybridConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listRelayServiceConnections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection")
         Observable<Response<ResponseBody>> listRelayServiceConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getRelayServiceConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> getRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateRelayServiceConnection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> createOrUpdateRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteRelayServiceConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateRelayServiceConnection" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> updateRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceIdentifiers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances")
         Observable<Response<ResponseBody>> listInstanceIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceDeployments" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments")
         Observable<Response<ResponseBody>> listInstanceDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceDeployment" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
         Observable<Response<ResponseBody>> getInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createInstanceDeployment" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
         Observable<Response<ResponseBody>> createInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteInstanceDeployment" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps isCloneable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable")
         Observable<Response<ResponseBody>> isCloneable(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metrics")
         Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps migrateStorage" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate")
         Observable<Response<ResponseBody>> migrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner options, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginMigrateStorage" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate")
         Observable<Response<ResponseBody>> beginMigrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner options, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps migrateMySql" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql")
         Observable<Response<ResponseBody>> migrateMySql(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body MigrateMySqlRequestInner migrationRequestEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginMigrateMySql" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql")
         Observable<Response<ResponseBody>> beginMigrateMySql(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body MigrateMySqlRequestInner migrationRequestEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listNetworkFeatures" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps startWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start")
         Observable<Response<ResponseBody>> startWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stopWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop")
         Observable<Response<ResponseBody>> stopWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateNewSitePublishingPassword" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword")
         Observable<Response<ResponseBody>> generateNewSitePublishingPassword(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPerfMonCounters" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters")
         Observable<Response<ResponseBody>> listPerfMonCounters(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSitePhpErrorLogFlag" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/phplogging")
         Observable<Response<ResponseBody>> getSitePhpErrorLogFlag(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPremierAddOns" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons")
         Observable<Response<ResponseBody>> listPremierAddOns(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getPremierAddOn" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}")
         Observable<Response<ResponseBody>> getPremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addPremierAddOn" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}")
         Observable<Response<ResponseBody>> addPremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deletePremierAddOn" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
         Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recover" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
         Observable<Response<ResponseBody>> recover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRecover" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
         Observable<Response<ResponseBody>> beginRecover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps resetProductionSlotConfig" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
         Observable<Response<ResponseBody>> resetProductionSlotConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart")
         Observable<Response<ResponseBody>> restart(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlots" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots")
         Observable<Response<ResponseBody>> listSlots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
         Observable<Response<ResponseBody>> getSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
         Observable<Response<ResponseBody>> createOrUpdateSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("skipCustomDomainVerification") Boolean skipCustomDomainVerification, @Query("forceDnsRegistration") Boolean forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateOrUpdateSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
         Observable<Response<ResponseBody>> beginCreateOrUpdateSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("skipCustomDomainVerification") Boolean skipCustomDomainVerification, @Query("forceDnsRegistration") Boolean forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") Boolean deleteMetrics, @Query("deleteEmptyServerFarm") Boolean deleteEmptyServerFarm, @Query("skipDnsRegistration") Boolean skipDnsRegistration, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps analyzeCustomHostnameSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/analyzeCustomHostname")
         Observable<Response<ResponseBody>> analyzeCustomHostnameSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("hostName") String hostName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps applySlotConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/applySlotConfig")
         Observable<Response<ResponseBody>> applySlotConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps backupSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backup")
         Observable<Response<ResponseBody>> backupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackupsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups")
         Observable<Response<ResponseBody>> listBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps discoverRestoreSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/discover")
         Observable<Response<ResponseBody>> discoverRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getBackupStatusSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}")
         Observable<Response<ResponseBody>> getBackupStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteBackupSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteBackupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackupStatusSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/list")
         Observable<Response<ResponseBody>> listBackupStatusSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restoreSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/restore")
         Observable<Response<ResponseBody>> restoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRestoreSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/restore")
         Observable<Response<ResponseBody>> beginRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateApplicationSettingsSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings")
         Observable<Response<ResponseBody>> updateApplicationSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listApplicationSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings/list")
         Observable<Response<ResponseBody>> listApplicationSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateAuthSettingsSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings")
         Observable<Response<ResponseBody>> updateAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getAuthSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateBackupConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup")
         Observable<Response<ResponseBody>> updateBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteBackupConfigurationSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getBackupConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup/list")
         Observable<Response<ResponseBody>> getBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConnectionStringsSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings")
         Observable<Response<ResponseBody>> updateConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConnectionStringsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings/list")
         Observable<Response<ResponseBody>> listConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDiagnosticLogsConfigurationSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs")
         Observable<Response<ResponseBody>> getDiagnosticLogsConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateDiagnosticLogsConfigSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs")
         Observable<Response<ResponseBody>> updateDiagnosticLogsConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateMetadataSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata")
         Observable<Response<ResponseBody>> updateMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetadataSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata/list")
         Observable<Response<ResponseBody>> listMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingCredentialsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/publishingcredentials/list")
         Observable<Response<ResponseBody>> listPublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginListPublishingCredentialsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/publishingcredentials/list")
         Observable<Response<ResponseBody>> beginListPublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateSitePushSettingsSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/pushsettings")
         Observable<Response<ResponseBody>> updateSitePushSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PushSettingsInner pushSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSitePushSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/pushsettings/list")
         Observable<Response<ResponseBody>> listSitePushSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getConfigurationSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
         Observable<Response<ResponseBody>> getConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
         Observable<Response<ResponseBody>> createOrUpdateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConfigurationSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
         Observable<Response<ResponseBody>> updateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeploymentsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments")
         Observable<Response<ResponseBody>> listDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDeploymentSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
         Observable<Response<ResponseBody>> getDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createDeploymentSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
         Observable<Response<ResponseBody>> createDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteDeploymentSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDomainOwnershipIdentifiersSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers")
         Observable<Response<ResponseBody>> listDomainOwnershipIdentifiersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getDomainOwnershipIdentifierSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> getDomainOwnershipIdentifierSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateDomainOwnershipIdentifierSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> createOrUpdateDomainOwnershipIdentifierSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteDomainOwnershipIdentifierSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteDomainOwnershipIdentifierSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateDomainOwnershipIdentifierSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> updateDomainOwnershipIdentifierSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindingsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
         Observable<Response<ResponseBody>> listHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostNameBindingSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}")
         Observable<Response<ResponseBody>> getHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateHostNameBindingSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}")
         Observable<Response<ResponseBody>> createOrUpdateHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteHostNameBindingSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHybridConnectionSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> getHybridConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateHybridConnectionSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> createOrUpdateHybridConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteHybridConnectionSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHybridConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateHybridConnectionSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> updateHybridConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHybridConnectionKeysSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
         Observable<Response<ResponseBody>> listHybridConnectionKeysSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHybridConnectionsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionRelays")
         Observable<Response<ResponseBody>> listHybridConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listRelayServiceConnectionsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection")
         Observable<Response<ResponseBody>> listRelayServiceConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getRelayServiceConnectionSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> getRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateRelayServiceConnectionSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> createOrUpdateRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteRelayServiceConnectionSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateRelayServiceConnectionSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
         Observable<Response<ResponseBody>> updateRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceIdentifiersSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances")
         Observable<Response<ResponseBody>> listInstanceIdentifiersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceDeploymentsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments")
         Observable<Response<ResponseBody>> listInstanceDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceDeploymentSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}")
         Observable<Response<ResponseBody>> getInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createInstanceDeploymentSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}")
         Observable<Response<ResponseBody>> createInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteInstanceDeploymentSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps isCloneableSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/iscloneable")
         Observable<Response<ResponseBody>> isCloneableSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricDefinitionsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefinitionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics")
         Observable<Response<ResponseBody>> listMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listNetworkFeaturesSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps startWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/start")
         Observable<Response<ResponseBody>> startWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stopWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/stop")
         Observable<Response<ResponseBody>> stopWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateNewSitePublishingPasswordSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword")
         Observable<Response<ResponseBody>> generateNewSitePublishingPasswordSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPerfMonCountersSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/perfcounters")
         Observable<Response<ResponseBody>> listPerfMonCountersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSitePhpErrorLogFlagSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/phplogging")
         Observable<Response<ResponseBody>> getSitePhpErrorLogFlagSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPremierAddOnsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons")
         Observable<Response<ResponseBody>> listPremierAddOnsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getPremierAddOnSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}")
         Observable<Response<ResponseBody>> getPremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addPremierAddOnSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}")
         Observable<Response<ResponseBody>> addPremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deletePremierAddOnSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
         Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recoverSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
         Observable<Response<ResponseBody>> recoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRecoverSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
         Observable<Response<ResponseBody>> beginRecoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps resetSlotConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
         Observable<Response<ResponseBody>> resetSlotConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restartSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restart")
         Observable<Response<ResponseBody>> restartSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs")
         Observable<Response<ResponseBody>> getSlotsDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps swapSlotSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
         Observable<Response<ResponseBody>> swapSlotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginSwapSlotSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
         Observable<Response<ResponseBody>> beginSwapSlotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshotsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots")
         Observable<Response<ResponseBody>> listSnapshotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSourceControlSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Observable<Response<ResponseBody>> getSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateSourceControlSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Observable<Response<ResponseBody>> createOrUpdateSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateOrUpdateSourceControlSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Observable<Response<ResponseBody>> beginCreateOrUpdateSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteSourceControlSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps startSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/start")
         Observable<Response<ResponseBody>> startSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stopSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/stop")
         Observable<Response<ResponseBody>> stopSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps syncRepositorySlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sync")
         Observable<Response<ResponseBody>> syncRepositorySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listUsagesSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages")
         Observable<Response<ResponseBody>> listUsagesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listVnetConnectionsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections")
         Observable<Response<ResponseBody>> listVnetConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getVnetConnectionSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> getVnetConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateVnetConnectionSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteVnetConnectionSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteVnetConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateVnetConnectionSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> updateVnetConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getVnetConnectionGatewaySlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> getVnetConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateVnetConnectionGatewaySlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateVnetConnectionGatewaySlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> updateVnetConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesFromProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs")
         Observable<Response<ResponseBody>> getSlotsDifferencesFromProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps swapSlotWithProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
         Observable<Response<ResponseBody>> swapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginSwapSlotWithProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
         Observable<Response<ResponseBody>> beginSwapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshots" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots")
         Observable<Response<ResponseBody>> listSnapshots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSourceControl" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
         Observable<Response<ResponseBody>> getSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateSourceControl" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
         Observable<Response<ResponseBody>> createOrUpdateSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateOrUpdateSourceControl" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
         Observable<Response<ResponseBody>> beginCreateOrUpdateSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteSourceControl" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps start" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/start")
         Observable<Response<ResponseBody>> start(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stop")
         Observable<Response<ResponseBody>> stop(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps syncRepository" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync")
         Observable<Response<ResponseBody>> syncRepository(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listUsages" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages")
         Observable<Response<ResponseBody>> listUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listVnetConnections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections")
         Observable<Response<ResponseBody>> listVnetConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getVnetConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> getVnetConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateVnetConnection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteVnetConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteVnetConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateVnetConnection" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> updateVnetConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getVnetConnectionGateway" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> getVnetConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateVnetConnectionGateway" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateVnetConnectionGateway" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> updateVnetConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listBackupsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackupsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listBackupsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listDeploymentsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeploymentsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listDeploymentsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listDomainOwnershipIdentifiersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDomainOwnershipIdentifiersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listDomainOwnershipIdentifiersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listHostNameBindingsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindingsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listHostNameBindingsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInstanceIdentifiersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceIdentifiersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listInstanceIdentifiersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInstanceDeploymentsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceDeploymentsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listInstanceDeploymentsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listPerfMonCountersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPerfMonCountersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPerfMonCountersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSlotsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSlotsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listBackupsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listBackupsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listBackupsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listDeploymentsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeploymentsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listDeploymentsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listDomainOwnershipIdentifiersSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDomainOwnershipIdentifiersSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listDomainOwnershipIdentifiersSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listHostNameBindingsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindingsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listHostNameBindingsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInstanceIdentifiersSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceIdentifiersSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listInstanceIdentifiersSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInstanceDeploymentsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listInstanceDeploymentsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listInstanceDeploymentsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricDefinitionsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricDefinitionsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricDefinitionsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listMetricsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listPerfMonCountersSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPerfMonCountersSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPerfMonCountersSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> getSlotsDifferencesSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> getSlotsDifferencesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSnapshotsSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshotsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listUsagesSlotNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listUsagesSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listUsagesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> getSlotsDifferencesFromProductionNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesFromProductionNext" })
+        @GET
+        Observable<Response<ResponseBody>> getSlotsDifferencesFromProductionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSnapshotsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshotsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listUsagesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listUsagesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1032,10 +1031,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> list() {
         ServiceResponse<Page<SiteInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1048,7 +1047,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listAsync(final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1070,7 +1069,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1086,7 +1085,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1112,7 +1111,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1121,7 +1120,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1136,10 +1135,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1153,7 +1152,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1176,7 +1175,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1193,7 +1192,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1224,7 +1223,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1242,10 +1241,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName, final Boolean includeSlots) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, includeSlots).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1260,7 +1259,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, includeSlots),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1284,7 +1283,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1302,7 +1301,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1333,7 +1332,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1342,7 +1341,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1357,7 +1356,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1370,7 +1369,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1385,7 +1384,7 @@ public final class WebAppsInner {
         return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1424,7 +1423,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1437,10 +1436,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
-     * @return the SiteInner object  if successful.
+     * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -1454,7 +1453,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -1470,7 +1469,7 @@ public final class WebAppsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1521,7 +1520,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().body();
     }
 
     /**
@@ -1540,7 +1539,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -1561,7 +1560,7 @@ public final class WebAppsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1609,7 +1608,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -1623,7 +1622,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -1639,7 +1638,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1701,7 +1700,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -1720,7 +1719,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -1741,7 +1740,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1790,7 +1789,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteInner>() { }.getType())
                 .register(202, new TypeToken<SiteInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -1805,7 +1804,7 @@ public final class WebAppsInner {
      * @param name Name of the app to delete.
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1818,7 +1817,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1833,7 +1832,7 @@ public final class WebAppsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1885,7 +1884,7 @@ public final class WebAppsInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      */
     public void delete(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
-        deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
     }
 
     /**
@@ -1901,7 +1900,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
     }
 
     /**
@@ -1919,7 +1918,7 @@ public final class WebAppsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1961,7 +1960,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -1976,7 +1975,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name) {
-        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1989,7 +1988,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.create(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2004,7 +2003,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2053,7 +2052,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name, String hostName) {
-        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -2067,7 +2066,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.create(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+        return ServiceCall.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -2083,7 +2082,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2123,7 +2122,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<CustomHostnameAnalysisResultInner> analyzeCustomHostnameDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CustomHostnameAnalysisResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CustomHostnameAnalysisResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CustomHostnameAnalysisResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2138,7 +2137,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
+        applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -2152,7 +2151,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -2168,7 +2167,7 @@ public final class WebAppsInner {
         return applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2212,7 +2211,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> applySlotConfigToProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -2227,7 +2226,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backup(String resourceGroupName, String name, BackupRequestInner request) {
-        return backupWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return backupWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -2241,7 +2240,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> backupAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(backupWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.fromResponse(backupWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -2257,7 +2256,7 @@ public final class WebAppsInner {
         return backupWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2301,7 +2300,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> backupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2317,10 +2316,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackups(final String resourceGroupName, final String name) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2335,7 +2334,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BackupItemInner>> listBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listBackupsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -2359,7 +2358,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2377,7 +2376,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2411,7 +2410,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2420,7 +2419,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<BackupItemInner>> listBackupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BackupItemInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2436,7 +2435,7 @@ public final class WebAppsInner {
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestore(String resourceGroupName, String name, RestoreRequestInner request) {
-        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -2450,7 +2449,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.create(discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.fromResponse(discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -2466,7 +2465,7 @@ public final class WebAppsInner {
         return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
             @Override
             public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2510,7 +2509,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RestoreRequestInner> discoverRestoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2526,7 +2525,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatus(String resourceGroupName, String name, String backupId) {
-        return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
+        return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().body();
     }
 
     /**
@@ -2540,7 +2539,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
+        return ServiceCall.fromResponse(getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -2556,7 +2555,7 @@ public final class WebAppsInner {
         return getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2599,7 +2598,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> getBackupStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2614,7 +2613,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      */
     public void deleteBackup(String resourceGroupName, String name, String backupId) {
-        deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
+        deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().body();
     }
 
     /**
@@ -2628,7 +2627,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
+        return ServiceCall.fromResponse(deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -2644,7 +2643,7 @@ public final class WebAppsInner {
         return deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2687,7 +2686,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteBackupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -2704,7 +2703,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
-        return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
+        return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().body();
     }
 
     /**
@@ -2719,7 +2718,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.fromResponse(listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2736,7 +2735,7 @@ public final class WebAppsInner {
         return listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2784,7 +2783,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> listBackupStatusSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2801,7 +2800,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
-        return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().getBody();
+        return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().body();
     }
 
     /**
@@ -2816,7 +2815,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> restoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.fromResponse(restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2833,7 +2832,7 @@ public final class WebAppsInner {
         return restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2881,7 +2880,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
-        return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
+        return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().body();
     }
 
     /**
@@ -2896,7 +2895,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> beginRestoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.fromResponse(beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2913,7 +2912,7 @@ public final class WebAppsInner {
         return beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2961,7 +2960,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RestoreResponseInner> beginRestoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RestoreResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RestoreResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2977,7 +2976,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) {
-        return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().getBody();
+        return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().body();
     }
 
     /**
@@ -2991,7 +2990,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings), serviceCallback);
     }
 
     /**
@@ -3007,7 +3006,7 @@ public final class WebAppsInner {
         return updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3051,7 +3050,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> updateApplicationSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3066,7 +3065,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettings(String resourceGroupName, String name) {
-        return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3079,7 +3078,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listApplicationSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3094,7 +3093,7 @@ public final class WebAppsInner {
         return listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3133,7 +3132,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> listApplicationSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3149,7 +3148,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
-        return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().getBody();
+        return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().body();
     }
 
     /**
@@ -3163,7 +3162,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> updateAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -3179,7 +3178,7 @@ public final class WebAppsInner {
         return updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3223,7 +3222,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteAuthSettingsInner> updateAuthSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3238,7 +3237,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettings(String resourceGroupName, String name) {
-        return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3251,7 +3250,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> getAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(getAuthSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getAuthSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3266,7 +3265,7 @@ public final class WebAppsInner {
         return getAuthSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3305,7 +3304,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3321,7 +3320,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) {
-        return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
+        return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
     }
 
     /**
@@ -3335,7 +3334,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> updateBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.fromResponse(updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -3351,7 +3350,7 @@ public final class WebAppsInner {
         return updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3395,7 +3394,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupRequestInner> updateBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3409,7 +3408,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void deleteBackupConfiguration(String resourceGroupName, String name) {
-        deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3422,7 +3421,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3437,7 +3436,7 @@ public final class WebAppsInner {
         return deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3476,7 +3475,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -3490,7 +3489,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfiguration(String resourceGroupName, String name) {
-        return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3503,7 +3502,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> getBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3518,7 +3517,7 @@ public final class WebAppsInner {
         return getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3557,7 +3556,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupRequestInner> getBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3573,7 +3572,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
-        return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().getBody();
+        return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().body();
     }
 
     /**
@@ -3587,7 +3586,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> updateConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings), serviceCallback);
+        return ServiceCall.fromResponse(updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings), serviceCallback);
     }
 
     /**
@@ -3603,7 +3602,7 @@ public final class WebAppsInner {
         return updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3647,7 +3646,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<ConnectionStringDictionaryInner> updateConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ConnectionStringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectionStringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3662,7 +3661,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStrings(String resourceGroupName, String name) {
-        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3675,7 +3674,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> listConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listConnectionStringsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listConnectionStringsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3690,7 +3689,7 @@ public final class WebAppsInner {
         return listConnectionStringsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3729,7 +3728,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<ConnectionStringDictionaryInner> listConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ConnectionStringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectionStringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3744,7 +3743,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfiguration(String resourceGroupName, String name) {
-        return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3757,7 +3756,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> getDiagnosticLogsConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3772,7 +3771,7 @@ public final class WebAppsInner {
         return getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3811,7 +3810,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteLogsConfigInner> getDiagnosticLogsConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteLogsConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteLogsConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3827,7 +3826,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
-        return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().getBody();
+        return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().body();
     }
 
     /**
@@ -3841,7 +3840,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> updateDiagnosticLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
+        return ServiceCall.fromResponse(updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -3857,7 +3856,7 @@ public final class WebAppsInner {
         return updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3901,7 +3900,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteLogsConfigInner> updateDiagnosticLogsConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteLogsConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteLogsConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3917,7 +3916,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) {
-        return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().getBody();
+        return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().body();
     }
 
     /**
@@ -3931,7 +3930,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata), serviceCallback);
+        return ServiceCall.fromResponse(updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata), serviceCallback);
     }
 
     /**
@@ -3947,7 +3946,7 @@ public final class WebAppsInner {
         return updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3991,7 +3990,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> updateMetadataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4006,7 +4005,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadata(String resourceGroupName, String name) {
-        return listMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4019,7 +4018,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4034,7 +4033,7 @@ public final class WebAppsInner {
         return listMetadataWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4073,7 +4072,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> listMetadataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4088,7 +4087,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentials(String resourceGroupName, String name) {
-        return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
+        return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
     /**
@@ -4101,7 +4100,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> listPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4116,7 +4115,7 @@ public final class WebAppsInner {
         return listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4153,7 +4152,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentials(String resourceGroupName, String name) {
-        return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4166,7 +4165,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> beginListPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4181,7 +4180,7 @@ public final class WebAppsInner {
         return beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4220,7 +4219,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<UserInner> beginListPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4236,7 +4235,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettings(String resourceGroupName, String name, PushSettingsInner pushSettings) {
-        return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).toBlocking().single().getBody();
+        return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).toBlocking().single().body();
     }
 
     /**
@@ -4250,7 +4249,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PushSettingsInner> updateSitePushSettingsAsync(String resourceGroupName, String name, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings), serviceCallback);
     }
 
     /**
@@ -4266,7 +4265,7 @@ public final class WebAppsInner {
         return updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4310,7 +4309,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PushSettingsInner> updateSitePushSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PushSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PushSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PushSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4325,7 +4324,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettings(String resourceGroupName, String name) {
-        return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4338,7 +4337,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PushSettingsInner> listSitePushSettingsAsync(String resourceGroupName, String name, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.create(listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4353,7 +4352,7 @@ public final class WebAppsInner {
         return listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4392,7 +4391,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PushSettingsInner> listSitePushSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PushSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PushSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PushSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4407,7 +4406,7 @@ public final class WebAppsInner {
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner listSlotConfigurationNames(String resourceGroupName, String name) {
-        return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4420,7 +4419,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SlotConfigNamesResourceInner> listSlotConfigurationNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.create(listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4435,7 +4434,7 @@ public final class WebAppsInner {
         return listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
             @Override
             public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4474,7 +4473,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SlotConfigNamesResourceInner> listSlotConfigurationNamesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotConfigNamesResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SlotConfigNamesResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SlotConfigNamesResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4490,7 +4489,7 @@ public final class WebAppsInner {
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner updateSlotConfigurationNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
-        return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().getBody();
+        return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().body();
     }
 
     /**
@@ -4504,7 +4503,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SlotConfigNamesResourceInner> updateSlotConfigurationNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.create(updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
+        return ServiceCall.fromResponse(updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
     }
 
     /**
@@ -4520,7 +4519,7 @@ public final class WebAppsInner {
         return updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
             @Override
             public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4564,7 +4563,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SlotConfigNamesResourceInner> updateSlotConfigurationNamesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotConfigNamesResourceInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SlotConfigNamesResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SlotConfigNamesResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4579,7 +4578,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfiguration(String resourceGroupName, String name) {
-        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -4592,7 +4591,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(getConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4607,7 +4606,7 @@ public final class WebAppsInner {
         return getConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4646,7 +4645,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> getConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4662,7 +4661,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
+        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -4676,7 +4675,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -4692,7 +4691,7 @@ public final class WebAppsInner {
         return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4736,7 +4735,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> createOrUpdateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4752,7 +4751,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
+        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -4766,7 +4765,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
+        return ServiceCall.fromResponse(updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -4782,7 +4781,7 @@ public final class WebAppsInner {
         return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4826,7 +4825,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> updateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4842,10 +4841,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeployments(final String resourceGroupName, final String name) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4860,7 +4859,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDeploymentsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -4884,7 +4883,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4902,7 +4901,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4936,7 +4935,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4945,7 +4944,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4961,7 +4960,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeployment(String resourceGroupName, String name, String id) {
-        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
+        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().body();
     }
 
     /**
@@ -4975,7 +4974,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
+        return ServiceCall.fromResponse(getDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -4991,7 +4990,7 @@ public final class WebAppsInner {
         return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5034,7 +5033,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> getDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5051,7 +5050,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) {
-        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().getBody();
+        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().body();
     }
 
     /**
@@ -5066,7 +5065,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment), serviceCallback);
+        return ServiceCall.fromResponse(createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment), serviceCallback);
     }
 
     /**
@@ -5083,7 +5082,7 @@ public final class WebAppsInner {
         return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5131,7 +5130,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> createDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5146,7 +5145,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      */
     public void deleteDeployment(String resourceGroupName, String name, String id) {
-        deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
+        deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().body();
     }
 
     /**
@@ -5160,7 +5159,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
+        return ServiceCall.fromResponse(deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -5176,7 +5175,7 @@ public final class WebAppsInner {
         return deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5219,7 +5218,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -5235,10 +5234,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiers(final String resourceGroupName, final String name) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5253,7 +5252,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDomainOwnershipIdentifiersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -5277,7 +5276,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5295,7 +5294,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5329,7 +5328,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5338,7 +5337,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<IdentifierInner>> listDomainOwnershipIdentifiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<IdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5354,7 +5353,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
-        return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().getBody();
+        return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().body();
     }
 
     /**
@@ -5368,7 +5367,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
+        return ServiceCall.fromResponse(getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
     }
 
     /**
@@ -5384,7 +5383,7 @@ public final class WebAppsInner {
         return getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5427,7 +5426,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> getDomainOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5444,7 +5443,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -5459,7 +5458,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> createOrUpdateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -5476,7 +5475,7 @@ public final class WebAppsInner {
         return createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5524,7 +5523,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> createOrUpdateDomainOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5539,7 +5538,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      */
     public void deleteDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
-        deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().getBody();
+        deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().body();
     }
 
     /**
@@ -5553,7 +5552,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
+        return ServiceCall.fromResponse(deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
     }
 
     /**
@@ -5569,7 +5568,7 @@ public final class WebAppsInner {
         return deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5612,7 +5611,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteDomainOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -5629,7 +5628,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
-        return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -5644,7 +5643,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> updateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -5661,7 +5660,7 @@ public final class WebAppsInner {
         return updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5709,7 +5708,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> updateDomainOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5725,10 +5724,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindings(final String resourceGroupName, final String name) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5743,7 +5742,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHostNameBindingsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -5767,7 +5766,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5785,7 +5784,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5819,7 +5818,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5828,7 +5827,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<HostNameBindingInner>> listHostNameBindingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HostNameBindingInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HostNameBindingInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HostNameBindingInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5844,7 +5843,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBinding(String resourceGroupName, String name, String hostName) {
-        return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -5858,7 +5857,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> getHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+        return ServiceCall.fromResponse(getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -5874,7 +5873,7 @@ public final class WebAppsInner {
         return getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5917,7 +5916,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HostNameBindingInner> getHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HostNameBindingInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostNameBindingInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5934,7 +5933,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
-        return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().getBody();
+        return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().body();
     }
 
     /**
@@ -5949,7 +5948,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> createOrUpdateHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -5966,7 +5965,7 @@ public final class WebAppsInner {
         return createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6014,7 +6013,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HostNameBindingInner> createOrUpdateHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HostNameBindingInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostNameBindingInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6029,7 +6028,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      */
     public void deleteHostNameBinding(String resourceGroupName, String name, String hostName) {
-        deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
+        deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
     }
 
     /**
@@ -6043,7 +6042,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+        return ServiceCall.fromResponse(deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -6059,7 +6058,7 @@ public final class WebAppsInner {
         return deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6102,7 +6101,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -6119,7 +6118,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6134,7 +6133,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6151,7 +6150,7 @@ public final class WebAppsInner {
         return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6198,7 +6197,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> getHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6216,7 +6215,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
-        return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6232,7 +6231,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> createOrUpdateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6250,7 +6249,7 @@ public final class WebAppsInner {
         return createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6302,7 +6301,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> createOrUpdateHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6318,7 +6317,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      */
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6333,7 +6332,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6350,7 +6349,7 @@ public final class WebAppsInner {
         return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6397,7 +6396,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -6415,7 +6414,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
-        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6431,7 +6430,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6449,7 +6448,7 @@ public final class WebAppsInner {
         return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6501,7 +6500,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> updateHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6518,7 +6517,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -6533,7 +6532,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+        return ServiceCall.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6550,7 +6549,7 @@ public final class WebAppsInner {
         return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6597,7 +6596,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionKeyInner> listHybridConnectionKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionKeyInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionKeyInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionKeyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6612,7 +6611,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnections(String resourceGroupName, String name) {
-        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -6625,7 +6624,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -6640,7 +6639,7 @@ public final class WebAppsInner {
         return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6679,7 +6678,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> listHybridConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6694,7 +6693,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnections(String resourceGroupName, String name) {
-        return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -6707,7 +6706,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> listRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -6722,7 +6721,7 @@ public final class WebAppsInner {
         return listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6761,7 +6760,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> listRelayServiceConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6777,7 +6776,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnection(String resourceGroupName, String name, String entityName) {
-        return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
+        return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().body();
     }
 
     /**
@@ -6791,7 +6790,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> getRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
+        return ServiceCall.fromResponse(getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -6807,7 +6806,7 @@ public final class WebAppsInner {
         return getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6850,7 +6849,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> getRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6867,7 +6866,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -6882,7 +6881,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6899,7 +6898,7 @@ public final class WebAppsInner {
         return createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -6947,7 +6946,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6962,7 +6961,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      */
     public void deleteRelayServiceConnection(String resourceGroupName, String name, String entityName) {
-        deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
+        deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().body();
     }
 
     /**
@@ -6976,7 +6975,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
+        return ServiceCall.fromResponse(deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -6992,7 +6991,7 @@ public final class WebAppsInner {
         return deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7035,7 +7034,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -7052,7 +7051,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
+        return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -7067,7 +7066,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> updateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -7084,7 +7083,7 @@ public final class WebAppsInner {
         return updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7132,7 +7131,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> updateRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7148,10 +7147,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiers(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7166,7 +7165,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceIdentifiersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -7190,7 +7189,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7208,7 +7207,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7242,7 +7241,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7251,7 +7250,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInstanceInner>> listInstanceIdentifiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInstanceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7268,10 +7267,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7287,7 +7286,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -7312,7 +7311,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7331,7 +7330,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7369,7 +7368,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7378,7 +7377,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listInstanceDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7395,7 +7394,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
-        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
+        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -7410,7 +7409,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+        return ServiceCall.fromResponse(getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -7427,7 +7426,7 @@ public final class WebAppsInner {
         return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7474,7 +7473,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> getInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7492,7 +7491,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
-        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().getBody();
+        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().body();
     }
 
     /**
@@ -7508,7 +7507,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
+        return ServiceCall.fromResponse(createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -7526,7 +7525,7 @@ public final class WebAppsInner {
         return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7578,7 +7577,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> createInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7594,7 +7593,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      */
     public void deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
-        deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
+        deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -7609,7 +7608,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+        return ServiceCall.fromResponse(deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -7626,7 +7625,7 @@ public final class WebAppsInner {
         return deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7673,7 +7672,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -7688,7 +7687,7 @@ public final class WebAppsInner {
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneable(String resourceGroupName, String name) {
-        return isCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return isCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -7701,7 +7700,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteCloneabilityInner> isCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.create(isCloneableWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(isCloneableWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -7716,7 +7715,7 @@ public final class WebAppsInner {
         return isCloneableWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
             @Override
             public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -7755,7 +7754,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteCloneabilityInner> isCloneableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCloneabilityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteCloneabilityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteCloneabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7771,10 +7770,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7789,7 +7788,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -7813,7 +7812,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7831,7 +7830,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7865,7 +7864,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7874,7 +7873,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7890,10 +7889,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7908,7 +7907,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -7932,7 +7931,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7950,7 +7949,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7986,7 +7985,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8006,10 +8005,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8026,7 +8025,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8052,7 +8051,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8072,7 +8071,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8108,7 +8107,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8117,7 +8116,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8134,7 +8133,7 @@ public final class WebAppsInner {
      * @return the StorageMigrationResponseInner object if successful.
      */
     public StorageMigrationResponseInner migrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().last().getBody();
+        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().last().body();
     }
 
     /**
@@ -8149,7 +8148,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceCall.create(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+        return ServiceCall.fromResponse(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
     }
 
     /**
@@ -8166,7 +8165,7 @@ public final class WebAppsInner {
         return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8214,7 +8213,7 @@ public final class WebAppsInner {
      * @return the StorageMigrationResponseInner object if successful.
      */
     public StorageMigrationResponseInner beginMigrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().single().getBody();
+        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().single().body();
     }
 
     /**
@@ -8229,7 +8228,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceCall.create(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+        return ServiceCall.fromResponse(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
     }
 
     /**
@@ -8246,7 +8245,7 @@ public final class WebAppsInner {
         return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8294,7 +8293,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StorageMigrationResponseInner> beginMigrateStorageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageMigrationResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StorageMigrationResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageMigrationResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8310,7 +8309,7 @@ public final class WebAppsInner {
      * @return the OperationInner object if successful.
      */
     public OperationInner migrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
-        return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().last().getBody();
+        return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -8324,7 +8323,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<OperationInner> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
-        return ServiceCall.create(migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
     }
 
     /**
@@ -8340,7 +8339,7 @@ public final class WebAppsInner {
         return migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
             @Override
             public OperationInner call(ServiceResponse<OperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8383,7 +8382,7 @@ public final class WebAppsInner {
      * @return the OperationInner object if successful.
      */
     public OperationInner beginMigrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
-        return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().single().getBody();
+        return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -8397,7 +8396,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<OperationInner> beginMigrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
-        return ServiceCall.create(beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
     }
 
     /**
@@ -8413,7 +8412,7 @@ public final class WebAppsInner {
         return beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
             @Override
             public OperationInner call(ServiceResponse<OperationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8457,7 +8456,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<OperationInner> beginMigrateMySqlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<OperationInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<OperationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OperationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8473,7 +8472,7 @@ public final class WebAppsInner {
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeatures(String resourceGroupName, String name, String view) {
-        return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().getBody();
+        return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().body();
     }
 
     /**
@@ -8487,7 +8486,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkFeaturesInner> listNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.create(listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view), serviceCallback);
+        return ServiceCall.fromResponse(listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view), serviceCallback);
     }
 
     /**
@@ -8503,7 +8502,7 @@ public final class WebAppsInner {
         return listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
             @Override
             public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8546,7 +8545,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<NetworkFeaturesInner> listNetworkFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkFeaturesInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<NetworkFeaturesInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkFeaturesInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -8562,7 +8561,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8575,7 +8574,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8590,7 +8589,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8639,7 +8638,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -8653,7 +8652,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -8669,7 +8668,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8709,7 +8708,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<String> startWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8724,7 +8723,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8737,7 +8736,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8752,7 +8751,7 @@ public final class WebAppsInner {
         return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8791,7 +8790,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<String> stopWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8805,7 +8804,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void generateNewSitePublishingPassword(String resourceGroupName, String name) {
-        generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -8818,7 +8817,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8833,7 +8832,7 @@ public final class WebAppsInner {
         return generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -8872,7 +8871,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> generateNewSitePublishingPasswordDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -8887,10 +8886,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8905,7 +8904,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -8929,7 +8928,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8947,7 +8946,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8982,7 +8981,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -9001,10 +9000,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -9020,7 +9019,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -9045,7 +9044,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -9064,7 +9063,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -9099,7 +9098,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -9108,7 +9107,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<PerfMonResponseInner>> listPerfMonCountersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PerfMonResponseInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PerfMonResponseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PerfMonResponseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9123,7 +9122,7 @@ public final class WebAppsInner {
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlag(String resourceGroupName, String name) {
-        return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9136,7 +9135,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagAsync(String resourceGroupName, String name, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
-        return ServiceCall.create(getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9151,7 +9150,7 @@ public final class WebAppsInner {
         return getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SitePhpErrorLogFlagInner>, SitePhpErrorLogFlagInner>() {
             @Override
             public SitePhpErrorLogFlagInner call(ServiceResponse<SitePhpErrorLogFlagInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9190,7 +9189,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SitePhpErrorLogFlagInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SitePhpErrorLogFlagInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SitePhpErrorLogFlagInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9205,7 +9204,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOns(String resourceGroupName, String name) {
-        return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9218,7 +9217,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> listPremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9233,7 +9232,7 @@ public final class WebAppsInner {
         return listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9272,7 +9271,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> listPremierAddOnsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9288,7 +9287,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
-        return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
+        return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().body();
     }
 
     /**
@@ -9302,7 +9301,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+        return ServiceCall.fromResponse(getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -9318,7 +9317,7 @@ public final class WebAppsInner {
         return getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9361,7 +9360,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> getPremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9378,7 +9377,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn) {
-        return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().getBody();
+        return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().body();
     }
 
     /**
@@ -9393,7 +9392,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> addPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
+        return ServiceCall.fromResponse(addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
     }
 
     /**
@@ -9410,7 +9409,7 @@ public final class WebAppsInner {
         return addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9458,7 +9457,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> addPremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9473,7 +9472,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      */
     public void deletePremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
-        deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
+        deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().body();
     }
 
     /**
@@ -9487,7 +9486,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deletePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+        return ServiceCall.fromResponse(deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -9503,7 +9502,7 @@ public final class WebAppsInner {
         return deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9546,7 +9545,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deletePremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -9560,7 +9559,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9573,7 +9572,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9588,7 +9587,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9635,14 +9634,14 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().body();
     }
 
     /**
@@ -9651,7 +9650,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -9659,7 +9658,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
     }
 
     /**
@@ -9668,7 +9667,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -9678,7 +9677,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9689,7 +9688,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -9723,7 +9722,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<InputStream> listPublishingProfileXmlWithSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<InputStream, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9739,7 +9738,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().getBody();
+        return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().body();
     }
 
     /**
@@ -9753,7 +9752,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.create(recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+        return ServiceCall.fromResponse(recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -9769,7 +9768,7 @@ public final class WebAppsInner {
         return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9812,7 +9811,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().getBody();
+        return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().body();
     }
 
     /**
@@ -9826,7 +9825,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+        return ServiceCall.fromResponse(beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -9842,7 +9841,7 @@ public final class WebAppsInner {
         return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9886,7 +9885,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RecoverResponseInner> beginRecoverDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecoverResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecoverResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecoverResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -9900,7 +9899,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void resetProductionSlotConfig(String resourceGroupName, String name) {
-        resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9913,7 +9912,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9928,7 +9927,7 @@ public final class WebAppsInner {
         return resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -9967,7 +9966,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -9980,7 +9979,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void restart(String resourceGroupName, String name) {
-        restartWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -9993,7 +9992,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -10008,7 +10007,7 @@ public final class WebAppsInner {
         return restartWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10058,7 +10057,7 @@ public final class WebAppsInner {
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      */
     public void restart(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
-        restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().getBody();
+        restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().body();
     }
 
     /**
@@ -10073,7 +10072,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
+        return ServiceCall.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -10090,7 +10089,7 @@ public final class WebAppsInner {
         return restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10131,7 +10130,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> restartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -10147,10 +10146,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listSlots(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = listSlotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -10165,7 +10164,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSlotsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -10189,7 +10188,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -10207,7 +10206,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -10241,7 +10240,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listSlotsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -10250,7 +10249,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listSlotsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -10266,7 +10265,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner getSlot(String resourceGroupName, String name, String slot) {
-        return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10280,7 +10279,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10296,7 +10295,7 @@ public final class WebAppsInner {
         return getSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10339,7 +10338,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteInner> getSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -10353,10 +10352,10 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
-     * @return the SiteInner object  if successful.
+     * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
-        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().getBody();
+        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -10371,7 +10370,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -10388,7 +10387,7 @@ public final class WebAppsInner {
         return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10444,7 +10443,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
+        return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().body();
     }
 
     /**
@@ -10464,7 +10463,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -10486,7 +10485,7 @@ public final class WebAppsInner {
         return createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10539,7 +10538,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
-        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().getBody();
+        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -10554,7 +10553,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -10571,7 +10570,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10638,7 +10637,7 @@ public final class WebAppsInner {
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
-        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
+        return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -10658,7 +10657,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -10680,7 +10679,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10733,7 +10732,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteInner> beginCreateOrUpdateSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteInner>() { }.getType())
                 .register(202, new TypeToken<SiteInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -10749,7 +10748,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      */
     public void deleteSlot(String resourceGroupName, String name, String slot) {
-        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10763,7 +10762,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10779,7 +10778,7 @@ public final class WebAppsInner {
         return deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10836,7 +10835,7 @@ public final class WebAppsInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      */
     public void deleteSlot(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
-        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().getBody();
+        deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
     }
 
     /**
@@ -10853,7 +10852,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
+        return ServiceCall.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
     }
 
     /**
@@ -10872,7 +10871,7 @@ public final class WebAppsInner {
         return deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -10918,7 +10917,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -10934,7 +10933,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot) {
-        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -10948,7 +10947,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.create(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10964,7 +10963,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11018,7 +11017,7 @@ public final class WebAppsInner {
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot, String hostName) {
-        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -11033,7 +11032,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.create(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+        return ServiceCall.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -11050,7 +11049,7 @@ public final class WebAppsInner {
         return analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<CustomHostnameAnalysisResultInner>, CustomHostnameAnalysisResultInner>() {
             @Override
             public CustomHostnameAnalysisResultInner call(ServiceResponse<CustomHostnameAnalysisResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11094,7 +11093,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CustomHostnameAnalysisResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CustomHostnameAnalysisResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CustomHostnameAnalysisResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11110,7 +11109,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void applySlotConfigurationSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
+        applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -11125,7 +11124,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> applySlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -11142,7 +11141,7 @@ public final class WebAppsInner {
         return applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11190,7 +11189,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> applySlotConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -11206,7 +11205,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backupSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
-        return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11221,7 +11220,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> backupSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11238,7 +11237,7 @@ public final class WebAppsInner {
         return backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11286,7 +11285,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> backupSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11303,10 +11302,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -11322,7 +11321,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BackupItemInner>> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listBackupsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -11347,7 +11346,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -11366,7 +11365,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -11404,7 +11403,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -11413,7 +11412,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<BackupItemInner>> listBackupsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BackupItemInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11430,7 +11429,7 @@ public final class WebAppsInner {
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11445,7 +11444,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.create(discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11462,7 +11461,7 @@ public final class WebAppsInner {
         return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
             @Override
             public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11510,7 +11509,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RestoreRequestInner> discoverRestoreSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11527,7 +11526,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) {
-        return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
+        return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().body();
     }
 
     /**
@@ -11542,7 +11541,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+        return ServiceCall.fromResponse(getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11559,7 +11558,7 @@ public final class WebAppsInner {
         return getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11606,7 +11605,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> getBackupStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11622,7 +11621,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
      */
     public void deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) {
-        deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
+        deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().body();
     }
 
     /**
@@ -11637,7 +11636,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11654,7 +11653,7 @@ public final class WebAppsInner {
         return deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11701,7 +11700,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteBackupSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -11719,7 +11718,7 @@ public final class WebAppsInner {
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
-        return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
+        return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11735,7 +11734,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> listBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11753,7 +11752,7 @@ public final class WebAppsInner {
         return listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
             @Override
             public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11805,7 +11804,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupItemInner> listBackupStatusSecretsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupItemInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -11823,7 +11822,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
-        return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().getBody();
+        return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().body();
     }
 
     /**
@@ -11839,7 +11838,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> restoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11857,7 +11856,7 @@ public final class WebAppsInner {
         return restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11910,7 +11909,7 @@ public final class WebAppsInner {
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
-        return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
+        return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -11926,7 +11925,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> beginRestoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11944,7 +11943,7 @@ public final class WebAppsInner {
         return beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
             @Override
             public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -11996,7 +11995,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RestoreResponseInner> beginRestoreSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RestoreResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RestoreResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12013,7 +12012,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
-        return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().getBody();
+        return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().body();
     }
 
     /**
@@ -12028,7 +12027,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
     }
 
     /**
@@ -12045,7 +12044,7 @@ public final class WebAppsInner {
         return updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12093,7 +12092,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> updateApplicationSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12109,7 +12108,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettingsSlot(String resourceGroupName, String name, String slot) {
-        return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12123,7 +12122,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12139,7 +12138,7 @@ public final class WebAppsInner {
         return listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12182,7 +12181,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> listApplicationSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12199,7 +12198,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
-        return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().getBody();
+        return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().body();
     }
 
     /**
@@ -12214,7 +12213,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> updateAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -12231,7 +12230,7 @@ public final class WebAppsInner {
         return updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12279,7 +12278,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteAuthSettingsInner> updateAuthSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12295,7 +12294,7 @@ public final class WebAppsInner {
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettingsSlot(String resourceGroupName, String name, String slot) {
-        return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12309,7 +12308,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12325,7 +12324,7 @@ public final class WebAppsInner {
         return getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
             @Override
             public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12368,7 +12367,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12385,7 +12384,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
-        return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
+        return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
     }
 
     /**
@@ -12400,7 +12399,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> updateBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.fromResponse(updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -12417,7 +12416,7 @@ public final class WebAppsInner {
         return updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12465,7 +12464,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupRequestInner> updateBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12480,7 +12479,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
      */
     public void deleteBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
-        deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12494,7 +12493,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12510,7 +12509,7 @@ public final class WebAppsInner {
         return deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12553,7 +12552,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -12568,7 +12567,7 @@ public final class WebAppsInner {
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12582,7 +12581,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> getBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12598,7 +12597,7 @@ public final class WebAppsInner {
         return getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
             @Override
             public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12641,7 +12640,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<BackupRequestInner> getBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<BackupRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BackupRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12658,7 +12657,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
-        return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().getBody();
+        return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().body();
     }
 
     /**
@@ -12673,7 +12672,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> updateConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
+        return ServiceCall.fromResponse(updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
     }
 
     /**
@@ -12690,7 +12689,7 @@ public final class WebAppsInner {
         return updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12738,7 +12737,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<ConnectionStringDictionaryInner> updateConnectionStringsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ConnectionStringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectionStringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12754,7 +12753,7 @@ public final class WebAppsInner {
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStringsSlot(String resourceGroupName, String name, String slot) {
-        return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12768,7 +12767,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> listConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12784,7 +12783,7 @@ public final class WebAppsInner {
         return listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
             @Override
             public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12827,7 +12826,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<ConnectionStringDictionaryInner> listConnectionStringsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ConnectionStringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectionStringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12843,7 +12842,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -12857,7 +12856,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12873,7 +12872,7 @@ public final class WebAppsInner {
         return getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -12916,7 +12915,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteLogsConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteLogsConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -12933,7 +12932,7 @@ public final class WebAppsInner {
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
-        return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().getBody();
+        return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().body();
     }
 
     /**
@@ -12948,7 +12947,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
+        return ServiceCall.fromResponse(updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -12965,7 +12964,7 @@ public final class WebAppsInner {
         return updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
             @Override
             public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13013,7 +13012,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteLogsConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteLogsConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13030,7 +13029,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
-        return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().getBody();
+        return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().body();
     }
 
     /**
@@ -13045,7 +13044,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata), serviceCallback);
+        return ServiceCall.fromResponse(updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata), serviceCallback);
     }
 
     /**
@@ -13062,7 +13061,7 @@ public final class WebAppsInner {
         return updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13110,7 +13109,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> updateMetadataSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13126,7 +13125,7 @@ public final class WebAppsInner {
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadataSlot(String resourceGroupName, String name, String slot) {
-        return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13140,7 +13139,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13156,7 +13155,7 @@ public final class WebAppsInner {
         return listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
             @Override
             public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13199,7 +13198,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<StringDictionaryInner> listMetadataSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionaryInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13215,7 +13214,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().getBody();
+        return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().body();
     }
 
     /**
@@ -13229,7 +13228,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> listPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13245,7 +13244,7 @@ public final class WebAppsInner {
         return listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13287,7 +13286,7 @@ public final class WebAppsInner {
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
-        return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13301,7 +13300,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> beginListPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13317,7 +13316,7 @@ public final class WebAppsInner {
         return beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13360,7 +13359,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<UserInner> beginListPublishingCredentialsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13377,7 +13376,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettingsSlot(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings) {
-        return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).toBlocking().single().getBody();
+        return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).toBlocking().single().body();
     }
 
     /**
@@ -13392,7 +13391,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PushSettingsInner> updateSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings), serviceCallback);
+        return ServiceCall.fromResponse(updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings), serviceCallback);
     }
 
     /**
@@ -13409,7 +13408,7 @@ public final class WebAppsInner {
         return updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13457,7 +13456,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PushSettingsInner> updateSitePushSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PushSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PushSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PushSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13473,7 +13472,7 @@ public final class WebAppsInner {
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettingsSlot(String resourceGroupName, String name, String slot) {
-        return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13487,7 +13486,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PushSettingsInner> listSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.create(listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13503,7 +13502,7 @@ public final class WebAppsInner {
         return listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<PushSettingsInner>, PushSettingsInner>() {
             @Override
             public PushSettingsInner call(ServiceResponse<PushSettingsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13546,7 +13545,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PushSettingsInner> listSitePushSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PushSettingsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PushSettingsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PushSettingsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13562,7 +13561,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfigurationSlot(String resourceGroupName, String name, String slot) {
-        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -13576,7 +13575,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13592,7 +13591,7 @@ public final class WebAppsInner {
         return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13635,7 +13634,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> getConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13652,7 +13651,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
+        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -13667,7 +13666,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -13684,7 +13683,7 @@ public final class WebAppsInner {
         return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13732,7 +13731,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> createOrUpdateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13749,7 +13748,7 @@ public final class WebAppsInner {
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
+        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
     /**
@@ -13764,7 +13763,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+        return ServiceCall.fromResponse(updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -13781,7 +13780,7 @@ public final class WebAppsInner {
         return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
             @Override
             public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -13829,7 +13828,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteConfigInner> updateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfigInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteConfigInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13846,10 +13845,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -13865,7 +13864,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -13890,7 +13889,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -13909,7 +13908,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -13947,7 +13946,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -13956,7 +13955,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -13973,7 +13972,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
-        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
+        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().body();
     }
 
     /**
@@ -13988,7 +13987,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
+        return ServiceCall.fromResponse(getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -14005,7 +14004,7 @@ public final class WebAppsInner {
         return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14052,7 +14051,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> getDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14070,7 +14069,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
-        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().getBody();
+        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().body();
     }
 
     /**
@@ -14086,7 +14085,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
+        return ServiceCall.fromResponse(createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
     }
 
     /**
@@ -14104,7 +14103,7 @@ public final class WebAppsInner {
         return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14156,7 +14155,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> createDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14172,7 +14171,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      */
     public void deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
-        deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
+        deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().body();
     }
 
     /**
@@ -14187,7 +14186,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -14204,7 +14203,7 @@ public final class WebAppsInner {
         return deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14251,7 +14250,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -14268,10 +14267,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -14287,7 +14286,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDomainOwnershipIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -14312,7 +14311,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -14331,7 +14330,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -14369,7 +14368,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -14378,7 +14377,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<IdentifierInner>> listDomainOwnershipIdentifiersSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<IdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14395,7 +14394,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
-        return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().getBody();
+        return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().body();
     }
 
     /**
@@ -14410,7 +14409,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> getDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
     }
 
     /**
@@ -14427,7 +14426,7 @@ public final class WebAppsInner {
         return getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14474,7 +14473,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> getDomainOwnershipIdentifierSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14492,7 +14491,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -14508,7 +14507,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -14526,7 +14525,7 @@ public final class WebAppsInner {
         return createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14578,7 +14577,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14594,7 +14593,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      */
     public void deleteDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
-        deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().getBody();
+        deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().body();
     }
 
     /**
@@ -14609,7 +14608,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
     }
 
     /**
@@ -14626,7 +14625,7 @@ public final class WebAppsInner {
         return deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14673,7 +14672,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteDomainOwnershipIdentifierSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -14691,7 +14690,7 @@ public final class WebAppsInner {
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
-        return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -14707,7 +14706,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<IdentifierInner> updateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.create(updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
+        return ServiceCall.fromResponse(updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -14725,7 +14724,7 @@ public final class WebAppsInner {
         return updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier).map(new Func1<ServiceResponse<IdentifierInner>, IdentifierInner>() {
             @Override
             public IdentifierInner call(ServiceResponse<IdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -14777,7 +14776,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<IdentifierInner> updateDomainOwnershipIdentifierSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<IdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<IdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14794,10 +14793,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -14813,7 +14812,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -14838,7 +14837,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -14857,7 +14856,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -14895,7 +14894,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -14904,7 +14903,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<HostNameBindingInner>> listHostNameBindingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HostNameBindingInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HostNameBindingInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HostNameBindingInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -14921,7 +14920,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
-        return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -14936,7 +14935,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> getHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+        return ServiceCall.fromResponse(getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -14953,7 +14952,7 @@ public final class WebAppsInner {
         return getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15000,7 +14999,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HostNameBindingInner> getHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HostNameBindingInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostNameBindingInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15018,7 +15017,7 @@ public final class WebAppsInner {
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
-        return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().getBody();
+        return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().body();
     }
 
     /**
@@ -15034,7 +15033,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> createOrUpdateHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -15052,7 +15051,7 @@ public final class WebAppsInner {
         return createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
             @Override
             public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15104,7 +15103,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HostNameBindingInner> createOrUpdateHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HostNameBindingInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostNameBindingInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15120,7 +15119,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      */
     public void deleteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
-        deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
+        deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
     }
 
     /**
@@ -15135,7 +15134,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+        return ServiceCall.fromResponse(deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -15152,7 +15151,7 @@ public final class WebAppsInner {
         return deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15199,7 +15198,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -15217,7 +15216,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15233,7 +15232,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> getHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15251,7 +15250,7 @@ public final class WebAppsInner {
         return getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15302,7 +15301,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> getHybridConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15321,7 +15320,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
-        return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -15338,7 +15337,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> createOrUpdateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15357,7 +15356,7 @@ public final class WebAppsInner {
         return createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15413,7 +15412,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> createOrUpdateHybridConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15430,7 +15429,7 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      */
     public void deleteHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15446,7 +15445,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15464,7 +15463,7 @@ public final class WebAppsInner {
         return deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15515,7 +15514,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteHybridConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -15534,7 +15533,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
-        return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -15551,7 +15550,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> updateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15570,7 +15569,7 @@ public final class WebAppsInner {
         return updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15626,7 +15625,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> updateHybridConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15644,7 +15643,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeysSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
-        return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().getBody();
+        return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15660,7 +15659,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+        return ServiceCall.fromResponse(listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15678,7 +15677,7 @@ public final class WebAppsInner {
         return listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15729,7 +15728,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionKeyInner> listHybridConnectionKeysSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionKeyInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionKeyInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionKeyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15745,7 +15744,7 @@ public final class WebAppsInner {
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -15759,7 +15758,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HybridConnectionInner> listHybridConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15775,7 +15774,7 @@ public final class WebAppsInner {
         return listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15818,7 +15817,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<HybridConnectionInner> listHybridConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15834,7 +15833,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -15848,7 +15847,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15864,7 +15863,7 @@ public final class WebAppsInner {
         return listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -15907,7 +15906,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -15924,7 +15923,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
-        return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
+        return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().body();
     }
 
     /**
@@ -15939,7 +15938,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -15956,7 +15955,7 @@ public final class WebAppsInner {
         return getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16003,7 +16002,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16021,7 +16020,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -16037,7 +16036,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -16055,7 +16054,7 @@ public final class WebAppsInner {
         return createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16107,7 +16106,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16123,7 +16122,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
      */
     public void deleteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
-        deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
+        deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().body();
     }
 
     /**
@@ -16138,7 +16137,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -16155,7 +16154,7 @@ public final class WebAppsInner {
         return deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16202,7 +16201,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -16220,7 +16219,7 @@ public final class WebAppsInner {
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
-        return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -16236,7 +16235,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -16254,7 +16253,7 @@ public final class WebAppsInner {
         return updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
             @Override
             public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16306,7 +16305,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RelayServiceConnectionEntityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RelayServiceConnectionEntityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16323,10 +16322,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -16342,7 +16341,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -16367,7 +16366,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -16386,7 +16385,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -16424,7 +16423,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -16433,7 +16432,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInstanceInner>> listInstanceIdentifiersSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInstanceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16451,10 +16450,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -16471,7 +16470,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -16497,7 +16496,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -16517,7 +16516,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -16559,7 +16558,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -16568,7 +16567,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listInstanceDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16586,7 +16585,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
-        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
+        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -16602,7 +16601,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+        return ServiceCall.fromResponse(getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -16620,7 +16619,7 @@ public final class WebAppsInner {
         return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16671,7 +16670,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> getInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16690,7 +16689,7 @@ public final class WebAppsInner {
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
-        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().getBody();
+        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().body();
     }
 
     /**
@@ -16707,7 +16706,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
+        return ServiceCall.fromResponse(createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -16726,7 +16725,7 @@ public final class WebAppsInner {
         return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
             @Override
             public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16782,7 +16781,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<DeploymentInner> createInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16799,7 +16798,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      */
     public void deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
-        deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
+        deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().body();
     }
 
     /**
@@ -16815,7 +16814,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+        return ServiceCall.fromResponse(deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -16833,7 +16832,7 @@ public final class WebAppsInner {
         return deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16884,7 +16883,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -16900,7 +16899,7 @@ public final class WebAppsInner {
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneableSlot(String resourceGroupName, String name, String slot) {
-        return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -16914,7 +16913,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteCloneabilityInner> isCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.create(isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -16930,7 +16929,7 @@ public final class WebAppsInner {
         return isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
             @Override
             public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -16973,7 +16972,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteCloneabilityInner> isCloneableSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCloneabilityInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteCloneabilityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteCloneabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -16990,10 +16989,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17009,7 +17008,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -17034,7 +17033,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17053,7 +17052,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17091,7 +17090,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17100,7 +17099,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -17117,10 +17116,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17136,7 +17135,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -17161,7 +17160,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17180,7 +17179,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17220,7 +17219,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17241,10 +17240,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17262,7 +17261,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -17289,7 +17288,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17310,7 +17309,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17350,7 +17349,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17359,7 +17358,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -17376,7 +17375,7 @@ public final class WebAppsInner {
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) {
-        return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().getBody();
+        return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().body();
     }
 
     /**
@@ -17391,7 +17390,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkFeaturesInner> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.create(listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot), serviceCallback);
+        return ServiceCall.fromResponse(listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot), serviceCallback);
     }
 
     /**
@@ -17408,7 +17407,7 @@ public final class WebAppsInner {
         return listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
             @Override
             public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17455,7 +17454,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<NetworkFeaturesInner> listNetworkFeaturesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkFeaturesInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<NetworkFeaturesInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkFeaturesInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -17472,7 +17471,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17486,7 +17485,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17502,7 +17501,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17556,7 +17555,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).toBlocking().single().getBody();
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -17571,7 +17570,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds), serviceCallback);
+        return ServiceCall.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -17588,7 +17587,7 @@ public final class WebAppsInner {
         return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17632,7 +17631,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<String> startWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -17648,7 +17647,7 @@ public final class WebAppsInner {
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17662,7 +17661,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17678,7 +17677,7 @@ public final class WebAppsInner {
         return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17721,7 +17720,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<String> stopWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -17736,7 +17735,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
      */
     public void generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) {
-        generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -17750,7 +17749,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17766,7 +17765,7 @@ public final class WebAppsInner {
         return generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -17809,7 +17808,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> generateNewSitePublishingPasswordSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -17825,10 +17824,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17844,7 +17843,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -17869,7 +17868,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -17888,7 +17887,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -17927,7 +17926,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -17947,10 +17946,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -17967,7 +17966,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot, filter),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -17993,7 +17992,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -18013,7 +18012,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -18052,7 +18051,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -18061,7 +18060,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<PerfMonResponseInner>> listPerfMonCountersSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PerfMonResponseInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PerfMonResponseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PerfMonResponseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18077,7 +18076,7 @@ public final class WebAppsInner {
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlagSlot(String resourceGroupName, String name, String slot) {
-        return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18091,7 +18090,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
-        return ServiceCall.create(getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18107,7 +18106,7 @@ public final class WebAppsInner {
         return getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SitePhpErrorLogFlagInner>, SitePhpErrorLogFlagInner>() {
             @Override
             public SitePhpErrorLogFlagInner call(ServiceResponse<SitePhpErrorLogFlagInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18150,7 +18149,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SitePhpErrorLogFlagInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SitePhpErrorLogFlagInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SitePhpErrorLogFlagInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18166,7 +18165,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOnsSlot(String resourceGroupName, String name, String slot) {
-        return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18180,7 +18179,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> listPremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18196,7 +18195,7 @@ public final class WebAppsInner {
         return listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18239,7 +18238,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> listPremierAddOnsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18256,7 +18255,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
-        return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
+        return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().body();
     }
 
     /**
@@ -18271,7 +18270,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> getPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -18288,7 +18287,7 @@ public final class WebAppsInner {
         return getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18335,7 +18334,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> getPremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18353,7 +18352,7 @@ public final class WebAppsInner {
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn) {
-        return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().getBody();
+        return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().body();
     }
 
     /**
@@ -18369,7 +18368,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<PremierAddOnInner> addPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.create(addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
+        return ServiceCall.fromResponse(addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
     }
 
     /**
@@ -18387,7 +18386,7 @@ public final class WebAppsInner {
         return addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
             @Override
             public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18439,7 +18438,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PremierAddOnInner> addPremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PremierAddOnInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18455,7 +18454,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
      */
     public void deletePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
-        deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
+        deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().body();
     }
 
     /**
@@ -18470,7 +18469,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+        return ServiceCall.fromResponse(deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -18487,7 +18486,7 @@ public final class WebAppsInner {
         return deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18534,7 +18533,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deletePremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -18549,7 +18548,7 @@ public final class WebAppsInner {
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18563,7 +18562,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18579,7 +18578,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18631,14 +18630,14 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().getBody();
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().body();
     }
 
     /**
@@ -18648,7 +18647,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -18656,7 +18655,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
+        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
     }
 
     /**
@@ -18666,7 +18665,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -18676,7 +18675,7 @@ public final class WebAppsInner {
         return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18688,7 +18687,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
@@ -18725,7 +18724,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<InputStream> listPublishingProfileXmlWithSecretsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<InputStream, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18742,7 +18741,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().getBody();
+        return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().body();
     }
 
     /**
@@ -18757,7 +18756,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.create(recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+        return ServiceCall.fromResponse(recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -18774,7 +18773,7 @@ public final class WebAppsInner {
         return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18822,7 +18821,7 @@ public final class WebAppsInner {
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
-        return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().getBody();
+        return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().body();
     }
 
     /**
@@ -18837,7 +18836,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+        return ServiceCall.fromResponse(beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -18854,7 +18853,7 @@ public final class WebAppsInner {
         return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18902,7 +18901,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<RecoverResponseInner> beginRecoverSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecoverResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecoverResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecoverResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -18917,7 +18916,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
      */
     public void resetSlotConfigurationSlot(String resourceGroupName, String name, String slot) {
-        resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -18931,7 +18930,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> resetSlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18947,7 +18946,7 @@ public final class WebAppsInner {
         return resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -18990,7 +18989,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> resetSlotConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -19004,7 +19003,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      */
     public void restartSlot(String resourceGroupName, String name, String slot) {
-        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19018,7 +19017,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19034,7 +19033,7 @@ public final class WebAppsInner {
         return restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19089,7 +19088,7 @@ public final class WebAppsInner {
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      */
     public void restartSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
-        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().getBody();
+        restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().body();
     }
 
     /**
@@ -19105,7 +19104,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
+        return ServiceCall.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -19123,7 +19122,7 @@ public final class WebAppsInner {
         return restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19168,7 +19167,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> restartSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -19186,10 +19185,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -19206,7 +19205,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -19232,7 +19231,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -19252,7 +19251,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -19295,7 +19294,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -19304,7 +19303,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SlotDifferenceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -19320,7 +19319,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void swapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().getBody();
+        swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().body();
     }
 
     /**
@@ -19335,7 +19334,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -19352,7 +19351,7 @@ public final class WebAppsInner {
         return swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19399,7 +19398,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void beginSwapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
-        beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
+        beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -19414,7 +19413,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginSwapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -19431,7 +19430,7 @@ public final class WebAppsInner {
         return beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19479,7 +19478,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> beginSwapSlotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -19496,10 +19495,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -19515,7 +19514,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SnapshotInner>> listSnapshotsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSnapshotsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -19540,7 +19539,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -19559,7 +19558,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -19597,7 +19596,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -19606,7 +19605,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SnapshotInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -19622,7 +19621,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19636,7 +19635,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> getSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19652,7 +19651,7 @@ public final class WebAppsInner {
         return getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19695,7 +19694,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteSourceControlInner> getSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -19712,7 +19711,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
-        return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().last().getBody();
+        return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().last().body();
     }
 
     /**
@@ -19727,7 +19726,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> createOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -19744,7 +19743,7 @@ public final class WebAppsInner {
         return createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19792,7 +19791,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
-        return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
+        return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().body();
     }
 
     /**
@@ -19807,7 +19806,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -19824,7 +19823,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19872,7 +19871,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -19889,7 +19888,7 @@ public final class WebAppsInner {
      * @return the Object object if successful.
      */
     public Object deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19903,7 +19902,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19919,7 +19918,7 @@ public final class WebAppsInner {
         return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
             public Object call(ServiceResponse<Object> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -19962,7 +19961,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Object> deleteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -19979,7 +19978,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
      */
     public void startSlot(String resourceGroupName, String name, String slot) {
-        startSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        startSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19993,7 +19992,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> startSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(startSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20009,7 +20008,7 @@ public final class WebAppsInner {
         return startSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20052,7 +20051,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> startSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -20067,7 +20066,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
      */
     public void stopSlot(String resourceGroupName, String name, String slot) {
-        stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20081,7 +20080,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> stopSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(stopSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(stopSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20097,7 +20096,7 @@ public final class WebAppsInner {
         return stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20140,7 +20139,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> stopSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -20155,7 +20154,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      */
     public void syncRepositorySlot(String resourceGroupName, String name, String slot) {
-        syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20169,7 +20168,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> syncRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20185,7 +20184,7 @@ public final class WebAppsInner {
         return syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20228,7 +20227,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> syncRepositorySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -20244,10 +20243,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -20263,7 +20262,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -20288,7 +20287,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -20307,7 +20306,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -20346,7 +20345,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -20366,10 +20365,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -20386,7 +20385,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -20412,7 +20411,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -20432,7 +20431,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -20471,7 +20470,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -20480,7 +20479,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -20496,7 +20495,7 @@ public final class WebAppsInner {
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnectionsSlot(String resourceGroupName, String name, String slot) {
-        return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
+        return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -20510,7 +20509,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.fromResponse(listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20526,7 +20525,7 @@ public final class WebAppsInner {
         return listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20569,7 +20568,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<List<VnetInfoInner>> listVnetConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -20586,7 +20585,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
-        return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
+        return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().body();
     }
 
     /**
@@ -20601,7 +20600,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -20618,7 +20617,7 @@ public final class WebAppsInner {
         return getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20665,7 +20664,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> getVnetConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -20683,7 +20682,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -20699,7 +20698,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -20717,7 +20716,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20769,7 +20768,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> createOrUpdateVnetConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -20785,7 +20784,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
      */
     public void deleteVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
-        deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
+        deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().body();
     }
 
     /**
@@ -20800,7 +20799,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+        return ServiceCall.fromResponse(deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -20817,7 +20816,7 @@ public final class WebAppsInner {
         return deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20864,7 +20863,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteVnetConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -20882,7 +20881,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
-        return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -20898,7 +20897,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> updateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -20916,7 +20915,7 @@ public final class WebAppsInner {
         return updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -20968,7 +20967,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> updateVnetConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -20986,7 +20985,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
-        return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().getBody();
+        return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().body();
     }
 
     /**
@@ -21002,7 +21001,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
+        return ServiceCall.fromResponse(getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
     }
 
     /**
@@ -21020,7 +21019,7 @@ public final class WebAppsInner {
         return getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21071,7 +21070,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> getVnetConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -21091,7 +21090,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -21108,7 +21107,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -21127,7 +21126,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21183,7 +21182,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -21202,7 +21201,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
-        return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -21219,7 +21218,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> updateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -21238,7 +21237,7 @@ public final class WebAppsInner {
         return updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21294,7 +21293,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> updateVnetConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -21311,10 +21310,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -21330,7 +21329,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -21355,7 +21354,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -21374,7 +21373,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -21413,7 +21412,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -21422,7 +21421,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesFromProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SlotDifferenceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -21437,7 +21436,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().getBody();
+        swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().body();
     }
 
     /**
@@ -21451,7 +21450,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -21467,7 +21466,7 @@ public final class WebAppsInner {
         return swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21509,7 +21508,7 @@ public final class WebAppsInner {
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      */
     public void beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
-        beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
+        beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
     }
 
     /**
@@ -21523,7 +21522,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.fromResponse(beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -21539,7 +21538,7 @@ public final class WebAppsInner {
         return beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21583,7 +21582,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> beginSwapSlotWithProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -21599,10 +21598,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshots(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -21617,7 +21616,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SnapshotInner>> listSnapshotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSnapshotsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -21641,7 +21640,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -21659,7 +21658,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -21693,7 +21692,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -21702,7 +21701,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SnapshotInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -21717,7 +21716,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControl(String resourceGroupName, String name) {
-        return getSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -21730,7 +21729,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> getSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(getSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(getSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -21745,7 +21744,7 @@ public final class WebAppsInner {
         return getSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21784,7 +21783,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteSourceControlInner> getSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -21800,7 +21799,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
-        return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().last().getBody();
+        return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().last().body();
     }
 
     /**
@@ -21814,7 +21813,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> createOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -21830,7 +21829,7 @@ public final class WebAppsInner {
         return createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21873,7 +21872,7 @@ public final class WebAppsInner {
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
-        return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
+        return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().body();
     }
 
     /**
@@ -21887,7 +21886,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -21903,7 +21902,7 @@ public final class WebAppsInner {
         return beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
             @Override
             public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -21947,7 +21946,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<SiteSourceControlInner> beginCreateOrUpdateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -21963,7 +21962,7 @@ public final class WebAppsInner {
      * @return the Object object if successful.
      */
     public Object deleteSourceControl(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -21976,7 +21975,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -21991,7 +21990,7 @@ public final class WebAppsInner {
         return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
             public Object call(ServiceResponse<Object> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22030,7 +22029,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Object> deleteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -22046,7 +22045,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void start(String resourceGroupName, String name) {
-        startWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        startWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22059,7 +22058,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> startAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22074,7 +22073,7 @@ public final class WebAppsInner {
         return startWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22113,7 +22112,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> startDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -22127,7 +22126,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      */
     public void stop(String resourceGroupName, String name) {
-        stopWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        stopWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22140,7 +22139,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> stopAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(stopWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22155,7 +22154,7 @@ public final class WebAppsInner {
         return stopWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22194,7 +22193,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> stopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -22208,7 +22207,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      */
     public void syncRepository(String resourceGroupName, String name) {
-        syncRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        syncRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22221,7 +22220,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> syncRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(syncRepositoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(syncRepositoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22236,7 +22235,7 @@ public final class WebAppsInner {
         return syncRepositoryWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22275,7 +22274,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> syncRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -22290,10 +22289,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -22308,7 +22307,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -22332,7 +22331,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -22350,7 +22349,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -22385,7 +22384,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -22404,10 +22403,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -22423,7 +22422,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -22448,7 +22447,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -22467,7 +22466,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -22502,7 +22501,7 @@ public final class WebAppsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -22511,7 +22510,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22526,7 +22525,7 @@ public final class WebAppsInner {
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnections(String resourceGroupName, String name) {
-        return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -22539,7 +22538,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.fromResponse(listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22554,7 +22553,7 @@ public final class WebAppsInner {
         return listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22593,7 +22592,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<List<VnetInfoInner>> listVnetConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22609,7 +22608,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnection(String resourceGroupName, String name, String vnetName) {
-        return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -22623,7 +22622,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.fromResponse(getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -22639,7 +22638,7 @@ public final class WebAppsInner {
         return getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22682,7 +22681,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> getVnetConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22699,7 +22698,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -22714,7 +22713,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> createOrUpdateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -22731,7 +22730,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22779,7 +22778,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> createOrUpdateVnetConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22794,7 +22793,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      */
     public void deleteVnetConnection(String resourceGroupName, String name, String vnetName) {
-        deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -22808,7 +22807,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.fromResponse(deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -22824,7 +22823,7 @@ public final class WebAppsInner {
         return deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22867,7 +22866,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<Void> deleteVnetConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -22884,7 +22883,7 @@ public final class WebAppsInner {
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
-        return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -22899,7 +22898,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> updateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -22916,7 +22915,7 @@ public final class WebAppsInner {
         return updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -22964,7 +22963,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetInfoInner> updateVnetConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22981,7 +22980,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
-        return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
+        return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().body();
     }
 
     /**
@@ -22996,7 +22995,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> getVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+        return ServiceCall.fromResponse(getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -23013,7 +23012,7 @@ public final class WebAppsInner {
         return getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23060,7 +23059,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> getVnetConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -23079,7 +23078,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -23095,7 +23094,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> createOrUpdateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -23113,7 +23112,7 @@ public final class WebAppsInner {
         return createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23165,7 +23164,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> createOrUpdateVnetConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23183,7 +23182,7 @@ public final class WebAppsInner {
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -23199,7 +23198,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> updateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -23217,7 +23216,7 @@ public final class WebAppsInner {
         return updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -23269,7 +23268,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> updateVnetConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23284,10 +23283,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23302,7 +23301,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -23325,7 +23324,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23342,7 +23341,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23362,13 +23361,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23377,7 +23377,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23392,10 +23392,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23410,7 +23410,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -23433,7 +23433,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23450,7 +23450,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23470,13 +23470,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23485,7 +23486,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23500,10 +23501,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23518,7 +23519,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BackupItemInner>> listBackupsNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listBackupsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -23541,7 +23542,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23558,7 +23559,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23578,13 +23579,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listBackupsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listBackupsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23593,7 +23595,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<BackupItemInner>> listBackupsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BackupItemInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23608,10 +23610,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23626,7 +23628,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -23649,7 +23651,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23666,7 +23668,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23686,13 +23688,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listDeploymentsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listDeploymentsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23701,7 +23704,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listDeploymentsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23716,10 +23719,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23734,7 +23737,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<IdentifierInner>> serviceCall, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -23757,7 +23760,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23774,7 +23777,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23794,13 +23797,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listDomainOwnershipIdentifiersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listDomainOwnershipIdentifiersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23809,7 +23813,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<IdentifierInner>> listDomainOwnershipIdentifiersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<IdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23824,10 +23828,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23842,7 +23846,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHostNameBindingsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -23865,7 +23869,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23882,7 +23886,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -23902,13 +23906,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listHostNameBindingsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listHostNameBindingsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -23917,7 +23922,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<HostNameBindingInner>> listHostNameBindingsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HostNameBindingInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HostNameBindingInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HostNameBindingInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -23932,10 +23937,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23950,7 +23955,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -23973,7 +23978,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -23990,7 +23995,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24010,13 +24015,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInstanceIdentifiersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listInstanceIdentifiersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24025,7 +24031,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInstanceInner>> listInstanceIdentifiersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInstanceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24040,10 +24046,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24058,7 +24064,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -24081,7 +24087,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24098,7 +24104,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24118,13 +24124,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInstanceDeploymentsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listInstanceDeploymentsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24133,7 +24140,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listInstanceDeploymentsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24148,10 +24155,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24166,7 +24173,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -24189,7 +24196,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24206,7 +24213,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24226,13 +24233,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24241,7 +24249,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24256,10 +24264,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24274,7 +24282,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -24297,7 +24305,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24314,7 +24322,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24334,13 +24342,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24349,7 +24358,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24364,10 +24373,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersNext(final String nextPageLink) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24382,7 +24391,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersNextAsync(final String nextPageLink, final ServiceCall<List<PerfMonResponseInner>> serviceCall, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -24405,7 +24414,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24422,7 +24431,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24442,13 +24451,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listPerfMonCountersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPerfMonCountersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24457,7 +24467,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<PerfMonResponseInner>> listPerfMonCountersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PerfMonResponseInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PerfMonResponseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PerfMonResponseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24472,10 +24482,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInner> listSlotsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24490,7 +24500,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInner>> listSlotsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSlotsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -24513,7 +24523,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24530,7 +24540,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24550,13 +24560,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSlotsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSlotsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listSlotsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24565,7 +24576,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listSlotsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24580,10 +24591,10 @@ public final class WebAppsInner {
      */
     public PagedList<BackupItemInner> listBackupsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.body()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) {
-                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24598,7 +24609,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<BackupItemInner>> listBackupsSlotNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listBackupsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -24621,7 +24632,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
                 @Override
                 public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24638,7 +24649,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24658,13 +24669,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listBackupsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listBackupsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<BackupItemInner>> result = listBackupsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24673,7 +24685,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<BackupItemInner>> listBackupsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BackupItemInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24688,10 +24700,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24706,7 +24718,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -24729,7 +24741,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24746,7 +24758,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24766,13 +24778,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listDeploymentsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listDeploymentsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listDeploymentsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24781,7 +24794,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listDeploymentsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24796,10 +24809,10 @@ public final class WebAppsInner {
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<IdentifierInner>> response = listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<IdentifierInner>(response.getBody()) {
+        return new PagedList<IdentifierInner>(response.body()) {
             @Override
             public Page<IdentifierInner> nextPage(String nextPageLink) {
-                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24814,7 +24827,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<List<IdentifierInner>> serviceCall, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -24837,7 +24850,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<IdentifierInner>>, Page<IdentifierInner>>() {
                 @Override
                 public Page<IdentifierInner> call(ServiceResponse<Page<IdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24854,7 +24867,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<IdentifierInner>>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(ServiceResponse<Page<IdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24874,13 +24887,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listDomainOwnershipIdentifiersSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listDomainOwnershipIdentifiersSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<IdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<IdentifierInner>> result = listDomainOwnershipIdentifiersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<IdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24889,7 +24903,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<IdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -24904,10 +24918,10 @@ public final class WebAppsInner {
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.body()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) {
-                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -24922,7 +24936,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listHostNameBindingsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -24945,7 +24959,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
                 @Override
                 public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -24962,7 +24976,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -24982,13 +24996,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listHostNameBindingsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listHostNameBindingsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HostNameBindingInner>> result = listHostNameBindingsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HostNameBindingInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -24997,7 +25012,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<HostNameBindingInner>> listHostNameBindingsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HostNameBindingInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HostNameBindingInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HostNameBindingInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25012,10 +25027,10 @@ public final class WebAppsInner {
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.body()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) {
-                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25030,7 +25045,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -25053,7 +25068,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
                 @Override
                 public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25070,7 +25085,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25090,13 +25105,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInstanceIdentifiersSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listInstanceIdentifiersSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInstanceInner>> result = listInstanceIdentifiersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25105,7 +25121,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInstanceInner>> listInstanceIdentifiersSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInstanceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25120,10 +25136,10 @@ public final class WebAppsInner {
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.body()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) {
-                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25138,7 +25154,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -25161,7 +25177,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
                 @Override
                 public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25178,7 +25194,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25198,13 +25214,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInstanceDeploymentsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listInstanceDeploymentsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeploymentInner>> result = listInstanceDeploymentsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeploymentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25213,7 +25230,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeploymentInner>> listInstanceDeploymentsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25228,10 +25245,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25246,7 +25263,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -25269,7 +25286,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25286,7 +25303,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25306,13 +25323,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricDefinitionsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricDefinitionsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefinitionsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25321,7 +25339,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25336,10 +25354,10 @@ public final class WebAppsInner {
      */
     public PagedList<ResourceMetricInner> listMetricsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25354,7 +25372,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ResourceMetricInner>> listMetricsSlotNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listMetricsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -25377,7 +25395,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25394,7 +25412,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25414,13 +25432,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25429,7 +25448,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25444,10 +25463,10 @@ public final class WebAppsInner {
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<PerfMonResponseInner>> response = listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PerfMonResponseInner>(response.getBody()) {
+        return new PagedList<PerfMonResponseInner>(response.body()) {
             @Override
             public Page<PerfMonResponseInner> nextPage(String nextPageLink) {
-                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPerfMonCountersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25462,7 +25481,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotNextAsync(final String nextPageLink, final ServiceCall<List<PerfMonResponseInner>> serviceCall, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPerfMonCountersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -25485,7 +25504,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Page<PerfMonResponseInner>>() {
                 @Override
                 public Page<PerfMonResponseInner> call(ServiceResponse<Page<PerfMonResponseInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25502,7 +25521,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<PerfMonResponseInner>>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(ServiceResponse<Page<PerfMonResponseInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25522,13 +25541,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listPerfMonCountersSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPerfMonCountersSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PerfMonResponseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PerfMonResponseInner>> result = listPerfMonCountersSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PerfMonResponseInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25537,7 +25557,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<PerfMonResponseInner>> listPerfMonCountersSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PerfMonResponseInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PerfMonResponseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PerfMonResponseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25552,10 +25572,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25570,7 +25590,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -25593,7 +25613,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25610,7 +25630,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25630,13 +25650,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.getSlotsDifferencesSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.getSlotsDifferencesSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25645,7 +25666,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SlotDifferenceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25660,10 +25681,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25678,7 +25699,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SnapshotInner>> listSnapshotsSlotNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSnapshotsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -25701,7 +25722,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25718,7 +25739,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25738,13 +25759,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSnapshotsSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25753,7 +25775,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SnapshotInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25768,10 +25790,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25786,7 +25808,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -25809,7 +25831,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25826,7 +25848,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25846,13 +25868,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listUsagesSlotNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsagesSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesSlotNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25861,7 +25884,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25876,10 +25899,10 @@ public final class WebAppsInner {
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -25894,7 +25917,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -25917,7 +25940,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -25934,7 +25957,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -25954,13 +25977,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.getSlotsDifferencesFromProductionNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.getSlotsDifferencesFromProductionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -25969,7 +25993,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SlotDifferenceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -25984,10 +26008,10 @@ public final class WebAppsInner {
      */
     public PagedList<SnapshotInner> listSnapshotsNext(final String nextPageLink) {
         ServiceResponse<Page<SnapshotInner>> response = listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SnapshotInner>(response.getBody()) {
+        return new PagedList<SnapshotInner>(response.body()) {
             @Override
             public Page<SnapshotInner> nextPage(String nextPageLink) {
-                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSnapshotsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -26002,7 +26026,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SnapshotInner>> listSnapshotsNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSnapshotsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -26025,7 +26049,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
                 @Override
                 public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -26042,7 +26066,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -26062,13 +26086,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSnapshotsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -26077,7 +26102,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SnapshotInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -26092,10 +26117,10 @@ public final class WebAppsInner {
      */
     public PagedList<CsmUsageQuotaInner> listUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -26110,7 +26135,7 @@ public final class WebAppsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -26133,7 +26158,7 @@ public final class WebAppsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -26150,7 +26175,7 @@ public final class WebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -26170,13 +26195,14 @@ public final class WebAppsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsagesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -26185,7 +26211,7 @@ public final class WebAppsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

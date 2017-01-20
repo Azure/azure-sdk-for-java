@@ -11,7 +11,6 @@ package com.microsoft.azure.management.cdn.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.CustomDomainParameters;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,38 +61,38 @@ public final class CustomDomainsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface CustomDomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains listByEndpoint" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains")
         Observable<Response<ResponseBody>> listByEndpoint(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CustomDomainParameters customDomainProperties, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CustomDomainParameters customDomainProperties, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByEndpointNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains listByEndpointNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByEndpointNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -101,16 +101,16 @@ public final class CustomDomainsInner {
      */
     public PagedList<CustomDomainInner> listByEndpoint(final String resourceGroupName, final String profileName, final String endpointName) {
         ServiceResponse<Page<CustomDomainInner>> response = listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName).toBlocking().single();
-        return new PagedList<CustomDomainInner>(response.getBody()) {
+        return new PagedList<CustomDomainInner>(response.body()) {
             @Override
             public Page<CustomDomainInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -119,7 +119,7 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CustomDomainInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<CustomDomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
             new Func1<String, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
@@ -131,7 +131,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -143,13 +143,13 @@ public final class CustomDomainsInner {
             .map(new Func1<ServiceResponse<Page<CustomDomainInner>>, Page<CustomDomainInner>>() {
                 @Override
                 public Page<CustomDomainInner> call(ServiceResponse<Page<CustomDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -161,7 +161,7 @@ public final class CustomDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<CustomDomainInner>>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(ServiceResponse<Page<CustomDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -171,7 +171,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
     ServiceResponse<PageImpl<CustomDomainInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<CustomDomainInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -200,7 +200,7 @@ public final class CustomDomainsInner {
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CustomDomainInner>> result = listByEndpointDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -209,14 +209,14 @@ public final class CustomDomainsInner {
     }
 
     private ServiceResponse<PageImpl<CustomDomainInner>> listByEndpointDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CustomDomainInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomDomainInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CustomDomainInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Gets an existing CDN custom domain within an endpoint.
+     * Gets an exisitng custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -225,11 +225,11 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner get(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().body();
     }
 
     /**
-     * Gets an existing CDN custom domain within an endpoint.
+     * Gets an exisitng custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -239,11 +239,11 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomDomainInner> getAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, final ServiceCallback<CustomDomainInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
     }
 
     /**
-     * Gets an existing CDN custom domain within an endpoint.
+     * Gets an exisitng custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -255,13 +255,13 @@ public final class CustomDomainsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets an existing CDN custom domain within an endpoint.
+     * Gets an exisitng custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -303,14 +303,14 @@ public final class CustomDomainsInner {
     }
 
     private ServiceResponse<CustomDomainInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CustomDomainInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CustomDomainInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CustomDomainInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -320,11 +320,11 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner create(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().last().body();
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -335,11 +335,11 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomDomainInner> createAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName, final ServiceCallback<CustomDomainInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName), serviceCallback);
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -352,13 +352,13 @@ public final class CustomDomainsInner {
         return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -396,7 +396,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -406,11 +406,11 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner beginCreate(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).toBlocking().single().body();
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -421,11 +421,11 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomDomainInner> beginCreateAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostName, final ServiceCallback<CustomDomainInner> serviceCallback) {
-        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName), serviceCallback);
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -438,13 +438,13 @@ public final class CustomDomainsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates a new CDN custom domain within an endpoint.
+     * Creates a new custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -492,7 +492,7 @@ public final class CustomDomainsInner {
     }
 
     private ServiceResponse<CustomDomainInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CustomDomainInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CustomDomainInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CustomDomainInner>() { }.getType())
                 .register(201, new TypeToken<CustomDomainInner>() { }.getType())
                 .register(202, new TypeToken<CustomDomainInner>() { }.getType())
@@ -501,7 +501,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -510,11 +510,11 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner delete(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().last().getBody();
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().last().body();
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -524,11 +524,11 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomDomainInner> deleteAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, final ServiceCallback<CustomDomainInner> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -540,13 +540,13 @@ public final class CustomDomainsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -578,7 +578,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -587,11 +587,11 @@ public final class CustomDomainsInner {
      * @return the CustomDomainInner object if successful.
      */
     public CustomDomainInner beginDelete(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().getBody();
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).toBlocking().single().body();
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -601,11 +601,11 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CustomDomainInner> beginDeleteAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, final ServiceCallback<CustomDomainInner> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -617,13 +617,13 @@ public final class CustomDomainsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
             @Override
             public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Deletes an existing CDN custom domain within an endpoint.
+     * Deletes an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -665,7 +665,7 @@ public final class CustomDomainsInner {
     }
 
     private ServiceResponse<CustomDomainInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CustomDomainInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CustomDomainInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<CustomDomainInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -674,23 +674,23 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;CustomDomainInner&gt; object if successful.
      */
     public PagedList<CustomDomainInner> listByEndpointNext(final String nextPageLink) {
         ServiceResponse<Page<CustomDomainInner>> response = listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CustomDomainInner>(response.getBody()) {
+        return new PagedList<CustomDomainInner>(response.body()) {
             @Override
             public Page<CustomDomainInner> nextPage(String nextPageLink) {
-                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByEndpointNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -698,7 +698,7 @@ public final class CustomDomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CustomDomainInner>> listByEndpointNextAsync(final String nextPageLink, final ServiceCall<List<CustomDomainInner>> serviceCall, final ListOperationCallback<CustomDomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByEndpointNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
@@ -710,7 +710,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;CustomDomainInner&gt; object
@@ -720,13 +720,13 @@ public final class CustomDomainsInner {
             .map(new Func1<ServiceResponse<Page<CustomDomainInner>>, Page<CustomDomainInner>>() {
                 @Override
                 public Page<CustomDomainInner> call(ServiceResponse<Page<CustomDomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;CustomDomainInner&gt; object
@@ -736,7 +736,7 @@ public final class CustomDomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<CustomDomainInner>>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(ServiceResponse<Page<CustomDomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -746,7 +746,7 @@ public final class CustomDomainsInner {
     }
 
     /**
-     * Lists the existing CDN custom domains within an endpoint.
+     * Lists all of the existing custom domains within an endpoint.
      *
     ServiceResponse<PageImpl<CustomDomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;CustomDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -755,13 +755,14 @@ public final class CustomDomainsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByEndpointNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByEndpointNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CustomDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CustomDomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CustomDomainInner>> result = listByEndpointNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CustomDomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -770,7 +771,7 @@ public final class CustomDomainsInner {
     }
 
     private ServiceResponse<PageImpl<CustomDomainInner>> listByEndpointNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CustomDomainInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomDomainInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CustomDomainInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);

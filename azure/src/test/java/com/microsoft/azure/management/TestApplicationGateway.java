@@ -229,9 +229,7 @@ public class TestApplicationGateway {
      * Complex internal (private) app gateway test.
      */
     public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        //private final VirtualMachines vms;
         private final Networks networks;
-        private final List<PublicIpAddress> testPips;
 
         /**
          * Tests minimal internal app gateways.
@@ -241,7 +239,7 @@ public class TestApplicationGateway {
          */
         public PrivateComplex(Networks networks, PublicIpAddresses pips) throws Exception {
             this.networks = networks;
-            this.testPips = ensurePIPs(pips);
+            ensurePIPs(pips);
         }
 
         @Override
@@ -334,7 +332,6 @@ public class TestApplicationGateway {
                             .withInstanceCount(2)
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     }
@@ -456,6 +453,8 @@ public class TestApplicationGateway {
             final int configCount = resource.backendHttpConfigurations().size();
             final int certCount = resource.sslCertificates().size();
 
+            PublicIpAddress pip = resource.manager().publicIpAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+
             resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
@@ -482,7 +481,7 @@ public class TestApplicationGateway {
                     .toBackend("backend1")
                     .toBackendHttpConfiguration("config1")
                     .parent()
-                .withExistingPublicIpAddress(testPips.get(0)) // Associate with a public IP as well
+                .withExistingPublicIpAddress(pip) // Associate with a public IP as well
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -502,6 +501,7 @@ public class TestApplicationGateway {
             // Verify frontends
             Assert.assertTrue(resource.frontends().size() == frontendCount + 1);
             Assert.assertTrue(resource.publicFrontends().size() == 1);
+            Assert.assertTrue(resource.publicFrontends().values().iterator().next().publicIpAddressId().equalsIgnoreCase(pip.id()));
             Assert.assertTrue(resource.privateFrontends().size() == 1);
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
             Assert.assertTrue(!frontend.isPublic());
@@ -557,15 +557,13 @@ public class TestApplicationGateway {
      * Complex Internet-facing (public) app gateway test.
      */
     public static class PublicComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final List<PublicIpAddress> testPips;
-
         /**
          * Tests minimal internal app gateways.
          * @param pips public IPs
          * @throws Exception when something goes wrong with test PIP creation
          */
         public PublicComplex(PublicIpAddresses pips) throws Exception {
-            this.testPips = ensurePIPs(pips);
+            ensurePIPs(pips);
         }
 
         @Override
@@ -580,6 +578,8 @@ public class TestApplicationGateway {
                     System.out.println("Uncaught exception: " + ex);
                 }
             };
+
+            final PublicIpAddress pip = resources.manager().publicIpAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Prepare for execution in a separate thread to shorten the test
             Thread creationThread = new Thread(new Runnable() {
@@ -639,16 +639,15 @@ public class TestApplicationGateway {
                                 .withHostName("www.fabricam.com")
                                 .attach()
 
-                            .withExistingPublicIpAddress(testPips.get(0))
+                            .withExistingPublicIpAddress(pip)
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    }
-                });
+                }
+            });
 
             // Start creating in a separate thread...
             creationThread.setUncaughtExceptionHandler(threadException);
@@ -718,7 +717,7 @@ public class TestApplicationGateway {
 
             rule = appGateway.requestRoutingRules().get("rule80");
             Assert.assertTrue(rule != null);
-            Assert.assertTrue(testPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 80);
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.cookieBasedAffinity());
@@ -730,7 +729,7 @@ public class TestApplicationGateway {
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assert.assertTrue(rule != null);
-            Assert.assertTrue(testPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 443);
             Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.sslCertificate() != null);
@@ -828,7 +827,6 @@ public class TestApplicationGateway {
 
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -969,7 +967,7 @@ public class TestApplicationGateway {
     }
 
     // Create VNet for the app gateway
-    private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
+    private static Map<String, PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
         List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
             creatablePips.add(

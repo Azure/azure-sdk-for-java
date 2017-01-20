@@ -33,12 +33,12 @@ public class GenericResourceInner extends Resource {
     private String kind;
 
     /**
-     * Id of the resource that manages this resource.
+     * ID of the resource that manages this resource.
      */
     private String managedBy;
 
     /**
-     * The sku of the resource.
+     * The SKU of the resource.
      */
     private Sku sku;
 

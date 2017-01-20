@@ -8,57 +8,56 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.SubResource;
-import com.microsoft.rest.serializer.JsonFlatten;
-
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 
 /**
- * Subnet in a VirtualNework resource.
+ * Subnet in a virtual network resource.
  */
 @JsonFlatten
 public class SubnetInner extends SubResource {
     /**
-     * Gets or sets Address prefix for the subnet.
+     * The address prefix for the subnet.
      */
     @JsonProperty(value = "properties.addressPrefix")
     private String addressPrefix;
 
     /**
-     * Gets or sets the reference of the NetworkSecurityGroup resource.
+     * The reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
     private SubResource networkSecurityGroup;
 
     /**
-     * Gets or sets the reference of the RouteTable resource.
+     * The reference of the RouteTable resource.
      */
     @JsonProperty(value = "properties.routeTable")
     private SubResource routeTable;
 
     /**
-     * Gets array of references to the network interface IP configurations
+     * Gets an array of references to the network interface IP configurations
      * using subnet.
      */
     @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets array of references to the external resources using subnet.
+     * Gets an array of references to the external resources using subnet.
      */
     @JsonProperty(value = "properties.resourceNavigationLinks")
     private List<ResourceNavigationLinkInner> resourceNavigationLinks;
 
     /**
-     * Gets provisioning state of the resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets or sets the name of the resource that is unique within a resource
-     * group. This name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     private String name;
 

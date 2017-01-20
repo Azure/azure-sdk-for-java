@@ -15,7 +15,7 @@ import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.List;
@@ -52,7 +52,7 @@ public final class ManageSqlDatabase {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -78,10 +78,8 @@ public final class ManageSqlDatabase {
                 // Create a Database in SQL server created above.
                 System.out.println("Creating a database");
 
-                SqlDatabase database = sqlServer.databases().define(databaseName)
-                        .withoutElasticPool()
-                        .withoutSourceDatabaseId()
-                        .withEdition(DatabaseEditions.BASIC)
+                SqlDatabase database = sqlServer.databases()
+                        .define(databaseName)
                         .create();
                 Utils.print(database);
 

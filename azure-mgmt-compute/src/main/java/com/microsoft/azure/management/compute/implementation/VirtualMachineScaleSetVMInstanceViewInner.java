@@ -20,42 +20,42 @@ import com.microsoft.azure.management.compute.InstanceViewStatus;
  */
 public class VirtualMachineScaleSetVMInstanceViewInner {
     /**
-     * the Update Domain count.
+     * The Update Domain count.
      */
     private Integer platformUpdateDomain;
 
     /**
-     * the Fault Domain count.
+     * The Fault Domain count.
      */
     private Integer platformFaultDomain;
 
     /**
-     * the Remote desktop certificate thumbprint.
+     * The Remote desktop certificate thumbprint.
      */
     private String rdpThumbPrint;
 
     /**
-     * the VM Agent running on the virtual machine.
+     * The VM Agent running on the virtual machine.
      */
     private VirtualMachineAgentInstanceView vmAgent;
 
     /**
-     * the disks information.
+     * The disks information.
      */
     private List<DiskInstanceView> disks;
 
     /**
-     * the extensions information.
+     * The extensions information.
      */
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /**
-     * the boot diagnostics.
+     * The boot diagnostics.
      */
     private BootDiagnosticsInstanceView bootDiagnostics;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
     private List<InstanceViewStatus> statuses;
 

@@ -19,10 +19,10 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficRoutingMethod;
+import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public final class ManageWebAppWithTrafficManager {
 
             azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -186,21 +186,18 @@ public final class ManageWebAppWithTrafficManager {
                         .define(tmName)
                         .withExistingResourceGroup(RG_NAME)
                         .withLeafDomainLabel(tmName)
-                        .withTrafficRoutingMethod(TrafficRoutingMethod.WEIGHTED)
+                        .withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY)
                         .defineAzureTargetEndpoint("endpoint1")
                             .toResourceId(app1.id())
+                            .withRoutingPriority(1)
                             .attach()
                         .defineAzureTargetEndpoint("endpoint2")
                             .toResourceId(app2.id())
+                            .withRoutingPriority(2)
                             .attach()
                         .defineAzureTargetEndpoint("endpoint3")
                             .toResourceId(app3.id())
-                            .attach()
-                        .defineAzureTargetEndpoint("endpoint4")
-                            .toResourceId(app4.id())
-                            .attach()
-                        .defineAzureTargetEndpoint("endpoint5")
-                            .toResourceId(app5.id())
+                            .withRoutingPriority(3)
                             .attach()
                         .create();
 

@@ -10,34 +10,34 @@ package com.microsoft.azure.management.compute;
 
 
 /**
- * additional XML formatted information that can be included in the
+ * Additional XML formatted information that can be included in the
  * Unattend.xml file, which is used by Windows Setup. Contents are defined by
  * setting name, component name, and the pass in which the content is a
  * applied.
  */
 public class AdditionalUnattendContent {
     /**
-     * the pass name. Currently, the only allowable value is oobeSystem.
+     * The pass name. Currently, the only allowable value is oobeSystem.
      * Possible values include: 'oobeSystem'.
      */
     private PassNames passName;
 
     /**
-     * the component name. Currently, the only allowable value is
+     * The component name. Currently, the only allowable value is
      * Microsoft-Windows-Shell-Setup. Possible values include:
      * 'Microsoft-Windows-Shell-Setup'.
      */
     private ComponentNames componentName;
 
     /**
-     * setting name (e.g. FirstLogonCommands, AutoLogon ). Possible values
+     * Setting name (e.g. FirstLogonCommands, AutoLogon ). Possible values
      * include: 'AutoLogon', 'FirstLogonCommands'.
      */
     private SettingNames settingName;
 
     /**
      * XML formatted content that is added to the unattend.xml file in the
-     * specified pass and component.The XML must be less than 4 KB and must
+     * specified pass and component. The XML must be less than 4 KB and must
      * include the root element for the setting or feature that is being
      * inserted.
      */

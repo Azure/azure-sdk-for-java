@@ -10,7 +10,6 @@ package com.microsoft.azure.management.sql.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -57,39 +56,39 @@ public final class ElasticPoolsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ElasticPoolsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools listByServer" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools")
         Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools listActivity" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolActivity")
         Observable<Response<ResponseBody>> listActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools listDatabaseActivity" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
         Observable<Response<ResponseBody>> listDatabaseActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools getDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases/{databaseName}")
         Observable<Response<ResponseBody>> getDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.ElasticPools listDatabases" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases")
         Observable<Response<ResponseBody>> listDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -105,7 +104,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -119,7 +118,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
     }
 
     /**
@@ -135,7 +134,7 @@ public final class ElasticPoolsInner {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -181,7 +180,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner beginCreateOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -195,7 +194,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
     }
 
     /**
@@ -211,7 +210,7 @@ public final class ElasticPoolsInner {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -258,7 +257,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<ElasticPoolInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ElasticPoolInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ElasticPoolInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ElasticPoolInner>() { }.getType())
                 .register(201, new TypeToken<ElasticPoolInner>() { }.getType())
                 .register(202, new TypeToken<ElasticPoolInner>() { }.getType())
@@ -274,7 +273,7 @@ public final class ElasticPoolsInner {
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      */
     public void delete(String resourceGroupName, String serverName, String elasticPoolName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -287,7 +286,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -302,7 +301,7 @@ public final class ElasticPoolsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -344,7 +343,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -359,7 +358,7 @@ public final class ElasticPoolsInner {
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner get(String resourceGroupName, String serverName, String elasticPoolName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -372,7 +371,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ElasticPoolInner> getAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -387,7 +386,7 @@ public final class ElasticPoolsInner {
         return getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<ElasticPoolInner>, ElasticPoolInner>() {
             @Override
             public ElasticPoolInner call(ServiceResponse<ElasticPoolInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -429,7 +428,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<ElasticPoolInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ElasticPoolInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ElasticPoolInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ElasticPoolInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -443,7 +442,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolInner&gt; object if successful.
      */
     public List<ElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
     }
 
     /**
@@ -455,7 +454,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolInner>> serviceCallback) {
-        return ServiceCall.create(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+        return ServiceCall.fromResponse(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -469,7 +468,7 @@ public final class ElasticPoolsInner {
         return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolInner>>, List<ElasticPoolInner>>() {
             @Override
             public List<ElasticPoolInner> call(ServiceResponse<List<ElasticPoolInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -498,7 +497,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolInner>> result = listByServerDelegate(response);
-                        ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -508,7 +507,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<PageImpl<ElasticPoolInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ElasticPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ElasticPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -523,7 +522,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolActivityInner&gt; object if successful.
      */
     public List<ElasticPoolActivityInner> listActivity(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -536,7 +535,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ElasticPoolActivityInner>> listActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolActivityInner>> serviceCallback) {
-        return ServiceCall.create(listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+        return ServiceCall.fromResponse(listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -551,7 +550,7 @@ public final class ElasticPoolsInner {
         return listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<ElasticPoolActivityInner>>, List<ElasticPoolActivityInner>>() {
             @Override
             public List<ElasticPoolActivityInner> call(ServiceResponse<List<ElasticPoolActivityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -584,7 +583,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolActivityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolActivityInner>> result = listActivityDelegate(response);
-                        ServiceResponse<List<ElasticPoolActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolActivityInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -594,7 +593,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<PageImpl<ElasticPoolActivityInner>> listActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolActivityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ElasticPoolActivityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ElasticPoolActivityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -609,7 +608,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;ElasticPoolDatabaseActivityInner&gt; object if successful.
      */
     public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -622,7 +621,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
-        return ServiceCall.create(listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+        return ServiceCall.fromResponse(listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -637,7 +636,7 @@ public final class ElasticPoolsInner {
         return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
             @Override
             public List<ElasticPoolDatabaseActivityInner> call(ServiceResponse<List<ElasticPoolDatabaseActivityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -670,7 +669,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
-                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -680,7 +679,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<PageImpl<ElasticPoolDatabaseActivityInner>> listDatabaseActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolDatabaseActivityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ElasticPoolDatabaseActivityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ElasticPoolDatabaseActivityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -696,7 +695,7 @@ public final class ElasticPoolsInner {
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner getDatabase(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
-        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().getBody();
+        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -710,7 +709,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
+        return ServiceCall.fromResponse(getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
     }
 
     /**
@@ -726,7 +725,7 @@ public final class ElasticPoolsInner {
         return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -772,7 +771,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<DatabaseInner> getDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DatabaseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -787,7 +786,7 @@ public final class ElasticPoolsInner {
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listDatabases(String resourceGroupName, String serverName, String elasticPoolName) {
-        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
+        return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
     }
 
     /**
@@ -800,7 +799,7 @@ public final class ElasticPoolsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
-        return ServiceCall.create(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+        return ServiceCall.fromResponse(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -815,7 +814,7 @@ public final class ElasticPoolsInner {
         return listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
             @Override
             public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -848,7 +847,7 @@ public final class ElasticPoolsInner {
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DatabaseInner>> result = listDatabasesDelegate(response);
-                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -858,7 +857,7 @@ public final class ElasticPoolsInner {
     }
 
     private ServiceResponse<PageImpl<DatabaseInner>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DatabaseInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DatabaseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

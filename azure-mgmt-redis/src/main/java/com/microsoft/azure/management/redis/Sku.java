@@ -11,26 +11,27 @@ package com.microsoft.azure.management.redis;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Sku parameters supplied to the create redis operation.
+ * SKU parameters supplied to the create Redis operation.
  */
 public class Sku {
     /**
-     * What type of redis cache to deploy. Valid values: (Basic, Standard,
+     * The type of Redis cache to deploy. Valid values: (Basic, Standard,
      * Premium). Possible values include: 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(required = true)
     private SkuName name;
 
     /**
-     * Which family to use. Valid values: (C, P). Possible values include:
-     * 'C', 'P'.
+     * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P =
+     * Premium). Possible values include: 'C', 'P'.
      */
     @JsonProperty(required = true)
     private SkuFamily family;
 
     /**
-     * What size of redis cache to deploy. Valid values: for C family (0, 1,
-     * 2, 3, 4, 5, 6), for P family (1, 2, 3, 4).
+     * The size of the Redis cache to deploy. Valid values: for C
+     * (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family
+     * (1, 2, 3, 4).
      */
     @JsonProperty(required = true)
     private int capacity;

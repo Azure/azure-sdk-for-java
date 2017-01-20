@@ -60,9 +60,8 @@ public class AppServiceCertificateOrderInner extends Resource {
     private CertificateProductType productType;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; if the certificate should be
-     * automatically renewed when it expires; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically
+     * renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.autoRenew")
     private Boolean autoRenew;

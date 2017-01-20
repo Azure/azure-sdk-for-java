@@ -14,7 +14,7 @@ package com.microsoft.azure.management.dns;
  */
 public class ARecord {
     /**
-     * Gets or sets the IPv4 address of this A record in string notation.
+     * The IPv4 address of this A record.
      */
     private String ipv4Address;
 

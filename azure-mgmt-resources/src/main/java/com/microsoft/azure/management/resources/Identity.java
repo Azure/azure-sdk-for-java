@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Identity {
     /**
-     * The principal id of resource identity.
+     * The principal ID of resource identity.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /**
-     * The tenant id of resource.
+     * The tenant ID of resource.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;

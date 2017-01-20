@@ -24,7 +24,7 @@ class ElasticPoolActivityImpl
 
     protected ElasticPoolActivityImpl(ElasticPoolActivityInner innerObject) {
         super(innerObject);
-        this.resourceId = ResourceId.parseResourceId(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override

@@ -12,12 +12,12 @@ import java.util.List;
 
 /**
  * AddressSpace contains an array of IP address ranges that can be used by
- * subnets.
+ * subnets of the virtual network.
  */
 public class AddressSpace {
     /**
-     * Gets or sets list of address blocks reserved for this virtual network
-     * in CIDR notation.
+     * A list of address blocks reserved for this virtual network in CIDR
+     * notation.
      */
     private List<String> addressPrefixes;
 

@@ -14,13 +14,12 @@ package com.microsoft.azure.management.dns;
  */
 public class MxRecord {
     /**
-     * Gets or sets the preference metric for this record.
+     * The preference value for this MX record.
      */
     private Integer preference;
 
     /**
-     * Gets or sets the domain name of the mail host, without a terminating
-     * dot.
+     * The domain name of the mail host for this MX record.
      */
     private String exchange;
 

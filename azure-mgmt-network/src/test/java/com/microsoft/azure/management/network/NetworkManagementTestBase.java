@@ -1,11 +1,11 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 public abstract class NetworkManagementTestBase {
     protected static ResourceManager resourceManager;
@@ -21,7 +21,7 @@ public abstract class NetworkManagementTestBase {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 .build();
 
         resourceManager = ResourceManager

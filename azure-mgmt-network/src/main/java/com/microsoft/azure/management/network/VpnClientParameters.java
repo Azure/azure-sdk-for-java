@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VpnClientParameters {
     /**
-     * VPN client Processor Architecture -Amd64/X86. Possible values include:
-     * 'Amd64', 'X86'.
+     * VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'. Possible values include: 'Amd64', 'X86'.
      */
-    @JsonProperty(value = "ProcessorArchitecture")
+    @JsonProperty(value = "ProcessorArchitecture", required = true)
     private ProcessorArchitecture processorArchitecture;
 
     /**

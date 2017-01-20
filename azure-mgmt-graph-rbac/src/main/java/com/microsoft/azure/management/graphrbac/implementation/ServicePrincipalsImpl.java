@@ -13,6 +13,7 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -30,7 +31,9 @@ class ServicePrincipalsImpl
                     ServicePrincipal,
                     ServicePrincipalImpl,
                     ServicePrincipalInner>
-        implements ServicePrincipals {
+        implements
+            ServicePrincipals,
+            HasManager<GraphRbacManager> {
     private ServicePrincipalsInner innerCollection;
     private GraphRbacManager manager;
 
@@ -76,27 +79,25 @@ class ServicePrincipalsImpl
 
     @Override
     public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
-        return ServiceCall.create(
-                getByServicePrincipalNameAsync(spn).map(new Func1<ServicePrincipal, ServiceResponse<ServicePrincipal>>() {
-                    @Override
-                    public ServiceResponse<ServicePrincipal> call(ServicePrincipal fluentModelT) {
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
+        return ServiceCall.fromBody(getByServicePrincipalNameAsync(spn), callback);
     }
 
     @Override
     public Observable<ServicePrincipal> getByServicePrincipalNameAsync(final String spn) {
-        return innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
-                .map(new Func1<Page<ServicePrincipalInner>, ServicePrincipal>() {
+        return innerCollection.listWithServiceResponseAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
+                .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, ServicePrincipal>() {
                     @Override
-                    public ServicePrincipal call(Page<ServicePrincipalInner> result) {
-                        if (result == null || result.getItems() == null || result.getItems().isEmpty()) {
-                            throw new GraphErrorException("Service principal not found for SPN: " + spn);
+                    public ServicePrincipal call(ServiceResponse<Page<ServicePrincipalInner>> result) {
+                        if (result == null || result.body().items() == null || result.body().items().isEmpty()) {
+                            throw new GraphErrorException("Service principal not found for SPN: " + spn, result.response());
                         }
-                        return new ServicePrincipalImpl(result.getItems().get(0), innerCollection);
+                        return new ServicePrincipalImpl(result.body().items().get(0), innerCollection);
                     }
                 });
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return this.manager;
     }
 }

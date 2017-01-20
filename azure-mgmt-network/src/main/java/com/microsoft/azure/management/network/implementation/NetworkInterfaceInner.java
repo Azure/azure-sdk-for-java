@@ -8,77 +8,81 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.Resource;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
-import com.microsoft.rest.serializer.JsonFlatten;
-
 import java.util.List;
+import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
- * A NetworkInterface in a resource group.
+ * A network interface in a resource group.
  */
 @JsonFlatten
 public class NetworkInterfaceInner extends Resource {
     /**
-     * Gets or sets the reference of a VirtualMachine.
+     * The reference of a virtual machine.
      */
     @JsonProperty(value = "properties.virtualMachine")
     private SubResource virtualMachine;
 
     /**
-     * Gets or sets the reference of the NetworkSecurityGroup resource.
+     * The reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
     private SubResource networkSecurityGroup;
 
     /**
-     * Gets or sets list of IPConfigurations of the network interface.
+     * A list of IPConfigurations of the network interface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
     private List<NetworkInterfaceIPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets or sets DNS settings in network interface.
+     * The DNS settings in network interface.
      */
     @JsonProperty(value = "properties.dnsSettings")
     private NetworkInterfaceDnsSettings dnsSettings;
 
     /**
-     * Gets the MAC address of the network interface.
+     * The MAC address of the network interface.
      */
     @JsonProperty(value = "properties.macAddress")
     private String macAddress;
 
     /**
-     * Gets whether this is a primary NIC on a virtual machine.
+     * Gets whether this is a primary network interface on a virtual machine.
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
 
     /**
-     * Gets or sets whether IPForwarding is enabled on the NIC.
+     * If the network interface is accelerated networking enabled.
+     */
+    @JsonProperty(value = "properties.enableAcceleratedNetworking")
+    private Boolean enableAcceleratedNetworking;
+
+    /**
+     * Indicates whether IP forwarding is enabled on this network interface.
      */
     @JsonProperty(value = "properties.enableIPForwarding")
     private Boolean enableIPForwarding;
 
     /**
-     * Gets or sets resource guid property of the network interface resource.
+     * The resource GUID property of the network interface resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
@@ -199,6 +203,26 @@ public class NetworkInterfaceInner extends Resource {
      */
     public NetworkInterfaceInner withPrimary(Boolean primary) {
         this.primary = primary;
+        return this;
+    }
+
+    /**
+     * Get the enableAcceleratedNetworking value.
+     *
+     * @return the enableAcceleratedNetworking value
+     */
+    public Boolean enableAcceleratedNetworking() {
+        return this.enableAcceleratedNetworking;
+    }
+
+    /**
+     * Set the enableAcceleratedNetworking value.
+     *
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
+        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
         return this;
     }
 

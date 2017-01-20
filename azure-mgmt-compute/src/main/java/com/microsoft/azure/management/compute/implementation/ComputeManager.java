@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
@@ -46,7 +47,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      * @return the ComputeManager
      */
     public static ComputeManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new ComputeManager(credentials.getEnvironment().newRestClientBuilder()
+        return new ComputeManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

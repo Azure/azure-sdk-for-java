@@ -40,7 +40,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     @Test
     public void canCreateVirtualMachine() throws Exception {
         // Create
-        VirtualMachine vm = computeManager.virtualMachines()
+        computeManager.virtualMachines()
                 .define(VMNAME)
                 .withRegion(LOCATION)
                 .withNewResourceGroup(RG_NAME)
@@ -55,30 +55,30 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
                 .withOsDiskName("javatest")
                 .create();
 
-        VirtualMachine foundedVM = null;
+        VirtualMachine foundVM = null;
         List<VirtualMachine> vms = computeManager.virtualMachines().listByGroup(RG_NAME);
         for (VirtualMachine vm1 : vms) {
             if (vm1.name().equals(VMNAME)) {
-                foundedVM = vm1;
+                foundVM = vm1;
                 break;
             }
         }
-        Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.regionName());
+        Assert.assertNotNull(foundVM);
+        Assert.assertEquals(LOCATION, foundVM.regionName());
         // Get
-        foundedVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
-        Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.regionName());
+        foundVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
+        Assert.assertNotNull(foundVM);
+        Assert.assertEquals(LOCATION, foundVM.regionName());
 
         // Fetch instance view
-        PowerState powerState = foundedVM.powerState();
+        PowerState powerState = foundVM.powerState();
         Assert.assertTrue(powerState == PowerState.RUNNING);
-        VirtualMachineInstanceView instanceView = foundedVM.instanceView();
+        VirtualMachineInstanceView instanceView = foundVM.instanceView();
         Assert.assertNotNull(instanceView);
         Assert.assertNotNull(instanceView.statuses().size() > 0);
 
         // Delete VM
-        computeManager.virtualMachines().deleteById(foundedVM.id());
+        computeManager.virtualMachines().deleteById(foundVM.id());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         for (int i = 0; i < count; i ++) {
             virtualMachineNames.add(String.format("%s-%d", vmNamePrefix, i));
         }
-        for (VirtualMachine virtualMachine : createdVirtualMachines) {
+        for (VirtualMachine virtualMachine : createdVirtualMachines.values()) {
             Assert.assertTrue(virtualMachineNames.contains(virtualMachine.name()));
             Assert.assertNotNull(virtualMachine.id());
         }

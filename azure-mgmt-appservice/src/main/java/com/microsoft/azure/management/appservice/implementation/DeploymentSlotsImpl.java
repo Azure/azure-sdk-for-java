@@ -14,8 +14,7 @@ import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link DeploymentSlots}.
@@ -88,14 +87,8 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return innerCollection.deleteSlotAsync(groupName, parentName, name)
-                .flatMap(new Func1<Object, Observable<Void>>() {
-                    @Override
-                    public Observable<Void> call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return innerCollection.deleteSlotAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
@@ -109,7 +102,7 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public Observable<Void> deleteByNameAsync(String name) {
+    public Completable deleteByNameAsync(String name) {
         return deleteByParentAsync(parent.resourceGroupName(), parent.name(), name);
     }
 

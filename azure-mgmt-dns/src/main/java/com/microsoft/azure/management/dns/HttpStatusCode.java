@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for HtpStatusCode.
+ * Defines values for HttpStatusCode.
  */
-public enum HtpStatusCode {
+public enum HttpStatusCode {
     /** Enum value Continue. */
     CONTINUE("Continue"),
 
@@ -156,23 +156,23 @@ public enum HtpStatusCode {
     /** Enum value HttpVersionNotSupported. */
     HTTP_VERSION_NOT_SUPPORTED("HttpVersionNotSupported");
 
-    /** The actual serialized value for a HtpStatusCode instance. */
+    /** The actual serialized value for a HttpStatusCode instance. */
     private String value;
 
-    HtpStatusCode(String value) {
+    HttpStatusCode(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a HtpStatusCode instance.
+     * Parses a serialized value to a HttpStatusCode instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed HtpStatusCode object, or null if unable to parse.
+     * @return the parsed HttpStatusCode object, or null if unable to parse.
      */
     @JsonCreator
-    public static HtpStatusCode fromString(String value) {
-        HtpStatusCode[] items = HtpStatusCode.values();
-        for (HtpStatusCode item : items) {
+    public static HttpStatusCode fromString(String value) {
+        HttpStatusCode[] items = HttpStatusCode.values();
+        for (HttpStatusCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

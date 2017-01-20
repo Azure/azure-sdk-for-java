@@ -15,27 +15,27 @@ import java.util.List;
  */
 public class ApiError {
     /**
-     * the Api error details.
+     * The Api error details.
      */
     private List<ApiErrorBase> details;
 
     /**
-     * the Api inner error.
+     * The Api inner error.
      */
     private InnerError innererror;
 
     /**
-     * the error code.
+     * The error code.
      */
     private String code;
 
     /**
-     * the target of the particular error.
+     * The target of the particular error.
      */
     private String target;
 
     /**
-     * the error message.
+     * The error message.
      */
     private String message;
 

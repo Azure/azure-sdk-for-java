@@ -14,32 +14,33 @@ package com.microsoft.azure.management.compute.implementation;
  */
 public class VirtualMachineSizeInner {
     /**
-     * the VM size name.
+     * The name of the virtual machine size.
      */
     private String name;
 
     /**
-     * the Number of cores supported by a VM size.
+     * The number of cores supported by the virtual machine size.
      */
     private Integer numberOfCores;
 
     /**
-     * the OS disk size allowed by a VM size.
+     * The OS disk size, in MB, allowed by the virtual machine size.
      */
     private Integer osDiskSizeInMB;
 
     /**
-     * the Resource disk size allowed by a VM size.
+     * The resource disk size, in MB, allowed by the virtual machine size.
      */
     private Integer resourceDiskSizeInMB;
 
     /**
-     * the Memory size supported by a VM size.
+     * The amount of memory, in MB, supported by the virtual machine size.
      */
     private Integer memoryInMB;
 
     /**
-     * the Maximum number of data disks allowed by a VM size.
+     * The maximum number of data disks that can be attached to the virtual
+     * machine size.
      */
     private Integer maxDataDiskCount;
 

@@ -48,8 +48,8 @@ public class HybridConnectionInner extends Resource {
     private Integer port;
 
     /**
-     * The name of the Service Bus key which has Send permissions. This is
-     * used to authenticate to Service Bus.
+     * The name of the Service Bus key which has Send permissions. This is used
+     * to authenticate to Service Bus.
      */
     @JsonProperty(value = "properties.sendKeyName")
     private String sendKeyName;

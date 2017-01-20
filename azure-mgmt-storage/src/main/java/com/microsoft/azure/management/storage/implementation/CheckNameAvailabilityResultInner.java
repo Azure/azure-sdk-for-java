@@ -18,7 +18,7 @@ public class CheckNameAvailabilityResultInner {
     /**
      * Gets a boolean value that indicates whether the name is available for
      * you to use. If true, the name is available. If false, the name has
-     * already been taken or invalid and cannot be used.
+     * already been taken or is invalid and cannot be used.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;

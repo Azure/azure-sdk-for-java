@@ -90,8 +90,8 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
     private String usageBasedRecommendationServiceLevelObjective;
 
     /**
-     * Gets or sets usageBasedRecommendationServiceLevelObjectiveId for
-     * service tier advisor.
+     * Gets or sets usageBasedRecommendationServiceLevelObjectiveId for service
+     * tier advisor.
      */
     @JsonProperty(value = "properties.usageBasedRecommendationServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID usageBasedRecommendationServiceLevelObjectiveId;
@@ -125,8 +125,8 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
     private UUID disasterPlanBasedRecommendationServiceLevelObjectiveId;
 
     /**
-     * Gets or sets overallRecommendationServiceLevelObjective for service
-     * tier advisor.
+     * Gets or sets overallRecommendationServiceLevelObjective for service tier
+     * advisor.
      */
     @JsonProperty(value = "properties.overallRecommendationServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String overallRecommendationServiceLevelObjective;

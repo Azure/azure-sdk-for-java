@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,56 +61,56 @@ public final class RouteTablesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RouteTablesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Body RouteTableInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Body RouteTableInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables listAll" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/routeTables")
         Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables listAllNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      */
     public void delete(String resourceGroupName, String routeTableName) {
-        deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().body();
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -118,11 +118,11 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -132,13 +132,13 @@ public final class RouteTablesInner {
         return deleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -154,25 +154,23 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      */
     public void beginDelete(String resourceGroupName, String routeTableName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -180,11 +178,11 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -194,13 +192,13 @@ public final class RouteTablesInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -216,10 +214,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -234,7 +230,7 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -242,18 +238,18 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner get(String resourceGroupName, String routeTableName) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -261,11 +257,11 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -275,13 +271,13 @@ public final class RouteTablesInner {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -297,11 +293,9 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -316,53 +310,53 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().body();
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, routeTableName, expand), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName, expand), serviceCallback);
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the RouteTableInner object
      */
     public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the RouteTableInner object
      */
     public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String expand) {
@@ -375,10 +369,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -393,60 +385,60 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<RouteTableInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteTableInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RouteTableInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RouteTableInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().body();
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable for the request
      */
     public Observable<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteTableInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -462,62 +454,60 @@ public final class RouteTablesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RouteTableInner>() { }.getType());
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().body();
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable to the RouteTableInner object
      */
     public Observable<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable to the RouteTableInner object
      */
     public Observable<ServiceResponse<RouteTableInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -533,11 +523,9 @@ public final class RouteTablesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -552,7 +540,7 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<RouteTableInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteTableInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RouteTableInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RouteTableInner>() { }.getType())
                 .register(201, new TypeToken<RouteTableInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -560,30 +548,30 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> list(final String resourceGroupName) {
         ServiceResponse<Page<RouteTableInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RouteTableInner>> listAsync(final String resourceGroupName, final ListOperationCallback<RouteTableInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
@@ -595,7 +583,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -605,13 +593,13 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -621,7 +609,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -631,7 +619,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -643,16 +631,14 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -661,35 +647,35 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<PageImpl<RouteTableInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTableInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteTableInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listAll() {
         ServiceResponse<Page<RouteTableInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RouteTableInner>> listAllAsync(final ListOperationCallback<RouteTableInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
@@ -701,7 +687,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
@@ -710,13 +696,13 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
@@ -725,7 +711,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -735,7 +721,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -743,16 +729,14 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -761,30 +745,30 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<PageImpl<RouteTableInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTableInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteTableInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -792,7 +776,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RouteTableInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
@@ -804,7 +788,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -814,13 +798,13 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -830,7 +814,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -840,7 +824,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -849,13 +833,14 @@ public final class RouteTablesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -864,30 +849,30 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<PageImpl<RouteTableInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTableInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteTableInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.body()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -895,7 +880,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<RouteTableInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
@@ -907,7 +892,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -917,13 +902,13 @@ public final class RouteTablesInner {
             .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
                 public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -933,7 +918,7 @@ public final class RouteTablesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -943,7 +928,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -952,13 +937,14 @@ public final class RouteTablesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteTableInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteTableInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -967,7 +953,7 @@ public final class RouteTablesInner {
     }
 
     private ServiceResponse<PageImpl<RouteTableInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTableInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteTableInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

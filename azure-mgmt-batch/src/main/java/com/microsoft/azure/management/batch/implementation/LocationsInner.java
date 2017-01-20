@@ -10,8 +10,7 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.batch.ErrorBodyException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -52,7 +51,7 @@ public final class LocationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface LocationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.Locations getQuotas" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/quotas")
         Observable<Response<ResponseBody>> getQuotas(@Path("locationName") String locationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -65,7 +64,7 @@ public final class LocationsInner {
      * @return the BatchLocationQuotaInner object if successful.
      */
     public BatchLocationQuotaInner getQuotas(String locationName) {
-        return getQuotasWithServiceResponseAsync(locationName).toBlocking().single().getBody();
+        return getQuotasWithServiceResponseAsync(locationName).toBlocking().single().body();
     }
 
     /**
@@ -76,7 +75,7 @@ public final class LocationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchLocationQuotaInner> getQuotasAsync(String locationName, final ServiceCallback<BatchLocationQuotaInner> serviceCallback) {
-        return ServiceCall.create(getQuotasWithServiceResponseAsync(locationName), serviceCallback);
+        return ServiceCall.fromResponse(getQuotasWithServiceResponseAsync(locationName), serviceCallback);
     }
 
     /**
@@ -89,7 +88,7 @@ public final class LocationsInner {
         return getQuotasWithServiceResponseAsync(locationName).map(new Func1<ServiceResponse<BatchLocationQuotaInner>, BatchLocationQuotaInner>() {
             @Override
             public BatchLocationQuotaInner call(ServiceResponse<BatchLocationQuotaInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -124,10 +123,10 @@ public final class LocationsInner {
             });
     }
 
-    private ServiceResponse<BatchLocationQuotaInner> getQuotasDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BatchLocationQuotaInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<BatchLocationQuotaInner> getQuotasDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchLocationQuotaInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchLocationQuotaInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorBodyException.class)
                 .build(response);
     }
 

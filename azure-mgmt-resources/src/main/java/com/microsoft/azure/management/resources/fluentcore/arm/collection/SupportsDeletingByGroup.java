@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Provides access to deleting a resource from Azure, identifying it by its name and its resource group.
@@ -42,7 +42,7 @@ public interface SupportsDeletingByGroup {
      *
      * @param groupName The group the resource is part of
      * @param name The name of the resource
-     * @return an observable to the request
+     * @return a completable indicates completion or exception of the request
      */
-    Observable<Void> deleteByGroupAsync(String groupName, String name);
+    Completable deleteByGroupAsync(String groupName, String name);
 }

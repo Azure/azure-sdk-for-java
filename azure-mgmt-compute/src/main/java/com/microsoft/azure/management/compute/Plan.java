@@ -14,22 +14,22 @@ package com.microsoft.azure.management.compute;
  */
 public class Plan {
     /**
-     * the plan ID.
+     * The plan ID.
      */
     private String name;
 
     /**
-     * the publisher ID.
+     * The publisher ID.
      */
     private String publisher;
 
     /**
-     * the offer ID.
+     * The offer ID.
      */
     private String product;
 
     /**
-     * the promotion code.
+     * The promotion code.
      */
     private String promotionCode;
 

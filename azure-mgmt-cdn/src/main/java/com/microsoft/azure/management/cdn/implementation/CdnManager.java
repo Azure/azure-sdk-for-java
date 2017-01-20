@@ -6,7 +6,8 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -38,7 +39,8 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClientImp
      * @return the TrafficManager
      */
     public static CdnManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new CdnManager(credentials.getEnvironment().newRestClientBuilder()
+        return new CdnManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * An immutable client-side representation of a key vault access policy.
@@ -84,7 +83,7 @@ public interface AccessPolicy extends
              * @param objectId the object ID of the AD identity
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forObjectId(UUID objectId);
+            WithAttach<ParentT> forObjectId(String objectId);
 
             /**
              * Specifies the Active Directory user this access policy is for.
@@ -226,7 +225,7 @@ public interface AccessPolicy extends
              * @param objectId the object ID of the AD identity
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forObjectId(UUID objectId);
+            WithAttach<ParentT> forObjectId(String objectId);
 
             /**
              * Specifies the Active Directory user this access policy is for.

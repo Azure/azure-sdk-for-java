@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.dns.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -32,7 +33,8 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
      * @return the DnsZoneManager
      */
     public static DnsZoneManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new DnsZoneManager(credentials.getEnvironment().newRestClientBuilder()
+        return new DnsZoneManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

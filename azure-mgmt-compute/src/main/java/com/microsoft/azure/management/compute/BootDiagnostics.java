@@ -14,12 +14,13 @@ package com.microsoft.azure.management.compute;
  */
 public class BootDiagnostics {
     /**
-     * whether boot diagnostics should be enabled on the Virtual Machine.
+     * Whether boot diagnostics should be enabled on the Virtual Machine.
      */
     private Boolean enabled;
 
     /**
-     * the boot diagnostics storage Uri. It should be a valid Uri.
+     * URI of the storage account to use for placing the console output and
+     * screenshot.
      */
     private String storageUri;
 

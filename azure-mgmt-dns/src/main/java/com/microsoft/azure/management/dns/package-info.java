@@ -6,5 +6,6 @@
 
 /**
  * This package contains the classes for DnsManagementClient.
+ * The DNS Management Client.
  */
 package com.microsoft.azure.management.dns;

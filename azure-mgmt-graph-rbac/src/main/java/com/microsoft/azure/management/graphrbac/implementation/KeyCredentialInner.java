@@ -15,32 +15,32 @@ import org.joda.time.DateTime;
  */
 public class KeyCredentialInner {
     /**
-     * start date.
+     * Start date.
      */
     private DateTime startDate;
 
     /**
-     * end date.
+     * End date.
      */
     private DateTime endDate;
 
     /**
-     * value.
+     * Key value.
      */
     private String value;
 
     /**
-     * key Id.
+     * Key ID.
      */
     private String keyId;
 
     /**
-     * usage. Acceptable values are 'Verify' and 'Sign'.
+     * Usage. Acceptable values are 'Verify' and 'Sign'.
      */
     private String usage;
 
     /**
-     * type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
+     * Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
      */
     private String type;
 

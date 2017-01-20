@@ -48,8 +48,8 @@ public class EndpointInner {
 
     /**
      * Gets or sets the status of the endpoint..  If the endpoint is Enabled,
-     * it is probed for endpoint health and is included in the traffic
-     * routing method.  Possible values are 'Enabled' and 'Disabled'.
+     * it is probed for endpoint health and is included in the traffic routing
+     * method.  Possible values are 'Enabled' and 'Disabled'.
      */
     @JsonProperty(value = "properties.endpointStatus")
     private String endpointStatus;
@@ -63,10 +63,10 @@ public class EndpointInner {
 
     /**
      * Gets or sets the priority of this endpoint when using the ‘Priority’
-     * traffic routing method. Possible values are from 1 to 1000, lower
-     * values represent higher priority. This is an optional parameter.  If
-     * specified, it must be specified on all endpoints, and no two endpoints
-     * can share the same priority value.
+     * traffic routing method. Possible values are from 1 to 1000, lower values
+     * represent higher priority. This is an optional parameter.  If specified,
+     * it must be specified on all endpoints, and no two endpoints can share
+     * the same priority value.
      */
     @JsonProperty(value = "properties.priority")
     private Long priority;

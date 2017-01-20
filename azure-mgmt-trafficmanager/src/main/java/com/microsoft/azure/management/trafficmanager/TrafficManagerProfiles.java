@@ -10,10 +10,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
 /**
  * Entry point to traffic manager profile management API in Azure.
@@ -27,7 +29,8 @@ public interface TrafficManagerProfiles extends
         SupportsGettingById<TrafficManagerProfile>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
-        SupportsBatchCreation<TrafficManagerProfile> {
+        SupportsBatchCreation<TrafficManagerProfile>,
+        HasManager<TrafficManager> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.

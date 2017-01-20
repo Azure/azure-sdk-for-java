@@ -51,15 +51,17 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/2016-06-01/swagger/network.json',
+        'source': 'arm-network/compositeNetworkClient.json',
         'package': 'com.microsoft.azure.management.network',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'appservice': {
         'dir': 'azure-mgmt-appservice',
         'source': 'arm-web/compositeWebAppClient.json',
         'package': 'com.microsoft.azure.management.appservice',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'graph.rbac': {
         'dir': 'azure-mgmt-graph-rbac',
@@ -133,18 +135,25 @@ var mappings = {
         'dir': 'azure-mgmt-sql',
         'source': 'arm-sql/compositeSql.json',
         'package': 'com.microsoft.azure.management.sql',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'cdn': {
         'dir': 'azure-mgmt-cdn',
         'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
         'package': 'com.microsoft.azure.management.cdn',
         'args': '-FT 2'
+    },
+    'dns': {
+        'dir': 'azure-mgmt-dns',
+        'source': 'arm-dns/2016-04-01/swagger/dns.json',
+        'package': 'com.microsoft.azure.management.dns',
+        'args': '-FT 1'
     }
 };
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--modeler <modeler name>] [--autorest-args <AutoRest arguments>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--autorest-args <AutoRest arguments>]\n");
     console.log("--spec-root");
     console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
@@ -152,7 +161,6 @@ gulp.task('default', function() {
         console.log('\t' + i.magenta);
     });
     console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
-    console.log("--modeler\n\tSpecifies which modeler to use. Default is 'Swagger'");
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
@@ -165,10 +173,6 @@ var projects = args['projects'];
 var autoRestVersion = '0.17.3-Nightly20161101'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
-}
-var modeler = 'Swagger'; // default
-if (args['modeler'] !== undefined) {
-	modeler = args['modeler'];
 }
 var autoRestArgs = args['autorest-args'];
 var autoRestExe;
@@ -224,6 +228,10 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
+    var modeler = 'Swagger'; // default
+    if (mappings[project].modeler !== undefined) {
+        modeler = mappings[project].modeler;
+    }
     cmd = autoRestExe + ' -Modeler ' + modeler +
                         ' -CodeGenerator ' + generator +
                         ' -Namespace ' + mappings[project].package +
@@ -263,7 +271,7 @@ function GetAutoRestFolder() {
     return "src/core/AutoRest/bin/Debug/net451/win7-x64/";
   }
   if( isMac ) {
-	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
+	return "src/core/AutoRest/bin/Debug/net451/osx.10.12-x64/";
   }
   if( isLinux ) {
 	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"

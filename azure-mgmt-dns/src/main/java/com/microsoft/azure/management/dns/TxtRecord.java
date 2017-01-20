@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class TxtRecord {
     /**
-     * Gets or sets the text value of this record.
+     * The text value of this TXT record.
      */
     private List<String> value;
 

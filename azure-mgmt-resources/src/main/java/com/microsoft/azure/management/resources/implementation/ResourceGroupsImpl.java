@@ -14,9 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -54,17 +53,17 @@ final class ResourceGroupsImpl
 
     @Override
     public void deleteByName(String name) {
-        deleteByNameAsync(name).toBlocking().subscribe();
+        deleteByNameAsync(name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(client.deleteWithServiceResponseAsync(name), callback);
+        return ServiceCall.fromResponse(client.deleteWithServiceResponseAsync(name), callback);
     }
 
     @Override
-    public Observable<Void> deleteByNameAsync(String name) {
-        return client.deleteAsync(name);
+    public Completable deleteByNameAsync(String name) {
+        return client.deleteAsync(name).toCompletable();
     }
 
     @Override
@@ -99,13 +98,7 @@ final class ResourceGroupsImpl
 
     @Override
     public ServiceCall<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(beginDeleteByNameAsync(name)
-                .flatMap(new Func1<Void, Observable<ServiceResponse<Void>>>() {
-                    @Override
-                    public Observable<ServiceResponse<Void>> call(Void aVoid) {
-                        return null;
-                    }
-                }), callback);
+        return ServiceCall.fromBody(beginDeleteByNameAsync(name), callback);
     }
 
     @Override
@@ -114,7 +107,7 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
+    public Completable deleteByIdAsync(String id) {
         return deleteByNameAsync(ResourceUtils.nameFromResourceId(id));
     }
 }

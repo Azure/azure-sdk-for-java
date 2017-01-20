@@ -6,6 +6,5 @@
 
 /**
  * This package contains the classes for TrafficManagerManagementClient.
- * The TrafficManager Management Client.
  */
 package com.microsoft.azure.management.trafficmanager;

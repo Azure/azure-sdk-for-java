@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServer;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ class FirewallRulesImpl implements SqlServer.FirewallRules {
     }
 
     @Override
-    public Observable<Void> deleteAsync(String firewallRuleName) {
+    public Completable deleteAsync(String firewallRuleName) {
         return this.sqlFirewallRules.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, firewallRuleName);
     }
 

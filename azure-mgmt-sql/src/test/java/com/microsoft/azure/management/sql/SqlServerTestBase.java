@@ -1,40 +1,41 @@
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.core.BaseTestClass;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.RestClient;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
-public abstract class SqlServerTestBase {
+public abstract class SqlServerTestBase extends BaseTestClass {
     protected static ResourceManager resourceManager;
     protected static SqlServerManager sqlServerManager;
+    protected static String RG_NAME = "";
+    protected static String SQL_SERVER_NAME = "";
 
-    public static void createClients() {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                AzureEnvironment.AZURE);
+    @Override
+    protected RestClient buildRestClient(RestClient.Builder builder, boolean isMocked) {
+        if (!isMocked) {
+            return super.buildRestClient(builder, isMocked);
+        }
+        return super.buildRestClient(builder.withReadTimeout(100, TimeUnit.SECONDS), isMocked);
+    }
 
-        RestClient restClient = new RestClient.Builder()
-                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-//                .withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-                .withReadTimeout(100, TimeUnit.SECONDS)
-                .build();
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription) {
+        RG_NAME = generateRandomResourceName("javasqlrg", 20);
+        SQL_SERVER_NAME = generateRandomResourceName("javasqlserver", 20);
 
         resourceManager = ResourceManager
                 .authenticate(restClient)
-                .withSubscription(System.getenv("subscription-id"));
+                .withSubscription(defaultSubscription);
 
         sqlServerManager = SqlServerManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, defaultSubscription);
+    }
+
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 }

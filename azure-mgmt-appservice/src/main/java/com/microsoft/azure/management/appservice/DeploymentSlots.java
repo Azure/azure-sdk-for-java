@@ -7,8 +7,10 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
@@ -24,5 +26,6 @@ public interface DeploymentSlots extends
         SupportsGettingByName<DeploymentSlot>,
         SupportsDeletingById,
         SupportsGettingById<DeploymentSlot>,
-        SupportsDeletingByName {
+        SupportsDeletingByName,
+        HasManager<AppServiceManager> {
 }

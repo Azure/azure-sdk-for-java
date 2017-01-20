@@ -23,7 +23,7 @@ public class ResourceGroupInner {
     private String id;
 
     /**
-     * The Name of the resource group.
+     * The name of the resource group.
      */
     private String name;
 
@@ -34,14 +34,14 @@ public class ResourceGroupInner {
 
     /**
      * The location of the resource group. It cannot be changed after the
-     * resource group has been created. Has to be one of the supported Azure
-     * Locations, such as West US, East US, West Europe, East Asia, etc.
+     * resource group has been created. It muct be one of the supported Azure
+     * locations.
      */
     @JsonProperty(required = true)
     private String location;
 
     /**
-     * Id of the resource that manages this resource group.
+     * The ID of the resource that manages this resource group.
      */
     private String managedBy;
 

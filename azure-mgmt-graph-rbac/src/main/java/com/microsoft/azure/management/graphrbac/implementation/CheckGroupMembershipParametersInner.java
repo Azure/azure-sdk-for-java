@@ -21,8 +21,8 @@ public class CheckGroupMembershipParametersInner {
     private String groupId;
 
     /**
-     * The object ID of the contact, group, user, or service principal to
-     * check for membership in the specified group.
+     * The object ID of the contact, group, user, or service principal to check
+     * for membership in the specified group.
      */
     @JsonProperty(required = true)
     private String memberId;

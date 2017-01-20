@@ -15,13 +15,25 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * The type representing node in a {@link DAGraph}.
  *
- * @param <T> the type of the data stored in the node
- * @param <U> the type of the node
+ * @param <DataT> the type of the data stored in the node
+ * @param <NodeT> the type of the node
  */
-public class DAGNode<T, U extends DAGNode<T, U>> extends Node<T, U> {
+public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<DataT, NodeT> {
+    /**
+     * keys of other nodes those dependents on this node.
+     */
     private List<String> dependentKeys;
+    /**
+     * to track the dependency resolution count.
+     */
     private int toBeResolved;
+    /**
+     * indicates this node is the preparer or not.
+     */
     private boolean isPreparer;
+    /**
+     * lock used while performing concurrent safe operation on the node.
+     */
     private ReentrantLock lock;
 
     /**
@@ -30,7 +42,7 @@ public class DAGNode<T, U extends DAGNode<T, U>> extends Node<T, U> {
      * @param key unique id of the node
      * @param data data to be stored in the node
      */
-    public DAGNode(final String key, final T data) {
+    public DAGNode(final String key, final DataT data) {
         super(key, data);
         dependentKeys = new ArrayList<>();
         lock = new ReentrantLock();
@@ -107,18 +119,31 @@ public class DAGNode<T, U extends DAGNode<T, U>> extends Node<T, U> {
     }
 
     /**
-     * @return <tt>true</tt> if all dependencies of this node are ready to be consumed
+     * @return <tt>true</tt> if all dependencies of this node are resolved
      */
     boolean hasAllResolved() {
         return toBeResolved == 0;
     }
 
     /**
-     * Reports that one of this node's dependency has been resolved and ready to be consumed.
+     * Reports a dependency of this node has been successfully resolved.
      *
      * @param dependencyKey the id of the dependency node
      */
-    void reportResolved(String dependencyKey) {
+    protected void onSuccessfulResolution(String dependencyKey) {
+        if (toBeResolved == 0) {
+            throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
+        }
+        toBeResolved--;
+    }
+
+    /**
+     * Reports a dependency of this node has been faulted.
+     *
+     * @param dependencyKey the id of the dependency node
+     * @param throwable the reason for unsuccessful resolution
+     */
+    protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         if (toBeResolved == 0) {
             throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
         }

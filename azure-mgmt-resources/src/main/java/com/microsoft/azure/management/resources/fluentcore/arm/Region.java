@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public final class Region {
     // This needs to be at the beginning for the initialization to happen correctly
-    private static final Map<String, Region> VALUES_BY_LABEL = new HashMap<>();
     private static final Map<String, Region> VALUES_BY_NAME = new HashMap<>();
 
     // CHECKSTYLE IGNORE Javadoc FOR NEXT 48 LINES
@@ -86,7 +85,6 @@ public final class Region {
         this.name = name;
         this.label = label;
         VALUES_BY_NAME.put(name.toLowerCase(), this);
-        VALUES_BY_LABEL.put(label.toLowerCase(), this);
     }
 
     /**
@@ -127,44 +125,37 @@ public final class Region {
 
     /**
      * Finds a region based on a label or name.
-     *
+     * <p>
+     * A region name is lower-cased label with spaces removed.
      * @param labelOrName the region name or label
      * @return the found region or null if there's no such region
      */
     public static Region findByLabelOrName(String labelOrName) {
-        Region region = Region.findByLabel(labelOrName);
-        if (region != null) {
-            return region;
-        } else {
-            return VALUES_BY_NAME.get(labelOrName.toLowerCase());
+        if (labelOrName == null) {
+            return null;
         }
+
+        return VALUES_BY_NAME.get(labelOrName.toLowerCase().replace(" ", ""));
     }
 
     /**
      * Parses a name into a Region object and creates a new Region instance if not found among the existing ones.
      *
-     * @param name the region name
+     * @param name a region name
      * @return the parsed or created region
      */
     public static Region fromName(String name) {
-        Region region = VALUES_BY_NAME.get(name.toLowerCase());
+        if (name == null) {
+            return null;
+        }
+
+        Region region = VALUES_BY_NAME.get(name.toLowerCase().replace(" ", ""));
         if (region != null) {
             return region;
         } else {
-            return Region.create(name, name);
+            return Region.create(name.toLowerCase().replace(" ", ""), name);
         }
     }
-
-    /**
-     * Looks up a Region based on the provided label.
-     *
-     * @param label the region label
-     * @return the found region or null if there's region with such a label
-     */
-    private static Region findByLabel(String label) {
-        return VALUES_BY_LABEL.get(label.toLowerCase());
-    }
-
 
     @Override
     public int hashCode() {

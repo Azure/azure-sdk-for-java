@@ -11,10 +11,9 @@ package com.microsoft.azure.management.network.implementation;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -46,11 +45,11 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -59,7 +58,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -67,18 +66,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     public NetworkManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** Client Api Version. */
-    private String apiVersion;
-
-    /**
-     * Gets Client Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -164,6 +151,188 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RouteTablesInner object to access its operations.
+     */
+    private RouteTablesInner routeTables;
+
+    /**
+     * Gets the RouteTablesInner object to access its operations.
+     * @return the RouteTablesInner object.
+     */
+    public RouteTablesInner routeTables() {
+        return this.routeTables;
+    }
+
+    /**
+     * The RoutesInner object to access its operations.
+     */
+    private RoutesInner routes;
+
+    /**
+     * Gets the RoutesInner object to access its operations.
+     * @return the RoutesInner object.
+     */
+    public RoutesInner routes() {
+        return this.routes;
+    }
+
+    /**
+     * The PublicIPAddressesInner object to access its operations.
+     */
+    private PublicIPAddressesInner publicIPAddresses;
+
+    /**
+     * Gets the PublicIPAddressesInner object to access its operations.
+     * @return the PublicIPAddressesInner object.
+     */
+    public PublicIPAddressesInner publicIPAddresses() {
+        return this.publicIPAddresses;
+    }
+
+    /**
+     * The NetworkSecurityGroupsInner object to access its operations.
+     */
+    private NetworkSecurityGroupsInner networkSecurityGroups;
+
+    /**
+     * Gets the NetworkSecurityGroupsInner object to access its operations.
+     * @return the NetworkSecurityGroupsInner object.
+     */
+    public NetworkSecurityGroupsInner networkSecurityGroups() {
+        return this.networkSecurityGroups;
+    }
+
+    /**
+     * The SecurityRulesInner object to access its operations.
+     */
+    private SecurityRulesInner securityRules;
+
+    /**
+     * Gets the SecurityRulesInner object to access its operations.
+     * @return the SecurityRulesInner object.
+     */
+    public SecurityRulesInner securityRules() {
+        return this.securityRules;
+    }
+
+    /**
+     * The LoadBalancersInner object to access its operations.
+     */
+    private LoadBalancersInner loadBalancers;
+
+    /**
+     * Gets the LoadBalancersInner object to access its operations.
+     * @return the LoadBalancersInner object.
+     */
+    public LoadBalancersInner loadBalancers() {
+        return this.loadBalancers;
+    }
+
+    /**
+     * The VirtualNetworksInner object to access its operations.
+     */
+    private VirtualNetworksInner virtualNetworks;
+
+    /**
+     * Gets the VirtualNetworksInner object to access its operations.
+     * @return the VirtualNetworksInner object.
+     */
+    public VirtualNetworksInner virtualNetworks() {
+        return this.virtualNetworks;
+    }
+
+    /**
+     * The SubnetsInner object to access its operations.
+     */
+    private SubnetsInner subnets;
+
+    /**
+     * Gets the SubnetsInner object to access its operations.
+     * @return the SubnetsInner object.
+     */
+    public SubnetsInner subnets() {
+        return this.subnets;
+    }
+
+    /**
+     * The VirtualNetworkPeeringsInner object to access its operations.
+     */
+    private VirtualNetworkPeeringsInner virtualNetworkPeerings;
+
+    /**
+     * Gets the VirtualNetworkPeeringsInner object to access its operations.
+     * @return the VirtualNetworkPeeringsInner object.
+     */
+    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
+        return this.virtualNetworkPeerings;
+    }
+
+    /**
+     * The NetworkInterfacesInner object to access its operations.
+     */
+    private NetworkInterfacesInner networkInterfaces;
+
+    /**
+     * Gets the NetworkInterfacesInner object to access its operations.
+     * @return the NetworkInterfacesInner object.
+     */
+    public NetworkInterfacesInner networkInterfaces() {
+        return this.networkInterfaces;
+    }
+
+    /**
+     * The UsagesInner object to access its operations.
+     */
+    private UsagesInner usages;
+
+    /**
+     * Gets the UsagesInner object to access its operations.
+     * @return the UsagesInner object.
+     */
+    public UsagesInner usages() {
+        return this.usages;
+    }
+
+    /**
+     * The VirtualNetworkGatewaysInner object to access its operations.
+     */
+    private VirtualNetworkGatewaysInner virtualNetworkGateways;
+
+    /**
+     * Gets the VirtualNetworkGatewaysInner object to access its operations.
+     * @return the VirtualNetworkGatewaysInner object.
+     */
+    public VirtualNetworkGatewaysInner virtualNetworkGateways() {
+        return this.virtualNetworkGateways;
+    }
+
+    /**
+     * The VirtualNetworkGatewayConnectionsInner object to access its operations.
+     */
+    private VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections;
+
+    /**
+     * Gets the VirtualNetworkGatewayConnectionsInner object to access its operations.
+     * @return the VirtualNetworkGatewayConnectionsInner object.
+     */
+    public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
+        return this.virtualNetworkGatewayConnections;
+    }
+
+    /**
+     * The LocalNetworkGatewaysInner object to access its operations.
+     */
+    private LocalNetworkGatewaysInner localNetworkGateways;
+
+    /**
+     * Gets the LocalNetworkGatewaysInner object to access its operations.
+     * @return the LocalNetworkGatewaysInner object.
+     */
+    public LocalNetworkGatewaysInner localNetworkGateways() {
+        return this.localNetworkGateways;
+    }
+
+    /**
      * The ExpressRouteCircuitAuthorizationsInner object to access its operations.
      */
     private ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations;
@@ -216,188 +385,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The LoadBalancersInner object to access its operations.
-     */
-    private LoadBalancersInner loadBalancers;
-
-    /**
-     * Gets the LoadBalancersInner object to access its operations.
-     * @return the LoadBalancersInner object.
-     */
-    public LoadBalancersInner loadBalancers() {
-        return this.loadBalancers;
-    }
-
-    /**
-     * The LocalNetworkGatewaysInner object to access its operations.
-     */
-    private LocalNetworkGatewaysInner localNetworkGateways;
-
-    /**
-     * Gets the LocalNetworkGatewaysInner object to access its operations.
-     * @return the LocalNetworkGatewaysInner object.
-     */
-    public LocalNetworkGatewaysInner localNetworkGateways() {
-        return this.localNetworkGateways;
-    }
-
-    /**
-     * The NetworkInterfacesInner object to access its operations.
-     */
-    private NetworkInterfacesInner networkInterfaces;
-
-    /**
-     * Gets the NetworkInterfacesInner object to access its operations.
-     * @return the NetworkInterfacesInner object.
-     */
-    public NetworkInterfacesInner networkInterfaces() {
-        return this.networkInterfaces;
-    }
-
-    /**
-     * The NetworkSecurityGroupsInner object to access its operations.
-     */
-    private NetworkSecurityGroupsInner networkSecurityGroups;
-
-    /**
-     * Gets the NetworkSecurityGroupsInner object to access its operations.
-     * @return the NetworkSecurityGroupsInner object.
-     */
-    public NetworkSecurityGroupsInner networkSecurityGroups() {
-        return this.networkSecurityGroups;
-    }
-
-    /**
-     * The PublicIPAddressesInner object to access its operations.
-     */
-    private PublicIPAddressesInner publicIPAddresses;
-
-    /**
-     * Gets the PublicIPAddressesInner object to access its operations.
-     * @return the PublicIPAddressesInner object.
-     */
-    public PublicIPAddressesInner publicIPAddresses() {
-        return this.publicIPAddresses;
-    }
-
-    /**
-     * The RouteTablesInner object to access its operations.
-     */
-    private RouteTablesInner routeTables;
-
-    /**
-     * Gets the RouteTablesInner object to access its operations.
-     * @return the RouteTablesInner object.
-     */
-    public RouteTablesInner routeTables() {
-        return this.routeTables;
-    }
-
-    /**
-     * The RoutesInner object to access its operations.
-     */
-    private RoutesInner routes;
-
-    /**
-     * Gets the RoutesInner object to access its operations.
-     * @return the RoutesInner object.
-     */
-    public RoutesInner routes() {
-        return this.routes;
-    }
-
-    /**
-     * The SecurityRulesInner object to access its operations.
-     */
-    private SecurityRulesInner securityRules;
-
-    /**
-     * Gets the SecurityRulesInner object to access its operations.
-     * @return the SecurityRulesInner object.
-     */
-    public SecurityRulesInner securityRules() {
-        return this.securityRules;
-    }
-
-    /**
-     * The SubnetsInner object to access its operations.
-     */
-    private SubnetsInner subnets;
-
-    /**
-     * Gets the SubnetsInner object to access its operations.
-     * @return the SubnetsInner object.
-     */
-    public SubnetsInner subnets() {
-        return this.subnets;
-    }
-
-    /**
-     * The VirtualNetworkPeeringsInner object to access its operations.
-     */
-    private VirtualNetworkPeeringsInner virtualNetworkPeerings;
-
-    /**
-     * Gets the VirtualNetworkPeeringsInner object to access its operations.
-     * @return the VirtualNetworkPeeringsInner object.
-     */
-    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
-        return this.virtualNetworkPeerings;
-    }
-
-    /**
-     * The UsagesInner object to access its operations.
-     */
-    private UsagesInner usages;
-
-    /**
-     * Gets the UsagesInner object to access its operations.
-     * @return the UsagesInner object.
-     */
-    public UsagesInner usages() {
-        return this.usages;
-    }
-
-    /**
-     * The VirtualNetworkGatewayConnectionsInner object to access its operations.
-     */
-    private VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections;
-
-    /**
-     * Gets the VirtualNetworkGatewayConnectionsInner object to access its operations.
-     * @return the VirtualNetworkGatewayConnectionsInner object.
-     */
-    public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
-        return this.virtualNetworkGatewayConnections;
-    }
-
-    /**
-     * The VirtualNetworkGatewaysInner object to access its operations.
-     */
-    private VirtualNetworkGatewaysInner virtualNetworkGateways;
-
-    /**
-     * Gets the VirtualNetworkGatewaysInner object to access its operations.
-     * @return the VirtualNetworkGatewaysInner object.
-     */
-    public VirtualNetworkGatewaysInner virtualNetworkGateways() {
-        return this.virtualNetworkGateways;
-    }
-
-    /**
-     * The VirtualNetworksInner object to access its operations.
-     */
-    private VirtualNetworksInner virtualNetworks;
-
-    /**
-     * Gets the VirtualNetworksInner object to access its operations.
-     * @return the VirtualNetworksInner object.
-     */
-    public VirtualNetworksInner virtualNetworks() {
-        return this.virtualNetworks;
-    }
-
-    /**
      * Initializes an instance of NetworkManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -413,10 +400,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public NetworkManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -430,29 +415,28 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-06-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.applicationGateways = new ApplicationGatewaysInner(restClient().retrofit(), this);
+        this.routeTables = new RouteTablesInner(restClient().retrofit(), this);
+        this.routes = new RoutesInner(restClient().retrofit(), this);
+        this.publicIPAddresses = new PublicIPAddressesInner(restClient().retrofit(), this);
+        this.networkSecurityGroups = new NetworkSecurityGroupsInner(restClient().retrofit(), this);
+        this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
+        this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
+        this.virtualNetworks = new VirtualNetworksInner(restClient().retrofit(), this);
+        this.subnets = new SubnetsInner(restClient().retrofit(), this);
+        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(restClient().retrofit(), this);
+        this.networkInterfaces = new NetworkInterfacesInner(restClient().retrofit(), this);
+        this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
+        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
+        this.localNetworkGateways = new LocalNetworkGatewaysInner(restClient().retrofit(), this);
         this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsInner(restClient().retrofit(), this);
         this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsInner(restClient().retrofit(), this);
         this.expressRouteCircuits = new ExpressRouteCircuitsInner(restClient().retrofit(), this);
         this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
-        this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
-        this.localNetworkGateways = new LocalNetworkGatewaysInner(restClient().retrofit(), this);
-        this.networkInterfaces = new NetworkInterfacesInner(restClient().retrofit(), this);
-        this.networkSecurityGroups = new NetworkSecurityGroupsInner(restClient().retrofit(), this);
-        this.publicIPAddresses = new PublicIPAddressesInner(restClient().retrofit(), this);
-        this.routeTables = new RouteTablesInner(restClient().retrofit(), this);
-        this.routes = new RoutesInner(restClient().retrofit(), this);
-        this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
-        this.subnets = new SubnetsInner(restClient().retrofit(), this);
-        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(restClient().retrofit(), this);
-        this.usages = new UsagesInner(restClient().retrofit(), this);
-        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
-        this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
-        this.virtualNetworks = new VirtualNetworksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -466,7 +450,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "NetworkManagementClient, 2016-06-01");
+                "NetworkManagementClient, ");
     }
 
     private void initializeService() {
@@ -478,7 +462,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkManagementClientService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkManagementClient checkDnsNameAvailability" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         Observable<Response<ResponseBody>> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -487,35 +471,35 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
+        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location) {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -523,7 +507,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithServiceResponseAsync(String location) {
@@ -533,11 +517,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String domainNameLabel = null;
-        return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> call(Response<ResponseBody> response) {
@@ -554,30 +536,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
-        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().getBody();
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().body();
     }
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
+        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
     }
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
@@ -585,7 +567,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
             @Override
             public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -593,7 +575,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
-     * @param location The location of the domain name
+     * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
@@ -604,10 +586,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> call(Response<ResponseBody> response) {
@@ -622,7 +602,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DnsNameAvailabilityResultInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<DnsNameAvailabilityResultInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<DnsNameAvailabilityResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

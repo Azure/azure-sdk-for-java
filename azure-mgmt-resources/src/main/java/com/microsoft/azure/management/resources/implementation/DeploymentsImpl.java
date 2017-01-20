@@ -11,13 +11,12 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 import java.util.List;
 
@@ -25,7 +24,8 @@ import java.util.List;
  * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
-    implements Deployments {
+    implements Deployments,
+    HasManager<ResourceManager> {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
@@ -79,22 +79,17 @@ final class DeploymentsImpl
 
     @Override
     public void deleteByGroup(String groupName, String name) {
-        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
+        deleteByGroupAsync(groupName, name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return client.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return client.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -128,21 +123,21 @@ final class DeploymentsImpl
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).toBlocking().subscribe();
+        deleteByIdAsync(id).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByIdAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
+    public Completable deleteByIdAsync(String id) {
         return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public ResourceManager manager() {
+        return this.resourceManager;
     }
 }

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The arp table associated with the ExpressRouteCircuit.
+ * The ARP table associated with the ExpressRouteCircuit.
  */
 public class ExpressRouteCircuitArpTable {
     /**
@@ -26,12 +26,12 @@ public class ExpressRouteCircuitArpTable {
     private String interfaceProperty;
 
     /**
-     * Gets ipAddress.
+     * The IP address.
      */
     private String ipAddress;
 
     /**
-     * Gets macAddress.
+     * The MAC address.
      */
     private String macAddress;
 

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Provides access to deleting a resource from Azure, identifying it by its resource name.
@@ -38,7 +38,7 @@ public interface SupportsDeletingByName {
      * Asynchronously delete a resource from Azure, identifying it by its resource name.
      *
      * @param name the name of the resource to delete
-     * @return an observable of the request
+     * @return a completable indicates completion or exception of the request
      */
-    Observable<Void> deleteByNameAsync(String name);
+    Completable deleteByNameAsync(String name);
 }

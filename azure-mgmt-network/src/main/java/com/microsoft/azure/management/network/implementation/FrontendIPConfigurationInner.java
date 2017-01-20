@@ -8,12 +8,11 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-
-import java.util.List;
 
 /**
  * Frontend IP address of the load balancer.
@@ -39,45 +38,45 @@ public class FrontendIPConfigurationInner extends SubResource {
     private List<SubResource> outboundNatRules;
 
     /**
-     * Gets Load Balancing rules URIs that use this frontend IP.
+     * Gets load balancing rules URIs that use this frontend IP.
      */
     @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
-     * Gets or sets the privateIPAddress of the IP Configuration.
+     * The private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method. Possible values include:
-     * 'Static', 'Dynamic'.
+     * The Private IP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
 
     /**
-     * Gets or sets the reference of the subnet resource.
+     * The reference of the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /**
-     * Gets or sets the reference of the PublicIP resource.
+     * The reference of the Public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private SubResource publicIPAddress;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

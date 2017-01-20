@@ -24,7 +24,7 @@ public class ValidateCustomDomainOutputInner {
     private String reason;
 
     /**
-     * The message describing why the custom domain is not valid.
+     * Error message describing why the custom domain is not valid.
      */
     private String message;
 

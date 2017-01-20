@@ -12,17 +12,17 @@ import com.microsoft.azure.management.graphrbac.PasswordProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for create a new work or school account user.
+ * Request parameters for creating a new work or school account user.
  */
 public class UserCreateParametersInner {
     /**
-     * Enable the account. If it is enabled then true else false.
+     * Whether the account is enabled.
      */
     @JsonProperty(required = true)
     private boolean accountEnabled;
 
     /**
-     * User display name.
+     * The display name of the user.
      */
     @JsonProperty(required = true)
     private String displayName;
@@ -47,10 +47,10 @@ public class UserCreateParametersInner {
     private String mailNickname;
 
     /**
-     * Needs to be specified if you are using a federated domain for the
-     * user's userPrincipalName (UPN) property while creating a new user
+     * This must be specified if you are using a federated domain for the
+     * user's userPrincipalName (UPN) property when creating a new user
      * account. It is used to associate an on-premises Active Directory user
-     * account to their Azure AD user object.
+     * account with their Azure AD user object.
      */
     private String immutableId;
 

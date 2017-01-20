@@ -19,46 +19,44 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class NetworkSecurityGroupInner extends Resource {
     /**
-     * Gets or sets security rules of network security group.
+     * A collection of security rules of the network security group.
      */
     @JsonProperty(value = "properties.securityRules")
     private List<SecurityRuleInner> securityRules;
 
     /**
-     * Gets or default security rules of network security group.
+     * The default security rules of network security group.
      */
     @JsonProperty(value = "properties.defaultSecurityRules")
     private List<SecurityRuleInner> defaultSecurityRules;
 
     /**
-     * Gets collection of references to Network Interfaces.
+     * A collection of references to network interfaces.
      */
     @JsonProperty(value = "properties.networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /**
-     * Gets collection of references to subnets.
+     * A collection of references to subnets.
      */
     @JsonProperty(value = "properties.subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /**
-     * Gets or sets resource guid property of the network security group
-     * resource.
+     * The resource GUID property of the network security group resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 

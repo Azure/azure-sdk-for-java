@@ -15,37 +15,39 @@ import java.util.List;
  */
 public class OSProfile {
     /**
-     * the computer name.
+     * Specifies the host OS name of the virtual machine.
      */
     private String computerName;
 
     /**
-     * the admin user name.
+     * Specifies the name of the administrator account.
      */
     private String adminUsername;
 
     /**
-     * the admin user password.
+     * Specifies the password of the administrator account.
      */
     private String adminPassword;
 
     /**
-     * a base-64 encoded string of custom data.
+     * Specifies a base-64 encoded string of custom data. The base-64 encoded
+     * string is decoded to a binary array that is saved as a file on the
+     * Virtual Machine. The maximum length of the binary array is 65535 bytes.
      */
     private String customData;
 
     /**
-     * the Windows Configuration of the OS profile.
+     * The Windows configuration of the OS profile.
      */
     private WindowsConfiguration windowsConfiguration;
 
     /**
-     * the Linux Configuration of the OS profile.
+     * The Linux configuration of the OS profile.
      */
     private LinuxConfiguration linuxConfiguration;
 
     /**
-     * the List of certificates for addition to the VM.
+     * The list of certificates for addition to the VM.
      */
     private List<VaultSecretGroup> secrets;
 

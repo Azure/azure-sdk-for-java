@@ -18,7 +18,8 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class NetworkInterfaceReferenceInner extends SubResource {
     /**
-     * whether this is a primary NIC on a virtual machine.
+     * Specifies the primary network interface in case the virtual machine has
+     * more than 1 network interface.
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;

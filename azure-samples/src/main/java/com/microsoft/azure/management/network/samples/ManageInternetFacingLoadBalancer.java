@@ -21,12 +21,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure Network sample for managing Internet facing load balancers -
@@ -99,8 +101,6 @@ public final class ManageInternetFacingLoadBalancer {
         final String networkInterfaceName2 = ResourceNamer.randomResourceName("nic2", 24);
 
         final String availSetName = ResourceNamer.randomResourceName("av", 24);
-        final String vmName1 = ResourceNamer.randomResourceName("lVM1", 24);
-        final String vmName2 = ResourceNamer.randomResourceName("lVM2", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -114,7 +114,7 @@ public final class ManageInternetFacingLoadBalancer {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(LogLevel.BODY.withPrettyJson(true))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -250,19 +250,15 @@ public final class ManageInternetFacingLoadBalancer {
                 Utils.print(loadBalancer1);
 
                 //=============================================================
-                // Create two network interfaces in the frontend subnet
-                //  associate network interfaces to NAT rules, backend pools
+                // Define two network interfaces in the frontend subnet
+                // associate network interfaces to NAT rules, backend pools
 
                 System.out.println("Creating two network interfaces in the frontend subnet ...");
                 System.out.println("- And associating network interfaces to backend pools and NAT rules");
 
                 List <Creatable<NetworkInterface>> networkInterfaceCreatables = new ArrayList<Creatable<NetworkInterface>>();
 
-                Creatable<NetworkInterface> networkInterface1Creatable;
-                Creatable<NetworkInterface> networkInterface2Creatable;
-
-
-                networkInterface1Creatable = azure.networkInterfaces()
+                Creatable<NetworkInterface> networkInterface1Creatable = azure.networkInterfaces()
                         .define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
@@ -276,7 +272,7 @@ public final class ManageInternetFacingLoadBalancer {
 
                 networkInterfaceCreatables.add(networkInterface1Creatable);
 
-                networkInterface2Creatable = azure.networkInterfaces()
+                Creatable<NetworkInterface> networkInterface2Creatable = azure.networkInterfaces()
                         .define(networkInterfaceName2)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
@@ -290,31 +286,15 @@ public final class ManageInternetFacingLoadBalancer {
 
                 networkInterfaceCreatables.add(networkInterface2Creatable);
 
-                List <NetworkInterface> networkInterfaces1 = azure.networkInterfaces().create(networkInterfaceCreatables);
-
-                // Print network interface details
-                System.out.println("Created two network interfaces");
-                System.out.println("Network Interface ONE -");
-                Utils.print(networkInterfaces1.get(0));
-                System.out.println();
-                System.out.println("Network Interface TWO -");
-                Utils.print(networkInterfaces1.get(1));
-
 
                 //=============================================================
-                // Create an availability set
+                // Define an availability set
 
-                System.out.println("Creating an availability set ...");
-
-                AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName)
+                Creatable<AvailabilitySet> availSet1Definition = azure.availabilitySets().define(availSetName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
                         .withFaultDomainCount(2)
-                        .withUpdateDomainCount(4)
-                        .create();
-
-                System.out.println("Created first availability set: " + availSet1.id());
-                Utils.print(availSet1);
+                        .withUpdateDomainCount(4);
 
 
                 //=============================================================
@@ -324,49 +304,34 @@ public final class ManageInternetFacingLoadBalancer {
                 System.out.println("- And assigning network interfaces");
 
                 List <Creatable<VirtualMachine>> virtualMachineCreateables1 = new ArrayList<Creatable<VirtualMachine>>();
-                Creatable<VirtualMachine> virtualMachine1Creatable;
-                Creatable<VirtualMachine> virtualMachine2Creatable;
 
-                virtualMachine1Creatable = azure.virtualMachines()
-                        .define(vmName1)
+                for (Creatable<NetworkInterface> nicDefinition : networkInterfaceCreatables) {
+                    virtualMachineCreateables1.add(azure.virtualMachines()
+                        .define(ResourceNamer.randomResourceName("lVM1", 24))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetworkInterface(networkInterfaces1.get(0))
+                        .withNewPrimaryNetworkInterface(nicDefinition)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .withExistingAvailabilitySet(availSet1);
+                        .withNewAvailabilitySet(availSet1Definition));
+                }
 
-                virtualMachineCreateables1.add(virtualMachine1Creatable);
+                StopWatch stopwatch = new StopWatch();
+                stopwatch.start();
 
-                virtualMachine2Creatable = azure.virtualMachines()
-                        .define(vmName2)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetworkInterface(networkInterfaces1.get(1))
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withSsh(sshKey)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .withExistingAvailabilitySet(availSet1);
+                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineCreateables1).values();
 
-                virtualMachineCreateables1.add(virtualMachine2Creatable);
-
-                Date t1 = new Date();
-                List <VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineCreateables1);
-
-                Date t2 = new Date();
-                System.out.println("Created 2 Linux VMs: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                stopwatch.stop();
+                System.out.println("Created 2 Linux VMs: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
                 System.out.println();
 
                 // Print virtual machine details
-                System.out.println("Virtual Machine ONE -");
-                Utils.print(virtualMachines.get(0));
-                System.out.println();
-                System.out.println("Virtual Machine TWO - ");
-                Utils.print(virtualMachines.get(1));
-
+                for (VirtualMachine vm : virtualMachines) {
+                    Utils.print(vm);
+                    System.out.println();
+                }
 
                 //=============================================================
                 // Update a load balancer

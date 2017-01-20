@@ -7,10 +7,12 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import rx.Observable;
@@ -25,7 +27,8 @@ public interface AppServiceCertificateOrders extends
         SupportsListingByGroup<AppServiceCertificateOrder>,
         SupportsGettingByGroup<AppServiceCertificateOrder>,
         SupportsGettingById<AppServiceCertificateOrder>,
-        SupportsDeletingByGroup {
+        SupportsDeletingByGroup,
+        HasManager<AppServiceManager> {
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
      *

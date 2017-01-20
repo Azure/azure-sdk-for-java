@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.OperationStatus;
-import com.microsoft.azure.management.dns.HtpStatusCode;
+import com.microsoft.azure.management.dns.HttpStatusCode;
 
 /**
  * The response to a Zone Delete operation.
@@ -37,12 +37,11 @@ public class ZoneDeleteResultInner {
      * 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout',
      * 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed',
      * 'RequestEntityTooLarge', 'RequestUriTooLong', 'UnsupportedMediaType',
-     * 'RequestedRangeNotSatisfiable', 'ExpectationFailed',
-     * 'UpgradeRequired', 'InternalServerError', 'NotImplemented',
-     * 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout',
-     * 'HttpVersionNotSupported'.
+     * 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired',
+     * 'InternalServerError', 'NotImplemented', 'BadGateway',
+     * 'ServiceUnavailable', 'GatewayTimeout', 'HttpVersionNotSupported'.
      */
-    private HtpStatusCode statusCode;
+    private HttpStatusCode statusCode;
 
     /**
      * The requestId property.
@@ -94,7 +93,7 @@ public class ZoneDeleteResultInner {
      *
      * @return the statusCode value
      */
-    public HtpStatusCode statusCode() {
+    public HttpStatusCode statusCode() {
         return this.statusCode;
     }
 
@@ -104,7 +103,7 @@ public class ZoneDeleteResultInner {
      * @param statusCode the statusCode value to set
      * @return the ZoneDeleteResultInner object itself.
      */
-    public ZoneDeleteResultInner withStatusCode(HtpStatusCode statusCode) {
+    public ZoneDeleteResultInner withStatusCode(HttpStatusCode statusCode) {
         this.statusCode = statusCode;
         return this;
     }

@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -18,7 +20,8 @@ import rx.Observable;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface ServicePrincipals extends
         // SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
-        SupportsListing<ServicePrincipal> {
+        SupportsListing<ServicePrincipal>,
+        HasManager<GraphRbacManager> {
     /**
      * Gets the information about a service principal.
      *

@@ -15,13 +15,14 @@ package com.microsoft.azure.management.compute;
  */
 public class SshPublicKey {
     /**
-     * the full path on the created VM where SSH public key is stored. If the
-     * file already exists, the specified key is appended to the file.
+     * Specifies the full path on the created VM where SSH public key is
+     * stored. If the file already exists, the specified key is appended to the
+     * file.
      */
     private String path;
 
     /**
-     * Certificate public key used to authenticate with VM through SSH.The
+     * Certificate public key used to authenticate to the VM through SSH. The
      * certificate must be in Pem format with or without headers.
      */
     private String keyData;

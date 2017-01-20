@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
@@ -111,8 +112,12 @@ public abstract class IndependentChildImpl<
 
     protected void setParentName(InnerModelT inner) {
         if (this.id() != null) {
-            this.parentName = ResourceId.parseResourceId(this.id()).parent().name();
+            this.parentName = ResourceId.fromString(this.id()).parent().name();
         }
+    }
+
+    protected Indexable createdResource(String key) {
+        return super.createdModel(key);
     }
 
     protected abstract Observable<FluentModelT> createChildResourceAsync();

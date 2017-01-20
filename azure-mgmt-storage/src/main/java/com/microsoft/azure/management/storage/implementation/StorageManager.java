@@ -6,13 +6,14 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
+import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure storage resource management.
@@ -39,7 +40,8 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      * @return the StorageManager
      */
     public static StorageManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new StorageManager(credentials.getEnvironment().newRestClientBuilder()
+        return new StorageManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }

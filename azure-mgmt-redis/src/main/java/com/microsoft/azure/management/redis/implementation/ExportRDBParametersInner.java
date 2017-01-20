@@ -11,7 +11,7 @@ package com.microsoft.azure.management.redis.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for redis export operation.
+ * Parameters for Redis export operation.
  */
 public class ExportRDBParametersInner {
     /**

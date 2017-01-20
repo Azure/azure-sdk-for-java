@@ -37,7 +37,7 @@ public abstract class CreatableImpl<
 
     @Override
     public final Observable<FluentModelT> applyAsync() {
-        throw new IllegalStateException("Internal Error: updateAsync cannot be called from CreatableImpl");
+        throw new IllegalStateException("Internal Error: applyAsync cannot be called from CreatableImpl");
     }
 
     @Override

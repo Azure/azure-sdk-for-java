@@ -11,7 +11,6 @@ package com.microsoft.azure.management.cdn.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.management.cdn.LoadParameters;
@@ -36,6 +35,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -66,77 +66,85 @@ public final class EndpointsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface EndpointsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints listByProfile" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints")
         Observable<Response<ResponseBody>> listByProfile(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner endpoint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner endpoint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointUpdateParametersInner endpointUpdateProperties, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointUpdateParametersInner endpointUpdateProperties, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints start" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start")
         Observable<Response<ResponseBody>> start(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginStart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start")
         Observable<Response<ResponseBody>> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints stop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop")
         Observable<Response<ResponseBody>> stop(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginStop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop")
         Observable<Response<ResponseBody>> beginStop(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints purgeContent" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge")
         Observable<Response<ResponseBody>> purgeContent(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PurgeParameters contentFilePaths, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginPurgeContent" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge")
         Observable<Response<ResponseBody>> beginPurgeContent(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PurgeParameters contentFilePaths, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints loadContent" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load")
         Observable<Response<ResponseBody>> loadContent(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body LoadParameters contentFilePaths, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints beginLoadContent" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load")
         Observable<Response<ResponseBody>> beginLoadContent(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body LoadParameters contentFilePaths, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints validateCustomDomain" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain")
         Observable<Response<ResponseBody>> validateCustomDomain(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ValidateCustomDomainInput customDomainProperties, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByProfileNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints listResourceUsage" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/checkResourceUsage")
+        Observable<Response<ResponseBody>> listResourceUsage(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints listByProfileNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByProfileNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Endpoints listResourceUsageNext" })
+        @GET
+        Observable<Response<ResponseBody>> listResourceUsageNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -149,10 +157,10 @@ public final class EndpointsInner {
      */
     public PagedList<EndpointInner> listByProfile(final String resourceGroupName, final String profileName) {
         ServiceResponse<Page<EndpointInner>> response = listByProfileSinglePageAsync(resourceGroupName, profileName).toBlocking().single();
-        return new PagedList<EndpointInner>(response.getBody()) {
+        return new PagedList<EndpointInner>(response.body()) {
             @Override
             public Page<EndpointInner> nextPage(String nextPageLink) {
-                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -166,7 +174,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<EndpointInner>> listByProfileAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<EndpointInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByProfileSinglePageAsync(resourceGroupName, profileName),
             new Func1<String, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
@@ -189,7 +197,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<EndpointInner>>, Page<EndpointInner>>() {
                 @Override
                 public Page<EndpointInner> call(ServiceResponse<Page<EndpointInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -206,7 +214,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<EndpointInner>>, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(ServiceResponse<Page<EndpointInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -241,7 +249,7 @@ public final class EndpointsInner {
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<EndpointInner>> result = listByProfileDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -250,7 +258,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<PageImpl<EndpointInner>> listByProfileDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<EndpointInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EndpointInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
@@ -265,7 +273,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -278,7 +286,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -293,7 +301,7 @@ public final class EndpointsInner {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -337,14 +345,14 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -353,11 +361,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner create(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().last().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().last().body();
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -367,11 +375,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> createAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
+        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -383,13 +391,13 @@ public final class EndpointsInner {
         return createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -422,7 +430,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -431,11 +439,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginCreate(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().single().getBody();
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).toBlocking().single().body();
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -445,11 +453,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> beginCreateAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -461,13 +469,13 @@ public final class EndpointsInner {
         return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates a new CDN endpoint with the specified parameters.
+     * Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -510,7 +518,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .register(201, new TypeToken<EndpointInner>() { }.getType())
                 .register(202, new TypeToken<EndpointInner>() { }.getType())
@@ -519,7 +527,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -528,11 +536,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().last().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().last().body();
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -542,11 +550,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
+        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -558,13 +566,13 @@ public final class EndpointsInner {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -597,7 +605,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -606,11 +614,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginUpdate(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().single().getBody();
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).toBlocking().single().body();
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -620,11 +628,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
+        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -636,13 +644,13 @@ public final class EndpointsInner {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Updates an existing CDN endpoint with the specified parameters. Only tags and OriginHostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins, use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -685,7 +693,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .register(202, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -693,18 +701,18 @@ public final class EndpointsInner {
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      */
     public void delete(String resourceGroupName, String profileName, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -713,11 +721,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -728,13 +736,13 @@ public final class EndpointsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -762,18 +770,18 @@ public final class EndpointsInner {
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      */
     public void beginDelete(String resourceGroupName, String profileName, String endpointName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -782,11 +790,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -797,13 +805,13 @@ public final class EndpointsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Deletes an existing CDN endpoint with the specified parameters.
+     * Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -841,7 +849,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -849,7 +857,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -857,11 +865,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner start(String resourceGroupName, String profileName, String endpointName) {
-        return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -870,11 +878,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> startAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(startWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -885,13 +893,13 @@ public final class EndpointsInner {
         return startWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -919,7 +927,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -927,11 +935,11 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginStart(String resourceGroupName, String profileName, String endpointName) {
-        return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -940,11 +948,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> beginStartAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -955,13 +963,13 @@ public final class EndpointsInner {
         return beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Starts an existing stopped CDN endpoint.
+     * Starts an existing CDN endpoint that is on a stopped state.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -999,7 +1007,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> beginStartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
@@ -1014,7 +1022,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner stop(String resourceGroupName, String profileName, String endpointName) {
-        return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().getBody();
+        return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().last().body();
     }
 
     /**
@@ -1027,7 +1035,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> stopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -1042,7 +1050,7 @@ public final class EndpointsInner {
         return stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1084,7 +1092,7 @@ public final class EndpointsInner {
      * @return the EndpointInner object if successful.
      */
     public EndpointInner beginStop(String resourceGroupName, String profileName, String endpointName) {
-        return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().getBody();
+        return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -1097,7 +1105,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EndpointInner> beginStopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+        return ServiceCall.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -1112,7 +1120,7 @@ public final class EndpointsInner {
         return beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1156,14 +1164,14 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> beginStopDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1171,11 +1179,11 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      */
     public void purgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().getBody();
+        purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().body();
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1185,11 +1193,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> purgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+        return ServiceCall.fromResponse(purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1201,13 +1209,13 @@ public final class EndpointsInner {
         return purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1242,7 +1250,7 @@ public final class EndpointsInner {
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1250,11 +1258,11 @@ public final class EndpointsInner {
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      */
     public void beginPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().getBody();
+        beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().body();
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1264,11 +1272,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginPurgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+        return ServiceCall.fromResponse(beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1280,13 +1288,13 @@ public final class EndpointsInner {
         return beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Forcibly purges CDN endpoint content.
+     * Removes a content from CDN.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1331,63 +1339,63 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<Void> beginPurgeContentDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      */
     public void loadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().getBody();
+        loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().last().body();
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> loadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+        return ServiceCall.fromResponse(loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @return the observable for the request
      */
     public Observable<Void> loadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         return loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> loadContentWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
@@ -1417,56 +1425,56 @@ public final class EndpointsInner {
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      */
     public void beginLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().getBody();
+        beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).toBlocking().single().body();
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginLoadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+        return ServiceCall.fromResponse(beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginLoadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         return beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Pre-loads a content to CDN. Available for Verizon Profiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginLoadContentWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
@@ -1506,14 +1514,14 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<Void> beginLoadContentDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1522,11 +1530,11 @@ public final class EndpointsInner {
      * @return the ValidateCustomDomainOutputInner object if successful.
      */
     public ValidateCustomDomainOutputInner validateCustomDomain(String resourceGroupName, String profileName, String endpointName, String hostName) {
-        return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).toBlocking().single().getBody();
+        return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).toBlocking().single().body();
     }
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1536,11 +1544,11 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ValidateCustomDomainOutputInner> validateCustomDomainAsync(String resourceGroupName, String profileName, String endpointName, String hostName, final ServiceCallback<ValidateCustomDomainOutputInner> serviceCallback) {
-        return ServiceCall.create(validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName), serviceCallback);
+        return ServiceCall.fromResponse(validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName), serviceCallback);
     }
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1552,13 +1560,13 @@ public final class EndpointsInner {
         return validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName).map(new Func1<ServiceResponse<ValidateCustomDomainOutputInner>, ValidateCustomDomainOutputInner>() {
             @Override
             public ValidateCustomDomainOutputInner call(ServiceResponse<ValidateCustomDomainOutputInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1602,8 +1610,132 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<ValidateCustomDomainOutputInner> validateCustomDomainDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ValidateCustomDomainOutputInner, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ValidateCustomDomainOutputInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ValidateCustomDomainOutputInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
+     */
+    public PagedList<ResourceUsageInner> listResourceUsage(final String resourceGroupName, final String profileName, final String endpointName) {
+        ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageSinglePageAsync(resourceGroupName, profileName, endpointName).toBlocking().single();
+        return new PagedList<ResourceUsageInner>(response.body()) {
+            @Override
+            public Page<ResourceUsageInner> nextPage(String nextPageLink) {
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
+            listResourceUsageSinglePageAsync(resourceGroupName, profileName, endpointName),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(String nextPageLink) {
+                    return listResourceUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<Page<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final String endpointName) {
+        return listResourceUsageWithServiceResponseAsync(resourceGroupName, profileName, endpointName)
+            .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
+                @Override
+                public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageWithServiceResponseAsync(final String resourceGroupName, final String profileName, final String endpointName) {
+        return listResourceUsageSinglePageAsync(resourceGroupName, profileName, endpointName)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listResourceUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageSinglePageAsync(final String resourceGroupName, final String profileName, final String endpointName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (profileName == null) {
+            throw new IllegalArgumentException("Parameter profileName is required and cannot be null.");
+        }
+        if (endpointName == null) {
+            throw new IllegalArgumentException("Parameter endpointName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listResourceUsage(resourceGroupName, profileName, endpointName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceUsageInner>> listResourceUsageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceUsageInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceUsageInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1616,10 +1748,10 @@ public final class EndpointsInner {
      */
     public PagedList<EndpointInner> listByProfileNext(final String nextPageLink) {
         ServiceResponse<Page<EndpointInner>> response = listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<EndpointInner>(response.getBody()) {
+        return new PagedList<EndpointInner>(response.body()) {
             @Override
             public Page<EndpointInner> nextPage(String nextPageLink) {
-                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByProfileNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1633,7 +1765,7 @@ public final class EndpointsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<EndpointInner>> listByProfileNextAsync(final String nextPageLink, final ServiceCall<List<EndpointInner>> serviceCall, final ListOperationCallback<EndpointInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listByProfileNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
@@ -1655,7 +1787,7 @@ public final class EndpointsInner {
             .map(new Func1<ServiceResponse<Page<EndpointInner>>, Page<EndpointInner>>() {
                 @Override
                 public Page<EndpointInner> call(ServiceResponse<Page<EndpointInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1671,7 +1803,7 @@ public final class EndpointsInner {
             .concatMap(new Func1<ServiceResponse<Page<EndpointInner>>, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(ServiceResponse<Page<EndpointInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1690,13 +1822,14 @@ public final class EndpointsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByProfileNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByProfileNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<EndpointInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<EndpointInner>> result = listByProfileNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<EndpointInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1705,8 +1838,112 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<PageImpl<EndpointInner>> listByProfileNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<EndpointInner>, ErrorResponseException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EndpointInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
+     */
+    public PagedList<ResourceUsageInner> listResourceUsageNext(final String nextPageLink) {
+        ServiceResponse<Page<ResourceUsageInner>> response = listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ResourceUsageInner>(response.body()) {
+            @Override
+            public Page<ResourceUsageInner> nextPage(String nextPageLink) {
+                return listResourceUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceCall<List<ResourceUsageInner>> serviceCall, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceCall.fromPageResponse(
+            listResourceUsageNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(String nextPageLink) {
+                    return listResourceUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<Page<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink) {
+        return listResourceUsageNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Page<ResourceUsageInner>>() {
+                @Override
+                public Page<ResourceUsageInner> call(ServiceResponse<Page<ResourceUsageInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextWithServiceResponseAsync(final String nextPageLink) {
+        return listResourceUsageNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceUsageInner>>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(ServiceResponse<Page<ResourceUsageInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listResourceUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the given endpoint.
+     *
+    ServiceResponse<PageImpl<ResourceUsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listResourceUsageNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceUsageInner>> result = listResourceUsageNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceUsageInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceUsageInner>> listResourceUsageNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceUsageInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceUsageInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

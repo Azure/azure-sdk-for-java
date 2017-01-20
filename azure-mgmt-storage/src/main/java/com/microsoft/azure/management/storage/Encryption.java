@@ -11,17 +11,17 @@ package com.microsoft.azure.management.storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The encryption settings on the account.
+ * The encryption settings on the storage account.
  */
 public class Encryption {
     /**
-     * Gets the services which are encrypted.
+     * List of services which support encryption.
      */
     private EncryptionServices services;
 
     /**
-     * Gets the encryption keySource(provider). Possible values
-     * (case-insensitive):  Microsoft.Storage.
+     * The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.Storage.
      */
     @JsonProperty(required = true)
     private String keySource;

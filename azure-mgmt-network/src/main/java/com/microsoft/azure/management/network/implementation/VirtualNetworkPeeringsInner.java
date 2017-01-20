@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,49 +61,49 @@ public final class VirtualNetworkPeeringsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VirtualNetworkPeeringsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Body VirtualNetworkPeeringInner virtualNetworkPeeringParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Body VirtualNetworkPeeringInner virtualNetworkPeeringParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkPeerings listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      */
     public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().body();
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -112,11 +112,11 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -127,13 +127,13 @@ public final class VirtualNetworkPeeringsInner {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -153,26 +153,24 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().body();
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -181,11 +179,11 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -196,13 +194,13 @@ public final class VirtualNetworkPeeringsInner {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete virtual network peering operation deletes the specified peering.
+     * Deletes the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -222,10 +220,8 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -240,7 +236,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -248,7 +244,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The Get virtual network peering operation retrieves information about the specified virtual network peering.
+     * Gets the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -256,11 +252,11 @@ public final class VirtualNetworkPeeringsInner {
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().body();
     }
 
     /**
-     * The Get virtual network peering operation retrieves information about the specified virtual network peering.
+     * Gets the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -269,11 +265,11 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
-     * The Get virtual network peering operation retrieves information about the specified virtual network peering.
+     * Gets the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -284,13 +280,13 @@ public final class VirtualNetworkPeeringsInner {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Get virtual network peering operation retrieves information about the specified virtual network peering.
+     * Gets the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -310,10 +306,8 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkPeeringInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkPeeringInner>> call(Response<ResponseBody> response) {
@@ -328,64 +322,64 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     private ServiceResponse<VirtualNetworkPeeringInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkPeeringInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VirtualNetworkPeeringInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().body();
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the observable for the request
      */
     public Observable<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<VirtualNetworkPeeringInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
@@ -404,66 +398,64 @@ public final class VirtualNetworkPeeringsInner {
         if (virtualNetworkPeeringParameters == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(virtualNetworkPeeringParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualNetworkPeeringInner>() { }.getType());
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the VirtualNetworkPeeringInner object if successful.
      */
     public VirtualNetworkPeeringInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().body();
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the observable to the VirtualNetworkPeeringInner object
      */
     public Observable<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
             @Override
             public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @return the observable to the VirtualNetworkPeeringInner object
      */
     public Observable<ServiceResponse<VirtualNetworkPeeringInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
@@ -482,11 +474,9 @@ public final class VirtualNetworkPeeringsInner {
         if (virtualNetworkPeeringParameters == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(virtualNetworkPeeringParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkPeeringInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkPeeringInner>> call(Response<ResponseBody> response) {
@@ -501,7 +491,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     private ServiceResponse<VirtualNetworkPeeringInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkPeeringInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VirtualNetworkPeeringInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
                 .register(201, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -509,7 +499,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -517,16 +507,16 @@ public final class VirtualNetworkPeeringsInner {
      */
     public PagedList<VirtualNetworkPeeringInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.body()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -534,7 +524,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSinglePageAsync(resourceGroupName, virtualNetworkName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
@@ -546,7 +536,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -557,13 +547,13 @@ public final class VirtualNetworkPeeringsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
                 @Override
                 public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -574,7 +564,7 @@ public final class VirtualNetworkPeeringsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -584,7 +574,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param virtualNetworkName The name of the virtual network.
@@ -600,16 +590,14 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -618,30 +606,30 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkPeeringInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkPeeringInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkPeeringInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object if successful.
      */
     public PagedList<VirtualNetworkPeeringInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.body()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -649,7 +637,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkPeeringInner>> serviceCall, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
@@ -661,7 +649,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
@@ -671,13 +659,13 @@ public final class VirtualNetworkPeeringsInner {
             .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
                 @Override
                 public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
@@ -687,7 +675,7 @@ public final class VirtualNetworkPeeringsInner {
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -697,7 +685,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     * Gets all virtual network peerings in a virtual network.
      *
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -706,13 +694,14 @@ public final class VirtualNetworkPeeringsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkPeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -721,7 +710,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkPeeringInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkPeeringInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkPeeringInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

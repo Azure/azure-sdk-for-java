@@ -8,34 +8,32 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.SubResource;
+import java.util.List;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-
-import java.util.List;
+import com.microsoft.azure.SubResource;
 
 /**
- * IPConfiguration in a NetworkInterface.
+ * IPConfiguration in a network interface.
  */
 @JsonFlatten
 public class NetworkInterfaceIPConfigurationInner extends SubResource {
     /**
-     * Gets or sets the reference of ApplicationGatewayBackendAddressPool
-     * resource.
+     * The reference of ApplicationGatewayBackendAddressPool resource.
      */
     @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
     private List<ApplicationGatewayBackendAddressPoolInner> applicationGatewayBackendAddressPools;
 
     /**
-     * Gets or sets the reference of LoadBalancerBackendAddressPool resource.
+     * The reference of LoadBalancerBackendAddressPool resource.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
     private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
 
     /**
-     * Gets or sets list of references of LoadBalancerInboundNatRules.
+     * A list of references of LoadBalancerInboundNatRules.
      */
     @JsonProperty(value = "properties.loadBalancerInboundNatRules")
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
@@ -47,15 +45,17 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method. Possible values include:
-     * 'Static', 'Dynamic'.
+     * Defines how a private IP address is assigned. Possible values are:
+     * 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
 
     /**
-     * Gets or sets PrivateIP address version (IPv4/IPv6). Possible values
-     * include: 'IPv4', 'IPv6'.
+     * Available from Api-Version 2016-03-30 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4',
+     * 'IPv6'.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
     private IPVersion privateIPAddressVersion;
@@ -67,7 +67,8 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private SubnetInner subnet;
 
     /**
-     * Gets whether this is a primary customer address on the NIC.
+     * Gets whether this is a primary customer address on the network
+     * interface.
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
@@ -85,7 +86,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

@@ -12,7 +12,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.CheckNameResourceTypes;
@@ -20,8 +19,8 @@ import com.microsoft.azure.management.appservice.ResourceNameAvailabilityRequest
 import com.microsoft.azure.management.appservice.SkuName;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -37,6 +36,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -283,10 +283,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public WebSiteManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -337,61 +335,61 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface WebSiteManagementClientService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSourceControls" })
         @GET("providers/Microsoft.Web/sourcecontrols")
         Observable<Response<ResponseBody>> listSourceControls(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient updateSourceControl" })
         @PUT("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         Observable<Response<ResponseBody>> updateSourceControl(@Path("sourceControlType") String sourceControlType, @Body SourceControlInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
         Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceNameAvailabilityRequest request, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listGeoRegions" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
         Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listPremierAddOnOffers" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
         Observable<Response<ResponseBody>> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient getPublishingCredentials" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Observable<Response<ResponseBody>> getPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient updatePublishingCredentials" })
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Observable<Response<ResponseBody>> updatePublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSkus" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/skus")
         Observable<Response<ResponseBody>> listSkus(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient move" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
         Observable<Response<ResponseBody>> move(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient validate" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validate")
         Observable<Response<ResponseBody>> validate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ValidateRequestInner validateRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient validateMove" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/validateMoveResources")
         Observable<Response<ResponseBody>> validateMove(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSourceControlsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listSourceControlsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSourceControlsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listGeoRegionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listGeoRegionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listGeoRegionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listPremierAddOnOffersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebSiteManagementClient listPremierAddOnOffersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPremierAddOnOffersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -403,10 +401,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<SourceControlInner> listSourceControls() {
         ServiceResponse<Page<SourceControlInner>> response = listSourceControlsSinglePageAsync().toBlocking().single();
-        return new PagedList<SourceControlInner>(response.getBody()) {
+        return new PagedList<SourceControlInner>(response.body()) {
             @Override
             public Page<SourceControlInner> nextPage(String nextPageLink) {
-                return listSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -419,7 +417,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SourceControlInner>> listSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSourceControlsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -441,7 +439,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<SourceControlInner>>, Page<SourceControlInner>>() {
                 @Override
                 public Page<SourceControlInner> call(ServiceResponse<Page<SourceControlInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -457,7 +455,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<SourceControlInner>>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(ServiceResponse<Page<SourceControlInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -480,7 +478,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SourceControlInner>> result = listSourceControlsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SourceControlInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SourceControlInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -489,7 +487,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<SourceControlInner>> listSourceControlsDelegate(Response<ResponseBody> response) throws CloudException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<SourceControlInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<SourceControlInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SourceControlInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -504,7 +502,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the SourceControlInner object if successful.
      */
     public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) {
-        return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).toBlocking().single().getBody();
+        return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).toBlocking().single().body();
     }
 
     /**
@@ -517,7 +515,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
-        return ServiceCall.create(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
+        return ServiceCall.fromResponse(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
     }
 
     /**
@@ -532,7 +530,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).map(new Func1<ServiceResponse<SourceControlInner>, SourceControlInner>() {
             @Override
             public SourceControlInner call(ServiceResponse<SourceControlInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -569,7 +567,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<SourceControlInner> updateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<SourceControlInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<SourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -584,7 +582,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the ResourceNameAvailabilityInner object if successful.
      */
     public ResourceNameAvailabilityInner checkNameAvailability(String name, CheckNameResourceTypes type) {
-        return checkNameAvailabilityWithServiceResponseAsync(name, type).toBlocking().single().getBody();
+        return checkNameAvailabilityWithServiceResponseAsync(name, type).toBlocking().single().body();
     }
 
     /**
@@ -597,7 +595,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
+        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
     }
 
     /**
@@ -612,7 +610,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return checkNameAvailabilityWithServiceResponseAsync(name, type).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -665,7 +663,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the ResourceNameAvailabilityInner object if successful.
      */
     public ResourceNameAvailabilityInner checkNameAvailability(String name, CheckNameResourceTypes type, Boolean isFqdn) {
-        return checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn).toBlocking().single().getBody();
+        return checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn).toBlocking().single().body();
     }
 
     /**
@@ -679,7 +677,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, Boolean isFqdn, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
+        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
     }
 
     /**
@@ -695,7 +693,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -739,7 +737,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceNameAvailabilityInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<ResourceNameAvailabilityInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ResourceNameAvailabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -753,10 +751,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<GeoRegionInner> listGeoRegions() {
         ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync().toBlocking().single();
-        return new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.body()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) {
-                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -769,7 +767,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -791,7 +789,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
                 public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -807,7 +805,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -834,7 +832,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GeoRegionInner>> result = listGeoRegionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -851,10 +849,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<GeoRegionInner> listGeoRegions(final SkuName sku) {
         ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync(sku).toBlocking().single();
-        return new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.body()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) {
-                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -868,7 +866,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsSinglePageAsync(sku),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -891,7 +889,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
                 public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -908,7 +906,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -935,7 +933,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GeoRegionInner>> result = listGeoRegionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -944,7 +942,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<GeoRegionInner>> listGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<GeoRegionInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -958,10 +956,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<PremierAddOnOfferInner> listPremierAddOnOffers() {
         ServiceResponse<Page<PremierAddOnOfferInner>> response = listPremierAddOnOffersSinglePageAsync().toBlocking().single();
-        return new PagedList<PremierAddOnOfferInner>(response.getBody()) {
+        return new PagedList<PremierAddOnOfferInner>(response.body()) {
             @Override
             public Page<PremierAddOnOfferInner> nextPage(String nextPageLink) {
-                return listPremierAddOnOffersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPremierAddOnOffersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -974,7 +972,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersAsync(final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPremierAddOnOffersSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
@@ -996,7 +994,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<PremierAddOnOfferInner>>, Page<PremierAddOnOfferInner>>() {
                 @Override
                 public Page<PremierAddOnOfferInner> call(ServiceResponse<Page<PremierAddOnOfferInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1012,7 +1010,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<PremierAddOnOfferInner>>, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PremierAddOnOfferInner>>> call(ServiceResponse<Page<PremierAddOnOfferInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1038,7 +1036,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
                 public Observable<ServiceResponse<Page<PremierAddOnOfferInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PremierAddOnOfferInner>> result = listPremierAddOnOffersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PremierAddOnOfferInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PremierAddOnOfferInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1047,7 +1045,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<PremierAddOnOfferInner>> listPremierAddOnOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PremierAddOnOfferInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<PremierAddOnOfferInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PremierAddOnOfferInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1060,7 +1058,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the UserInner object if successful.
      */
     public UserInner getPublishingCredentials() {
-        return getPublishingCredentialsWithServiceResponseAsync().toBlocking().single().getBody();
+        return getPublishingCredentialsWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -1071,7 +1069,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1084,7 +1082,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return getPublishingCredentialsWithServiceResponseAsync().map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1115,7 +1113,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<UserInner> getPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1129,7 +1127,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the UserInner object if successful.
      */
     public UserInner updatePublishingCredentials(UserInner requestMessage) {
-        return updatePublishingCredentialsWithServiceResponseAsync(requestMessage).toBlocking().single().getBody();
+        return updatePublishingCredentialsWithServiceResponseAsync(requestMessage).toBlocking().single().body();
     }
 
     /**
@@ -1141,7 +1139,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> updatePublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
+        return ServiceCall.fromResponse(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
     }
 
     /**
@@ -1155,7 +1153,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return updatePublishingCredentialsWithServiceResponseAsync(requestMessage).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
             @Override
             public UserInner call(ServiceResponse<UserInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1191,7 +1189,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<UserInner> updatePublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<UserInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1204,7 +1202,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the SkuInfosInner object if successful.
      */
     public SkuInfosInner listSkus() {
-        return listSkusWithServiceResponseAsync().toBlocking().single().getBody();
+        return listSkusWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -1215,7 +1213,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SkuInfosInner> listSkusAsync(final ServiceCallback<SkuInfosInner> serviceCallback) {
-        return ServiceCall.create(listSkusWithServiceResponseAsync(), serviceCallback);
+        return ServiceCall.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1228,7 +1226,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return listSkusWithServiceResponseAsync().map(new Func1<ServiceResponse<SkuInfosInner>, SkuInfosInner>() {
             @Override
             public SkuInfosInner call(ServiceResponse<SkuInfosInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1259,7 +1257,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<SkuInfosInner> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfosInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<SkuInfosInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<SkuInfosInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1273,7 +1271,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object that represents the resource to move.
      */
     public void move(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
-        moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().getBody();
+        moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -1286,7 +1284,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1301,7 +1299,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1341,7 +1339,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<Void> moveDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1355,7 +1353,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the ValidateResponseInner object if successful.
      */
     public ValidateResponseInner validate(String resourceGroupName, ValidateRequestInner validateRequest) {
-        return validateWithServiceResponseAsync(resourceGroupName, validateRequest).toBlocking().single().getBody();
+        return validateWithServiceResponseAsync(resourceGroupName, validateRequest).toBlocking().single().body();
     }
 
     /**
@@ -1368,7 +1366,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest, final ServiceCallback<ValidateResponseInner> serviceCallback) {
-        return ServiceCall.create(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
+        return ServiceCall.fromResponse(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
     }
 
     /**
@@ -1383,7 +1381,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return validateWithServiceResponseAsync(resourceGroupName, validateRequest).map(new Func1<ServiceResponse<ValidateResponseInner>, ValidateResponseInner>() {
             @Override
             public ValidateResponseInner call(ServiceResponse<ValidateResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1423,7 +1421,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<ValidateResponseInner> validateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ValidateResponseInner, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<ValidateResponseInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ValidateResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1437,7 +1435,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object that represents the resource to move.
      */
     public void validateMove(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
-        validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().getBody();
+        validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -1450,7 +1448,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+        return ServiceCall.fromResponse(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1465,7 +1463,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1505,7 +1503,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<Void> validateMoveDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1519,10 +1517,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<SourceControlInner> listSourceControlsNext(final String nextPageLink) {
         ServiceResponse<Page<SourceControlInner>> response = listSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SourceControlInner>(response.getBody()) {
+        return new PagedList<SourceControlInner>(response.body()) {
             @Override
             public Page<SourceControlInner> nextPage(String nextPageLink) {
-                return listSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1537,7 +1535,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SourceControlInner>> listSourceControlsNextAsync(final String nextPageLink, final ServiceCall<List<SourceControlInner>> serviceCall, final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSourceControlsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -1560,7 +1558,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<SourceControlInner>>, Page<SourceControlInner>>() {
                 @Override
                 public Page<SourceControlInner> call(ServiceResponse<Page<SourceControlInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1577,7 +1575,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<SourceControlInner>>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(ServiceResponse<Page<SourceControlInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1597,13 +1595,14 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSourceControlsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSourceControlsNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SourceControlInner>> result = listSourceControlsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SourceControlInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SourceControlInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1612,7 +1611,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<SourceControlInner>> listSourceControlsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SourceControlInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<SourceControlInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SourceControlInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1627,10 +1626,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<GeoRegionInner> listGeoRegionsNext(final String nextPageLink) {
         ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.body()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) {
-                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1645,7 +1644,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<GeoRegionInner>> listGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<List<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listGeoRegionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -1668,7 +1667,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
                 public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1685,7 +1684,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1705,13 +1704,14 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listGeoRegionsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listGeoRegionsNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<GeoRegionInner>> result = listGeoRegionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1720,7 +1720,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<GeoRegionInner>> listGeoRegionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<GeoRegionInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1735,10 +1735,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public PagedList<PremierAddOnOfferInner> listPremierAddOnOffersNext(final String nextPageLink) {
         ServiceResponse<Page<PremierAddOnOfferInner>> response = listPremierAddOnOffersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PremierAddOnOfferInner>(response.getBody()) {
+        return new PagedList<PremierAddOnOfferInner>(response.body()) {
             @Override
             public Page<PremierAddOnOfferInner> nextPage(String nextPageLink) {
-                return listPremierAddOnOffersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listPremierAddOnOffersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1753,7 +1753,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersNextAsync(final String nextPageLink, final ServiceCall<List<PremierAddOnOfferInner>> serviceCall, final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listPremierAddOnOffersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
@@ -1776,7 +1776,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .map(new Func1<ServiceResponse<Page<PremierAddOnOfferInner>>, Page<PremierAddOnOfferInner>>() {
                 @Override
                 public Page<PremierAddOnOfferInner> call(ServiceResponse<Page<PremierAddOnOfferInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1793,7 +1793,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
             .concatMap(new Func1<ServiceResponse<Page<PremierAddOnOfferInner>>, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PremierAddOnOfferInner>>> call(ServiceResponse<Page<PremierAddOnOfferInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1813,13 +1813,14 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listPremierAddOnOffersNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPremierAddOnOffersNext(nextUrl, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PremierAddOnOfferInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PremierAddOnOfferInner>> result = listPremierAddOnOffersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PremierAddOnOfferInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<PremierAddOnOfferInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1828,7 +1829,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<PageImpl<PremierAddOnOfferInner>> listPremierAddOnOffersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PremierAddOnOfferInner>, CloudException>(this.mapperAdapter())
+        return this.restClient().responseBuilderFactory().<PageImpl<PremierAddOnOfferInner>, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PremierAddOnOfferInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

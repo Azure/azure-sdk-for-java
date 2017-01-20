@@ -20,14 +20,15 @@ import com.microsoft.azure.management.resources.fluentcore.model.CreatedResource
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure compute sample for creating multiple virtual machines in parallel.
@@ -45,7 +46,7 @@ public final class CreateVirtualMachinesInParallel {
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
         Map<Region, Integer> virtualMachinesByLocation = new HashMap<Region, Integer>();
-        
+
         // debug target
         /**
         virtualMachinesByLocation.put(Region.US_EAST, 5);
@@ -75,7 +76,7 @@ public final class CreateVirtualMachinesInParallel {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                    .withLogLevel(LogLevel.NONE)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -130,7 +131,8 @@ public final class CreateVirtualMachinesInParallel {
                         Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
                                 .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
-                                .withExistingResourceGroup(resourceGroup);
+                                .withExistingResourceGroup(resourceGroup)
+                                .withLeafDomainLabel(ResourceNamer.randomResourceName("pip", 10));
 
                         publicIpCreatableKeys.add(publicIpAddressCreatable.key());
 
@@ -156,19 +158,20 @@ public final class CreateVirtualMachinesInParallel {
                 //=============================================================
                 // Create !!
 
-                Date t1 = new Date();
+                StopWatch stopwatch = new StopWatch();
                 System.out.println("Creating the virtual machines");
+                stopwatch.start();
 
                 CreatedResources<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines);
 
-                Date t2 = new Date();
+                stopwatch.stop();
                 System.out.println("Created virtual machines");
 
-                for (VirtualMachine virtualMachine : virtualMachines) {
+                for (VirtualMachine virtualMachine : virtualMachines.values()) {
                     System.out.println(virtualMachine.id());
                 }
 
-                System.out.println("Virtual Machines created: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) to create == " + virtualMachines.size() + " == virtual machines");
+                System.out.println("Virtual Machines created: (took " + (stopwatch.getTime() / 1000) + " seconds to create) == " + virtualMachines.size() + " == virtual machines");
 
                 List<String> publicIpResourceIds = new ArrayList<>();
                 for (String publicIpCreatableKey : publicIpCreatableKeys) {
@@ -203,8 +206,14 @@ public final class CreateVirtualMachinesInParallel {
                     endpointPriority++;
                 }
 
+                System.out.println("Creating a traffic manager profile for the VMs");
+                stopwatch.reset();
+                stopwatch.start();
+
                 TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
-                System.out.println("Created a traffic manager profile - " + trafficManagerProfile.id());
+
+                stopwatch.stop();
+                System.out.println("Created a traffic manager profile (took " + (stopwatch.getTime() / 1000) + " seconds to create): " + trafficManagerProfile.id());
             } catch (Exception f) {
 
             System.out.println(f.getMessage());

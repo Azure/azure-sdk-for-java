@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
+import com.microsoft.rest.LogLevel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class AzureTests {
             e.printStackTrace();
         }
 
-        Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
+        Azure.configure().withLogLevel(LogLevel.BASIC).authenticate(credFile);
         System.out.println("Selected subscription: " + azure.subscriptionId());
         try {
             System.out.println(String.valueOf(azure.resourceGroups().list().size()));
@@ -73,7 +73,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.BODY)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -82,7 +82,7 @@ public class AzureTests {
         File authFile = new File("my.azureauth");
         if (authFile.exists()) {
             this.azure = Azure.configure()
-                    .withLogLevel(Level.BODY)
+                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withUserAgent("AzureTests")
                     .withReadTimeout(60, TimeUnit.SECONDS)
                     .authenticate(new File("my.azureauth"))
@@ -180,7 +180,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetWithNatRule(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -193,7 +194,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetWithNatPool(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -206,7 +208,8 @@ public class AzureTests {
         new TestLoadBalancer.InternetMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
             .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
@@ -218,7 +221,8 @@ public class AzureTests {
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
                 azure.virtualMachines(),
-                azure.networks())
+                azure.networks(),
+                azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -432,6 +436,8 @@ public class AzureTests {
                 .create();
 
         Assert.assertEquals(storageAccount.name(), storageAccountName);
+
+        azure.resourceGroups().deleteByName(storageAccount.resourceGroupName());
     }
 
     @Test

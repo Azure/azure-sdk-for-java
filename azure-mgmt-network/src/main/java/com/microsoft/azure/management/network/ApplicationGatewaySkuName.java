@@ -23,6 +23,12 @@ public final class ApplicationGatewaySkuName {
     /** Static value Standard_Large for ApplicationGatewaySkuName. */
     public static final ApplicationGatewaySkuName STANDARD_LARGE = new ApplicationGatewaySkuName("Standard_Large");
 
+    /** Static value WAF_Medium for ApplicationGatewaySkuName. */
+    public static final ApplicationGatewaySkuName WAF_MEDIUM = new ApplicationGatewaySkuName("WAF_Medium");
+
+    /** Static value WAF_Large for ApplicationGatewaySkuName. */
+    public static final ApplicationGatewaySkuName WAF_LARGE = new ApplicationGatewaySkuName("WAF_Large");
+
     private String value;
 
     /**

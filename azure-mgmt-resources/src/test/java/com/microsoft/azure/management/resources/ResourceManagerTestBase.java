@@ -3,7 +3,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.LogLevel;
 
 /**
  * The base for resource manager tests.
@@ -14,7 +14,7 @@ abstract class ResourceManagerTestBase {
     static void createClient() throws Exception {
         resourceClient = ResourceManager
                 .configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 .authenticate(
                 new ApplicationTokenCredentials(
                         System.getenv("client-id"),

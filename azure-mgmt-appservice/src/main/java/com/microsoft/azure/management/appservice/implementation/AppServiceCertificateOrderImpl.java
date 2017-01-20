@@ -72,10 +72,10 @@ class AppServiceCertificateOrderImpl
                     @Override
                     public AppServiceCertificateKeyVaultBinding call(Page<AppServiceCertificateInner> appServiceCertificateInnerPage) {
                         // There can only be one binding associated with an order
-                        if (appServiceCertificateInnerPage.getItems() == null || appServiceCertificateInnerPage.getItems().isEmpty()) {
+                        if (appServiceCertificateInnerPage.items() == null || appServiceCertificateInnerPage.items().isEmpty()) {
                             return null;
                         } else {
-                            return new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInnerPage.getItems().get(0), self);
+                            return new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInnerPage.items().get(0), self);
                         }
                     }
                 });

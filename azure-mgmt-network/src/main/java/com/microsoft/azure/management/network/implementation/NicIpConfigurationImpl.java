@@ -1,68 +1,75 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
-import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
  */
-@LangDefinition()
+@LangDefinition
 class NicIpConfigurationImpl
         extends
-            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl, NetworkInterface>
+        NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
         implements
             NicIpConfiguration,
             NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
             NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
             NicIpConfiguration.Update {
-    // Clients
+    /**
+     * the network client.
+     */
     private final NetworkManager networkManager;
-
-    // Flag indicating whether IP configuration is in create or update mode
+    /**
+     * flag indicating whether IP configuration is in create or update mode.
+     */
     private final boolean isInCreateMode;
-
-    // Unique key of a creatable virtual network to be associated with the ip configuration
+    /**
+     * unique key of a creatable virtual network to be associated with the ip configuration.
+     */
     private String creatableVirtualNetworkKey;
-
-    // Unique key of a creatable public IP to be associated with the ip configuration
+    /**
+     * unique key of a creatable public IP to be associated with the ip configuration.
+     */
     private String creatablePublicIpKey;
-
-    // Reference to an existing virtual network to be associated with the ip configuration
+    /**
+     * reference to an existing virtual network to be associated with the ip configuration.
+     */
     private Network existingVirtualNetworkToAssociate;
-
-    // Reference to an existing public IP to be associated with the ip configuration
+    /**
+     * reference to an existing public IP to be associated with the ip configuration.
+     */
     private String existingPublicIpAddressIdToAssociate;
-
-    // Name of an existing subnet to be associated with a new or existing ip configuration
+    /**
+     * name of an existing subnet to be associated with a new or existing ip configuration.
+     */
     private String subnetToAssociate;
-
-    // Flag indicating to remove public IP association from the ip configuration during update
+    /**
+     * flag indicating to remove public IP association from the ip configuration during update.
+     */
     private boolean removePrimaryPublicIPAssociation;
 
     protected NicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
                                      NetworkManager networkManager,
                                      final boolean isInCreateModel) {
-        super(inner, parent);
+        super(inner, parent, networkManager);
         this.isInCreateMode = isInCreateModel;
         this.networkManager = networkManager;
     }
@@ -77,16 +84,6 @@ class NicIpConfigurationImpl
                 parent,
                 networkManager,
                 true);
-    }
-
-    @Override
-    public String name() {
-        return inner().name();
-    }
-
-    @Override
-    public IPVersion privateIpAddressVersion() {
-        return this.inner().privateIPAddressVersion();
     }
 
     @Override
@@ -105,38 +102,6 @@ class NicIpConfigurationImpl
         }
 
         return this.networkManager.publicIpAddresses().getById(id);
-    }
-
-    @Override
-    public String subnetName() {
-        SubResource subnetRef = this.inner().subnet();
-        if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.id());
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public String networkId() {
-        SubResource subnetRef = this.inner().subnet();
-        return (subnetRef != null) ? ResourceUtils.parentResourceIdFromResourceId(subnetRef.id()) : null;
-    }
-
-    @Override
-    public Network getNetwork() {
-        String id = this.networkId();
-        return (id != null) ? this.networkManager.networks().getById(id) : null;
-    }
-
-    @Override
-    public String privateIpAddress() {
-        return this.inner().privateIPAddress();
-    }
-
-    @Override
-    public IPAllocationMethod privateIpAllocationMethod() {
-        return this.inner().privateIPAllocationMethod();
     }
 
     @Override
@@ -383,51 +348,5 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
         this.inner().withLoadBalancerInboundNatRules(null);
         return this;
-    }
-
-    @Override
-    public List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
-        final List<InboundNatRuleInner> refs = this.inner().loadBalancerInboundNatRules();
-        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
-        final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
-
-        if (refs != null) {
-            for (InboundNatRuleInner ref : refs) {
-                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.id());
-                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
-                if (loadBalancer == null) {
-                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
-                    loadBalancers.put(loadBalancerId, loadBalancer);
-                }
-
-                String ruleName = ResourceUtils.nameFromResourceId(ref.id());
-                rules.add(loadBalancer.inboundNatRules().get(ruleName));
-            }
-        }
-
-        return Collections.unmodifiableList(rules);
-    }
-
-    @Override
-    public List<LoadBalancerBackend> listAssociatedLoadBalancerBackends() {
-        final List<BackendAddressPoolInner> backendRefs = this.inner().loadBalancerBackendAddressPools();
-        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
-        final List<LoadBalancerBackend> backends = new ArrayList<>();
-
-        if (backendRefs != null) {
-            for (BackendAddressPoolInner backendRef : backendRefs) {
-                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
-                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
-                if (loadBalancer == null) {
-                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
-                    loadBalancers.put(loadBalancerId, loadBalancer);
-                }
-
-                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
-                backends.add(loadBalancer.backends().get(backendName));
-            }
-        }
-
-        return Collections.unmodifiableList(backends);
     }
 }

@@ -15,13 +15,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * Base class for independent child collection class.
@@ -45,7 +44,8 @@ public abstract class IndependentChildrenImpl<
         SupportsGettingByParent<T>,
         SupportsListingByParent<T>,
         SupportsDeletingById,
-        SupportsDeletingByParent {
+        SupportsDeletingByParent,
+        HasManager<ManagerT> {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 
@@ -61,7 +61,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public T getById(String id) {
-        ResourceId resourceId = ResourceId.parseResourceId(id);
+        ResourceId resourceId = ResourceId.fromString(id);
 
         return getByParent(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
@@ -73,22 +73,22 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public void deleteByParent(String groupName, String parentName, String name) {
-        deleteByParentAsync(groupName, parentName, name).toBlocking().subscribe();
+        deleteByParentAsync(groupName, parentName, name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByParentAsync(groupName, parentName, name).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+        return ServiceCall.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        ResourceId resourceId = ResourceId.parseResourceId(id);
+    public Completable deleteByIdAsync(String id) {
+        ResourceId resourceId = ResourceId.fromString(id);
         return deleteByParentAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
+    }
+
+    @Override
+    public ManagerT manager() {
+        return this.manager;
     }
 }
