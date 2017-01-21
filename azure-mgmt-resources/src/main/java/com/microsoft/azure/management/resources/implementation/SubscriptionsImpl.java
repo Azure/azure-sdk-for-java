@@ -35,8 +35,8 @@ final class SubscriptionsImpl
 
     @Override
     // Gets a specific resource group
-    public SubscriptionImpl getByName(String name) {
-        SubscriptionInner subscription = client.get(name);
+    public SubscriptionImpl getById(String id) {
+        SubscriptionInner subscription = client.get(id);
         if (subscription == null) {
             return null;
         }
