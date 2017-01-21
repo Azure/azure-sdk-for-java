@@ -167,6 +167,68 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
         computeManager.disks().deleteById(disk.id());
     }
 
+    @Test
+    public void canOperateOnManagedDiskFromSnapshot() {
+        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
+        final String emptyDiskName = ResourceNamer.randomResourceName("md-empty-", 20);
+        final String snapshotBasedDiskName = ResourceNamer.randomResourceName("md-snp-", 20);
+        final String snapshotName = ResourceNamer.randomResourceName("snp-", 20);
+
+        ResourceGroup resourceGroup = resourceManager
+                .resourceGroups()
+                .define(rgName)
+                .withRegion(region)
+                .create();
+
+        Disk emptyDisk = computeManager.disks()
+                .define(emptyDiskName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(100)
+                .create();
+
+        Snapshot snapshot = computeManager.snapshots()
+                .define(snapshotName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withDataFromDisk(emptyDisk)
+                .withSizeInGB(200)
+                .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                .create();
+
+        Assert.assertNotNull(snapshot.id());
+        Assert.assertTrue(snapshot.name().equalsIgnoreCase(snapshotName));
+        Assert.assertEquals(snapshot.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(snapshot.creationMethod(), DiskCreateOption.COPY);
+        Assert.assertEquals(snapshot.sizeInGB(), 200);
+        Assert.assertNull(snapshot.osType());
+        Assert.assertNotNull(snapshot.source());
+        Assert.assertEquals(snapshot.source().type(), CreationSourceType.COPIED_FROM_DISK);
+        Assert.assertTrue(snapshot.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
+
+        Disk fromSnapshotDisk = computeManager.disks()
+                .define(snapshotBasedDiskName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .fromSnapshot(snapshot)
+                .withSizeInGB(300)
+                .create();
+
+        Assert.assertNotNull(fromSnapshotDisk.id());
+        Assert.assertTrue(fromSnapshotDisk.name().equalsIgnoreCase(snapshotBasedDiskName));
+        Assert.assertEquals(fromSnapshotDisk.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(fromSnapshotDisk.creationMethod(), DiskCreateOption.COPY);
+        Assert.assertEquals(fromSnapshotDisk.sizeInGB(), 300);
+        Assert.assertNull(fromSnapshotDisk.osType());
+        Assert.assertNotNull(fromSnapshotDisk.source());
+        Assert.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
+        Assert.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
+
+        resourceManager.resourceGroups().deleteByName(rgName);
+    }
+
 //    @Test
 //    public void canOperateOnManagedDiskFromPIRImage() {
 //        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
@@ -256,8 +318,4 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
 //        }
 //    }
 
-    @Test
-    public void canOperateOnManagedDiskFromSnapshot() {
-        // TODO After adding support for snapshot
-    }
 }

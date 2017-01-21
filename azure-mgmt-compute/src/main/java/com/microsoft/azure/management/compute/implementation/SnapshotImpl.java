@@ -12,12 +12,9 @@ import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.CreationSource;
-import com.microsoft.azure.management.compute.ImageDiskReference;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -39,9 +36,9 @@ class SnapshotImpl
     private final SnapshotsInner client;
 
     SnapshotImpl(String name,
-                 SnapshotInner innerModel,
-                 SnapshotsInner client,
-                 final ComputeManager computeManager) {
+             SnapshotInner innerModel,
+             SnapshotsInner client,
+             final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
         this.client = client;
     }
@@ -74,13 +71,11 @@ class SnapshotImpl
     @Override
     public String grantAccess(int accessDurationInSeconds) {
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner
-                .withDurationInSeconds(accessDurationInSeconds)
-                .withAccess(AccessLevel.READ);
+        grantAccessDataInner.withAccess(AccessLevel.READ)
+                .withDurationInSeconds(accessDurationInSeconds);
 
         AccessUriInner accessUriInner = this.client.grantAccess(this.resourceGroupName(),
-                this.name(),
-                grantAccessDataInner);
+                this.name(), grantAccessDataInner);
         if (accessUriInner == null) {
             return null;
         }
@@ -93,43 +88,125 @@ class SnapshotImpl
     }
 
     @Override
-    public SnapshotImpl withOs() {
+    public SnapshotImpl withLinuxFromVhd(String vhdUrl) {
         this.inner()
-                .withCreationData(new CreationData());
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.IMPORT)
+                .withSourceUri(vhdUrl);
         return this;
     }
 
     @Override
-    public SnapshotImpl withData() {
+    public SnapshotImpl withLinuxFromDisk(String sourceDiskId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceDiskId);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withLinuxFromDisk(Disk sourceDisk) {
+        withLinuxFromDisk(sourceDisk.id());
+        if (sourceDisk.osType() != null) {
+            this.withOsType(sourceDisk.osType());
+        }
+        this.withAccountType(sourceDisk.accountType());
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withLinuxFromSnapshot(String sourceSnapshotId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceSnapshotId);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withLinuxFromSnapshot(Snapshot sourceSnapshot) {
+        withLinuxFromSnapshot(sourceSnapshot.id());
+        if (sourceSnapshot.osType() != null) {
+            this.withOsType(sourceSnapshot.osType());
+        }
+        this.withAccountType(sourceSnapshot.accountType());
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromVhd(String vhdUrl) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.IMPORT)
+                .withSourceUri(vhdUrl);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromDisk(String sourceDiskId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceDiskId);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromDisk(Disk sourceDisk) {
+        withWindowsFromDisk(sourceDisk.id());
+        if (sourceDisk.osType() != null) {
+            this.withOsType(sourceDisk.osType());
+        }
+        this.withAccountType(sourceDisk.accountType());
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromSnapshot(String sourceSnapshotId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceSnapshotId);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromSnapshot(Snapshot sourceSnapshot) {
+        withWindowsFromSnapshot(sourceSnapshot.id());
+        if (sourceSnapshot.osType() != null) {
+            this.withOsType(sourceSnapshot.osType());
+        }
+        this.withAccountType(sourceSnapshot.accountType());
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withDataFromVhd(String vhdUrl) {
         this.inner()
                 .withCreationData(new CreationData())
                 .creationData()
-                .withCreateOption(DiskCreateOption.EMPTY);
-        return this;
-    }
-
-    @Override
-    public SnapshotImpl importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType) {
-        this.inner()
-                .withOsType(osType)
-                .creationData()
                 .withCreateOption(DiskCreateOption.IMPORT)
                 .withSourceUri(vhdUrl);
         return this;
     }
 
     @Override
-    public SnapshotImpl importedFromDataVhd(String vhdUrl) {
+    public SnapshotImpl withDataFromSnapshot(String snapshotId) {
         this.inner()
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
-        return this;
-    }
-
-    @Override
-    public SnapshotImpl copiedFromSnapshot(String snapshotId) {
-        this.inner()
+                .withCreationData(new CreationData())
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
                 .withSourceResourceId(snapshotId);
@@ -137,8 +214,14 @@ class SnapshotImpl
     }
 
     @Override
-    public SnapshotImpl copiedFromDisk(String managedDiskId) {
+    public SnapshotImpl withDataFromSnapshot(Snapshot snapshot) {
+        return withDataFromSnapshot(snapshot.id());
+    }
+
+    @Override
+    public SnapshotImpl withDataFromDisk(String managedDiskId) {
         this.inner()
+                .withCreationData(new CreationData())
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
                 .withSourceResourceId(managedDiskId);
@@ -146,8 +229,8 @@ class SnapshotImpl
     }
 
     @Override
-    public SnapshotImpl copiedFromDisk(Disk managedDisk) {
-        return copiedFromDisk(managedDisk.id())
+    public SnapshotImpl withDataFromDisk(Disk managedDisk) {
+        return withDataFromDisk(managedDisk.id())
                 .withOsType(managedDisk.osType())
                 .withAccountType(managedDisk.accountType());
     }
@@ -181,46 +264,5 @@ class SnapshotImpl
         SnapshotInner snapshotInner = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(snapshotInner);
         return this;
-    }
-
-    public SnapshotImpl fromImage(VirtualMachineImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().operatingSystem());
-    }
-
-    public SnapshotImpl fromImage(VirtualMachineCustomImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().osType());
-    }
-
-    public SnapshotImpl fromImage(String imageId, OperatingSystemTypes osType) {
-        this.inner()
-                .withOsType(osType)
-                .creationData()
-                .withCreateOption(DiskCreateOption.FROM_IMAGE)
-                .withImageReference(new ImageDiskReference().withId(imageId));
-        return this;
-    }
-
-    public SnapshotImpl fromImage(String imageId, int diskLun) {
-        this.inner()
-                .creationData()
-                .withCreateOption(DiskCreateOption.FROM_IMAGE)
-                .withImageReference(new ImageDiskReference().withId(imageId).withLun(diskLun));
-        return this;
-    }
-
-    public SnapshotImpl fromImage(VirtualMachineImage image, int diskLun) {
-        if (!image.dataDiskImages().containsKey(diskLun)) {
-            throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
-        }
-        return fromImage(image.id(), diskLun);
-    }
-
-    public SnapshotImpl fromImage(VirtualMachineCustomImage image, int diskLun) {
-        if (!image.dataDiskImages().containsKey(diskLun)) {
-            throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
-        }
-        return fromImage(image.id(), diskLun);
     }
 }
