@@ -486,8 +486,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Disk osDisk = computeManager.disks().define(diskName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withOs()
-                .importedFromOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
+                .withLinuxFromVhd(osVhdUri)
                 .create();
 
         // Creates a managed virtual machine

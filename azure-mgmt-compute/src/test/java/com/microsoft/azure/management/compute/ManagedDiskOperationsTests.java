@@ -143,7 +143,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup.name())
                 .withData()
-                .copiedFromDisk(emptyDisk)
+                .fromDisk(emptyDisk)
                 // Start Option
                 .withSizeInGB(200)
                 .withAccountType(StorageAccountTypes.STANDARD_LRS)

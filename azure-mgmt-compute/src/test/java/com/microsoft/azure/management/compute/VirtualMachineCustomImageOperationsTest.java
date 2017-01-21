@@ -218,8 +218,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Disk managedOsDisk = computeManager.disks().define(osDiskName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withOs()
-                .importedFromOsVhd(osVhdUri, OperatingSystemTypes.LINUX)
+                .withLinuxFromVhd(osVhdUri)
                 .create();
 
         // Create managed disk with Data from vm's lun0 data disk
@@ -230,7 +229,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withData()
-                .importedFromDataVhd(vmNativeDataDisk1.vhdUri())
+                .fromVhd(vmNativeDataDisk1.vhdUri())
                 .create();
 
         // Create managed disk with Data from vm's lun1 data disk
@@ -241,7 +240,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withData()
-                .importedFromDataVhd(vmNativeDataDisk2.vhdUri())
+                .fromVhd(vmNativeDataDisk2.vhdUri())
                 .create();
 
         // Create an image from the above managed disks

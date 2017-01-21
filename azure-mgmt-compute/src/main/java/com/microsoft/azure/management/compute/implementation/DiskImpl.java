@@ -12,11 +12,9 @@ import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.CreationSource;
-import com.microsoft.azure.management.compute.ImageDiskReference;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -100,9 +98,108 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl withOs() {
+    public DiskImpl withLinuxFromVhd(String vhdUrl) {
         this.inner()
-                .withCreationData(new CreationData());
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.IMPORT)
+                .withSourceUri(vhdUrl);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withLinuxFromDisk(String sourceDiskId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceDiskId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withLinuxFromDisk(Disk sourceDisk) {
+        withLinuxFromDisk(sourceDisk.id());
+        if (sourceDisk.osType() != null) {
+            this.withOsType(sourceDisk.osType());
+        }
+        this.withAccountType(sourceDisk.accountType());
+        return this;
+    }
+
+    @Override
+    public DiskImpl withLinuxFromSnapshot(String sourceSnapshotId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceSnapshotId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withLinuxFromSnapshot(Snapshot sourceSnapshot) {
+        withLinuxFromSnapshot(sourceSnapshot.id());
+        if (sourceSnapshot.osType() != null) {
+            this.withOsType(sourceSnapshot.osType());
+        }
+        this.withAccountType(sourceSnapshot.accountType());
+        return this;
+    }
+
+    @Override
+    public DiskImpl withWindowsFromVhd(String vhdUrl) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.IMPORT)
+                .withSourceUri(vhdUrl);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withWindowsFromDisk(String sourceDiskId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceDiskId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withWindowsFromDisk(Disk sourceDisk) {
+        withWindowsFromDisk(sourceDisk.id());
+        if (sourceDisk.osType() != null) {
+            this.withOsType(sourceDisk.osType());
+        }
+        this.withAccountType(sourceDisk.accountType());
+        return this;
+    }
+
+    @Override
+    public DiskImpl withWindowsFromSnapshot(String sourceSnapshotId) {
+        this.inner()
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData())
+                .creationData()
+                .withCreateOption(DiskCreateOption.COPY)
+                .withSourceResourceId(sourceSnapshotId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withWindowsFromSnapshot(Snapshot sourceSnapshot) {
+        withWindowsFromSnapshot(sourceSnapshot.id());
+        if (sourceSnapshot.osType() != null) {
+            this.withOsType(sourceSnapshot.osType());
+        }
+        this.withAccountType(sourceSnapshot.accountType());
         return this;
     }
 
@@ -116,9 +213,9 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType) {
+    public DiskImpl fromVhd(String vhdUrl) {
         this.inner()
-                .withOsType(osType)
+                .withCreationData(new CreationData())
                 .creationData()
                 .withCreateOption(DiskCreateOption.IMPORT)
                 .withSourceUri(vhdUrl);
@@ -126,17 +223,9 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl importedFromDataVhd(String vhdUrl) {
+    public DiskImpl fromSnapshot(String snapshotId) {
         this.inner()
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
-        return this;
-    }
-
-    @Override
-    public DiskImpl copiedFromSnapshot(String snapshotId) {
-        this.inner()
+                .withCreationData(new CreationData())
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
                 .withSourceResourceId(snapshotId);
@@ -144,8 +233,14 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl copiedFromDisk(String managedDiskId) {
+    public DiskImpl fromSnapshot(Snapshot snapshot) {
+        return fromSnapshot(snapshot.id());
+    }
+
+    @Override
+    public DiskImpl fromDisk(String managedDiskId) {
         this.inner()
+                .withCreationData(new CreationData())
                 .creationData()
                 .withCreateOption(DiskCreateOption.COPY)
                 .withSourceResourceId(managedDiskId);
@@ -153,8 +248,8 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl copiedFromDisk(Disk managedDisk) {
-        return copiedFromDisk(managedDisk.id())
+    public DiskImpl fromDisk(Disk managedDisk) {
+        return fromDisk(managedDisk.id())
                 .withOsType(managedDisk.osType())
                 .withAccountType(managedDisk.accountType());
     }
@@ -188,46 +283,5 @@ class DiskImpl
         DiskInner diskInner = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(diskInner);
         return this;
-    }
-
-    public DiskImpl fromImage(String imageId, OperatingSystemTypes osType) {
-        this.inner()
-                .withOsType(osType)
-                .creationData()
-                .withCreateOption(DiskCreateOption.FROM_IMAGE)
-                .withImageReference(new ImageDiskReference().withId(imageId));
-        return this;
-    }
-
-    public DiskImpl fromImage(VirtualMachineImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().operatingSystem());
-    }
-
-    public DiskImpl fromImage(VirtualMachineCustomImage image) {
-        return this.fromImage(image.id(),
-                image.osDiskImage().osType());
-    }
-
-    public DiskImpl fromImage(String imageId, int diskLun) {
-        this.inner()
-                .creationData()
-                .withCreateOption(DiskCreateOption.FROM_IMAGE)
-                .withImageReference(new ImageDiskReference().withId(imageId).withLun(diskLun));
-        return this;
-    }
-
-    public DiskImpl fromImage(VirtualMachineImage image, int diskLun) {
-        if (!image.dataDiskImages().containsKey(diskLun)) {
-            throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
-        }
-        return fromImage(image.id(), diskLun);
-    }
-
-    public DiskImpl fromImage(VirtualMachineCustomImage image, int diskLun) {
-        if (!image.dataDiskImages().containsKey(diskLun)) {
-            throw new IllegalArgumentException(String.format("A disk image with lun %d does not exists in the image", diskLun));
-        }
-        return fromImage(image.id(), diskLun);
     }
 }

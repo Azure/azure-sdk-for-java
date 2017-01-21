@@ -81,10 +81,16 @@ public interface Disk extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithDiskType,
-            DefinitionStages.WithOsDisk,
-            DefinitionStages.WithDataDisk,
-            DefinitionStages.WithCreateAndOsSettings {
+            DefinitionStages.WithDiskSource,
+            DefinitionStages.WithWindowsDiskSource,
+            DefinitionStages.WithLinuxDiskSource,
+            DefinitionStages.WithData,
+            DefinitionStages.WithDataDiskSource,
+            DefinitionStages.WithDataDiskFromVhd,
+            DefinitionStages.WithDataDiskFromDisk,
+            DefinitionStages.WithDataDiskFromSnapshot,
+            DefinitionStages.WithCreateAndSize,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -100,43 +106,127 @@ public interface Disk extends
         /**
          * The stage of the managed disk definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithDiskType> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithDiskSource> {
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose disk type.
+         * The stage of the managed disk definition allowing to choose OS source or data source.
          */
-        interface WithDiskType {
-            /**
-             * Begins definition of managed disk containing operating system.
-             *
-             * @return the next stage of the managed disk definition
-             */
-            WithOsDisk withOs();
-
-            /**
-             * Begins definition of managed snapshot containing data.
-             *
-             * @return the next stage of the managed disk definition
-             */
-            WithDataDisk withData();
+        interface WithDiskSource
+                extends
+                WithWindowsDiskSource,
+                WithLinuxDiskSource,
+                WithData {
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose Os source.
+         *  The stage of the managed disk definition allowing to choose Windows OS source.
          */
-        interface WithOsDisk extends
-                WithOsDiskFromVhd,
-                WithOsDiskFromManagedDisk,
-                WithOsDiskFromSnapshot {
+        interface WithWindowsDiskSource {
+            /**
+             * Specifies the source Windows OS managed disk.
+             *
+             * @param sourceDiskId source managed disk resource id
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withWindowsFromDisk(String sourceDiskId);
+
+            /**
+             * Specifies the source Windows OS managed disk.
+             *
+             * @param sourceDisk source managed disk
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withWindowsFromDisk(Disk sourceDisk);
+
+            /**
+             * Specifies the source Windows OS managed snapshot.
+             *
+             * @param sourceSnapshotId snapshot resource id
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withWindowsFromSnapshot(String sourceSnapshotId);
+
+            /**
+             * Specifies the source Windows OS managed snapshot.
+             *
+             * @param sourceSnapshot source snapshot
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withWindowsFromSnapshot(Snapshot sourceSnapshot);
+
+            /**
+             * Specifies the source specialized or generalized Windows OS vhd.
+             *
+             * @param vhdUrl the source vhd url
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withWindowsFromVhd(String vhdUrl);
+        }
+
+        /**
+         *  The stage of the managed disk definition allowing to choose Linux OS source.
+         */
+        interface WithLinuxDiskSource {
+            /**
+             * Specifies the source Linux OS managed disk.
+             *
+             * @param sourceDiskId source managed disk resource id
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withLinuxFromDisk(String sourceDiskId);
+
+            /**
+             * Specifies the source Linux OS managed disk.
+             *
+             * @param sourceDisk source managed disk
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withLinuxFromDisk(Disk sourceDisk);
+
+            /**
+             * Specifies the source Linux OS managed snapshot.
+             *
+             * @param sourceSnapshotId snapshot resource id
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withLinuxFromSnapshot(String sourceSnapshotId);
+
+            /**
+             * Specifies the source Linux OS managed snapshot.
+             *
+             * @param sourceSnapshot source snapshot
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withLinuxFromSnapshot(Snapshot sourceSnapshot);
+
+            /**
+             * Specifies the source specialized or generalized Linux OS vhd.
+             *
+             * @param vhdUrl the source vhd url
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize withLinuxFromVhd(String vhdUrl);
+        }
+
+        /**
+         * The stage of the managed disk definition that specifies it hold data.
+         */
+        interface WithData {
+            /**
+             * Begins definition of managed disk containing data.
+             *
+             * @return the next stage of the managed disk definition
+             */
+            WithDataDiskSource withData();
         }
 
         /**
          * The stage of the managed disk definition allowing to choose data source.
          */
-        interface WithDataDisk extends
+        interface WithDataDiskSource extends
                 WithDataDiskFromVhd,
-                WithDataDiskFromManagedDisk,
+                WithDataDiskFromDisk,
                 WithDataDiskFromSnapshot {
             /**
              * Specifies the disk size for an empty disk.
@@ -148,53 +238,59 @@ public interface Disk extends
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose source vhd containing Os.
+         * The stage of the managed disk definition allowing to choose source data disk vhd.
          */
-        interface WithOsDiskFromVhd {
+        interface WithDataDiskFromVhd {
             /**
-             * Specifies the source specialized or generalized operating system vhd.
+             * Specifies the source data vhd.
              *
              * @param vhdUrl the source vhd url
-             * @param osType operating system type
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndSize importedFromOsVhd(String vhdUrl, OperatingSystemTypes osType);
+            WithCreateAndSize fromVhd(String vhdUrl);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed disk containing Os.
+         * The stage of the managed disk definition allowing to choose managed disk containing data.
          */
-        interface WithOsDiskFromManagedDisk {
+        interface WithDataDiskFromDisk {
             /**
-             * Specifies the source operating system managed disk.
+             * Specifies the id of source data managed disk.
              *
              * @param managedDiskId source managed disk resource id
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndOsSettings copiedFromDisk(String managedDiskId);
+            WithCreateAndSize fromDisk(String managedDiskId);
 
             /**
-             * Specifies the source operating system managed disk.
+             * Specifies the source data managed disk.
              *
              * @param managedDisk source managed disk
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndOsSettings copiedFromDisk(Disk managedDisk);
+            WithCreateAndSize fromDisk(Disk managedDisk);
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing os.
+         * The stage of the managed disk definition allowing to choose managed snapshot containing data.
          */
-        interface WithOsDiskFromSnapshot {
+        interface WithDataDiskFromSnapshot {
             /**
-             * Specifies the source operating system managed snapshot.
+             * Specifies the source data managed snapshot.
              *
              * @param snapshotId snapshot resource id
              * @return the next stage of the managed disk definition
              */
-            WithCreateAndOsSettings copiedFromSnapshot(String snapshotId);
-        }
+            WithCreateAndSize fromSnapshot(String snapshotId);
 
+            /**
+             * Specifies the source data managed snapshot.
+             *
+             * @param snapshot snapshot resource
+             * @return the next stage of the managed disk definition
+             */
+            WithCreateAndSize fromSnapshot(Snapshot snapshot);
+        }
 
         /**
          * The stage of the managed disk definition allowing to choose source operating system image.
@@ -226,54 +322,6 @@ public interface Disk extends
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
-
-        /**
-         * The stage of the managed disk definition allowing to choose source data disk vhd.
-         */
-        interface WithDataDiskFromVhd {
-            /**
-             * Specifies the source data vhd.
-             *
-             * @param vhdUrl the source vhd url
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndSize importedFromDataVhd(String vhdUrl);
-        }
-
-        /**
-         * The stage of the managed disk definition allowing to choose managed disk containing data.
-         */
-        interface WithDataDiskFromManagedDisk {
-            /**
-             * Specifies the id of source data managed disk.
-             *
-             * @param managedDiskId source managed disk resource id
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndSize copiedFromDisk(String managedDiskId);
-
-            /**
-             * Specifies the source data managed disk.
-             *
-             * @param managedDisk source managed disk
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndSize copiedFromDisk(Disk managedDisk);
-        }
-
-        /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing data.
-         */
-        interface WithDataDiskFromSnapshot {
-            /**
-             * Specifies the source data managed snapshot.
-             *
-             * @param snapshotId snapshot resource id
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndSize copiedFromSnapshot(String snapshotId);
-        }
-
         /**
          * The stage of the managed disk definition allowing to choose source data disk image.
          */
@@ -318,19 +366,6 @@ public interface Disk extends
              * @return the next stage of the managed disk definition
              */
             WithCreateAndSize withSizeInGB(int sizeInGB);
-        }
-
-        /**
-         * The stage of the managed disk definition that allowing to create or optionally specify Os settings.
-         */
-        interface WithCreateAndOsSettings extends WithCreateAndSize {
-            /**
-             * Specifies the operating system type.
-             *
-             * @param osType operating system type
-             * @return the next stage of the managed disk definition
-             */
-            WithCreateAndOsSettings withOsType(OperatingSystemTypes osType);
         }
 
         /**
