@@ -22,7 +22,7 @@ import java.util.Map;
 public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTestBase {
     private static ApplicationTokenCredentials credentials;
     private static RestClient restClient;
-    private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
+    private static Region region = Region.fromName("westcentralus"); // Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -31,7 +31,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
         AzureEnvironment canary = new AzureEnvironment("https://login.microsoftonline.com/",
                 "https://management.core.windows.net/",
-                "https://brazilus.management.azure.com/",
+                "https://management.azure.com/", // "https://brazilus.management.azure.com/",
                 "https://graph.windows.net/");
 
         restClient = new RestClient.Builder()
@@ -505,6 +505,42 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
         Assert.assertTrue(managedVm.isManagedDiskEnabled());
         Assert.assertTrue(managedVm.osDiskId().equalsIgnoreCase(osDisk.id().toLowerCase()));
+        resourceManager.resourceGroups().deleteByName(rgName);
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithManagedDiskInManagedAvailabilitySet() {
+        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String availSetName = ResourceNamer.randomResourceName("av-", 15);
+        final String uname = "juser";
+        final String password = "123tEst!@|ac";
+        final String vmName = "myvm6";
+        writeToFile(rgName);
+
+        VirtualMachineImage image = getImage();
+        VirtualMachine managedVm = computeManager.virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withSpecificLinuxImageVersion(image.imageReference())
+                .withRootUsername(uname)
+                .withRootPassword(password)
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)
+                .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
+                .withNewAvailabilitySet(availSetName)           // Default to managed availability set
+                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .create();
+
+        Assert.assertNotNull(managedVm.availabilitySetId());
+        AvailabilitySet availabilitySet = computeManager.availabilitySets().getById(managedVm.availabilitySetId());
+        Assert.assertTrue(availabilitySet.virtualMachineIds().size() > 0);
+        Assert.assertTrue(availabilitySet.isManaged()); // TODO: Server is not honoring this flag in request, need to check with CRP
+
         resourceManager.resourceGroups().deleteByName(rgName);
     }
 

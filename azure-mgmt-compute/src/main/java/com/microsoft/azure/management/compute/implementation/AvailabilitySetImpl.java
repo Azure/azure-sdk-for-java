@@ -57,6 +57,11 @@ class AvailabilitySetImpl
     }
 
     @Override
+    public boolean isManaged() {
+        return Utils.toPrimitiveBoolean(this.inner().managed());
+    }
+
+    @Override
     public List<String> virtualMachineIds() {
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new ArrayList<>();
@@ -64,7 +69,6 @@ class AvailabilitySetImpl
                 idOfVMsInSet.add(resource.id());
             }
         }
-
         return Collections.unmodifiableList(idOfVMsInSet);
     }
 
@@ -93,11 +97,32 @@ class AvailabilitySetImpl
         return this;
     }
 
+    @Override
+    public AvailabilitySetImpl withoutManaged() {
+        this.inner().withManaged(false);
+        return this;
+    }
+
+    @Override
+    public AvailabilitySetImpl withManaged() {
+        this.inner().withManaged(true);
+        return this;
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
 
     @Override
     public Observable<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
+        if (this.inner().platformFaultDomainCount() == null) {
+            this.inner().withPlatformFaultDomainCount(2);
+        }
+        if (this.inner().platformUpdateDomainCount() == null) {
+            this.inner().withPlatformUpdateDomainCount(5);
+        }
+        if (this.inner().managed() == null) {
+            this.inner().withManaged(true);
+        }
         return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
                     @Override
