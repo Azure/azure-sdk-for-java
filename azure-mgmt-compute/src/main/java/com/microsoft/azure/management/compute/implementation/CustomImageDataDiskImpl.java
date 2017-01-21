@@ -26,10 +26,6 @@ class CustomImageDataDiskImpl
         super(inner, parent);
     }
 
-    static CustomImageDataDiskImpl prepare(int lun, VirtualMachineCustomImageImpl parent) {
-        return new CustomImageDataDiskImpl(new ImageDataDisk().withLun(lun), parent);
-    }
-
     @Override
     public CustomImageDataDiskImpl withDiskSizeInGB(int diskSizeGB) {
         this.inner().withDiskSizeGB(diskSizeGB);
@@ -39,6 +35,12 @@ class CustomImageDataDiskImpl
     @Override
     public CustomImageDataDiskImpl withDiskCaching(CachingTypes cachingType) {
         this.inner().withCaching(cachingType);
+        return this;
+    }
+
+    @Override
+    public CustomImageDataDiskImpl withLun(int lun) {
+        this.inner().withLun(lun);
         return this;
     }
 

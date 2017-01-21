@@ -52,8 +52,9 @@ public interface VirtualMachineCustomImage extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithOsDiskImageAltSourceVirtualMachine,
+            DefinitionStages.WithOsDiskImageSourceAltVirtualMachineSource,
             DefinitionStages.WithOsDiskImageSource,
+            DefinitionStages.WithSourceVirtualMachine,
             DefinitionStages.WithCreateAndDataDiskImageOsDiskSettings {
     }
 
@@ -72,34 +73,110 @@ public interface VirtualMachineCustomImage extends
          * The stage of the image definition allowing to specify the resource group.
          */
         interface WithGroup
-                extends GroupableResource.DefinitionStages.WithGroup<WithOsDiskImageAltSourceVirtualMachine> {
+                extends GroupableResource.DefinitionStages.WithGroup<WithOsDiskImageSourceAltVirtualMachineSource> {
         }
 
         /**
          * The stage of the image definition that allows choosing between using a virtual machine as
          * source for OS and data disk images or beginning OS disk image definition.
          */
-        interface WithOsDiskImageAltSourceVirtualMachine
-                extends WithOsDiskImageStateAndType, WithSourceVirtualMachine {
+        interface WithOsDiskImageSourceAltVirtualMachineSource
+                extends WithOsDiskImageSource, WithSourceVirtualMachine {
         }
 
         /**
-         * The stage of the image definition allowing to choose os type and os state for the OS image.
+         * The stage of the image definition allowing to choose OS source and OS state for the OS image.
          */
-        interface WithOsDiskImageStateAndType {
+        interface WithOsDiskImageSource {
             /**
-             * Specifies that OS disk image is a generalized Windows image.
+             * Specifies the Windows source native VHD for the OS disk image.
              *
+             * @param sourceVhdUrl source Windows virtual hard disk url
+             * @param osState operating system state
              * @return the next stage of the image definition
              */
-            WithOsDiskImageSource withGeneralizedWindowsOsDiskImage();
+            WithCreateAndDataDiskImageOsDiskSettings withWindowsFromVhd(String sourceVhdUrl, OperatingSystemStateTypes osState);
 
             /**
-             * Specifies that OS disk image is a generalized Linux image.
+             * Specifies the Linux source native VHD for the OS disk image.
              *
+             * @param sourceVhdUrl source Linux virtual hard disk url
+             * @param osState operating system state
              * @return the next stage of the image definition
              */
-            WithOsDiskImageSource withGeneralizedLinuxOsDiskImage();
+            WithCreateAndDataDiskImageOsDiskSettings withLinuxFromVhd(String sourceVhdUrl, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Windows source snapshot for the OS disk image.
+             *
+             * @param sourceSnapshot source snapshot resource
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withWindowsFromSnapshot(Snapshot sourceSnapshot, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source snapshot for the OS disk image.
+             *
+             * @param sourceSnapshot source snapshot resource
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withLinuxFromSnapshot(Snapshot sourceSnapshot, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Windows source snapshot for the OS disk image.
+             *
+             * @param sourceSnapshotId source snapshot resource id
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withWindowsFromSnapshot(String sourceSnapshotId, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source snapshot for the OS disk image.
+             *
+             * @param sourceSnapshotId source snapshot resource id
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withLinuxFromSnapshot(String sourceSnapshotId, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Windows source managed disk for the OS disk image.
+             *
+             * @param sourceManagedDiskId source managed disk resource id
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withWindowsFromDisk(String sourceManagedDiskId, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source managed disk for the OS disk image.
+             *
+             * @param sourceManagedDiskId source managed disk resource id
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withLinuxFromDisk(String sourceManagedDiskId, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Windows source managed disk for the OS disk image.
+             *
+             * @param sourceManagedDisk source managed disk
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withWindowsFromDisk(Disk sourceManagedDisk, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source managed disk for the OS disk image.
+             *
+             * @param sourceManagedDisk source managed disk
+             * @param osState operating system state
+             * @return the next stage of the image definition
+             */
+            WithCreateAndDataDiskImageOsDiskSettings withLinuxFromDisk(Disk sourceManagedDisk, OperatingSystemStateTypes osState);
         }
 
         /**
@@ -123,51 +200,6 @@ public interface VirtualMachineCustomImage extends
              * @return the next stage of the image definition
              */
             WithCreate fromVirtualMachine(VirtualMachine virtualMachine);
-        }
-
-        /**
-         * The stage of the image definition allowing to choose the source of the OS disk image.
-         */
-        interface WithOsDiskImageSource {
-            /**
-             * Specifies the source native VHD for the OS disk image.
-             *
-             * @param sourceVhdUrl source virtual hard disk url
-             * @return the next stage of the image definition
-             */
-            WithCreateAndDataDiskImageOsDiskSettings fromVhd(String sourceVhdUrl);
-
-            /**
-             * Specifies the source snapshot for the OS disk image.
-             *
-             * @param sourceSnapshot source snapshot resource
-             * @return the next stage of the image definition
-             */
-            WithCreateAndDataDiskImageOsDiskSettings fromSnapshot(Snapshot sourceSnapshot);
-
-            /**
-             * Specifies the source snapshot for the OS disk image.
-             *
-             * @param sourceSnapshotId source snapshot resource id
-             * @return the next stage of the image definition
-             */
-            WithCreateAndDataDiskImageOsDiskSettings fromSnapshot(String sourceSnapshotId);
-
-            /**
-             * Specifies the source managed disk for the OS disk image.
-             *
-             * @param sourceManagedDiskId source managed disk resource id
-             * @return the next stage of the image definition
-             */
-            WithCreateAndDataDiskImageOsDiskSettings fromDisk(String sourceManagedDiskId);
-
-            /**
-             * Specifies the source managed disk for the OS disk image.
-             *
-             * @param sourceManagedDisk source managed disk
-             * @return the next stage of the image definition
-             */
-            WithCreateAndDataDiskImageOsDiskSettings fromDisk(Disk sourceManagedDisk);
         }
 
         /**
@@ -232,10 +264,9 @@ public interface VirtualMachineCustomImage extends
              * Begins the definition of a new data disk image to add to the image.
              * <p>
              * The definition must be completed with a call to {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
-             * @param lun the unique lun for the data disk
              * @return the first stage of the new data disk image definition
              */
-            CustomImageDataDisk.DefinitionStages.Blank<WithCreateAndDataDiskImageOsDiskSettings> defineDataDiskImage(int lun);
+            CustomImageDataDisk.DefinitionStages.Blank<WithCreateAndDataDiskImageOsDiskSettings> defineDataDiskImage();
         }
 
         /**
@@ -263,7 +294,22 @@ public interface VirtualMachineCustomImage extends
              * The first stage of the data disk image definition.
              * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
              */
-            interface Blank<ParentT> extends WithImageSource<ParentT> {
+            interface Blank<ParentT> extends WithDiskLun<ParentT> {
+            }
+
+            /**
+             * The stage of the image definition allowing to specify the lun for the disk image.
+             *
+             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             */
+            interface WithDiskLun<ParentT> {
+                /**
+                 * Specifies the lun for the data disk to be created from the disk image.
+                 *
+                 * @param lun the unique lun for the data disk
+                 * @return the next stage of the data disk image definition
+                 */
+                WithImageSource<ParentT> withLun(int lun);
             }
 
             /**
@@ -347,6 +393,7 @@ public interface VirtualMachineCustomImage extends
          */
         interface Definition<ParentT> extends
                 DefinitionStages.Blank<ParentT>,
+                DefinitionStages.WithDiskLun<ParentT>,
                 DefinitionStages.WithImageSource<ParentT>,
                 DefinitionStages.WithDiskSettings<ParentT>,
                 DefinitionStages.WithAttach<ParentT> {
