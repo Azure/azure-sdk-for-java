@@ -50,7 +50,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
                 .withAdminUsername("Foo12")
                 .withAdminPassword("BaR@12")
-                .withNativeDisks()
+                .withUnmanagedDisks()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .withOsDiskName("javatest")
@@ -234,7 +234,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
                     .withRootPassword("BaR@12!#")
-                    .withNativeDisks()
+                    .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountCreatable);
 
             virtualMachineCreatables.add(virtualMachineCreatable);

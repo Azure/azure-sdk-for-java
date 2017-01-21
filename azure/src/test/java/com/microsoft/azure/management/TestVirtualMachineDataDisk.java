@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.compute.VirtualMachineNativeDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -28,9 +28,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
                 .withAdminPassword("12NewPA$$w0rd!")
-                .withNativeDisks()
-                .withNewNativeDataDisk(30)
-                .defineNativeDataDisk("disk2")
+                .withUnmanagedDisks()
+                .withNewUnmanagedDataDisk(30)
+                .defineUnmanagedDataDisk("disk2")
                     .withNewVhd(20)
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()
@@ -38,9 +38,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .create();
 
         Assert.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
-        Assert.assertTrue(virtualMachine.nativeDataDisks().size() == 2);
-        VirtualMachineNativeDataDisk disk2 = null;
-        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.nativeDataDisks().values()) {
+        Assert.assertTrue(virtualMachine.unmanagedDataDisks().size() == 2);
+        VirtualMachineUnmanagedDataDisk disk2 = null;
+        for (VirtualMachineUnmanagedDataDisk dataDisk : virtualMachine.unmanagedDataDisks().values()) {
             if (dataDisk.name().equalsIgnoreCase("disk2")) {
                 disk2 = dataDisk;
                 break;
@@ -55,15 +55,15 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
     @Override
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
         virtualMachine = virtualMachine.update()
-                .withoutNativeDataDisk("disk2")
-                .defineNativeDataDisk("disk3")
+                .withoutUnmanagedDataDisk("disk2")
+                .defineUnmanagedDataDisk("disk3")
                     .withNewVhd(10)
                     .withLun(2)
                     .attach()
                 .apply();
-        Assert.assertTrue(virtualMachine.nativeDataDisks().size() == 2);
-        VirtualMachineNativeDataDisk disk3 = null;
-        for (VirtualMachineNativeDataDisk dataDisk : virtualMachine.nativeDataDisks().values()) {
+        Assert.assertTrue(virtualMachine.unmanagedDataDisks().size() == 2);
+        VirtualMachineUnmanagedDataDisk disk3 = null;
+        for (VirtualMachineUnmanagedDataDisk dataDisk : virtualMachine.unmanagedDataDisks().values()) {
             if (dataDisk.name().equalsIgnoreCase("disk3")) {
                 disk3 = dataDisk;
                 break;

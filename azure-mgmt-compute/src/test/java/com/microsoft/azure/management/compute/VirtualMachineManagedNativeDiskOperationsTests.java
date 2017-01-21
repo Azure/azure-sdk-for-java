@@ -99,9 +99,9 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertNotNull(publicIpId);
         // Validates the options which are valid only for native disks
         //
-        Assert.assertNull(virtualMachine.osNativeDiskVhdUri());
-        Assert.assertNotNull(virtualMachine.nativeDataDisks());
-        Assert.assertTrue(virtualMachine.nativeDataDisks().size() == 0);
+        Assert.assertNull(virtualMachine.osUnmanagedDiskVhdUri());
+        Assert.assertNotNull(virtualMachine.unmanagedDataDisks());
+        Assert.assertTrue(virtualMachine.unmanagedDataDisks().size() == 0);
         // clean
         resourceManager.resourceGroups().deleteByName(rgName);
     }
@@ -176,8 +176,8 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertTrue(virtualMachine.isManagedDiskEnabled());
         // There should not be any native data disks
         //
-        Assert.assertNotNull(virtualMachine.nativeDataDisks());
-        Assert.assertEquals(virtualMachine.nativeDataDisks().size(), 0);
+        Assert.assertNotNull(virtualMachine.unmanagedDataDisks());
+        Assert.assertEquals(virtualMachine.unmanagedDataDisks().size(), 0);
         // Validate the managed data disks
         //
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
@@ -470,14 +470,14 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
                 .withRootPassword(password)
-                .withNativeDisks()                  /* UN-MANAGED OS and DATA DISKS */
+                .withUnmanagedDisks()                  /* UN-MANAGED OS and DATA DISKS */
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertFalse(nativeVm.isManagedDiskEnabled());
-        String osVhdUri = nativeVm.osNativeDiskVhdUri();
+        String osVhdUri = nativeVm.osUnmanagedDiskVhdUri();
         Assert.assertNotNull(osVhdUri);
 
         computeManager.virtualMachines().deleteById(nativeVm.id());

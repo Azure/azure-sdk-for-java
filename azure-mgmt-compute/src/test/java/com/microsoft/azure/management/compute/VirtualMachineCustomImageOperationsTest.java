@@ -67,9 +67,9 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .define(vhdBasedImageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLinuxFromVhd(linuxVM.osNativeDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
+                .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
                 .withOsDiskCaching(linuxVM.osDiskCachingType());
-        for (VirtualMachineNativeDataDisk disk : linuxVM.nativeDataDisks().values()) {
+        for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
             creatableDisk.defineDataDiskImage()
                     .withLun(disk.lun())
                     .fromVhd(disk.vhdUri())
@@ -88,10 +88,10 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertEquals(customImage.osDiskImage().osState(), OperatingSystemStateTypes.GENERALIZED);
         Assert.assertEquals(customImage.osDiskImage().osType(), OperatingSystemTypes.LINUX);
         Assert.assertNotNull(customImage.dataDiskImages());
-        Assert.assertEquals(customImage.dataDiskImages().size(), linuxVM.nativeDataDisks().size());
+        Assert.assertEquals(customImage.dataDiskImages().size(), linuxVM.unmanagedDataDisks().size());
         for (ImageDataDisk diskImage : customImage.dataDiskImages().values()) {
-            VirtualMachineNativeDataDisk matchedDisk = null;
-            for (VirtualMachineNativeDataDisk vmDisk : linuxVM.nativeDataDisks().values()) {
+            VirtualMachineUnmanagedDataDisk matchedDisk = null;
+            for (VirtualMachineUnmanagedDataDisk vmDisk : linuxVM.unmanagedDataDisks().values()) {
                 if (vmDisk.lun() == diskImage.lun()) {
                     matchedDisk = vmDisk;
                     break;
@@ -158,7 +158,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertNotNull(customImage.sourceVirtualMachineId());
         Assert.assertTrue(customImage.sourceVirtualMachineId().equalsIgnoreCase(vm.id()));
 
-        for (VirtualMachineNativeDataDisk vmDisk : vm.nativeDataDisks().values()) {
+        for (VirtualMachineUnmanagedDataDisk vmDisk : vm.unmanagedDataDisks().values()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals(diskImage.caching(), vmDisk.cachingType());
@@ -193,21 +193,21 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
                 .withRootPassword(password)
-                .withNativeDisks()                  /* UN-MANAGED OS and DATA DISKS */
-                .defineNativeDataDisk("disk1")
+                .withUnmanagedDisks()                  /* UN-MANAGED OS and DATA DISKS */
+                .defineUnmanagedDataDisk("disk1")
                     .withNewVhd(100)
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()
-                .withNewNativeDataDisk(100)
+                .withNewUnmanagedDataDisk(100)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertFalse(nativeVm.isManagedDiskEnabled());
-        String osVhdUri = nativeVm.osNativeDiskVhdUri();
+        String osVhdUri = nativeVm.osUnmanagedDiskVhdUri();
         Assert.assertNotNull(osVhdUri);
-        Map<Integer, VirtualMachineNativeDataDisk> dataDisks = nativeVm.nativeDataDisks();
+        Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = nativeVm.unmanagedDataDisks();
         Assert.assertEquals(dataDisks.size(), 2);
 
         computeManager.virtualMachines().deleteById(nativeVm.id());
@@ -224,7 +224,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create managed disk with Data from vm's lun0 data disk
         //
         final String dataDiskName1 = ResourceNamer.randomResourceName("dsk", 15);
-        VirtualMachineNativeDataDisk vmNativeDataDisk1 = dataDisks.get(0);
+        VirtualMachineUnmanagedDataDisk vmNativeDataDisk1 = dataDisks.get(0);
         Disk managedDataDisk1 = computeManager.disks().define(dataDiskName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -235,7 +235,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create managed disk with Data from vm's lun1 data disk
         //
         final String dataDiskName2 = ResourceNamer.randomResourceName("dsk", 15);
-        VirtualMachineNativeDataDisk vmNativeDataDisk2 = dataDisks.get(1);
+        VirtualMachineUnmanagedDataDisk vmNativeDataDisk2 = dataDisks.get(1);
         Disk managedDataDisk2 = computeManager.disks().define(dataDiskName2)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -278,7 +278,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertTrue(customImage.dataDiskImages().containsKey(vmNativeDataDisk2.lun()));
         Assert.assertEquals(customImage.dataDiskImages().get(vmNativeDataDisk2.lun()).caching(), CachingTypes.NONE);
 
-        for (VirtualMachineNativeDataDisk vmDisk : dataDisks.values()) {
+        for (VirtualMachineUnmanagedDataDisk vmDisk : dataDisks.values()) {
             Assert.assertTrue(customImage.dataDiskImages().containsKey(vmDisk.lun()));
             ImageDataDisk diskImage = customImage.dataDiskImages().get(vmDisk.lun());
             Assert.assertEquals((long) diskImage.diskSizeGB(), vmDisk.size() + 10);
@@ -330,12 +330,12 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withSpecificLinuxImageVersion(linuxVmImage.imageReference())
                 .withRootUsername(uname)
                 .withRootPassword(password)
-                .withNativeDisks()
-                .defineNativeDataDisk("disk-1")
+                .withUnmanagedDisks()
+                .defineUnmanagedDataDisk("disk-1")
                     .withNewVhd(30)
                     .withCaching(CachingTypes.READ_WRITE)
                     .attach()
-                .defineNativeDataDisk("disk-2")
+                .defineUnmanagedDataDisk("disk-2")
                     .withNewVhd(60)
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()

@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * A native data disk of a virtual machine.
  */
 @Fluent
-public interface VirtualMachineNativeDataDisk extends
+public interface VirtualMachineUnmanagedDataDisk extends
         Wrapper<DataDisk>,
         ChildResource<VirtualMachine> {
     /**
