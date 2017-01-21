@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
 /**
- * The implementation of {@link Subscriptions}.
+ * The implementation of Subscriptions.
  */
 final class SubscriptionsImpl
         implements Subscriptions {

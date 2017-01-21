@@ -32,7 +32,7 @@ public interface Location extends
     String displayName();
 
     /**
-     * @return returns the region of the data center location
+     * @return the region of the data center location
      */
     Region asRegion();
 
