@@ -17,7 +17,8 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
-import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.Location;
+import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -38,7 +39,6 @@ public class AzureTests {
             System.getenv("secret"),
             AzureEnvironment.AZURE);
     private static final String SUBSCRIPTION_ID = System.getenv("arm.subscriptionid");
-    private Subscriptions subscriptions;
     private Azure azure;
 
     public static void main(String[] args) throws IOException, CloudException {
@@ -77,7 +77,6 @@ public class AzureTests {
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
-        subscriptions = azureAuthed.subscriptions();
         // Try to authenticate based on file if present
         File authFile = new File("my.azureauth");
         if (authFile.exists()) {
@@ -403,7 +402,26 @@ public class AzureTests {
      */
     @Test
     public void listSubscriptions() throws Exception {
-        Assert.assertTrue(0 < subscriptions.list().size());
+        Assert.assertTrue(0 < azure.subscriptions().list().size());
+        Subscription subscription = azure.getCurrentSubscription();
+        Assert.assertNotNull(subscription);
+        Assert.assertTrue(azure.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+    }
+
+    /**
+     * Tests location listing.
+     * @throws Exception
+     */
+    @Test
+    public void listLocations() throws Exception {
+        Subscription subscription = azure.getCurrentSubscription();
+        Assert.assertNotNull(subscription);
+        for (Location location : subscription.listLocations()) {
+            Region region = Region.findByLabelOrName(location.name());
+            Assert.assertNotNull(region);
+            Assert.assertEquals(region, location.asRegion());
+            Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
+        }
     }
 
     /**
