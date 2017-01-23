@@ -1,0 +1,1872 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis/?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558Second/providers/Microsoft.Cache/Redis/javacsmrc85171Second\",\"location\":\"Central US\",\"name\":\"javacsmrc85171Second\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":1},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"7500\",\"maxmemory-reserved\":\"200\",\"maxmemory-delta\":\"200\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171Second.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"shardCount\":10}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558Second/providers/Microsoft.Cache/Redis/javacsmrc85171Third\",\"location\":\"Central US\",\"name\":\"javacsmrc85171Third\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":true,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"500\",\"maxmemory-delta\":\"500\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171Third.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558/providers/Microsoft.Cache/Redis/javacsmrc85171\",\"location\":\"East Asia\",\"name\":\"javacsmrc85171\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}]}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14982",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192518Z:dfb5ab86-98bd-4d85-b424-6272e0474037",
+      "date" : "Fri, 20 Jan 2017 19:25:18 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "dfb5ab86-98bd-4d85-b424-6272e0474037",
+      "content-length" : "1750",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-original-request-ids" : "05546606-c74c-4959-bcd8-ed5d404f8d89",
+      "x-ms-correlation-request-id" : "dfb5ab86-98bd-4d85-b424-6272e0474037"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/redis495978group?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group\",\"name\":\"redis495978group\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192518Z:dce5fa7a-69e6-43e6-ad82-51b3fc72c0c3",
+      "date" : "Fri, 20 Jan 2017 19:25:18 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "dce5fa7a-69e6-43e6-ad82-51b3fc72c0c3",
+      "content-length" : "185",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "dce5fa7a-69e6-43e6-ad82-51b3fc72c0c3"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":{\"primaryKey\":\"pco5kaGuAbGI+GYf4YkikwxsZvtewGOPEKUCnQPD6S4=\",\"secondaryKey\":\"3QlH7sVSpOII8gnO9TqDLkRcOvVgdBYJ52TuSNyshHU=\"},\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
+      "location" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192520Z:f19489d9-1029-4b47-81bb-23e83e8cccc1",
+      "date" : "Fri, 20 Jan 2017 19:25:20 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "02a0acc6-1dfe-4823-bbbc-657accac2baf",
+      "content-length" : "682",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f19489d9-1029-4b47-81bb-23e83e8cccc1"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192520Z:5ed628b0-5a1c-45cb-888a-9d3ad6f9a7ce",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14981",
+      "date" : "Fri, 20 Jan 2017 19:25:20 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "5a333147-f422-4498-8cf8-6645ed7f1fb1",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5ed628b0-5a1c-45cb-888a-9d3ad6f9a7ce"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192550Z:2edbbec7-8d89-4513-8557-9f349546fc6f",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14958",
+      "date" : "Fri, 20 Jan 2017 19:25:50 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "4034c3af-841d-44cd-b24d-ba2d8c344cc4",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2edbbec7-8d89-4513-8557-9f349546fc6f"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192620Z:1ad84129-d7f7-4415-8ae0-99a8d5c91eac",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14937",
+      "date" : "Fri, 20 Jan 2017 19:26:20 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "613ccee4-5c53-4eae-998c-31872d76b9c4",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1ad84129-d7f7-4415-8ae0-99a8d5c91eac"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192650Z:31f0f715-31a0-4785-bb3f-af0e806fb0ab",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14927",
+      "date" : "Fri, 20 Jan 2017 19:26:50 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "4056f7f1-130e-44de-92a8-f66b7625392a",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "31f0f715-31a0-4785-bb3f-af0e806fb0ab"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192721Z:4c90c2c3-eaca-4b04-9e51-964d90e24cec",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14919",
+      "date" : "Fri, 20 Jan 2017 19:27:20 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "7ad3e331-acc9-4c99-bace-145de0bba9a3",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4c90c2c3-eaca-4b04-9e51-964d90e24cec"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192751Z:39802f1b-b180-473d-af23-f8dc77250b61",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14914",
+      "date" : "Fri, 20 Jan 2017 19:27:50 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "b493b363-1e5b-45fb-a884-c99757fdaf8b",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "39802f1b-b180-473d-af23-f8dc77250b61"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192821Z:8b4e44a6-1d03-4854-95b6-260c5e8628aa",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14910",
+      "date" : "Fri, 20 Jan 2017 19:28:21 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "70a51b17-90a0-444b-9278-b1aef86e5552",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8b4e44a6-1d03-4854-95b6-260c5e8628aa"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192851Z:cb7830e3-5cdb-4bf8-beec-10c730a2f4ab",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14906",
+      "date" : "Fri, 20 Jan 2017 19:28:51 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "c641dad6-5ddd-4c38-bbd9-b66581a4433b",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cb7830e3-5cdb-4bf8-beec-10c730a2f4ab"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192921Z:37cbb06d-ad24-43ec-ace3-d90267b55071",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14902",
+      "date" : "Fri, 20 Jan 2017 19:29:21 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "a9ca659b-a658-4b45-aed8-d99cdf05f4b0",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "37cbb06d-ad24-43ec-ace3-d90267b55071"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T192951Z:c53b19fc-1d7e-477e-802c-a74a11528ead",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14898",
+      "date" : "Fri, 20 Jan 2017 19:29:51 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "92155a2e-2407-4baf-8ea7-7478f5d16613",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c53b19fc-1d7e-477e-802c-a74a11528ead"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193021Z:ad508c53-38a2-4cb4-8fc6-27fe6e681583",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14896",
+      "date" : "Fri, 20 Jan 2017 19:30:20 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "528c5ce3-84dd-44f8-b290-75cb7046c333",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ad508c53-38a2-4cb4-8fc6-27fe6e681583"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193051Z:0217d85a-7aff-4701-97dd-52020261930b",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14892",
+      "date" : "Fri, 20 Jan 2017 19:30:51 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "4f29c396-cebd-4326-bfc4-dabcb98c7b25",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0217d85a-7aff-4701-97dd-52020261930b"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193122Z:dfda001a-d4fe-4f40-a4c5-a0334029f107",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14888",
+      "date" : "Fri, 20 Jan 2017 19:31:21 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "6f57090a-6eaf-4ced-bdf8-93d59a19f2a2",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "dfda001a-d4fe-4f40-a4c5-a0334029f107"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193156Z:9b8b5aed-066d-4f8a-9f37-547d2b5b7ab1",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14884",
+      "date" : "Fri, 20 Jan 2017 19:31:56 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "7ca9f5c8-31c4-4b08-8ffc-48b80a02feee",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9b8b5aed-066d-4f8a-9f37-547d2b5b7ab1"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193227Z:9d75645f-1a72-4592-bf9f-7ba036df0e1c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14881",
+      "date" : "Fri, 20 Jan 2017 19:32:27 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "7c46c13f-0eb7-478e-b6f7-283e82a740d6",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9d75645f-1a72-4592-bf9f-7ba036df0e1c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193257Z:42b503b8-be49-4730-ae89-81e6c17ad299",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14877",
+      "date" : "Fri, 20 Jan 2017 19:32:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "712e51fc-9dbc-4162-a664-233807ad25fc",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "42b503b8-be49-4730-ae89-81e6c17ad299"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193327Z:24e2be87-1706-4431-b83c-2c26a6a08bd3",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14873",
+      "date" : "Fri, 20 Jan 2017 19:33:27 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "ecfa6e82-526b-4a53-a110-9686f13a505b",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "24e2be87-1706-4431-b83c-2c26a6a08bd3"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193357Z:de523c9b-e0b6-46ef-a9c6-6a4b34140437",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14869",
+      "date" : "Fri, 20 Jan 2017 19:33:56 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "242e2f68-865d-4319-93a7-a3fadc671912",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "de523c9b-e0b6-46ef-a9c6-6a4b34140437"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193427Z:89a9d737-7d34-4049-825d-1383747693d0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14865",
+      "date" : "Fri, 20 Jan 2017 19:34:26 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "6c9a2971-b80c-4be0-8a01-a730183de1b4",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "89a9d737-7d34-4049-825d-1383747693d0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193457Z:ee2b3c62-7cd1-4218-a0d5-243a34d0788a",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14861",
+      "date" : "Fri, 20 Jan 2017 19:34:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "663119a6-93de-4538-b3f7-73ddfb823a8a",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ee2b3c62-7cd1-4218-a0d5-243a34d0788a"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193527Z:ece23df7-b341-4b5c-84df-5f0ff690700e",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14858",
+      "date" : "Fri, 20 Jan 2017 19:35:26 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "89662fde-9309-4198-ba03-b2a2387a1c76",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ece23df7-b341-4b5c-84df-5f0ff690700e"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193557Z:40b2d00f-28bf-47b7-9bf1-0e94c383935c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14854",
+      "date" : "Fri, 20 Jan 2017 19:35:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "cd4eea62-bf0e-4cc8-93c3-5f938a2af925",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "40b2d00f-28bf-47b7-9bf1-0e94c383935c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193628Z:dc6611a5-84c6-4630-b295-ff5fca576a35",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14850",
+      "date" : "Fri, 20 Jan 2017 19:36:27 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "ea736a0b-2101-446a-a9fb-93244ba31adc",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "dc6611a5-84c6-4630-b295-ff5fca576a35"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193658Z:d160adeb-d7f9-49c0-b3d5-f436ce2d5d9c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14846",
+      "date" : "Fri, 20 Jan 2017 19:36:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "5f6dc532-b332-41af-af05-7ee6024d9e84",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d160adeb-d7f9-49c0-b3d5-f436ce2d5d9c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193728Z:73df797d-9abd-48fd-9cb0-1c0d00d5a3bb",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14842",
+      "date" : "Fri, 20 Jan 2017 19:37:27 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "35d0b6c6-59f5-47b6-bc9a-6eb3a15e662d",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "73df797d-9abd-48fd-9cb0-1c0d00d5a3bb"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193758Z:53271ca0-6934-43e6-8a31-583d11ca1fde",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14838",
+      "date" : "Fri, 20 Jan 2017 19:37:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "1fa319d2-7b6c-4fd9-b94b-cdb71f29f824",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "53271ca0-6934-43e6-8a31-583d11ca1fde"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193828Z:009876cb-d9cf-4e6a-9441-76ee7101de1c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14834",
+      "date" : "Fri, 20 Jan 2017 19:38:27 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "0b8a181c-768a-438b-a8fa-b2b4d519d6c9",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "009876cb-d9cf-4e6a-9441-76ee7101de1c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193858Z:db8411c4-0c14-4641-bfb7-ae88b8637c5c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14830",
+      "date" : "Fri, 20 Jan 2017 19:38:57 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "73f443ed-cb03-4169-a047-6bcb6abac746",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "db8411c4-0c14-4641-bfb7-ae88b8637c5c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193928Z:63e4e12b-a599-4ba0-8665-b280e945bf74",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14826",
+      "date" : "Fri, 20 Jan 2017 19:39:28 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "55365428-8451-4667-b936-2c546c1fd9f6",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "63e4e12b-a599-4ba0-8665-b280e945bf74"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T193959Z:2ba16dce-5c98-4ba9-aa06-bbc0d732a65c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14818",
+      "date" : "Fri, 20 Jan 2017 19:39:59 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "25117149-1e30-455a-b5db-acb497a5136a",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2ba16dce-5c98-4ba9-aa06-bbc0d732a65c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194029Z:1b3aa59a-bcf4-4c3c-bf25-2e5e524aef49",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14814",
+      "date" : "Fri, 20 Jan 2017 19:40:29 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "c5de935f-8895-48cd-9ac0-54e26368e838",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1b3aa59a-bcf4-4c3c-bf25-2e5e524aef49"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194059Z:29a4c3da-4354-4478-8bb0-73e001cc46ae",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14810",
+      "date" : "Fri, 20 Jan 2017 19:40:59 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "b2714bdc-ea42-4456-bca7-5b015ea61acb",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "29a4c3da-4354-4478-8bb0-73e001cc46ae"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194129Z:6605e59d-c48a-4164-b080-39d5f68622eb",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14806",
+      "date" : "Fri, 20 Jan 2017 19:41:29 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "408d1ce2-d124-4af4-ab4e-17d6256d32b0",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6605e59d-c48a-4164-b080-39d5f68622eb"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194159Z:a57df0d6-7caa-4823-8b1c-61135eb0cdec",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14802",
+      "date" : "Fri, 20 Jan 2017 19:41:58 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "9c4d81b8-5357-4e80-b4bc-c8e58099915d",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a57df0d6-7caa-4823-8b1c-61135eb0cdec"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194229Z:f16e9ad3-58a7-49ac-a5e5-6da5b10b2be5",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14798",
+      "date" : "Fri, 20 Jan 2017 19:42:29 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "18e1432e-d35d-454f-b0d8-4b3178295d3b",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f16e9ad3-58a7-49ac-a5e5-6da5b10b2be5"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194259Z:153c5cd5-6229-497b-9dd9-24db6b94aa6f",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14794",
+      "date" : "Fri, 20 Jan 2017 19:42:59 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "99548522-71ac-4347-a1fa-cdbba65891a6",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "153c5cd5-6229-497b-9dd9-24db6b94aa6f"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194330Z:2fd58f5e-c7b0-49d5-8706-ffde67f02812",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14790",
+      "date" : "Fri, 20 Jan 2017 19:43:29 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "49a1f2e7-88e2-4f3e-96bd-bebd6f9f83be",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2fd58f5e-c7b0-49d5-8706-ffde67f02812"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194400Z:b4aaa682-f77b-496b-afe7-84ad8d5e28ab",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14786",
+      "date" : "Fri, 20 Jan 2017 19:44:00 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "a6438b6e-aed3-4d3f-b05f-b639c60b7334",
+      "content-length" : "563",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b4aaa682-f77b-496b-afe7-84ad8d5e28ab"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194430Z:d840bea6-bfa9-4da4-bc2e-8bb613fe568b",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14783",
+      "date" : "Fri, 20 Jan 2017 19:44:29 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "0f2cb461-bb7e-4756-ba59-227489dac489",
+      "content-length" : "564",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d840bea6-bfa9-4da4-bc2e-8bb613fe568b"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis/?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558Second/providers/Microsoft.Cache/Redis/javacsmrc85171Second\",\"location\":\"Central US\",\"name\":\"javacsmrc85171Second\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":1},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"7500\",\"maxmemory-reserved\":\"200\",\"maxmemory-delta\":\"200\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171Second.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"shardCount\":10}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558Second/providers/Microsoft.Cache/Redis/javacsmrc85171Third\",\"location\":\"Central US\",\"name\":\"javacsmrc85171Third\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":true,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"500\",\"maxmemory-delta\":\"500\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171Third.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39558/providers/Microsoft.Cache/Redis/javacsmrc85171\",\"location\":\"East Asia\",\"name\":\"javacsmrc85171\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"javacsmrc85171.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}]}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14782",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194431Z:66ee75fa-8af7-43a7-83f5-7cba8675f963",
+      "date" : "Fri, 20 Jan 2017 19:44:30 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "66ee75fa-8af7-43a7-83f5-7cba8675f963",
+      "content-length" : "2315",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-original-request-ids" : "46ae63e9-2965-4ab5-8741-836ce613858c",
+      "x-ms-correlation-request-id" : "66ee75fa-8af7-43a7-83f5-7cba8675f963"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194431Z:1f71fff9-cc7b-4833-9f92-56b90ad3c6f2",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14780",
+      "date" : "Fri, 20 Jan 2017 19:44:31 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "7f8c32b1-a758-4a4f-b75e-8768d0f2d7e1",
+      "content-length" : "564",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1f71fff9-cc7b-4833-9f92-56b90ad3c6f2"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194431Z:8004de1b-13ef-440f-8cc9-c18b115386b6",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14779",
+      "date" : "Fri, 20 Jan 2017 19:44:31 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "e0a49d7d-fcd7-460b-beb6-7077b59e8683",
+      "content-length" : "564",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8004de1b-13ef-440f-8cc9-c18b115386b6"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1180",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194431Z:ab201170-f825-455b-a26c-e0261a64ac65",
+      "date" : "Fri, 20 Jan 2017 19:44:31 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "8faaea65-bfe2-4b6b-81fb-711f6fbc7f32",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ab201170-f825-455b-a26c-e0261a64ac65"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194501Z:bd7abc76-5bb3-431b-ae44-189aa037f18c",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14775",
+      "date" : "Fri, 20 Jan 2017 19:45:01 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "3e9b9719-7bd1-4a68-ba46-928d88be9008",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "bd7abc76-5bb3-431b-ae44-189aa037f18c"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194532Z:9c958b0c-ab71-4ea0-8248-e1ba6cec654b",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14772",
+      "date" : "Fri, 20 Jan 2017 19:45:31 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "2ba7617b-796f-4304-bf1a-1a9c5e5cd3ab",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9c958b0c-ab71-4ea0-8248-e1ba6cec654b"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194602Z:3a7d8c37-3d66-47f0-b5ed-4e8cc491fd88",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14768",
+      "date" : "Fri, 20 Jan 2017 19:46:01 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "85f8cc67-72a3-4d30-aa06-a7a39bb72e17",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3a7d8c37-3d66-47f0-b5ed-4e8cc491fd88"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194632Z:c183cb48-4fc0-456b-b608-f7539f4f6625",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14764",
+      "date" : "Fri, 20 Jan 2017 19:46:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "31fbb2a3-e763-4a99-83fc-d27eef0c215e",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c183cb48-4fc0-456b-b608-f7539f4f6625"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194702Z:96136d4b-0676-41a2-a0fa-0c711624daaa",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14760",
+      "date" : "Fri, 20 Jan 2017 19:47:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "8e0c9255-fbfb-4f81-8236-cce059948986",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "96136d4b-0676-41a2-a0fa-0c711624daaa"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194732Z:0adc8bea-48dc-46bf-bfc9-f9dc5668a14d",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14756",
+      "date" : "Fri, 20 Jan 2017 19:47:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "2cd9bc5e-6767-4235-92b4-b30626489a62",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0adc8bea-48dc-46bf-bfc9-f9dc5668a14d"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194802Z:73a878f2-060d-48ce-8e43-c99a3adb4c8d",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14752",
+      "date" : "Fri, 20 Jan 2017 19:48:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "47a37f83-8924-4d1c-90e1-48af6c58eafb",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "73a878f2-060d-48ce-8e43-c99a3adb4c8d"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194832Z:4ccd2de7-f35c-4d63-805b-fcfe99d8263e",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14748",
+      "date" : "Fri, 20 Jan 2017 19:48:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "0c18b946-0f4f-4640-abe4-2d191a39edf4",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4ccd2de7-f35c-4d63-805b-fcfe99d8263e"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194902Z:1d985aad-9567-4849-84db-4e0f86061cb1",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14744",
+      "date" : "Fri, 20 Jan 2017 19:49:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "42faa938-1b12-4bc7-a0b1-f4783ebb30fe",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1d985aad-9567-4849-84db-4e0f86061cb1"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T194933Z:4302cd2b-f595-4a29-b8c9-20318233a5ea",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14740",
+      "date" : "Fri, 20 Jan 2017 19:49:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "8b93fbfb-18b6-4f0f-b155-86fe000725a6",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4302cd2b-f595-4a29-b8c9-20318233a5ea"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195003Z:07ef86da-5ed0-415a-a4f1-3c439b2794c0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14736",
+      "date" : "Fri, 20 Jan 2017 19:50:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "f4203705-b931-4389-8f91-a42ef4d146b0",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "07ef86da-5ed0-415a-a4f1-3c439b2794c0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195033Z:45205ec2-c24c-4ae0-921c-33a66f77c966",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14732",
+      "date" : "Fri, 20 Jan 2017 19:50:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "a2964a4f-1358-4ee3-b386-2cb5dca0e12e",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "45205ec2-c24c-4ae0-921c-33a66f77c966"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195103Z:8aa29b3e-e0b1-4f04-a44e-4062f36620e7",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14728",
+      "date" : "Fri, 20 Jan 2017 19:51:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "d6d6567f-33fe-4ccf-b3cf-7093f7995b10",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8aa29b3e-e0b1-4f04-a44e-4062f36620e7"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195133Z:edbcd0ee-c6d3-4cb4-b96a-65de711e2122",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14724",
+      "date" : "Fri, 20 Jan 2017 19:51:32 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "f0d64fde-23a1-40e1-b5ac-b2f62941b83a",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "edbcd0ee-c6d3-4cb4-b96a-65de711e2122"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195203Z:1d525969-5153-473b-b719-6408af2120f5",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14717",
+      "date" : "Fri, 20 Jan 2017 19:52:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "7e997a04-2ee6-4a5c-80db-2a27e552eab3",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1d525969-5153-473b-b719-6408af2120f5"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195233Z:9002e27e-f8bf-4c92-8ca6-9bb100fc6b54",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14712",
+      "date" : "Fri, 20 Jan 2017 19:52:33 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "e54b5b20-c1d2-47e9-967d-2be0c803dda0",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9002e27e-f8bf-4c92-8ca6-9bb100fc6b54"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195303Z:7ec9be45-8594-47e5-b63d-89e2b195d456",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14707",
+      "date" : "Fri, 20 Jan 2017 19:53:03 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "2e40723d-c73e-48ee-86fd-6c838095ec4f",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7ec9be45-8594-47e5-b63d-89e2b195d456"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195334Z:1d36e0f9-62df-4343-b9d7-9a3858a88f58",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14700",
+      "date" : "Fri, 20 Jan 2017 19:53:33 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "1601a129-1e43-43f6-a3b5-d75ee4b018ab",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1d36e0f9-62df-4343-b9d7-9a3858a88f58"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195404Z:60510ee5-635b-4c6b-84b6-fceefbfb5196",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14696",
+      "date" : "Fri, 20 Jan 2017 19:54:03 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "750af2df-e722-4bd3-a941-0244cea32de9",
+      "content-length" : "562",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "60510ee5-635b-4c6b-84b6-fceefbfb5196"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978\",\"location\":\"East US\",\"name\":\"redis495978\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"3.2\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"86\",\"maxmemory-delta\":\"86\"},\"accessKeys\":null,\"hostName\":\"redis495978.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380}}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195434Z:6d7dbd3d-32e8-40d6-9db7-20adee3c13b7",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14691",
+      "date" : "Fri, 20 Jan 2017 19:54:33 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "47283dda-d558-48f1-aaed-9178d4b11e9c",
+      "content-length" : "567",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6d7dbd3d-32e8-40d6-9db7-20adee3c13b7"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis495978group/providers/Microsoft.Cache/Redis/redis495978?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (RedisManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "Body" : "",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1175",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195435Z:2a3a56c6-ecc2-4fdf-a55f-815d8e3c0998",
+      "date" : "Fri, 20 Jan 2017 19:54:34 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "12dee689-1971-4aae-a592-6adbaab9daf6",
+      "content-length" : "0",
+      "x-rp-server-mvid" : "c749ebcf-3f61-4aaf-abc8-ae593af00ef8",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2a3a56c6-ecc2-4fdf-a55f-815d8e3c0998"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/redis495978group?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "202",
+      "Body" : "",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1174",
+      "location" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195435Z:aae97cb1-97ea-44f9-84c3-19cdd5a2045f",
+      "date" : "Fri, 20 Jan 2017 19:54:35 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "aae97cb1-97ea-44f9-84c3-19cdd5a2045f",
+      "content-length" : "0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "aae97cb1-97ea-44f9-84c3-19cdd5a2045f"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "202",
+      "Body" : "",
+      "expires" : "-1",
+      "x-ms-request-id" : "a668f402-9e54-44ba-980f-08dd8f94bd61",
+      "location" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+      "content-length" : "0",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195436Z:a668f402-9e54-44ba-980f-08dd8f94bd61",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14690",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "date" : "Fri, 20 Jan 2017 19:54:35 GMT",
+      "x-ms-correlation-request-id" : "a668f402-9e54-44ba-980f-08dd8f94bd61",
+      "pragma" : "no-cache"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "202",
+      "Body" : "",
+      "expires" : "-1",
+      "x-ms-request-id" : "b82e2eca-56d4-4ebe-a2d4-99a395e215af",
+      "location" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+      "content-length" : "0",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195451Z:b82e2eca-56d4-4ebe-a2d4-99a395e215af",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14687",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "date" : "Fri, 20 Jan 2017 19:54:50 GMT",
+      "x-ms-correlation-request-id" : "b82e2eca-56d4-4ebe-a2d4-99a395e215af",
+      "pragma" : "no-cache"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "202",
+      "Body" : "",
+      "expires" : "-1",
+      "x-ms-request-id" : "6e320e5d-d9b5-4f9b-89e1-6c4ca483987a",
+      "location" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+      "content-length" : "0",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195506Z:6e320e5d-d9b5-4f9b-89e1-6c4ca483987a",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14683",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "date" : "Fri, 20 Jan 2017 19:55:05 GMT",
+      "x-ms-correlation-request-id" : "6e320e5d-d9b5-4f9b-89e1-6c4ca483987a",
+      "pragma" : "no-cache"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:7319/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzQ5NTk3OEdST1VQLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "200",
+      "Body" : "",
+      "expires" : "-1",
+      "x-ms-request-id" : "6d761ab2-af56-4986-93e3-d0454f6dbe7e",
+      "content-length" : "0",
+      "x-ms-routing-request-id" : "CENTRALUS:20170120T195521Z:6d761ab2-af56-4986-93e3-d0454f6dbe7e",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14680",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "date" : "Fri, 20 Jan 2017 19:55:20 GMT",
+      "x-ms-correlation-request-id" : "6d761ab2-af56-4986-93e3-d0454f6dbe7e",
+      "pragma" : "no-cache"
+    }
+  } ],
+  "variables" : [ "495978" ]
+}

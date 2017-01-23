@@ -6,25 +6,19 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.ResourceGroup;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-public class UsageOperationsTests extends StorageManagementTestBase {
-    private static final String RG_NAME = "javacsmrg7";
-    private static final String SA_NAME = "javacsmsa2";
-    private static ResourceGroup resourceGroup;
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
+public class UsageOperationsTests extends StorageManagementTest {
     @Test
     public void canGetUsages() throws Exception {
         List<StorageUsage> usages = storageManager.usages().list();
         System.out.println(usages.size());
+    }
+
+
+    @Override
+    protected void cleanUpResources() {
     }
 }

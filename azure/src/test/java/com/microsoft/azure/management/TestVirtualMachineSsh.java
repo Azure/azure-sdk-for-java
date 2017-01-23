@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
@@ -52,22 +53,26 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
         JSch jsch= new JSch();
         Session session = null;
-        try {
-            java.util.Properties config = new java.util.Properties();
-            config.put("StrictHostKeyChecking", "no");
-            // jsch.addIdentity(sshFile, filePassword);
-            session=jsch.getSession("testuser",  publicIpDnsLabel + "." + "eastus.cloudapp.azure.com", 22);
-            session.setPassword("12NewPA$$w0rd!");
-            session.setConfig(config);
-            session.connect();
-        } catch (Exception e) {
-            Assert.fail("SSH connection failed" + e.getMessage());
-        }finally {
-            if(session != null) {session.disconnect();}
-        }
+        if (!MockIntegrationTestBase.IS_MOCKED) {
+            try {
+                java.util.Properties config = new java.util.Properties();
+                config.put("StrictHostKeyChecking", "no");
+                // jsch.addIdentity(sshFile, filePassword);
+                session = jsch.getSession("testuser", publicIpDnsLabel + "." + "eastus.cloudapp.azure.com", 22);
+                session.setPassword("12NewPA$$w0rd!");
+                session.setConfig(config);
+                session.connect();
+            } catch (Exception e) {
+                Assert.fail("SSH connection failed" + e.getMessage());
+            } finally {
+                if (session != null) {
+                    session.disconnect();
+                }
+            }
 
-        Assert.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
-        Assert.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
+            Assert.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
+            Assert.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
+        }
         return vm;
     }
 

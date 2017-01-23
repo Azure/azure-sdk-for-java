@@ -15,7 +15,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -38,16 +38,16 @@ public final class ManageNetworkInterface {
      */
     public static void main(String[] args) {
 
-        final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = ResourceNamer.randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = ResourceNamer.randomResourceName("nic2", 24);
-        final String networkInterfaceName3 = ResourceNamer.randomResourceName("nic3", 24);
-        final String publicIpAddressLeafDNS1 = ResourceNamer.randomResourceName("pip1", 24);
-        final String publicIpAddressLeafDNS2 = ResourceNamer.randomResourceName("pip2", 24);
+        final String vnetName = SdkContext.randomResourceName("vnet", 24);
+        final String networkInterfaceName1 = SdkContext.randomResourceName("nic1", 24);
+        final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
+        final String networkInterfaceName3 = SdkContext.randomResourceName("nic3", 24);
+        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
+        final String publicIpAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 24);
 
         // TODO adjust the length of vm name from 8 to 24
-        final String vmName = ResourceNamer.randomResourceName("vm", 8);
-        final String rgName = ResourceNamer.randomResourceName("rgNEMI", 24);
+        final String vmName = SdkContext.randomResourceName("vm", 8);
+        final String rgName = SdkContext.randomResourceName("rgNEMI", 24);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
 

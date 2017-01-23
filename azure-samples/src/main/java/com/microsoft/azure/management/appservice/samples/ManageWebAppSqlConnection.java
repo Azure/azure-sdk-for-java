@@ -12,7 +12,7 @@ import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.PhpVersion;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlServer;
@@ -43,14 +43,14 @@ public final class ManageWebAppSqlConnection {
     public static void main(String[] args) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String appName        = ResourceNamer.randomResourceName("webapp1-", 20);
+        final String appName        = SdkContext.randomResourceName("webapp1-", 20);
         final String appUrl         = appName + suffix;
-        final String sqlServerName  = ResourceNamer.randomResourceName("jsdkserver", 20);
-        final String sqlDbName      = ResourceNamer.randomResourceName("jsdkdb", 20);
+        final String sqlServerName  = SdkContext.randomResourceName("jsdkserver", 20);
+        final String sqlDbName      = SdkContext.randomResourceName("jsdkdb", 20);
         final String admin          = "jsdkadmin";
         final String password       = "StrongPass!123";
-        final String planName       = ResourceNamer.randomResourceName("jplan_", 15);
-        final String rgName         = ResourceNamer.randomResourceName("rg1NEMV_", 24);
+        final String planName       = SdkContext.randomResourceName("jplan_", 15);
+        final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {
 

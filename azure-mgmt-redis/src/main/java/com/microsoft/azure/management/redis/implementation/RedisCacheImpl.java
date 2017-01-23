@@ -20,6 +20,7 @@ import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.Period;
 import rx.Observable;
@@ -471,17 +472,13 @@ class RedisCacheImpl
                 .doOnNext(new Action1<RedisCache>() {
                     @Override
                     public void call(RedisCache redisCache) {
-                        RedisResourceInner innerResource = null;
                         while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
-                            try {
-                                Thread.sleep(30 * 1000);
-                            } catch (InterruptedException ex) {
-                                break;
-                            }
-                            innerResource = client.get(resourceGroupName(), name());
+                            SdkContext.sleep(30 * 1000);
+
+                            RedisResourceInner innerResource = client.get(resourceGroupName(), name());
                             ((RedisCacheImpl) redisCache).setInner(innerResource);
+                            self.setInner(innerResource);
                         }
-                        self.setInner(innerResource);
                         updatePatchSchedules();
                     }
                 });

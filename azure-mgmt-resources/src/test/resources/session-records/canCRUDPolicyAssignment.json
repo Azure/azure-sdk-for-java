@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:5223/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policydefinitions/policy1?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (PolicyClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "403",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"error\":{\"code\":\"AuthorizationFailed\",\"message\":\"The client '541d1fb3-fb36-4488-aba9-b2f82c3825c9' with object id '541d1fb3-fb36-4488-aba9-b2f82c3825c9' does not have authorization to perform action 'Microsoft.Authorization/policydefinitions/write' over scope '/subscriptions/00000000-0000-0000-0000-000000000000'.\"}}",
+      "connection" : "close",
+      "x-ms-routing-request-id" : "CENTRALUS:20170121T012526Z:b2c646bb-4ddd-462e-8eef-c1c088461278",
+      "date" : "Sat, 21 Jan 2017 01:25:25 GMT",
+      "pragma" : "no-cache",
+      "x-ms-failure-cause" : "gateway",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "b2c646bb-4ddd-462e-8eef-c1c088461278",
+      "content-length" : "318",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b2c646bb-4ddd-462e-8eef-c1c088461278"
+    }
+  } ],
+  "variables" : [ ]
+}

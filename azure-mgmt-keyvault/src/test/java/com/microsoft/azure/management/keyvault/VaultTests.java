@@ -7,28 +7,15 @@
 package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
-public class VaultTests extends KeyVaultManagementTestBase {
-    private static final String RG_NAME = "javacsmrg905";
-    private static final String VAULT_NAME = "java-keyvault-905";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-    }
-
+public class VaultTests extends KeyVaultManagementTest {
     @Test
+    @Ignore("Need specific setting while recording - owner - Jianghao")
     public void canCRUDVault() throws Exception {
         // CREATE
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
