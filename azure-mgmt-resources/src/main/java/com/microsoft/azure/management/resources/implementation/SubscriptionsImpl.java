@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
 /**
- * The implementation of {@link Subscriptions}.
+ * The implementation of Subscriptions.
  */
 final class SubscriptionsImpl
         implements Subscriptions {
@@ -35,8 +35,8 @@ final class SubscriptionsImpl
 
     @Override
     // Gets a specific resource group
-    public SubscriptionImpl getByName(String name) {
-        SubscriptionInner subscription = client.get(name);
+    public SubscriptionImpl getById(String id) {
+        SubscriptionInner subscription = client.get(id);
         if (subscription == null) {
             return null;
         }
