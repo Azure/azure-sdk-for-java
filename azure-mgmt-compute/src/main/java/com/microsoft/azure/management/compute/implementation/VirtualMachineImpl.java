@@ -121,13 +121,10 @@ class VirtualMachineImpl
     // The entry point to manage extensions associated with the virtual machine
     private VirtualMachineExtensionsImpl virtualMachineExtensions;
     // Flag indicates native disk is selected for OS and Data disks
-    private boolean isNativeDiskSelected;
+    private boolean isUnmanagedDiskSelected;
     // Error messages
-    private final String cannotHaveBothManagedAndNativeDisks = "This virtual machine is based on managed disk(s), both native and managed cannot exists together in a virtual machine";
-    private final String noNativeDiskToRemove = "This virtual machine is based on managed disk(s) and there is no native disk to remove";
-    private final String noNativeDiskToUpdate = "This virtual machine is based on managed disk(s) and there is no native disk to update";
     // The native data disks associated with the virtual machine
-    private List<VirtualMachineUnmanagedDataDisk> nativeDataDisks;
+    private List<VirtualMachineUnmanagedDataDisk> unmanagedDataDisks;
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
 
@@ -155,7 +152,7 @@ class VirtualMachineImpl
         };
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
-        initializeNativeDataDisks();
+        initializeUnmanagedDataDisks();
     }
 
     // Verbs
@@ -165,7 +162,8 @@ class VirtualMachineImpl
         VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
-        initializeNativeDataDisks();
+        this.managedDataDisks.clear();
+        initializeUnmanagedDataDisks();
         this.virtualMachineExtensions.refresh();
         return this;
     }
@@ -679,13 +677,13 @@ class VirtualMachineImpl
 
     @Override
     public UnmanagedDataDiskImpl defineUnmanagedDataDisk(String name) {
-        throwIfManagedDiskEnabled(cannotHaveBothManagedAndNativeDisks);
+        throwIfManagedDiskEnabled(ManagedUnmanagedDiskErrors.VM_BOTH_MANAGED_AND_UNMANAGED_DISK_NOT_ALLOWED);
         return UnmanagedDataDiskImpl.prepareDataDisk(name, this);
     }
 
     @Override
     public VirtualMachineImpl withNewUnmanagedDataDisk(Integer sizeInGB) {
-        throwIfManagedDiskEnabled(cannotHaveBothManagedAndNativeDisks);
+        throwIfManagedDiskEnabled(ManagedUnmanagedDiskErrors.VM_BOTH_MANAGED_AND_UNMANAGED_DISK_NOT_ALLOWED);
         return defineUnmanagedDataDisk(null)
                 .withNewVhd(sizeInGB)
                 .attach();
@@ -695,10 +693,52 @@ class VirtualMachineImpl
     public VirtualMachineImpl withExistingUnmanagedDataDisk(String storageAccountName,
                                                             String containerName,
                                                             String vhdName) {
-        throwIfManagedDiskEnabled(cannotHaveBothManagedAndNativeDisks);
+        throwIfManagedDiskEnabled(ManagedUnmanagedDiskErrors.VM_BOTH_MANAGED_AND_UNMANAGED_DISK_NOT_ALLOWED);
         return defineUnmanagedDataDisk(null)
                 .withExistingVhd(storageAccountName, containerName, vhdName)
                 .attach();
+    }
+
+
+    @Override
+    public VirtualMachineImpl withoutUnmanagedDataDisk(String name) {
+        // Its ok not to throw here, since in general 'withoutXX' can be NOP
+        int idx = -1;
+        for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
+            idx++;
+            if (dataDisk.name().equalsIgnoreCase(name)) {
+                this.unmanagedDataDisks.remove(idx);
+                this.inner().storageProfile().dataDisks().remove(idx);
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutUnmanagedDataDisk(int lun) {
+        // Its ok not to throw here, since in general 'withoutXX' can be NOP
+        int idx = -1;
+        for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
+            idx++;
+            if (dataDisk.lun() == lun) {
+                this.unmanagedDataDisks.remove(idx);
+                this.inner().storageProfile().dataDisks().remove(idx);
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public UnmanagedDataDiskImpl updateUnmanagedDataDisk(String name) {
+        throwIfManagedDiskEnabled(ManagedUnmanagedDiskErrors.VM_NO_UNMANAGED_DISK_TO_UPDATE);
+        for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
+            if (dataDisk.name().equalsIgnoreCase(name)) {
+                return (UnmanagedDataDiskImpl) dataDisk;
+            }
+        }
+        throw new RuntimeException("A data disk with name  '" + name + "' not found");
     }
 
     // Virtual machine optional managed data disk fluent methods
@@ -706,15 +746,16 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewDataDisk(Creatable<Disk> creatable) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         addCreatableDependency(creatable);
         this.managedDataDisks.newDisksToAttach.put(creatable.key(),
-                new DataDisk()
-                        .withLun(-1));
+                new DataDisk().withLun(-1));
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         addCreatableDependency(creatable);
         this.managedDataDisks.newDisksToAttach.put(creatable.key(),
                 new DataDisk()
@@ -725,6 +766,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewDataDisk(int sizeInGB) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
                 .withLun(-1)
                 .withDiskSizeGB(sizeInGB));
@@ -733,6 +775,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
                 .withLun(lun)
                 .withDiskSizeGB(sizeInGB)
@@ -745,6 +788,7 @@ class VirtualMachineImpl
                                               int lun,
                                               CachingTypes cachingType,
                                               StorageAccountTypes storageAccountType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
         managedDiskParameters.withStorageAccountType(storageAccountType);
         this.managedDataDisks.implicitDisksToAssociate.add(new DataDisk()
@@ -757,6 +801,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingDataDisk(Disk disk) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
         managedDiskParameters.withId(disk.id());
         this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
@@ -767,6 +812,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
         managedDiskParameters.withId(disk.id());
         this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
@@ -778,6 +824,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParametersInner managedDiskParameters = new ManagedDiskParametersInner();
         managedDiskParameters.withId(disk.id());
         this.managedDataDisks.existingDisksToAttach.add(new DataDisk()
@@ -819,6 +866,9 @@ class VirtualMachineImpl
 
     @Override
     public Update withoutDataDisk(int lun) {
+        if (!isManagedDiskEnabled()) {
+            return this;
+        }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
     }
@@ -911,49 +961,6 @@ class VirtualMachineImpl
         return this.virtualMachineExtensions.define(name);
     }
 
-    // Virtual machine update only settings
-
-    @Override
-    public VirtualMachineImpl withoutUnmanagedDataDisk(String name) {
-        throwIfManagedDiskEnabled(noNativeDiskToRemove);
-        int idx = -1;
-        for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
-            idx++;
-            if (dataDisk.name().equalsIgnoreCase(name)) {
-                this.nativeDataDisks.remove(idx);
-                this.inner().storageProfile().dataDisks().remove(idx);
-                break;
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withoutUnmanagedDataDisk(int lun) {
-        throwIfManagedDiskEnabled(noNativeDiskToRemove);
-        int idx = -1;
-        for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
-            idx++;
-            if (dataDisk.lun() == lun) {
-                this.nativeDataDisks.remove(idx);
-                this.inner().storageProfile().dataDisks().remove(idx);
-                break;
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public UnmanagedDataDiskImpl updateUnmanagedDataDisk(String name) {
-        throwIfManagedDiskEnabled(noNativeDiskToUpdate);
-        for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
-            if (dataDisk.name().equalsIgnoreCase(name)) {
-                return (UnmanagedDataDiskImpl) dataDisk;
-            }
-        }
-        throw new RuntimeException("A data disk with name  '" + name + "' not found");
-    }
-
     @Override
     public VirtualMachineImpl withoutSecondaryNetworkInterface(String name) {
         if (this.inner().networkProfile() != null
@@ -1002,7 +1009,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withUnmanagedDisks() {
-        this.isNativeDiskSelected = true;
+        this.isUnmanagedDiskSelected = true;
         return this;
     }
 
@@ -1010,16 +1017,28 @@ class VirtualMachineImpl
 
     @Override
     public boolean isManagedDiskEnabled() {
-        if (this.isNativeDiskSelected) {
+        if (isOsDiskFromCustomImage(this.inner().storageProfile())) {
+            return true;
+        }
+        if (isOSDiskAttachedManaged(this.inner().storageProfile().osDisk())) {
+            return true;
+        }
+        if (isOSDiskFromStoredImage(this.inner().storageProfile())) {
             return false;
+        }
+        if (isOSDiskAttachedUnmanaged(this.inner().storageProfile().osDisk())) {
+            return false;
+        }
+        if (isOSDiskFromPlatformImage(this.inner().storageProfile())) {
+            if (this.isUnmanagedDiskSelected) {
+                return false;
+            }
         }
         if (isInCreateMode()) {
             return true;
+        } else {
+            return this.inner().storageProfile().osDisk().vhd() == null;
         }
-        // For an existing VM, osDisk.vhd() will be always set if the OS Disk is based on
-        // native disk. This must be null for managed disk.
-        //
-        return this.inner().storageProfile().osDisk().vhd() == null;
     }
 
     @Override
@@ -1079,7 +1098,7 @@ class VirtualMachineImpl
     public Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks() {
         Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = new HashMap<>();
         if (!isManagedDiskEnabled()) {
-            for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
+            for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
                 dataDisks.put(dataDisk.lun(), dataDisk);
             }
         }
@@ -1219,14 +1238,14 @@ class VirtualMachineImpl
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
-            setOsDiskDefaults();
-            setOsProfileDefaults();
+            setOSDiskDefaults();
+            setOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         if (isManagedDiskEnabled()) {
-            managedDataDisks.setDataDisks();
+            managedDataDisks.setDataDisksDefaults();
         } else {
-            UnmanagedDataDiskImpl.setDataDisksDefaults(this.nativeDataDisks, this.vmName);
+            UnmanagedDataDiskImpl.setDataDisksDefaults(this.unmanagedDataDisks, this.vmName);
         }
         final VirtualMachineImpl self = this;
         return handleStorageSettingsAsync()
@@ -1241,7 +1260,7 @@ class VirtualMachineImpl
                                     public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
                                         self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
-                                        initializeNativeDataDisks();
+                                        initializeUnmanagedDataDisks();
                                         return self;
                                     }
                                 });
@@ -1266,18 +1285,18 @@ class VirtualMachineImpl
         return this;
     }
 
-    VirtualMachineImpl withNativeDataDisk(UnmanagedDataDiskImpl dataDisk) {
+    VirtualMachineImpl withUnmanagedDataDisk(UnmanagedDataDiskImpl dataDisk) {
         this.inner()
                 .storageProfile()
                 .dataDisks()
                 .add(dataDisk.inner());
-        this.nativeDataDisks
+        this.unmanagedDataDisks
                 .add(dataDisk);
         return this;
     }
 
-    private void setOsDiskDefaults() {
-        if (!isInCreateMode()) {
+    private void setOSDiskDefaults() {
+        if (isInUpdateMode()) {
             return;
         }
         StorageProfile storageProfile = this.inner().storageProfile();
@@ -1291,19 +1310,16 @@ class VirtualMachineImpl
                 //     Supported: PlatformImage and CustomImage
                 //     UnSupported: StoredImage
                 //
-                if (isOSDiskFromPlatformImage(storageProfile)
-                        || isOsDiskFromCustomImage(storageProfile)) {
-                    if (osDisk.managedDisk() == null) {
-                        osDisk.withManagedDisk(new ManagedDiskParametersInner());
-                    }
-                    if (osDisk.managedDisk().storageAccountType() == null) {
-                        osDisk.managedDisk()
-                                .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
-                    }
-                    osDisk.withVhd(null);
-                    // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
-                    // name for the disk resource within the resource group.
+                if (osDisk.managedDisk() == null) {
+                    osDisk.withManagedDisk(new ManagedDiskParametersInner());
                 }
+                if (osDisk.managedDisk().storageAccountType() == null) {
+                    osDisk.managedDisk()
+                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
+                }
+                osDisk.withVhd(null);
+                // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
+                // name for the disk resource within the resource group.
             } else {
                 // Note:
                 // Native (un-managed) disk
@@ -1343,8 +1359,8 @@ class VirtualMachineImpl
         }
     }
 
-    private void setOsProfileDefaults() {
-        if (!isInCreateMode()) {
+    private void setOSProfileDefaults() {
+        if (isInUpdateMode()) {
             return;
         }
         StorageProfile storageProfile = this.inner().storageProfile();
@@ -1410,12 +1426,12 @@ class VirtualMachineImpl
                                     .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                             inner().storageProfile().osDisk().vhd().withUri(uri);
                         }
-                        UnmanagedDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, storageAccount, vmName);
+                        UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
                     } else {
                         if (storageAccount != null) {
-                            UnmanagedDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, storageAccount, vmName);
+                            UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
                         } else {
-                            UnmanagedDataDiskImpl.ensureDisksVhdUri(nativeDataDisks, vmName);
+                            UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, vmName);
                         }
                     }
                 }
@@ -1514,11 +1530,11 @@ class VirtualMachineImpl
         }
         if (this.creatableStorageAccountKey != null
                 || this.existingStorageAccountToAssociate != null
-                || this.nativeDataDisks.size() == 0) {
+                || this.unmanagedDataDisks.size() == 0) {
             return false;
         }
         boolean hasEmptyVhd = false;
-        for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
+        for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
             if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
                     || dataDisk.creationMethod() == DiskCreateOptionTypes.FROM_IMAGE) {
                 if (dataDisk.inner().vhd() == null) {
@@ -1533,7 +1549,7 @@ class VirtualMachineImpl
         if (hasEmptyVhd) {
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
-            for (VirtualMachineUnmanagedDataDisk dataDisk : this.nativeDataDisks) {
+            for (VirtualMachineUnmanagedDataDisk dataDisk : this.unmanagedDataDisks) {
                 if (dataDisk.creationMethod() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
                     return false;
                 }
@@ -1544,13 +1560,27 @@ class VirtualMachineImpl
     }
 
     /**
-     * Checks whether the OS disk is directly attached to a VHD.
+     * Checks whether the OS disk is directly attached to a unmanaged VHD.
      *
      * @param osDisk the osDisk value in the storage profile
-     * @return true if the OS disk is attached to a VHD, false otherwise
+     * @return true if the OS disk is attached to a unmanaged VHD, false otherwise
      */
-    private boolean isOSDiskAttached(OSDisk osDisk) {
-        return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
+    private boolean isOSDiskAttachedUnmanaged(OSDisk osDisk) {
+        return osDisk.createOption() == DiskCreateOptionTypes.ATTACH
+                && osDisk.vhd() != null
+                && osDisk.vhd().uri() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is directly attached to a managed disk.
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is attached to a managed disk, false otherwise
+     */
+    private boolean isOSDiskAttachedManaged(OSDisk osDisk) {
+        return osDisk.createOption() == DiskCreateOptionTypes.ATTACH
+                && osDisk.managedDisk() != null
+                && osDisk.managedDisk().id() != null;
     }
 
     /**
@@ -1629,16 +1659,16 @@ class VirtualMachineImpl
                 .withPrimaryPrivateIpAddressDynamic();
     }
 
-    private void initializeNativeDataDisks() {
+    private void initializeUnmanagedDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
                     .withDataDisks(new ArrayList<DataDisk>());
         }
-        this.nativeDataDisks = new ArrayList<>();
+        this.unmanagedDataDisks = new ArrayList<>();
         if (!isManagedDiskEnabled()) {
             for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
-                this.nativeDataDisks.add(new UnmanagedDataDiskImpl(dataDiskInner, this));
+                this.unmanagedDataDisks.add(new UnmanagedDataDiskImpl(dataDiskInner, this));
             }
         }
     }
@@ -1666,6 +1696,16 @@ class VirtualMachineImpl
         }
     }
 
+    private void throwIfManagedDiskDisabled(String message) {
+        if (!this.isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(message);
+        }
+    }
+
+    private boolean isInUpdateMode() {
+        return !this.isInCreateMode();
+    }
+
     private class ManagedDataDiskCollection {
         public final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
         public final List<DataDisk> existingDisksToAttach = new ArrayList<>();
@@ -1688,7 +1728,7 @@ class VirtualMachineImpl
             this.defaultStorageAccountType = defaultStorageAccountType;
         }
 
-        void setDataDisks() {
+        void setDataDisksDefaults() {
             VirtualMachineInner vmInner = this.vm.inner();
             if (isPending()) {
                 if (vmInner.storageProfile().dataDisks() == null) {

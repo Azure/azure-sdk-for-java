@@ -246,7 +246,8 @@ public interface VirtualMachine extends
     //
 
     /**
-     * The virtual machine stages shared between
+     * The virtual machine scale set stages shared between managed and unmanaged based
+     * virtual machine definitions.
      */
     interface DefinitionShared extends
             DefinitionStages.Blank,
@@ -759,6 +760,9 @@ public interface VirtualMachine extends
          * The stages contains OS agnostics settings when virtual machine is created from image.
          */
         interface WithFromImageCreateOptionsManagedOrUnmanaged extends WithFromImageCreateOptionsManaged {
+            /**
+             * @return the next stage of a unmanaged disk based virtual machine definition
+             */
             WithFromImageCreateOptionsUnmanaged withUnmanagedDisks();
         }
 

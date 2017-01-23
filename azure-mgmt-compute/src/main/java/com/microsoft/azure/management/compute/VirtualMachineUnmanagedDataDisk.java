@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -204,6 +210,36 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
     }
 
+    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     */
+    interface DefinitionWithExistingVhd<ParentT> extends
+            DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithDiskSource<ParentT>,
+            DefinitionStages.WithVhdAttachedDiskSettings<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
+    }
+
+    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     */
+    interface DefinitionWithNewVhd<ParentT> extends
+            DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithDiskSource<ParentT>,
+            DefinitionStages.WithNewVhdDiskSettings<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
+    }
+
+    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     */
+    interface DefinitionWithImage<ParentT> extends
+            DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithDiskSource<ParentT>,
+            DefinitionStages.WithFromImageDiskSettings<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
+    }
+
     /**
      * Grouping of data disk definition stages applicable as part of a virtual machine update.
      */
@@ -315,6 +351,26 @@ public interface VirtualMachineUnmanagedDataDisk extends
          */
         interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
         }
+    }
+
+    /** The entirety of a unmanaged data disk of a virtual machine scale set update.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     */
+    interface UpdateDefinitionWithExistingVhd<ParentT> extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithDiskSource<ParentT>,
+            UpdateDefinitionStages.WithVhdAttachedDiskSettings<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
+    }
+
+    /** The entirety of a unmanaged data disk of a virtual machine scale set update.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     */
+    interface UpdateDefinitionWithNewVhd<ParentT> extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithDiskSource<ParentT>,
+            UpdateDefinitionStages.WithNewVhdDiskSettings<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /**

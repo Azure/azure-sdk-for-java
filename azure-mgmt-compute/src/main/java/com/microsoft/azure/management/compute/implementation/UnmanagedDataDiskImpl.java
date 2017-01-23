@@ -23,15 +23,11 @@ class UnmanagedDataDiskImpl
         extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
         implements
         VirtualMachineUnmanagedDataDisk,
-        VirtualMachineUnmanagedDataDisk.DefinitionStages.Blank<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionStages.WithDiskSource<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionStages.WithVhdAttachedDiskSettings<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionStages.WithNewVhdDiskSettings<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionStages.WithFromImageDiskSettings<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.Blank<VirtualMachine.Update>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.WithDiskSource<VirtualMachine.Update>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.WithVhdAttachedDiskSettings<VirtualMachine.Update>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.WithNewVhdDiskSettings<VirtualMachine.Update>,
+        VirtualMachineUnmanagedDataDisk.DefinitionWithExistingVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+        VirtualMachineUnmanagedDataDisk.DefinitionWithNewVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+        VirtualMachineUnmanagedDataDisk.DefinitionWithImage<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+        VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithExistingVhd<VirtualMachine.Update>,
+        VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithNewVhd<VirtualMachine.Update>,
         VirtualMachineUnmanagedDataDisk.Update {
 
     protected UnmanagedDataDiskImpl(DataDisk inner, VirtualMachineImpl parent) {
@@ -138,7 +134,7 @@ class UnmanagedDataDiskImpl
 
     @Override
     public VirtualMachineImpl attach() {
-        return this.parent().withNativeDataDisk(this);
+        return this.parent().withUnmanagedDataDisk(this);
     }
 
     protected static void setDataDisksDefaults(List<VirtualMachineUnmanagedDataDisk> dataDisks, String namePrefix) {
