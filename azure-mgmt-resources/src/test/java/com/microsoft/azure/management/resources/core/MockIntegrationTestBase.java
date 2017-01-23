@@ -43,7 +43,7 @@ public class MockIntegrationTestBase {
     protected static Boolean IS_RECORD = !IS_MOCKED;
     protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     private final static String host = "localhost";
-    private final static String port = String.format("%04d", (int) (Math.random() * Math.random() * 10000));
+    private final static String port = String.format("2%03d", (int) (Math.random() * Math.random() * 1000));
 
     private final static String RECORD_FOLDER = "session-records/";
     protected final String MOCK_URI = "http://" + host + ":" + port;
