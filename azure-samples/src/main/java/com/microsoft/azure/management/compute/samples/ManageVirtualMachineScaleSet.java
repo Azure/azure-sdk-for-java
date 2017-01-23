@@ -16,7 +16,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -44,11 +44,11 @@ public final class ManageVirtualMachineScaleSet {
 
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgCOVS", 15);
+        final String rgName = SdkContext.randomResourceName("rgCOVS", 15);
 
-        final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
+        final String vnetName = SdkContext.randomResourceName("vnet", 24);
 
-        final String loadBalancerName1 = ResourceNamer.randomResourceName("intlb" + "-", 18);
+        final String loadBalancerName1 = SdkContext.randomResourceName("intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -61,10 +61,10 @@ public final class ManageVirtualMachineScaleSet {
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
 
-        final String vmssName =  ResourceNamer.randomResourceName("vmss", 24);
-        final String storageAccountName1 = ResourceNamer.randomResourceName("stg1", 24);
-        final String storageAccountName2 = ResourceNamer.randomResourceName("stg2", 24);
-        final String storageAccountName3 = ResourceNamer.randomResourceName("stg3", 24);
+        final String vmssName =  SdkContext.randomResourceName("vmss", 24);
+        final String storageAccountName1 = SdkContext.randomResourceName("stg1", 24);
+        final String storageAccountName2 = SdkContext.randomResourceName("stg2", 24);
+        final String storageAccountName3 = SdkContext.randomResourceName("stg3", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";

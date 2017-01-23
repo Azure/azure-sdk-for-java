@@ -19,7 +19,7 @@ import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -95,7 +95,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                                     self.parent().resourceGroupName(),
                                     self.parent().name(),
                                     self.name(),
-                                    ResourceNamer.randomResourceName("CustomDomain", 50),
+                                    SdkContext.randomResourceName("CustomDomain", 50),
                                     itemToCreate.hostName());
                         }
                         self.customDomainList.clear();

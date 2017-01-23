@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ListToMapConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.SharedSettings;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.RecommendedElasticPool;
@@ -288,7 +288,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewFirewallRule(String startIpAddress, String endIpAddress) {
-        return this.withNewFirewallRule(startIpAddress, endIpAddress, SharedSettings.randomResourceName("firewall_", 15));
+        return this.withNewFirewallRule(startIpAddress, endIpAddress, SdkContext.randomResourceName("firewall_", 15));
     }
 
     @Override
@@ -368,7 +368,7 @@ public class SqlServerImpl
         for (String elasticPoolName : this.elasticPoolsToDelete) {
             deleteElasticPoolList.add(this.elasticPools().deleteAsync(elasticPoolName));
         }
-        Completable deletePools = Completable.merge(deleteDBList);
+        Completable deletePools = Completable.merge(deleteElasticPoolList);
         return Completable.concat(deleteDBs, deletePools);
     }
 

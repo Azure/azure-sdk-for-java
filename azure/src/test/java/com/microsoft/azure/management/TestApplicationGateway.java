@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
@@ -37,16 +38,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * Test of application gateway management.
  */
 public class TestApplicationGateway {
-    static final long TEST_ID = System.currentTimeMillis();
+    static String TEST_ID = "";
     static final Region REGION = Region.US_WEST;
-    static final String GROUP_NAME = "rg" + TEST_ID;
-    static final String APP_GATEWAY_NAME = "ag" + TEST_ID;
-    static final String[] PIP_NAMES = {"pipa" + TEST_ID, "pipb" + TEST_ID};
+    static String GROUP_NAME = "";
+    static String APP_GATEWAY_NAME = "";
+    static String[] PIP_NAMES = null;
     static final String ID_TEMPLATE = "/subscriptions/${subId}/resourceGroups/${rgName}/providers/Microsoft.Network/applicationGateways/${resourceName}";
-    static final String[] VM_IDS = {
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1",
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest3"
-    };
 
     static String createResourceId(String subscriptionId) {
         return ID_TEMPLATE
@@ -55,10 +52,20 @@ public class TestApplicationGateway {
                 .replace("${resourceName}", APP_GATEWAY_NAME);
     }
 
+    static void initializeResourceNames() {
+        TEST_ID = SdkContext.randomResourceName("", 8);
+        GROUP_NAME = "rg" + TEST_ID;
+        APP_GATEWAY_NAME = "ag" + TEST_ID;
+        PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
+    }
     /**
      * Minimalistic internal (private) app gateway test.
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+        PrivateMinimal() {
+            initializeResourceNames();
+        }
+
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
@@ -91,7 +98,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             //...But bail out after 30 sec, as it is enough to test the results
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -153,7 +160,7 @@ public class TestApplicationGateway {
                     .withPrivateFrontend()
                     .withFrontendPort(81)
                     .withHttps()
-                    .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                    .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                     .withSslCertificatePassword("Abc123")
                     .attach()
                 .defineBackend("backend2")
@@ -238,6 +245,7 @@ public class TestApplicationGateway {
          * @throws Exception when something goes wrong
          */
         public PrivateComplex(Networks networks, PublicIpAddresses pips) throws Exception {
+            initializeResourceNames();
             this.networks = networks;
             ensurePIPs(pips);
         }
@@ -285,7 +293,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule443")
                                 .fromPrivateFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpConfiguration("config1")
                                 .toBackend("backend1")
@@ -323,7 +331,7 @@ public class TestApplicationGateway {
 
                             // Additional/explicit certificates
                             .defineSslCertificate("cert1")
-                                .withPfxFromFile(new File("myTest2.pfx"))
+                                .withPfxFromFile(new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                 .withPfxPassword("Abc123")
                                 .attach()
 
@@ -342,7 +350,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -563,6 +571,7 @@ public class TestApplicationGateway {
          * @throws Exception when something goes wrong with test PIP creation
          */
         public PublicComplex(PublicIpAddresses pips) throws Exception {
+            initializeResourceNames();
             ensurePIPs(pips);
         }
 
@@ -605,7 +614,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule443")
                                 .fromPublicFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpConfiguration("config1")
                                 .toBackend("backend1")
@@ -633,7 +642,7 @@ public class TestApplicationGateway {
                                 .withPublicFrontend()
                                 .withFrontendPort(9000)
                                 .withHttps()
-                                .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .withServerNameIndication()
                                 .withHostName("www.fabricam.com")
@@ -654,7 +663,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -797,6 +806,9 @@ public class TestApplicationGateway {
      */
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
 
+        PublicMinimal() {
+            initializeResourceNames();
+        }
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
@@ -818,7 +830,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule1")
                                 .fromPublicFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpPort(8080)
                                 .toBackendIpAddress("11.1.1.1")
@@ -836,7 +848,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             //...But bail out after 30 sec, as it is enough to test the results
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());

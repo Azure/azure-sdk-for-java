@@ -130,7 +130,14 @@ public final class Azure {
         return new AuthenticatedImpl(restClient, tenantId);
     }
 
-    private static Authenticated authenticate(RestClient restClient, String tenantId, String subscriptionId) throws IOException {
+    /**
+     * Authenticates API access using a {@link RestClient} instance.
+     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * @param tenantId the tenantId in Active Directory
+     * @param subscriptionId the ID of the subscription
+     * @return authenticated Azure client
+     */
+    public static Authenticated authenticate(RestClient restClient, String tenantId, String subscriptionId) {
         return new AuthenticatedImpl(restClient, tenantId).withDefaultSubscription(subscriptionId);
     }
 
@@ -240,7 +247,7 @@ public final class Azure {
             this.tenantId = tenantId;
         }
 
-        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) throws IOException {
+        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
             this.defaultSubscription = subscriptionId;
             return this;
         }

@@ -7,26 +7,19 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import org.junit.AfterClass;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-public class AppServicePlansTests extends AppServiceTestBase {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("javacsmrg", 20);
-    private static final String APP_SERVICE_PLAN_NAME = ResourceNamer.randomResourceName("java-asp-", 20);
+public class AppServicePlansTests extends AppServiceTest {
+    private static String APP_SERVICE_PLAN_NAME = "";
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Test

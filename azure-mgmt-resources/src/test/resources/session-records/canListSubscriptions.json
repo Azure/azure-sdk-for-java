@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:4791/subscriptions?api-version=2016-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (SubscriptionClient, 2016-06-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"displayName\":\"Java Tests - MS Open Tech Eng\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Internal_2014-09-01\",\"quotaId\":\"Internal_2014-09-01\",\"spendingLimit\":\"Off\"},\"authorizationSource\":\"RoleBased\"}]}",
+      "x-ms-ratelimit-remaining-tenant-reads" : "14999",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170121T013040Z:a83c0694-d11b-431f-af0c-645c1f6beef2",
+      "date" : "Sat, 21 Jan 2017 01:30:40 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "a83c0694-d11b-431f-af0c-645c1f6beef2",
+      "content-length" : "349",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a83c0694-d11b-431f-af0c-645c1f6beef2"
+    }
+  } ],
+  "variables" : [ ]
+}

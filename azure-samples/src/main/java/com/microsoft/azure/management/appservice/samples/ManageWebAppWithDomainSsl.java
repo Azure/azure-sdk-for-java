@@ -16,7 +16,7 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
@@ -47,11 +47,11 @@ public final class ManageWebAppWithDomainSsl {
      */
     public static void main(String[] args) {
         // New resources
-        final String app1Name       = ResourceNamer.randomResourceName("webapp1-", 20);
-        final String app2Name       = ResourceNamer.randomResourceName("webapp2-", 20);
-        final String planName       = ResourceNamer.randomResourceName("jplan_", 15);
-        final String rgName         = ResourceNamer.randomResourceName("rgNEMV_", 24);
-        final String domainName     = ResourceNamer.randomResourceName("jsdkdemo-", 20) + ".com";
+        final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
+        final String planName       = SdkContext.randomResourceName("jplan_", 15);
+        final String rgName         = SdkContext.randomResourceName("rgNEMV_", 24);
+        final String domainName     = SdkContext.randomResourceName("jsdkdemo-", 20) + ".com";
         final String certPassword   = "StrongPass!12";
 
         try {

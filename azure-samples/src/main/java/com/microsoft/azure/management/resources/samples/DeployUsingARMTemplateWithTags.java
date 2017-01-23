@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
@@ -39,8 +39,8 @@ public final class DeployUsingARMTemplateWithTags {
      */
     public static void main(String[] args) {
         try {
-            final String rgName = ResourceNamer.randomResourceName("rgRSAT", 24);
-            final String deploymentName = ResourceNamer.randomResourceName("dpRSAT", 24);
+            final String rgName = SdkContext.randomResourceName("rgRSAT", 24);
+            final String deploymentName = SdkContext.randomResourceName("dpRSAT", 24);
 
             try {
 
@@ -138,8 +138,8 @@ public final class DeployUsingARMTemplateWithTags {
     }
 
     private static String getTemplate() throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = ResourceNamer.randomResourceName("hpRSAT", 24);
-        final String webappName = ResourceNamer.randomResourceName("wnRSAT", 24);
+        final String hostingPlanName = SdkContext.randomResourceName("hpRSAT", 24);
+        final String webappName = SdkContext.randomResourceName("wnRSAT", 24);
         final InputStream embeddedTemplate;
         embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
 

@@ -6,7 +6,7 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -30,11 +30,11 @@ public final class ManageVirtualMachineExtension {
      */
     public static void main(String[] args) {
 
-        final String linuxVmName = ResourceNamer.randomResourceName("lVM", 10);
-        final String windowsVmName = ResourceNamer.randomResourceName("wVM", 10);
-        final String rgName = ResourceNamer.randomResourceName("rgCOVE", 15);
-        final String pipDnsLabelLinuxVM = ResourceNamer.randomResourceName("rgPip1", 25);
-        final String pipDnsLabelWindowsVM = ResourceNamer.randomResourceName("rgPip2", 25);
+        final String linuxVmName = SdkContext.randomResourceName("lVM", 10);
+        final String windowsVmName = SdkContext.randomResourceName("wVM", 10);
+        final String rgName = SdkContext.randomResourceName("rgCOVE", 15);
+        final String pipDnsLabelLinuxVM = SdkContext.randomResourceName("rgPip1", 25);
+        final String pipDnsLabelWindowsVM = SdkContext.randomResourceName("rgPip2", 25);
 
         // Linux configurations
         //

@@ -5,7 +5,7 @@ import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
 import com.microsoft.azure.management.trafficmanager.TargetAzureResourceType;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
@@ -47,12 +47,12 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
         final String groupName = "rg" + this.testId;
 
         final String pipName = "pip" + this.testId;
-        final String pipDnsLabel = ResourceNamer.randomResourceName("contoso", 15);
+        final String pipDnsLabel = SdkContext.randomResourceName("contoso", 15);
 
         final String tmProfileName = "tm" + this.testId;
         final String nestedTmProfileName = "nested" + tmProfileName;
 
-        final String tmProfileDnsLabel = ResourceNamer.randomResourceName("tmdns", 15);
+        final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
         final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 
         ResourceGroup.DefinitionStages.WithCreate rgCreatable = resourceGroups.define(groupName)

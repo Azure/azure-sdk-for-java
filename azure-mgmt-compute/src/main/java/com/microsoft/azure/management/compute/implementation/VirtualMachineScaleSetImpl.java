@@ -41,6 +41,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -120,7 +121,7 @@ public class VirtualMachineScaleSetImpl
         this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.namer = new ResourceNamer(this.name());
+        this.namer = SdkContext.getResourceNamerFactory().createResourceNamer(this.name());
         this.skuConverter = new PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku>() {
             @Override
             public VirtualMachineScaleSetSku typeConvert(VirtualMachineScaleSetSkuInner inner) {
@@ -943,11 +944,11 @@ public class VirtualMachineScaleSetImpl
         if (this.computerNamePrefix() == null) {
             // VM name cannot contain only numeric values and cannot exceed 15 chars
             if (this.name().matches("[0-9]+")) {
-                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
+                withComputerNamePrefix(SdkContext.randomResourceName("vmss-vm", 12));
             } else if (this.name().length() <= 12) {
                 withComputerNamePrefix(this.name() + "-vm");
             } else {
-                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
+                withComputerNamePrefix(SdkContext.randomResourceName("vmss-vm", 12));
             }
         }
     }

@@ -18,7 +18,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -77,12 +77,12 @@ public final class ManageInternalLoadBalancer {
 
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgNEML", 15);
+        final String rgName = SdkContext.randomResourceName("rgNEML", 15);
 
-        final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
+        final String vnetName = SdkContext.randomResourceName("vnet", 24);
 
-        final String loadBalancerName3 = ResourceNamer.randomResourceName("intlb3" + "-", 18);
-        final String loadBalancerName4 = ResourceNamer.randomResourceName("intlb4" + "-", 18);
+        final String loadBalancerName3 = SdkContext.randomResourceName("intlb3" + "-", 18);
+        final String loadBalancerName4 = SdkContext.randomResourceName("intlb4" + "-", 18);
         final String privateFrontEndName = loadBalancerName3 + "-BE";
 
         final String backendPoolName3 = loadBalancerName3 + "-BAP3";
@@ -95,12 +95,12 @@ public final class ManageInternalLoadBalancer {
         final String natRule6002to22forVM4 = "nat6002to22forVM4";
         final String natRule6003to23forVM4 = "nat6003to23forVM4";
 
-        final String networkInterfaceName3 = ResourceNamer.randomResourceName("nic3",  24);
-        final String networkInterfaceName4 = ResourceNamer.randomResourceName("nic4", 24);
+        final String networkInterfaceName3 = SdkContext.randomResourceName("nic3",  24);
+        final String networkInterfaceName4 = SdkContext.randomResourceName("nic4", 24);
 
-        final String availSetName = ResourceNamer.randomResourceName("av2", 24);
-        final String vmName3 = ResourceNamer.randomResourceName("lVM3", 24);
-        final String vmName4 = ResourceNamer.randomResourceName("lVM4", 24);
+        final String availSetName = SdkContext.randomResourceName("av2", 24);
+        final String vmName3 = SdkContext.randomResourceName("lVM3", 24);
+        final String vmName4 = SdkContext.randomResourceName("lVM4", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 

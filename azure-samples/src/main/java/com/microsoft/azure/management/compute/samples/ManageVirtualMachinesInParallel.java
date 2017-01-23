@@ -15,7 +15,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.LogLevel;
 
@@ -39,9 +39,9 @@ public final class ManageVirtualMachinesInParallel {
     public static void main(String[] args) {
 
         final int vmCount = 10;
-        final String rgName = ResourceNamer.randomResourceName("rgCOPP", 24);
-        final String networkName = ResourceNamer.randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = ResourceNamer.randomResourceName("stgCOMV", 20);
+        final String rgName = SdkContext.randomResourceName("rgCOPP", 24);
+        final String networkName = SdkContext.randomResourceName("vnetCOMV", 24);
+        final String storageAccountName = SdkContext.randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
 

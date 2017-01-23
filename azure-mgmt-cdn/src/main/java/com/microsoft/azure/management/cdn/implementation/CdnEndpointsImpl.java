@@ -12,7 +12,7 @@ import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.DeepCreatedOrigin;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -155,7 +155,7 @@ class CdnEndpointsImpl extends
         CheckNameAvailabilityResult result;
 
         do {
-            endpointName = ResourceNamer.randomResourceName(endpointNamePrefix, 50);
+            endpointName = SdkContext.randomResourceName(endpointNamePrefix, 50);
 
             result = this.parent().checkEndpointNameAvailability(endpointName);
 

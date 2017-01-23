@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.LogLevel;
@@ -84,8 +84,8 @@ public final class ManageApplicationGateway {
 
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgNEAG", 15);
-        final String pipName = ResourceNamer.randomResourceName("pip" + "-", 18);
+        final String rgName = SdkContext.randomResourceName("rgNEAG", 15);
+        final String pipName = SdkContext.randomResourceName("pip" + "-", 18);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -155,7 +155,7 @@ public final class ManageApplicationGateway {
                     //=============================================================
                     // Create 1 network creatable per region
                     // Prepare Creatable Network definition (Where all the virtual machines get added to)
-                    String networkName = ResourceNamer.randomResourceName("vnetNEAG-", 20);
+                    String networkName = SdkContext.randomResourceName("vnetNEAG-", 20);
 
                     Creatable<Network> networkCreatable = azure.networks()
                             .define(networkName)
@@ -166,13 +166,13 @@ public final class ManageApplicationGateway {
 
                     //=============================================================
                     // Create 1 storage creatable per region (For storing VMs disk)
-                    String storageAccountName = ResourceNamer.randomResourceName("stgneag", 20);
+                    String storageAccountName = SdkContext.randomResourceName("stgneag", 20);
                     Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
                             .define(storageAccountName)
                             .withRegion(regions[i])
                             .withExistingResourceGroup(resourceGroup);
 
-                    String linuxVMNamePrefix = ResourceNamer.randomResourceName("vm-", 15);
+                    String linuxVMNamePrefix = SdkContext.randomResourceName("vm-", 15);
 
                     for (int j = 0; j < vmCountInAPool; j++) {
 

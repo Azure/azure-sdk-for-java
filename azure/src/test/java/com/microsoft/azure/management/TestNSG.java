@@ -21,6 +21,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import rx.Observable;
 import rx.Subscriber;
@@ -167,20 +168,5 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     @Override
     public void print(NetworkSecurityGroup resource) {
         printNSG(resource);
-    }
-
-    @Test
-    public void run() throws Exception {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                null);
-
-        Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .authenticate(credentials)
-                .withDefaultSubscription();
-        runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 }

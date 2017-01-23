@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.compute.AvailabilitySet;
@@ -43,18 +44,24 @@ import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
  * Test of virtual network management.
  */
 public class TestLoadBalancer {
-    static final long TEST_ID = System.currentTimeMillis();
-    static final Region REGION = Region.US_WEST;
-    static final String GROUP_NAME = "rg" + TEST_ID;
-    static final String LB_NAME = "lb" + TEST_ID;
-    static final String[] PIP_NAMES = {"pipa" + TEST_ID, "pipb" + TEST_ID};
+    static String TEST_ID = "";
+    static Region REGION = Region.US_WEST;
+    static String GROUP_NAME = "";
+    static String LB_NAME = "";
+    static String[] PIP_NAMES = null;
 
+    private static void initializeResourceNames() {
+        TEST_ID = SdkContext.randomResourceName("", 8);
+        GROUP_NAME = "rg" + TEST_ID;
+        LB_NAME = "lb" + TEST_ID;
+        PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
+    }
     /**
      * Internet-facing LB test with NAT pool test.
      */
@@ -76,6 +83,7 @@ public class TestLoadBalancer {
                 VirtualMachines vms,
                 Networks networks,
                 AvailabilitySets availabilitySets) {
+            initializeResourceNames();
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
@@ -238,6 +246,7 @@ public class TestLoadBalancer {
                 VirtualMachines vms,
                 Networks networks,
                 AvailabilitySets availabilitySets) {
+            initializeResourceNames();
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
@@ -434,6 +443,7 @@ public class TestLoadBalancer {
                 VirtualMachines vms,
                 Networks networks,
                 AvailabilitySets availabilitySets) {
+            initializeResourceNames();
             this.pips = pips;
             this.vms = vms;
             this.networks = networks;
@@ -608,6 +618,7 @@ public class TestLoadBalancer {
                 VirtualMachines vms,
                 Networks networks,
                 AvailabilitySets availabilitySets) {
+            initializeResourceNames();
             this.vms = vms;
             this.networks = networks;
             this.availabilitySets = availabilitySets;
@@ -808,7 +819,7 @@ public class TestLoadBalancer {
         String userName = "testuser" + TEST_ID;
         List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            String vmName = ResourceNamer.randomResourceName("vm", 15);
+            String vmName = SdkContext.randomResourceName("vm", 15);
 
             Creatable<VirtualMachine> vm = vms.define(vmName)
                     .withRegion(REGION)
@@ -826,8 +837,12 @@ public class TestLoadBalancer {
             vmDefinitions.add(vm);
         }
 
-        Collection<VirtualMachine> createdVMs = vms.create(vmDefinitions).values();
-        return createdVMs.toArray(new VirtualMachine[createdVMs.size()]);
+        CreatedResources<VirtualMachine> createdVMs2 = vms.create(vmDefinitions);
+        VirtualMachine[] array = new VirtualMachine[createdVMs2.size()];
+        for (int index = 0; index < createdVMs2.size(); index++) {
+            array[index] = createdVMs2.get(vmDefinitions.get(index).key());
+        }
+        return array;
     }
 
     // Print LB info
