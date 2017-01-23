@@ -26,7 +26,6 @@ public abstract class TestBase extends MockIntegrationTestBase {
     public void setup() throws Exception {
         addTextReplacementRule("https://management.azure.com", MOCK_URI);
         setupTest(name.getMethodName());
-        final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
         ApplicationTokenCredentials credentials;
         RestClient restClient;
         String defaultSubscription;
@@ -42,6 +41,8 @@ public abstract class TestBase extends MockIntegrationTestBase {
             defaultSubscription = super.MOCK_SUBSCRIPTION;
         }
         else {
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+
             credentials = ApplicationTokenCredentials.fromFile(credFile);
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
@@ -60,7 +61,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
         cleanUpResources();
         if (IS_MOCKED) {
             if (testRecord.networkCallRecords.size() > 0) {
-                System.out.println("Remaining records");
+                System.out.println("Remaining records " + testRecord.networkCallRecords.size() + " :");
                 for (int index = 0; index < testRecord.networkCallRecords.size(); index++) {
                     NetworkCallRecord record = testRecord.networkCallRecords.get(index);
                     System.out.println(record.Method + " - " + record.Uri);
