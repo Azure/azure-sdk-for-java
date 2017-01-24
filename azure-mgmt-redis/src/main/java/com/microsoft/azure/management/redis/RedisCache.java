@@ -244,7 +244,7 @@ public interface RedisCache extends
              /**
               * Assigns the specified subnet to this instance of Redis Cache.
               *
-              * @param networkResource instance of Network object.
+              * @param network instance of Network object.
               * @param subnetName the name of the subnet.
               * @return the next stage of Redis Cache definition.
               */
