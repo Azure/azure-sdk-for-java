@@ -399,6 +399,10 @@ public class AzureTests extends TestBase {
             Assert.assertEquals(region, location.asRegion());
             Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
         }
+
+        Location location = subscription.getLocationByRegion(Region.US_WEST);
+        Assert.assertNotNull(location);
+        Assert.assertTrue(Region.US_WEST.name().equalsIgnoreCase(location.name()));
     }
 
     /**
