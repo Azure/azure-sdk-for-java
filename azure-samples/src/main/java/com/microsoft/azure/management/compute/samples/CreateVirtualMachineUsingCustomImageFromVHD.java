@@ -78,7 +78,8 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
 
             try {
                 //=============================================================
-                // Create a Linux VM using an image from PIR (Platform Image Repository)
+                // Create a Linux VM using a PIR image with un-managed OS and data disks and customize virtual
+                // machine using custom script extension
 
                 System.out.println("Creating a un-managed Linux VM");
 
@@ -118,9 +119,8 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                 System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
                 Utils.print(linuxVM);
 
-                //=============================================================
                 // De-provision the virtual machine
-                deprovisionLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+                deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
 
                 //=============================================================
                 // Deallocate the virtual machine
@@ -128,7 +128,7 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
 
                 linuxVM.deallocate();
 
-                System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
+                System.out.println("De-allocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
 
                 //=============================================================
                 // Generalize the virtual machine
@@ -164,7 +164,7 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                 //=============================================================
                 // Create a Linux VM using custom image
 
-                System.out.println("Creating a Linux VM using custom image - " + virtualMachineCustomImage.id());
+                System.out.println("Creating a Linux VM using custom image: " + virtualMachineCustomImage.id());
 
                 VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
                         .withRegion(region)
@@ -178,6 +178,7 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 
+                System.out.println("Created Linux VM");
                 Utils.print(linuxVM2);
 
                 //=============================================================
@@ -193,7 +194,7 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                         .withLinuxCustomImage(virtualMachineCustomImage.id())
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)
+                        .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized (e.g. withUpdatedDataDiskFromImage)
                         .withNewDataDiskFromImage(1, 100, CachingTypes.READ_ONLY)
                         .withNewDataDiskFromImage(2, 100, CachingTypes.READ_WRITE)
                         .withNewDataDisk(50)
@@ -202,14 +203,26 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
 
                 Utils.print(linuxVM3);
 
+                // Getting the SAS URIs requires virtual machines to be de-allocated
+                // [Access not permitted because'disk' is currently attached to running VM]
+                //
+                System.out.println("De-allocating the virtual machine - " + linuxVM3.id());
+
+                linuxVM3.deallocate();
+
                 //=============================================================
                 // Get the readonly SAS URI to the OS and data disks
+
                 System.out.println("Getting OS and data disks SAS Uris");
 
+                // OS Disk SAS Uri
                 Disk osDisk = azure.disks().getById(linuxVM3.osDiskId());
 
                 String osDiskSasUri = osDisk.grantAccess(24 * 60);
+
                 System.out.println("OS disk SAS Uri: " + osDiskSasUri);
+
+                // Data Disks SAS Uri
                 for (VirtualMachineDataDisk disk : linuxVM3.dataDisks().values()) {
                     Disk dataDisk = azure.disks().getById(disk.id());
                     String dataDiskSasUri = dataDisk.grantAccess(24 * 60);
@@ -253,10 +266,10 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
      * @param userName the ssh user name
      * @param password the ssh user password
      */
-    protected static void deprovisionLinuxVM(String host, int port, String userName, String password) {
+    protected static void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
         SSHShell shell = null;
         try {
-            System.out.println("Trying to de-provision");
+            System.out.println("Trying to de-provision: " + host);
             shell = SSHShell.open(host, port, userName, password);
             List<String> deprovisionCommand = new ArrayList<>();
             deprovisionCommand.add("sudo waagent -deprovision+user --force");

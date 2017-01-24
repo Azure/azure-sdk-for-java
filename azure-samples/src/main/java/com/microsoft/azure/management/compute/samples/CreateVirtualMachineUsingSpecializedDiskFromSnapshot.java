@@ -76,7 +76,8 @@ public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             try {
                 //=============================================================
-                // Create a Linux VM using an image from PIR (Platform Image Repository)
+                // Create a Linux VM using a PIR image with managed OS and data disks and customize virtual
+                // machine using custom script extension
 
                 System.out.println("Creating a un-managed Linux VM");
 
@@ -215,12 +216,19 @@ public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
                 //=============================================================
                 //
-                System.out.println("Deleting snapshot - " + osSnapshot.id());
+                System.out.println("Deleting OS snapshot - " + osSnapshot.id());
 
                 azure.snapshots().deleteById(osSnapshot.id());
 
-                System.out.println("Deleted snapshot");
+                System.out.println("Deleted OS snapshot");
 
+                for (Snapshot dataSnapshot : dataSnapshots) {
+                    System.out.println("Deleting data snapshot - " + dataSnapshot.id());
+
+                    azure.snapshots().deleteById(dataSnapshot.id());
+
+                    System.out.println("Deleted data snapshot");
+                }
 
                 // Getting the SAS URIs requires virtual machines to be de-allocated
                 // [Access not permitted because'disk' is currently attached to running VM]
@@ -234,10 +242,14 @@ public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
                 System.out.println("Getting OS and data disks SAS Uris");
 
+                // OS Disk SAS Uri
                 osDisk = azure.disks().getById(linuxVM2.osDiskId());
 
                 String osDiskSasUri = osDisk.grantAccess(24 * 60);
+
                 System.out.println("OS disk SAS Uri: " + osDiskSasUri);
+
+                // Data disks SAS Uri
                 for (VirtualMachineDataDisk disk : linuxVM2.dataDisks().values()) {
                     Disk dataDisk = azure.disks().getById(disk.id());
                     String dataDiskSasUri = dataDisk.grantAccess(24 * 60);

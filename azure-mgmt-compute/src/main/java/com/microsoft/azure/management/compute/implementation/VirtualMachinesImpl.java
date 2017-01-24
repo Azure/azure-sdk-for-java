@@ -139,6 +139,10 @@ class VirtualMachinesImpl
         }
     }
 
+    @Override
+    public void migrateToManaged(String groupName, String name) {
+        this.innerCollection.convertToManagedDisks(groupName, name);
+    }
 
     // Getters
     @Override

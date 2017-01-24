@@ -32,8 +32,8 @@ import java.util.List;
  *  - Deallocate the virtual machine
  *  - Generalize the virtual machine
  *  - Create a virtual machine custom image from the virtual machine
- *  - Create a second virtual machine using the custom image
- *  - Create a second virtual machine using the custom image and configure the data disks
+ *  - Create a second managed virtual machine using the custom image
+ *  - Create a third virtual machine using the custom image and configure the data disks
  *  - Deletes the custom image
  *  - Get SAS Uri to the virtual machine's managed disks
  */
@@ -77,7 +77,8 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
 
             try {
                 //=============================================================
-                // Create a Linux VM using an image from PIR (Platform Image Repository)
+                // Create a Linux VM using a PIR image with un-managed OS and data disks and customize virtual
+                // machine using custom script extension
 
                 System.out.println("Creating a un-managed Linux VM");
 
@@ -113,9 +114,8 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
                 System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
                 Utils.print(linuxVM);
 
-                //=============================================================
                 // De-provision the virtual machine
-                deprovisionLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+                deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
 
                 //=============================================================
                 // Deallocate the virtual machine
@@ -123,7 +123,7 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
 
                 linuxVM.deallocate();
 
-                System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
+                System.out.println("De-allocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
 
                 //=============================================================
                 // Generalize the virtual machine
@@ -183,7 +183,7 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
                         .withLinuxCustomImage(virtualMachineCustomImage.id())
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)
+                        .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
                         .withNewDataDiskFromImage(1, 100, CachingTypes.READ_ONLY)
                         .withNewDataDisk(50)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -191,20 +191,25 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
 
                 Utils.print(linuxVM3);
 
-                // Getting the SAS URIs requires virtual machines to be stopped
+                // Getting the SAS URIs requires virtual machines to be de-allocated
+                // [Access not permitted because'disk' is currently attached to running VM]
                 //
-                System.out.println("Power-off the virtual machine - " + linuxVM3.id());
+                System.out.println("De-allocating the virtual machine - " + linuxVM3.id());
 
-                linuxVM3.powerOff();
+                linuxVM3.deallocate();
+
 
                 //=============================================================
                 // Get the readonly SAS URI to the OS and data disks
                 System.out.println("Getting OS and data disks SAS Uris");
 
+                // OS Disk SAS Uri
                 Disk osDisk = azure.disks().getById(linuxVM3.osDiskId());
 
                 String osDiskSasUri = osDisk.grantAccess(24 * 60);
                 System.out.println("OS disk SAS Uri: " + osDiskSasUri);
+
+                // Data disks SAS Uri
                 for (VirtualMachineDataDisk disk : linuxVM3.dataDisks().values()) {
                     Disk dataDisk = azure.disks().getById(disk.id());
                     String dataDiskSasUri = dataDisk.grantAccess(24 * 60);
@@ -248,10 +253,10 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
      * @param userName the ssh user name
      * @param password the ssh user password
      */
-    protected static void deprovisionLinuxVM(String host, int port, String userName, String password) {
+    protected static void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
         SSHShell shell = null;
         try {
-            System.out.println("Trying to de-provision");
+            System.out.println("Trying to de-provision: " + host);
             shell = SSHShell.open(host, port, userName, password);
             List<String> deprovisionCommand = new ArrayList<>();
             deprovisionCommand.add("sudo waagent -deprovision+user --force");

@@ -152,7 +152,7 @@ class VirtualMachineImpl
         };
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
-        initializeUnmanagedDataDisks();
+        initializeDataDisks();
     }
 
     // Verbs
@@ -162,8 +162,7 @@ class VirtualMachineImpl
         VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
-        this.managedDataDisks.clear();
-        initializeUnmanagedDataDisks();
+        initializeDataDisks();
         this.virtualMachineExtensions.refresh();
         return this;
     }
@@ -196,6 +195,12 @@ class VirtualMachineImpl
     @Override
     public void redeploy() {
         this.client.redeploy(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void migrateToManaged() {
+        this.client.convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.refresh();
     }
 
     @Override
@@ -1260,7 +1265,7 @@ class VirtualMachineImpl
                                     public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
                                         self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
-                                        initializeUnmanagedDataDisks();
+                                        initializeDataDisks();
                                         return self;
                                     }
                                 });
@@ -1659,12 +1664,14 @@ class VirtualMachineImpl
                 .withPrimaryPrivateIpAddressDynamic();
     }
 
-    private void initializeUnmanagedDataDisks() {
+    private void initializeDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
                     .withDataDisks(new ArrayList<DataDisk>());
         }
+        this.isUnmanagedDiskSelected = false;
+        this.managedDataDisks.clear();
         this.unmanagedDataDisks = new ArrayList<>();
         if (!isManagedDiskEnabled()) {
             for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
