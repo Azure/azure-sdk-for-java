@@ -268,7 +268,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition) {
-        return withNewElasticPool(elasticPoolName, elasticPoolEdition, (String) null);
+        return withNewElasticPool(elasticPoolName, elasticPoolEdition, (String[]) null);
     }
 
     @Override
