@@ -32,10 +32,11 @@ import java.io.File;
 public final class ManageWebAppBasic {
 
     /**
-     * Main entry point.
-     * @param args the parameters
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
      */
-    public static void main(String[] args) {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
@@ -44,6 +45,129 @@ public final class ManageWebAppBasic {
         final String rg1Name        = SdkContext.randomResourceName("rg1NEMV_", 24);
         final String rg2Name        = SdkContext.randomResourceName("rg2NEMV_", 24);
 
+        try {
+
+
+            //============================================================
+            // Create a web app with a new app service plan
+
+            System.out.println("Creating web app " + app1Name + " in resource group " + rg1Name + "...");
+
+            WebApp app1 = azure.webApps()
+                    .define(app1Name)
+                    .withNewResourceGroup(rg1Name)
+                    .withNewAppServicePlan(planName)
+                    .withRegion(Region.US_WEST)
+                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .create();
+
+            System.out.println("Created web app " + app1.name());
+            Utils.print(app1);
+
+            //============================================================
+            // Create a second web app with the same app service plan
+
+            System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
+            AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rg1Name, planName);
+            WebApp app2 = azure.webApps()
+                    .define(app2Name)
+                    .withExistingResourceGroup(rg1Name)
+                    .withExistingAppServicePlan(plan)
+                    .create();
+
+            System.out.println("Created web app " + app2.name());
+            Utils.print(app2);
+
+            //============================================================
+            // Create a third web app with the same app service plan, but
+            // in a different resource group
+
+            System.out.println("Creating another web app " + app3Name + " in resource group " + rg2Name + "...");
+            WebApp app3 = azure.webApps()
+                    .define(app3Name)
+                    .withNewResourceGroup(rg2Name)
+                    .withExistingAppServicePlan(plan)
+                    .create();
+
+            System.out.println("Created web app " + app3.name());
+            Utils.print(app3);
+
+            //============================================================
+            // stop and start app1, restart app 2
+            System.out.println("Stopping web app " + app1.name());
+            app1.stop();
+            System.out.println("Stopped web app " + app1.name());
+            Utils.print(app1);
+            System.out.println("Starting web app " + app1.name());
+            app1.start();
+            System.out.println("Started web app " + app1.name());
+            Utils.print(app1);
+            System.out.println("Restarting web app " + app2.name());
+            app2.restart();
+            System.out.println("Restarted web app " + app2.name());
+            Utils.print(app2);
+
+            //============================================================
+            // Configure app 3 to have Java 8 enabled
+            System.out.println("Adding Java support to web app " + app3Name + "...");
+            app3.update()
+                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                    .apply();
+            System.out.println("Java supported on web app " + app3Name + "...");
+
+            //=============================================================
+            // List web apps
+
+            System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
+
+            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+                Utils.print(webApp);
+            }
+
+            System.out.println("Printing list of web apps in resource group " + rg2Name + "...");
+
+            for (WebApp webApp : azure.webApps().listByGroup(rg2Name)) {
+                Utils.print(webApp);
+            }
+
+            //=============================================================
+            // Delete a web app
+
+            System.out.println("Deleting web app " + app1Name + "...");
+            azure.webApps().deleteByGroup(rg1Name, app1Name);
+            System.out.println("Deleted web app " + app1Name + "...");
+
+            System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
+            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+                Utils.print(webApp);
+            }
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + rg1Name);
+                azure.resourceGroups().beginDeleteByName(rg1Name);
+                System.out.println("Deleted Resource Group: " + rg1Name);
+                System.out.println("Deleting Resource Group: " + rg2Name);
+                azure.resourceGroups().beginDeleteByName(rg2Name);
+                System.out.println("Deleted Resource Group: " + rg2Name);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
         try {
 
             //=============================================================
@@ -59,121 +183,7 @@ public final class ManageWebAppBasic {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            try {
-
-
-                //============================================================
-                // Create a web app with a new app service plan
-
-                System.out.println("Creating web app " + app1Name + " in resource group " + rg1Name + "...");
-
-                WebApp app1 = azure.webApps()
-                        .define(app1Name)
-                        .withNewResourceGroup(rg1Name)
-                        .withNewAppServicePlan(planName)
-                        .withRegion(Region.US_WEST)
-                        .withPricingTier(AppServicePricingTier.STANDARD_S1)
-                        .create();
-
-                System.out.println("Created web app " + app1.name());
-                Utils.print(app1);
-
-                //============================================================
-                // Create a second web app with the same app service plan
-
-                System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
-                AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rg1Name, planName);
-                WebApp app2 = azure.webApps()
-                        .define(app2Name)
-                        .withExistingResourceGroup(rg1Name)
-                        .withExistingAppServicePlan(plan)
-                        .create();
-
-                System.out.println("Created web app " + app2.name());
-                Utils.print(app2);
-
-                //============================================================
-                // Create a third web app with the same app service plan, but
-                // in a different resource group
-
-                System.out.println("Creating another web app " + app3Name + " in resource group " + rg2Name + "...");
-                WebApp app3 = azure.webApps()
-                        .define(app3Name)
-                        .withNewResourceGroup(rg2Name)
-                        .withExistingAppServicePlan(plan)
-                        .create();
-
-                System.out.println("Created web app " + app3.name());
-                Utils.print(app3);
-
-                //============================================================
-                // stop and start app1, restart app 2
-                System.out.println("Stopping web app " + app1.name());
-                app1.stop();
-                System.out.println("Stopped web app " + app1.name());
-                Utils.print(app1);
-                System.out.println("Starting web app " + app1.name());
-                app1.start();
-                System.out.println("Started web app " + app1.name());
-                Utils.print(app1);
-                System.out.println("Restarting web app " + app2.name());
-                app2.restart();
-                System.out.println("Restarted web app " + app2.name());
-                Utils.print(app2);
-
-                //============================================================
-                // Configure app 3 to have Java 8 enabled
-                System.out.println("Adding Java support to web app " + app3Name + "...");
-                app3.update()
-                        .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                        .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                        .apply();
-                System.out.println("Java supported on web app " + app3Name + "...");
-
-                //=============================================================
-                // List web apps
-
-                System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
-
-                for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
-                    Utils.print(webApp);
-                }
-
-                System.out.println("Printing list of web apps in resource group " + rg2Name + "...");
-
-                for (WebApp webApp : azure.webApps().listByGroup(rg2Name)) {
-                    Utils.print(webApp);
-                }
-
-                //=============================================================
-                // Delete a web app
-
-                System.out.println("Deleting web app " + app1Name + "...");
-                azure.webApps().deleteByGroup(rg1Name, app1Name);
-                System.out.println("Deleted web app " + app1Name + "...");
-
-                System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-                for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
-                    Utils.print(webApp);
-                }
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try {
-                    System.out.println("Deleting Resource Group: " + rg1Name);
-                    azure.resourceGroups().beginDeleteByName(rg1Name);
-                    System.out.println("Deleted Resource Group: " + rg1Name);
-                    System.out.println("Deleting Resource Group: " + rg2Name);
-                    azure.resourceGroups().beginDeleteByName(rg2Name);
-                    System.out.println("Deleted Resource Group: " + rg2Name);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-            }
+            runSample(azure);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

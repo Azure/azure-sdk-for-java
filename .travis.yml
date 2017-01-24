@@ -6,6 +6,6 @@ jdk:
 - openjdk7
 script:
 - mvn install -DskipTests=true
-- mvn test
+- mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error
 - mvn checkstyle:check
 - mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true
