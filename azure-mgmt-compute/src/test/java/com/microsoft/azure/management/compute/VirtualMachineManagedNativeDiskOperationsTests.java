@@ -539,7 +539,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertNotNull(managedVm.availabilitySetId());
         AvailabilitySet availabilitySet = computeManager.availabilitySets().getById(managedVm.availabilitySetId());
         Assert.assertTrue(availabilitySet.virtualMachineIds().size() > 0);
-        Assert.assertTrue(availabilitySet.isManaged()); // TODO: Server is not honoring this flag in request, need to check with CRP
+        Assert.assertTrue(availabilitySet.isManaged());
 
         resourceManager.resourceGroups().deleteByName(rgName);
     }
