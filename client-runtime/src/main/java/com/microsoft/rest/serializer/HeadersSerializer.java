@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Custom serializer for serializing {@link Headers} objects.
  */
-public class HeadersSerializer extends JsonSerializer<Headers> {
+public final class HeadersSerializer extends JsonSerializer<Headers> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.

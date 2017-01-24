@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * User agent interceptor for putting a 'User-Agent' header in the request.
  */
-public class UserAgentInterceptor implements Interceptor {
+public final class UserAgentInterceptor implements Interceptor {
     /**
      * The default user agent header.
      */

@@ -66,7 +66,7 @@ public abstract class RetryStrategy {
      *
      * @return the name of the retry strategy.
      */
-    public String getName() {
+    public String name() {
         return name;
     }
 

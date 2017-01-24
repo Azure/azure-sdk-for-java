@@ -12,7 +12,7 @@ import okhttp3.Response;
 /**
  * A retry strategy with backoff parameters for calculating the exponential delay between retries.
  */
-public class ExponentialBackoffRetryStrategy extends RetryStrategy {
+public final class ExponentialBackoffRetryStrategy extends RetryStrategy {
     /**
      * Represents the default amount of time used when calculating a random delta in the exponential
      * delay between retries.

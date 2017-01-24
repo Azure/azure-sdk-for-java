@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Custom serializer for serializing {@link Byte[]} objects into Base64 strings.
  */
-public class Base64UrlSerializer extends JsonSerializer<Base64Url> {
+public final class Base64UrlSerializer extends JsonSerializer<Base64Url> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
