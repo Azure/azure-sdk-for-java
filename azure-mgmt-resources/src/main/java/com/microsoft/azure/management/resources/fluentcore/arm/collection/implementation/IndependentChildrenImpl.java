@@ -30,6 +30,7 @@ import rx.Completable;
  * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
+ * @param <ParentT> the type of the parent resource
  */
 @LangDefinition
 public abstract class IndependentChildrenImpl<

@@ -23,6 +23,7 @@ import rx.Observable;
  * @param <FluentParentModelT> the fluent model for parent resource
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition
 public abstract class IndependentChildImpl<
