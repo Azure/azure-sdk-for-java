@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -37,12 +37,12 @@ public final class ManageWebAppBasic {
      */
     public static void main(String[] args) {
         // New resources
-        final String app1Name       = ResourceNamer.randomResourceName("webapp1-", 20);
-        final String app2Name       = ResourceNamer.randomResourceName("webapp2-", 20);
-        final String app3Name       = ResourceNamer.randomResourceName("webapp3-", 20);
-        final String planName       = ResourceNamer.randomResourceName("jplan_", 15);
-        final String rg1Name        = ResourceNamer.randomResourceName("rg1NEMV_", 24);
-        final String rg2Name        = ResourceNamer.randomResourceName("rg2NEMV_", 24);
+        final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
+        final String planName       = SdkContext.randomResourceName("jplan_", 15);
+        final String rg1Name        = SdkContext.randomResourceName("rg1NEMV_", 24);
+        final String rg2Name        = SdkContext.randomResourceName("rg2NEMV_", 24);
 
         try {
 

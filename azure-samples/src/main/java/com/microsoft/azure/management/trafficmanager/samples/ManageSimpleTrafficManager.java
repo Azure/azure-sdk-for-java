@@ -14,7 +14,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 
 import java.io.File;
@@ -41,7 +41,7 @@ public final class ManageSimpleTrafficManager {
      */
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rg", 9);
+        final String rgName = SdkContext.randomResourceName("rgCOPD", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         final int vmCountPerRegion = 2;
@@ -77,7 +77,7 @@ public final class ManageSimpleTrafficManager {
                 List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
 
                 for (Region region : regions) {
-                    String linuxVMNamePrefix = ResourceNamer.randomResourceName("vm", 15);
+                    String linuxVMNamePrefix = SdkContext.randomResourceName("vm", 15);
                     for (int i = 0; i < vmCountPerRegion; i++) {
                         //=============================================================
                         // Create a virtual machine in its own virtual network
@@ -113,7 +113,7 @@ public final class ManageSimpleTrafficManager {
                 //=============================================================
                 // Create 1 traffic manager profile
                 //
-                String trafficManagerName = ResourceNamer.randomResourceName("tra", 15);
+                String trafficManagerName = SdkContext.randomResourceName("tra", 15);
                 TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
                         .withExistingResourceGroup(resourceGroup)
                         .withLeafDomainLabel(trafficManagerName)
@@ -122,7 +122,7 @@ public final class ManageSimpleTrafficManager {
                 TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
                 int routingPriority = 1;
                 for (VirtualMachine vm : virtualMachines) {
-                    String endpointName = ResourceNamer.randomResourceName("ep", 15);
+                    String endpointName = SdkContext.randomResourceName("ep", 15);
                     profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
                             .toResourceId(vm.getPrimaryPublicIpAddressId())
                             .withRoutingPriority(routingPriority++)

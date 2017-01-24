@@ -7,32 +7,27 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.rest.RestClient;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class SourceControlTests extends AppServiceTestBase {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("javacsmrg", 20);
-    private static final String WEBAPP_NAME = ResourceNamer.randomResourceName("java-webapp-", 20);
-    private static final String APP_SERVICE_PLAN_NAME = ResourceNamer.randomResourceName("java-asp-", 20);
+public class SourceControlTests extends AppServiceTest {
+    private static String WEBAPP_NAME = "";
+    private static String APP_SERVICE_PLAN_NAME = "";
     private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
+        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Test
@@ -49,11 +44,13 @@ public class SourceControlTests extends AppServiceTestBase {
                     .attach()
                 .create();
         Assert.assertNotNull(webApp);
-        Response response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
-        Assert.assertEquals(200, response.code());
-        String body = response.body().string();
-        Assert.assertNotNull(body);
-        Assert.assertTrue(body.contains("Hello world from linux 4"));
+        if (!IS_MOCKED) {
+            Response response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
+            Assert.assertEquals(200, response.code());
+            String body = response.body().string();
+            Assert.assertNotNull(body);
+            Assert.assertTrue(body.contains("Hello world from linux 4"));
+        }
     }
 
     private static Response curl(String url) throws IOException {

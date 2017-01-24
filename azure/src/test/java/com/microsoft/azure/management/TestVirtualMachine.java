@@ -64,19 +64,4 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
     public void print(VirtualMachine virtualMachine) {
         TestUtils.print(virtualMachine);
     }
-
-    @Test
-    public void run() throws Exception {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                null);
-
-        Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.NONE)
-                .authenticate(credentials)
-                .withDefaultSubscription();
-        runTest(azure.virtualMachines(), azure.resourceGroups());
-    }
 }

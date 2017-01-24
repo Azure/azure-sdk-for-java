@@ -9,8 +9,11 @@ package com.microsoft.azure.management.resources.core;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 public class TestResourceNamer extends ResourceNamer {
-    public TestResourceNamer(String name) {
+    private final MockIntegrationTestBase mockIntegrationTestBase;
+
+    public TestResourceNamer(String name, MockIntegrationTestBase mockIntegrationTestBase) {
         super(name);
+        this.mockIntegrationTestBase = mockIntegrationTestBase;
     }
 
     /**
@@ -23,11 +26,11 @@ public class TestResourceNamer extends ResourceNamer {
     @Override
     public String randomName(String prefix, int maxLen) {
         if (MockIntegrationTestBase.IS_MOCKED) {
-            return MockIntegrationTestBase.popVariable();
+            return mockIntegrationTestBase.popVariable();
         }
         String randomName = super.randomName(prefix, maxLen);
 
-        MockIntegrationTestBase.pushVariable(randomName);
+        mockIntegrationTestBase.pushVariable(randomName);
 
         return randomName;
     }

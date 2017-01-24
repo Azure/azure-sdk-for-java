@@ -45,6 +45,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -127,7 +128,7 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = new ResourceNamer(this.vmName);
+        this.namer = SdkContext.getResourceNamerFactory().createResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineSizeConverter = new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
@@ -993,11 +994,11 @@ class VirtualMachineImpl
             if (this.inner().osProfile().computerName() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
                 if (vmName.matches("[0-9]+")) {
-                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                    this.inner().osProfile().withComputerName(SdkContext.randomResourceName("vm", 15));
                 } else if (vmName.length() <= 15) {
                     this.inner().osProfile().withComputerName(vmName);
                 } else {
-                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                    this.inner().osProfile().withComputerName(SdkContext.randomResourceName("vm", 15));
                 }
             }
         } else {

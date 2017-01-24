@@ -13,7 +13,7 @@ import com.microsoft.azure.management.keyvault.KeyPermissions;
 import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -37,9 +37,9 @@ public final class ManageKeyVault {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String vaultName1 = ResourceNamer.randomResourceName("vault1", 20);
-        final String vaultName2 = ResourceNamer.randomResourceName("vault2", 20);
-        final String rgName = ResourceNamer.randomResourceName("rgNEMV", 24);
+        final String vaultName1 = SdkContext.randomResourceName("vault1", 20);
+        final String vaultName2 = SdkContext.randomResourceName("vault2", 20);
+        final String rgName = SdkContext.randomResourceName("rgNEMV", 24);
 
         try {
 

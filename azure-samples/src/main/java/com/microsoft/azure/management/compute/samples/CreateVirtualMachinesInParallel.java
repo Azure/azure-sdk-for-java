@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.rest.LogLevel;
@@ -41,7 +41,7 @@ public final class CreateVirtualMachinesInParallel {
      */
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgCOPD", 24);
+        final String rgName = SdkContext.randomResourceName("rgCOPD", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -106,7 +106,7 @@ public final class CreateVirtualMachinesInParallel {
                     // Create 1 network creatable per region
                     // Prepare Creatable Network definition (Where all the virtual machines get added to)
                     //
-                    String networkName = ResourceNamer.randomResourceName("vnetCOPD-", 20);
+                    String networkName = SdkContext.randomResourceName("vnetCOPD-", 20);
                     Creatable<Network> networkCreatable = azure.networks()
                             .define(networkName)
                             .withRegion(region)
@@ -117,13 +117,13 @@ public final class CreateVirtualMachinesInParallel {
                     //=============================================================
                     // Create 1 storage creatable per region (For storing VMs disk)
                     //
-                    String storageAccountName = ResourceNamer.randomResourceName("stgcopd", 20);
+                    String storageAccountName = SdkContext.randomResourceName("stgcopd", 20);
                     Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
                             .define(storageAccountName)
                             .withRegion(region)
                             .withExistingResourceGroup(resourceGroup);
 
-                    String linuxVMNamePrefix = ResourceNamer.randomResourceName("vm-", 15);
+                    String linuxVMNamePrefix = SdkContext.randomResourceName("vm-", 15);
                     for (int i = 1; i <= vmCount; i++) {
                         //=============================================================
                         // Create 1 public IP address creatable
@@ -132,7 +132,7 @@ public final class CreateVirtualMachinesInParallel {
                                 .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
-                                .withLeafDomainLabel(ResourceNamer.randomResourceName("pip", 10));
+                                .withLeafDomainLabel(SdkContext.randomResourceName("pip", 10));
 
                         publicIpCreatableKeys.add(publicIpAddressCreatable.key());
 
@@ -182,7 +182,7 @@ public final class CreateVirtualMachinesInParallel {
                 //=============================================================
                 // Create 1 Traffic Manager Profile
                 //
-                String trafficManagerName = ResourceNamer.randomResourceName("tra", 15);
+                String trafficManagerName = SdkContext.randomResourceName("tra", 15);
                 TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
                         .withExistingResourceGroup(resourceGroup)
                         .withLeafDomainLabel(trafficManagerName)

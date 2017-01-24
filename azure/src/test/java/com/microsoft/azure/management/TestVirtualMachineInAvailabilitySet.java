@@ -5,15 +5,15 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
-        final String newRgName = ResourceNamer.randomResourceName("rgVmInAvail", 10);
-        final String newAvailSetName = ResourceNamer.randomResourceName("avai", 10);
+        final String newRgName = SdkContext.randomResourceName("rgVmInAvail", 10);
+        final String newAvailSetName = SdkContext.randomResourceName("avai", 10);
 
         VirtualMachine vm = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)

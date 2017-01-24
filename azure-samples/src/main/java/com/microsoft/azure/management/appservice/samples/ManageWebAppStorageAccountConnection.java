@@ -15,7 +15,7 @@ import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -56,12 +56,12 @@ public final class ManageWebAppStorageAccountConnection {
     public static void main(String[] args) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = ResourceNamer.randomResourceName("webapp1-", 20);
+        final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = ResourceNamer.randomResourceName("jsdkstore", 20);
-        final String containerName  = ResourceNamer.randomResourceName("jcontainer", 20);
-        final String planName       = ResourceNamer.randomResourceName("jplan_", 15);
-        final String rgName         = ResourceNamer.randomResourceName("rg1NEMV_", 24);
+        final String storageName    = SdkContext.randomResourceName("jsdkstore", 20);
+        final String containerName  = SdkContext.randomResourceName("jcontainer", 20);
+        final String planName       = SdkContext.randomResourceName("jplan_", 15);
+        final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {
 

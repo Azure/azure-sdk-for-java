@@ -4,27 +4,14 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
-    private static String RG_NAME = "javanwmrg";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-    }
+public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
     @Test
     public void canCreateBatchOfNetworkInterfaces() throws Exception {

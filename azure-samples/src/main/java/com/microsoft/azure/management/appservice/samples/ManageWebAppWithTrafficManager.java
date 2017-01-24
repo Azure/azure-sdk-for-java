@@ -15,7 +15,7 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficRoutingMethod;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  *  - Scale up the app service plans to twice the capacity
  */
 public final class ManageWebAppWithTrafficManager {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("rgNEMV_", 24);
+    private static final String RG_NAME = SdkContext.randomResourceName("rgNEMV_", 24);
     private static final String CERT_PASSWORD = "StrongPass!12";
 
     private static OkHttpClient httpClient;
@@ -52,16 +52,16 @@ public final class ManageWebAppWithTrafficManager {
      */
     public static void main(String[] args) {
         // New resources
-        final String app1Name       = ResourceNamer.randomResourceName("webapp1-", 20);
-        final String app2Name       = ResourceNamer.randomResourceName("webapp2-", 20);
-        final String app3Name       = ResourceNamer.randomResourceName("webapp3-", 20);
-        final String app4Name       = ResourceNamer.randomResourceName("webapp4-", 20);
-        final String app5Name       = ResourceNamer.randomResourceName("webapp5-", 20);
-        final String plan1Name      = ResourceNamer.randomResourceName("jplan1_", 15);
-        final String plan2Name      = ResourceNamer.randomResourceName("jplan2_", 15);
-        final String plan3Name      = ResourceNamer.randomResourceName("jplan3_", 15);
-        final String domainName     = ResourceNamer.randomResourceName("jsdkdemo-", 20) + ".com";
-        final String tmName         = ResourceNamer.randomResourceName("jsdktm-", 20);
+        final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
+        final String app4Name       = SdkContext.randomResourceName("webapp4-", 20);
+        final String app5Name       = SdkContext.randomResourceName("webapp5-", 20);
+        final String plan1Name      = SdkContext.randomResourceName("jplan1_", 15);
+        final String plan2Name      = SdkContext.randomResourceName("jplan2_", 15);
+        final String plan3Name      = SdkContext.randomResourceName("jplan3_", 15);
+        final String domainName     = SdkContext.randomResourceName("jsdkdemo-", 20) + ".com";
+        final String tmName         = SdkContext.randomResourceName("jsdktm-", 20);
 
         try {
 

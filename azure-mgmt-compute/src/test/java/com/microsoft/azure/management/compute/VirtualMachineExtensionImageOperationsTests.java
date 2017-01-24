@@ -1,23 +1,12 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTestBase {
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
-
+public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTest {
     @Test
     public void canListExtensionImages() throws Exception {
         final int maxListing = 20;

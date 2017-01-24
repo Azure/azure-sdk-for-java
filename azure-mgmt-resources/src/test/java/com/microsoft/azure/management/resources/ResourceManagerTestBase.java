@@ -2,25 +2,26 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 /**
  * The base for resource manager tests.
  */
-abstract class ResourceManagerTestBase {
+class ResourceManagerTestBase extends TestBase {
     protected static ResourceManager resourceClient;
 
-    static void createClient() throws Exception {
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         resourceClient = ResourceManager
-                .configure()
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .authenticate(
-                new ApplicationTokenCredentials(
-                        System.getenv("client-id"),
-                        System.getenv("domain"),
-                        System.getenv("secret"),
-                        AzureEnvironment.AZURE)
-        ).withSubscription(System.getenv("subscription-id"));
+                .authenticate(restClient)
+                .withSubscription(defaultSubscription);
+    }
+
+    @Override
+    protected void cleanUpResources() {
+
     }
 }

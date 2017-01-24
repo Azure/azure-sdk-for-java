@@ -17,7 +17,7 @@ import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.LogLevel;
@@ -47,11 +47,11 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
 
         final int frontendVmCount = 10;
         final int backendVmCount = 10;
-        final String rgName = ResourceNamer.randomResourceName("rgNEPP", 24);
-        final String frontEndNSGName = ResourceNamer.randomResourceName("fensg", 24);
-        final String backEndNSGName = ResourceNamer.randomResourceName("bensg", 24);
-        final String networkName = ResourceNamer.randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = ResourceNamer.randomResourceName("stgCOMV", 20);
+        final String rgName = SdkContext.randomResourceName("rgNEPP", 24);
+        final String frontEndNSGName = SdkContext.randomResourceName("fensg", 24);
+        final String backEndNSGName = SdkContext.randomResourceName("bensg", 24);
+        final String networkName = SdkContext.randomResourceName("vnetCOMV", 24);
+        final String storageAccountName = SdkContext.randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
 
