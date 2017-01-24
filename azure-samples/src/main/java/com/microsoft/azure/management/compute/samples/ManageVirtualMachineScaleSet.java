@@ -278,7 +278,7 @@ public final class ManageVirtualMachineScaleSet {
                     // Pick the first NIC
                     VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
                     for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
-                        if(ipConfig.isPrimary()) {
+                        if (ipConfig.isPrimary()) {
                             List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
                             for (LoadBalancerInboundNatRule natRule : natRules) {
                                 if (natRule.backendPort() == 22) {
