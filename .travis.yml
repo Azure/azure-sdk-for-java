@@ -6,5 +6,6 @@ jdk:
 - openjdk7
 script:
 - mvn install -DskipTests=true
+- mvn test
 - mvn checkstyle:check
 - mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true
