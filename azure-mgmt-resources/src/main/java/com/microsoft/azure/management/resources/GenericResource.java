@@ -15,13 +15,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.GenericResourceInner;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * An immutable client-side representation of an Azure generic resource.
  */
 @Fluent
 public interface GenericResource extends
-        GroupableResource,
+        GroupableResource<ResourceManager>,
         Refreshable<GenericResource>,
         Updatable<GenericResource.Update>,
         Wrapper<GenericResourceInner> {

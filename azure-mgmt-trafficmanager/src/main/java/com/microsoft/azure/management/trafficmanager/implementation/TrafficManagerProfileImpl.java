@@ -35,7 +35,6 @@ class TrafficManagerProfileImpl
         TrafficManagerProfile.Definition,
         TrafficManagerProfile.Update {
     private final ProfilesInner innerCollection;
-    private final EndpointsInner endpointsClient;
     private final String profileStatusDisabled = "Disabled";
     private final String profileStatusEnabled = "Enabled";
     private TrafficManagerEndpointsImpl endpoints;
@@ -47,7 +46,6 @@ class TrafficManagerProfileImpl
                               final TrafficManager trafficManager) {
         super(name, innerModel, trafficManager);
         this.innerCollection = innerCollection;
-        this.endpointsClient = endpointsClient;
         this.endpoints = new TrafficManagerEndpointsImpl(endpointsClient, this);
     }
 

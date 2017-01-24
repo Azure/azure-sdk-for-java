@@ -65,9 +65,9 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers>  {
 
         Assert.assertNotNull(sqlServer.inner());
         // Just master database
-        Assert.assertEquals(sqlServer.databases().list().size(), 1);
-        Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
-        Assert.assertEquals(sqlServer.firewallRules().list().size(), 1);
+        Assert.assertEquals(1, sqlServer.databases().list().size());
+        Assert.assertEquals(0, sqlServer.elasticPools().list().size());
+        Assert.assertEquals(1, sqlServer.firewallRules().list().size());
 
         return sqlServer;
     }

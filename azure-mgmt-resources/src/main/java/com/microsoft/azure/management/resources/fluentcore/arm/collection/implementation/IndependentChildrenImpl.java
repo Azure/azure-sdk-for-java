@@ -33,16 +33,17 @@ import rx.Completable;
  */
 @LangDefinition
 public abstract class IndependentChildrenImpl<
-        T extends IndependentChild,
+        T extends IndependentChild<ManagerT>,
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends ManagerBase>
+        ManagerT extends ManagerBase,
+        ParentT extends GroupableResource<ManagerT>>
     extends CreatableResourcesImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
-        SupportsGettingByParent<T>,
-        SupportsListingByParent<T>,
+        SupportsGettingByParent<T, ParentT, ManagerT>,
+        SupportsListingByParent<T, ParentT, ManagerT>,
         SupportsDeletingById,
         SupportsDeletingByParent,
         HasManager<ManagerT> {
@@ -55,7 +56,7 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public T getByParent(GroupableResource parentResource, String name) {
+    public T getByParent(ParentT parentResource, String name) {
         return getByParent(parentResource.resourceGroupName(), parentResource.name(), name);
     }
 
@@ -67,7 +68,7 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public PagedList<T> listByParent(GroupableResource parentResource) {
+    public PagedList<T> listByParent(ParentT parentResource) {
         return listByParent(parentResource.resourceGroupName(), parentResource.name());
     }
 

@@ -38,7 +38,8 @@ class SqlElasticPoolImpl
                             SqlElasticPool,
                             SqlServer,
                             ElasticPoolInner,
-        SqlElasticPoolImpl>
+                            SqlElasticPoolImpl,
+                            SqlServerManager>
         implements SqlElasticPool,
             SqlElasticPool.Definition,
             SqlElasticPool.Update,
@@ -52,8 +53,9 @@ class SqlElasticPoolImpl
                                  ElasticPoolInner innerObject,
                                  ElasticPoolsInner innerCollection,
                                  DatabasesInner databasesInner,
-                                 DatabasesImpl databasesImpl) {
-        super(name, innerObject);
+                                 DatabasesImpl databasesImpl,
+                                 SqlServerManager manager) {
+        super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.databasesInner = databasesInner;
         this.databasesImpl = databasesImpl;
@@ -135,13 +137,13 @@ class SqlElasticPoolImpl
 
     @Override
     public List<SqlDatabase> listDatabases() {
-        final DatabasesInner databasesInner = this.databasesInner;
+        final SqlElasticPoolImpl self = this;
         PagedListConverter<DatabaseInner, SqlDatabase> converter
                 = new PagedListConverter<DatabaseInner, SqlDatabase>() {
             @Override
             public SqlDatabase typeConvert(DatabaseInner databaseInner) {
 
-                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, databasesInner);
+                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, databasesInner, self.manager());
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
@@ -158,7 +160,7 @@ class SqlElasticPoolImpl
                 this.sqlServerName(),
                 this.name(),
                 databaseName);
-        return new SqlDatabaseImpl(database.name(), database, this.databasesInner);
+        return new SqlDatabaseImpl(database.name(), database, this.databasesInner, this.manager());
     }
 
     @Override

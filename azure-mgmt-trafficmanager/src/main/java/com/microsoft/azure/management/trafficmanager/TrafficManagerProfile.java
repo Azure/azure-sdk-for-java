@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.trafficmanager.implementation.ProfileInner;
+import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 @Fluent
 public interface TrafficManagerProfile extends
-        GroupableResource,
+        GroupableResource<TrafficManager>,
         Refreshable<TrafficManagerProfile>,
         Wrapper<ProfileInner>,
         Updatable<TrafficManagerProfile.Update> {

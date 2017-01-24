@@ -457,10 +457,6 @@ class NetworkInterfaceImpl
         clearCachedRelatedResources();
     }
 
-    NetworkManager manager() {
-        return this.myManager;
-    }
-
     @Override
     protected void beforeCreating() {
         NetworkSecurityGroup networkSecurityGroup = null;

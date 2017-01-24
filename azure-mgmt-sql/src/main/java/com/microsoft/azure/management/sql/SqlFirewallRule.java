@@ -14,13 +14,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerFirewallRuleInner;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 /**
  * An immutable client-side representation of an Azure SQL Server FirewallRule.
  */
 @Fluent
 public interface SqlFirewallRule extends
-        IndependentChild,
+        IndependentChild<SqlServerManager>,
         Refreshable<SqlFirewallRule>,
         Updatable<SqlFirewallRule.Update>,
         Wrapper<ServerFirewallRuleInner> {

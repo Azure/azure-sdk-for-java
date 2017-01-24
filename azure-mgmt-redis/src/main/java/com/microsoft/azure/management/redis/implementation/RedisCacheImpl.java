@@ -18,7 +18,7 @@ import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.Sku;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.Period;
@@ -277,7 +277,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withSubnet(GroupableResource networkResource, String subnetName) {
+    public RedisCacheImpl withSubnet(HasId networkResource, String subnetName) {
         if (networkResource != null) {
             String subnetId = networkResource.id() + "/subnets/" + subnetName;
             if (isInCreateMode()) {

@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -20,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent()
 public interface PublicIpAddress extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<PublicIpAddress>,
         Wrapper<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {

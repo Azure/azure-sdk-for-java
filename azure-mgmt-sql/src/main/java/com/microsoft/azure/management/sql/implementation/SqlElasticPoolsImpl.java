@@ -12,9 +12,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
+import com.microsoft.azure.management.sql.SqlServer;
+
 import rx.Completable;
 
 import java.util.List;
@@ -28,10 +29,11 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             SqlElasticPoolImpl,
             ElasticPoolInner,
             ElasticPoolsInner,
-            SqlServerManager>
+            SqlServerManager,
+            SqlServer>
         implements SqlElasticPools.SqlElasticPoolsCreatable,
-        SupportsGettingByParent<SqlElasticPool>,
-        SupportsListingByParent<SqlElasticPool> {
+        SupportsGettingByParent<SqlElasticPool, SqlServer, SqlServerManager>,
+        SupportsListingByParent<SqlElasticPool, SqlServer, SqlServerManager> {
     private final DatabasesInner databasesInner;
     private final DatabasesImpl databasesImpl;
 
@@ -49,7 +51,8 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
                 inner,
                 this.innerCollection,
                 this.databasesInner,
-                this.databasesImpl);
+                this.databasesImpl,
+                this.manager());
     }
 
     @Override
@@ -68,7 +71,13 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection, this.databasesInner, this.databasesImpl);
+        return new SqlElasticPoolImpl(
+                inner.name(),
+                inner,
+                this.innerCollection,
+                this.databasesInner,
+                this.databasesImpl,
+                this.manager());
     }
 
     @Override
@@ -87,7 +96,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlElasticPool getBySqlServer(GroupableResource sqlServer, String name) {
+    public SqlElasticPool getBySqlServer(SqlServer sqlServer, String name) {
         return this.getByParent(sqlServer, name);
     }
 
@@ -97,7 +106,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public List<SqlElasticPool> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlElasticPool> listBySqlServer(SqlServer sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -111,6 +120,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
                 inner,
                 this.innerCollection,
                 this.databasesInner,
-                this.databasesImpl).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.databasesImpl,
+                this.manager()).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

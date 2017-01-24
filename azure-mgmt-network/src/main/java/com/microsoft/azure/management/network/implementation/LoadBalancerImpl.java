@@ -286,10 +286,6 @@ class LoadBalancerImpl
         }
     }
 
-    NetworkManager manager() {
-        return this.myManager;
-    }
-
     String futureResourceId() {
         return new StringBuilder()
                 .append(super.resourceIdBase())

@@ -17,8 +17,8 @@ class SqlWarehouseImpl
         extends SqlDatabaseImpl
         implements SqlWarehouse {
 
-    protected SqlWarehouseImpl(String name, DatabaseInner innerObject, DatabasesInner innerCollection) {
-        super(name, innerObject, innerCollection);
+    protected SqlWarehouseImpl(String name, DatabaseInner innerObject, DatabasesInner innerCollection, SqlServerManager manager) {
+        super(name, innerObject, innerCollection, manager);
     }
 
     @Override

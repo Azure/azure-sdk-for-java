@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.RouteTableInner;
 import com.microsoft.azure.management.network.model.HasAssociatedSubnets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 @Fluent()
 public interface RouteTable extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<RouteTable>,
         Wrapper<RouteTableInner>,
         Updatable<RouteTable.Update>,

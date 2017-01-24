@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -28,13 +27,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent
 public interface ApplicationGateway extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<ApplicationGateway>,
         Wrapper<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
-        HasPrivateIpAddress,
-        HasManager<NetworkManager> {
+        HasPrivateIpAddress {
 
     // Getters
 

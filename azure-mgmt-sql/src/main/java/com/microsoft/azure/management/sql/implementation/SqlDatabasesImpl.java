@@ -12,9 +12,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
+import com.microsoft.azure.management.sql.SqlServer;
+
 import rx.Completable;
 
 import java.util.List;
@@ -28,10 +29,11 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             SqlDatabaseImpl,
             DatabaseInner,
             DatabasesInner,
-            SqlServerManager>
+            SqlServerManager,
+            SqlServer>
         implements SqlDatabases.SqlDatabaseCreatable,
-        SupportsGettingByParent<SqlDatabase>,
-        SupportsListingByParent<SqlDatabase> {
+        SupportsGettingByParent<SqlDatabase, SqlServer, SqlServerManager>,
+        SupportsListingByParent<SqlDatabase, SqlServer, SqlServerManager> {
     protected SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
@@ -42,7 +44,8 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         return new SqlDatabaseImpl(
                 name,
                 inner,
-                this.innerCollection);
+                this.innerCollection,
+                this.manager());
     }
 
     @Override
@@ -61,7 +64,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlWarehouseImpl(inner.name(), inner, this.innerCollection);
+        return new SqlWarehouseImpl(inner.name(), inner, this.innerCollection, this.manager());
     }
 
     @Override
@@ -80,7 +83,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlDatabase getBySqlServer(GroupableResource sqlServer, String name) {
+    public SqlDatabase getBySqlServer(SqlServer sqlServer, String name) {
         return this.getByParent(sqlServer, name);
     }
 
@@ -90,7 +93,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public List<SqlDatabase> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlDatabase> listBySqlServer(SqlServer sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -102,6 +105,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         return new SqlDatabaseImpl(
                 databaseName,
                 inner,
-                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.innerCollection,
+                this.manager()).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }
