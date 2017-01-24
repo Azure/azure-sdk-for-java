@@ -41,15 +41,73 @@ public final class ManageWebAppSlots {
     private static final String SUFFIX = ".azurewebsites.net";
 
     /**
-     * Main entry point.
-     * @param args the parameters
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
      */
-    public static void main(String[] args) {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
         final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
         final String slotName       = "staging";
+
+        try {
+
+            azure.resourceGroups().define(RG_NAME)
+                    .withRegion(Region.US_WEST)
+                    .create();
+
+            //============================================================
+            // Create 3 web apps with 3 new app service plans in different regions
+
+            WebApp app1 = createWebApp(app1Name, Region.US_WEST);
+            WebApp app2 = createWebApp(app2Name, Region.EUROPE_WEST);
+            WebApp app3 = createWebApp(app3Name, Region.ASIA_EAST);
+
+
+            //============================================================
+            // Create a deployment slot under each web app with auto swap
+
+            DeploymentSlot slot1 = createSlot(slotName, app1);
+            DeploymentSlot slot2 = createSlot(slotName, app2);
+            DeploymentSlot slot3 = createSlot(slotName, app3);
+
+            //============================================================
+            // Deploy the staging branch to the slot
+
+            deployToStaging(slot1);
+            deployToStaging(slot2);
+            deployToStaging(slot3);
+
+            // swap back
+            swapProductionBacktoSlot(slot1);
+            swapProductionBacktoSlot(slot2);
+            swapProductionBacktoSlot(slot3);
+
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + RG_NAME);
+                azure.resourceGroups().beginDeleteByName(RG_NAME);
+                System.out.println("Deleted Resource Group: " + RG_NAME);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+        return false;
+    }
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
+
 
         try {
 
@@ -66,53 +124,8 @@ public final class ManageWebAppSlots {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            try {
 
-                azure.resourceGroups().define(RG_NAME)
-                        .withRegion(Region.US_WEST)
-                        .create();
-
-                //============================================================
-                // Create 3 web apps with 3 new app service plans in different regions
-
-                WebApp app1 = createWebApp(app1Name, Region.US_WEST);
-                WebApp app2 = createWebApp(app2Name, Region.EUROPE_WEST);
-                WebApp app3 = createWebApp(app3Name, Region.ASIA_EAST);
-
-
-                //============================================================
-                // Create a deployment slot under each web app with auto swap
-
-                DeploymentSlot slot1 = createSlot(slotName, app1);
-                DeploymentSlot slot2 = createSlot(slotName, app2);
-                DeploymentSlot slot3 = createSlot(slotName, app3);
-
-                //============================================================
-                // Deploy the staging branch to the slot
-
-                deployToStaging(slot1);
-                deployToStaging(slot2);
-                deployToStaging(slot3);
-
-                // swap back
-                swapProductionBacktoSlot(slot1);
-                swapProductionBacktoSlot(slot2);
-                swapProductionBacktoSlot(slot3);
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try {
-                    System.out.println("Deleting Resource Group: " + RG_NAME);
-                    azure.resourceGroups().beginDeleteByName(RG_NAME);
-                    System.out.println("Deleted Resource Group: " + RG_NAME);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-            }
+            runSample(azure);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

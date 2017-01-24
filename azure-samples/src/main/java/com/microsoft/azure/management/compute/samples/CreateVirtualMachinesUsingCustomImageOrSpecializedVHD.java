@@ -28,12 +28,13 @@ import java.util.List;
  *  - Create a new virtual machine by attaching OS disk of deleted VM to it.
  */
 public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
-    /**
-     * Main entry point.
-     * @param args the parameters
-     */
-    public static void main(String[] args) {
 
+    /**
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
+     */
+    public static boolean runSample(Azure azure) {
         final String linuxVmName1 = Utils.createRandomName("VM1");
         final String linuxVmName2 = Utils.createRandomName("VM2");
         final String linuxVmName3 = Utils.createRandomName("VM3");
@@ -48,7 +49,138 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
         apacheInstallScriptUris.add(apacheInstallScript);
 
         try {
+            //=============================================================
+            // Create a Linux VM using an image from PIR (Platform Image Repository)
 
+            System.out.println("Creating a Linux VM");
+
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(rgName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIpAddressDynamic()
+                    .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withRootPassword(password)
+                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .defineNewExtension("CustomScriptForLinux")
+                    .withPublisher("Microsoft.OSTCExtensions")
+                    .withType("CustomScriptForLinux")
+                    .withVersion("1.4")
+                    .withMinorVersionAutoUpgrade()
+                    .withPublicSetting("fileUris", apacheInstallScriptUris)
+                    .withPublicSetting("commandToExecute", apacheInstallCommand)
+                    .attach()
+                    .create();
+
+            System.out.println("Created a Linux VM: " + linuxVM.id());
+            Utils.print(linuxVM);
+
+            System.out.println("SSH into the VM [" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
+            System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
+            System.out.println("after that press 'Enter' to continue.");
+            System.in.read();
+
+            //=============================================================
+            // Deallocate the virtual machine
+            System.out.println("Deallocate VM: " + linuxVM.id());
+
+            linuxVM.deallocate();
+
+            System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
+
+            //=============================================================
+            // Generalize the virtual machine
+            System.out.println("Generalize VM: " + linuxVM.id());
+
+            linuxVM.generalize();
+
+            System.out.println("Generalized VM: " + linuxVM.id());
+
+            //=============================================================
+            // Capture the virtual machine to get a 'Generalized image' with Apache
+            System.out.println("Capturing VM: " + linuxVM.id());
+
+            String capturedResultJson = linuxVM.capture("capturedvhds", "img", true);
+
+            System.out.println("Captured VM: " + linuxVM.id());
+
+            //=============================================================
+            // Create a Linux VM using captured image (Generalized image)
+            String capturedImageUri = extractCapturedImageUri(capturedResultJson);
+
+            System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
+
+            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
+                    .withRegion(Region.US_EAST)
+                    .withExistingResourceGroup(rgName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIpAddressDynamic()
+                    .withoutPrimaryPublicIpAddress()
+                    .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
+                    .withRootUsername(userName)
+                    .withRootPassword(password)
+                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .create();
+
+            Utils.print(linuxVM2);
+
+            String specializedVhd = linuxVM2.osDiskVhdUri();
+            //=============================================================
+            // Deleting the virtual machine
+            System.out.println("Deleting VM: " + linuxVM2.id());
+
+            azure.virtualMachines().deleteById(linuxVM2.id()); // VM required to be deleted to be able to attach it's
+            // OS Disk VHD to another VM (Deallocate is not sufficient)
+
+            System.out.println("Deleted VM");
+
+            //=============================================================
+            // Create a Linux VM using 'specialized VHD' of previous VM
+
+            System.out.println("Creating a new Linux VM by attaching OS Disk vhd - "
+                    + specializedVhd
+                    + " of deleted VM");
+
+            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVmName3)
+                    .withRegion(Region.US_EAST)
+                    .withExistingResourceGroup(rgName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIpAddressDynamic()
+                    .withoutPrimaryPublicIpAddress()
+                    .withOsDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
+                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)       // when attaching a specialized VHD
+                    .create();
+
+            Utils.print(linuxVM3);
+            return true;
+        } catch (Exception f) {
+
+            System.out.println(f.getMessage());
+            f.printStackTrace();
+
+        } finally {
+
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().deleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+
+        }
+        return false;
+    }
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
+        try {
             //=============================================================
             // Authenticate
 
@@ -63,130 +195,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            try {
-                //=============================================================
-                // Create a Linux VM using an image from PIR (Platform Image Repository)
-
-                System.out.println("Creating a Linux VM");
-
-                VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
-                        .withRegion(Region.US_EAST)
-                        .withNewResourceGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .defineNewExtension("CustomScriptForLinux")
-                            .withPublisher("Microsoft.OSTCExtensions")
-                            .withType("CustomScriptForLinux")
-                            .withVersion("1.4")
-                            .withMinorVersionAutoUpgrade()
-                            .withPublicSetting("fileUris", apacheInstallScriptUris)
-                            .withPublicSetting("commandToExecute", apacheInstallCommand)
-                            .attach()
-                        .create();
-
-                System.out.println("Created a Linux VM: " + linuxVM.id());
-                Utils.print(linuxVM);
-
-                System.out.println("SSH into the VM [" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
-                System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
-                System.out.println("after that press 'Enter' to continue.");
-                System.in.read();
-
-                //=============================================================
-                // Deallocate the virtual machine
-                System.out.println("Deallocate VM: " + linuxVM.id());
-
-                linuxVM.deallocate();
-
-                System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
-
-                //=============================================================
-                // Generalize the virtual machine
-                System.out.println("Generalize VM: " + linuxVM.id());
-
-                linuxVM.generalize();
-
-                System.out.println("Generalized VM: " + linuxVM.id());
-
-                //=============================================================
-                // Capture the virtual machine to get a 'Generalized image' with Apache
-                System.out.println("Capturing VM: " + linuxVM.id());
-
-                String capturedResultJson = linuxVM.capture("capturedvhds", "img", true);
-
-                System.out.println("Captured VM: " + linuxVM.id());
-
-                //=============================================================
-                // Create a Linux VM using captured image (Generalized image)
-                String capturedImageUri = extractCapturedImageUri(capturedResultJson);
-
-                System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
-
-                VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withoutPrimaryPublicIpAddress()
-                        .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
-                        .withRootUsername(userName)
-                        .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .create();
-
-                Utils.print(linuxVM2);
-
-                String specializedVhd = linuxVM2.osDiskVhdUri();
-                //=============================================================
-                // Deleting the virtual machine
-                System.out.println("Deleting VM: " + linuxVM2.id());
-
-                azure.virtualMachines().deleteById(linuxVM2.id()); // VM required to be deleted to be able to attach it's
-                                                               // OS Disk VHD to another VM (Deallocate is not sufficient)
-
-                System.out.println("Deleted VM");
-
-                //=============================================================
-                // Create a Linux VM using 'specialized VHD' of previous VM
-
-                System.out.println("Creating a new Linux VM by attaching OS Disk vhd - "
-                        + specializedVhd
-                        + " of deleted VM");
-
-                VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVmName3)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withoutPrimaryPublicIpAddress()
-                        .withOsDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)       // when attaching a specialized VHD
-                        .create();
-
-                Utils.print(linuxVM3);
-            } catch (Exception f) {
-
-                System.out.println(f.getMessage());
-                f.printStackTrace();
-
-            } finally {
-
-                try {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-
-            }
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

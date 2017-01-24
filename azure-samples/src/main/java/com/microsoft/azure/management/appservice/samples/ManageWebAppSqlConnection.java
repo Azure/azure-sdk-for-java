@@ -37,10 +37,11 @@ public final class ManageWebAppSqlConnection {
     private static OkHttpClient httpClient;
 
     /**
-     * Main entry point.
-     * @param args the parameters
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
      */
-    public static void main(String[] args) {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String appName        = SdkContext.randomResourceName("webapp1-", 20);
@@ -52,6 +53,97 @@ public final class ManageWebAppSqlConnection {
         final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
+        try {
+
+
+            //============================================================
+            // Create a sql server
+
+            System.out.println("Creating SQL server " + sqlServerName + "...");
+
+            SqlServer server = azure.sqlServers().define(sqlServerName)
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName)
+                    .withAdministratorLogin(admin)
+                    .withAdministratorPassword(password)
+                    .create();
+
+            System.out.println("Created SQL server " + server.name());
+
+            //============================================================
+            // Create a sql database for the web app to use
+
+            System.out.println("Creating SQL database " + sqlDbName + "...");
+
+            SqlDatabase db = server.databases().define(sqlDbName).create();
+
+            System.out.println("Created SQL database " + db.name());
+
+            //============================================================
+            // Create a web app with a new app service plan
+
+            System.out.println("Creating web app " + appName + "...");
+
+            WebApp app = azure.webApps()
+                    .define(appName)
+                    .withExistingResourceGroup(rgName)
+                    .withNewAppServicePlan(planName)
+                    .withRegion(Region.US_WEST)
+                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withPhpVersion(PhpVersion.PHP5_6)
+                    .defineSourceControl()
+                    .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
+                    .withBranch("master")
+                    .attach()
+                    .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
+                    .withAppSetting("ProjectNami.DBName", db.name())
+                    .withAppSetting("ProjectNami.DBUser", admin)
+                    .withAppSetting("ProjectNami.DBPass", password)
+                    .create();
+
+            System.out.println("Created web app " + app.name());
+            Utils.print(app);
+
+            //============================================================
+            // Allow web app to access the SQL server
+
+            System.out.println("Allowing web app " + appName + " to access SQL server...");
+
+            SqlServer.Update update = server.update();
+            for (String ip : app.outboundIpAddresses()) {
+                update = update.withNewFirewallRule(ip);
+            }
+            server = update.apply();
+
+            System.out.println("Firewall rules added for web app " + appName);
+            Utils.print(server);
+
+            System.out.println("Your WordPress app is ready.");
+            System.out.println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
+            System.in.read();
+
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+        return false;
+    }
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
         try {
 
             //=============================================================
@@ -67,90 +159,8 @@ public final class ManageWebAppSqlConnection {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            try {
 
-
-                //============================================================
-                // Create a sql server
-
-                System.out.println("Creating SQL server " + sqlServerName + "...");
-
-                SqlServer server = azure.sqlServers().define(sqlServerName)
-                        .withRegion(Region.US_WEST)
-                        .withNewResourceGroup(rgName)
-                        .withAdministratorLogin(admin)
-                        .withAdministratorPassword(password)
-                        .create();
-
-                System.out.println("Created SQL server " + server.name());
-
-                //============================================================
-                // Create a sql database for the web app to use
-
-                System.out.println("Creating SQL database " + sqlDbName + "...");
-
-                SqlDatabase db = server.databases().define(sqlDbName).create();
-
-                System.out.println("Created SQL database " + db.name());
-
-                //============================================================
-                // Create a web app with a new app service plan
-
-                System.out.println("Creating web app " + appName + "...");
-
-                WebApp app = azure.webApps()
-                        .define(appName)
-                        .withExistingResourceGroup(rgName)
-                        .withNewAppServicePlan(planName)
-                        .withRegion(Region.US_WEST)
-                        .withPricingTier(AppServicePricingTier.STANDARD_S1)
-                        .withPhpVersion(PhpVersion.PHP5_6)
-                        .defineSourceControl()
-                            .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
-                            .withBranch("master")
-                            .attach()
-                        .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
-                        .withAppSetting("ProjectNami.DBName", db.name())
-                        .withAppSetting("ProjectNami.DBUser", admin)
-                        .withAppSetting("ProjectNami.DBPass", password)
-                        .create();
-
-                System.out.println("Created web app " + app.name());
-                Utils.print(app);
-
-                //============================================================
-                // Allow web app to access the SQL server
-
-                System.out.println("Allowing web app " + appName + " to access SQL server...");
-
-                SqlServer.Update update = server.update();
-                for (String ip : app.outboundIpAddresses()) {
-                            update = update.withNewFirewallRule(ip);
-                }
-                server = update.apply();
-
-                System.out.println("Firewall rules added for web app " + appName);
-                Utils.print(server);
-
-                System.out.println("Your WordPress app is ready.");
-                System.out.println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
-                System.in.read();
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().beginDeleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-            }
-
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
