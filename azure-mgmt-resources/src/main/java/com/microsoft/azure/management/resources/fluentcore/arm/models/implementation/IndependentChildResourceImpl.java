@@ -23,25 +23,27 @@ import java.util.TreeMap;
  * @param <FluentParentModelT> the fluent model for parent resource
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition
 public abstract class IndependentChildResourceImpl<
-            FluentModelT extends IndependentChildResource,
-            FluentParentModelT extends GroupableResource,
+            FluentModelT extends IndependentChildResource<ManagerT>,
+            FluentParentModelT extends GroupableResource<ManagerT>,
             InnerModelT extends com.microsoft.azure.Resource,
-            FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>>
+            FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+            ManagerT>
         extends
-            IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>
+            IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>
         implements
-            IndependentChildResource {
+            IndependentChildResource<ManagerT> {
     /**
      * Creates a new instance of CreatableUpdatableImpl.
      *
      * @param name        the name of the resource
      * @param innerObject the inner object
      */
-    protected IndependentChildResourceImpl(String name, InnerModelT innerObject) {
-        super(name, innerObject);
+    protected IndependentChildResourceImpl(String name, InnerModelT innerObject, ManagerT manager) {
+        super(name, innerObject, manager);
     }
 
     /*******************************************

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
@@ -26,7 +27,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent
 public interface LoadBalancer extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<LoadBalancer>,
         Wrapper<LoadBalancerInner>,
         Updatable<LoadBalancer.Update>,

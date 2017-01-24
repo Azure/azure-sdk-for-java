@@ -25,7 +25,8 @@ class AppServiceCertificateKeyVaultBindingImpl
                 AppServiceCertificateKeyVaultBinding,
                 AppServiceCertificateOrder,
                 AppServiceCertificateInner,
-                AppServiceCertificateKeyVaultBindingImpl>
+                AppServiceCertificateKeyVaultBindingImpl,
+                AppServiceManager>
         implements
         AppServiceCertificateKeyVaultBinding {
 
@@ -33,7 +34,7 @@ class AppServiceCertificateKeyVaultBindingImpl
     private final AppServiceCertificateOrderImpl parent;
 
     AppServiceCertificateKeyVaultBindingImpl(AppServiceCertificateInner innerObject, AppServiceCertificateOrderImpl parent) {
-        super(innerObject.name(), innerObject);
+        super(innerObject.name(), innerObject, (parent != null) ? parent.manager() : null);
         this.parent = parent;
         innerCollection = parent.client;
     }

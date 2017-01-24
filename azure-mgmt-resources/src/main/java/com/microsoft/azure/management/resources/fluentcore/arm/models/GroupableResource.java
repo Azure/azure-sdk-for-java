@@ -13,10 +13,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * Base interface for resources in resource groups.
+ * @param <TManager> the manager object type representing the service
  */
 @Fluent()
-public interface GroupableResource extends Resource, HasResourceGroup {
-
+public interface GroupableResource<TManager> extends
+    Resource,
+    HasResourceGroup,
+    HasManager<TManager> {
 
     /**
      * Grouping of all the definition stages.

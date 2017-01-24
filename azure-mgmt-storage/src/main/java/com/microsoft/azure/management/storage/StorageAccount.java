@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
+
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.List;
  */
 @Fluent
 public interface StorageAccount extends
-        GroupableResource,
+        GroupableResource<StorageManager>,
         Refreshable<StorageAccount>,
         Updatable<StorageAccount.Update>,
         Wrapper<StorageAccountInner> {

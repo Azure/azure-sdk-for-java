@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachine extends
-        GroupableResource,
+        GroupableResource<ComputeManager>,
         Refreshable<VirtualMachine>,
         Wrapper<VirtualMachineInner>,
         Updatable<VirtualMachine.Update>,
@@ -69,7 +70,7 @@ public interface VirtualMachine extends
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
-     * 
+     *
      * @return the virtual machine sizes
      */
     @Method

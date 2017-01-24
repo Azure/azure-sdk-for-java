@@ -65,6 +65,7 @@ public interface ApplicationGatewaySslCertificate extends
              * Specifies the PFX (PKCS#12) file to get the private key content from.
              * @param pfxFile a file in the PFX format
              * @return the next stage of the definition
+             * @throws java.io.IOException when there are problems with the provided file
              */
             WithPassword<ParentT> withPfxFromFile(File pfxFile) throws IOException;
         }

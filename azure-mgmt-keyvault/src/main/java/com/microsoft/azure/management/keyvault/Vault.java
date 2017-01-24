@@ -8,6 +8,7 @@ package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.keyvault.implementation.VaultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vault extends
-        GroupableResource,
+        GroupableResource<KeyVaultManager>,
         Refreshable<Vault>,
         Updatable<Vault.Update>,
         Wrapper<VaultInner> {

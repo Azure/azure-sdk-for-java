@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -23,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent()
 public interface Network extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<Network>,
         Wrapper<VirtualNetworkInner>,
         Updatable<Network.Update> {

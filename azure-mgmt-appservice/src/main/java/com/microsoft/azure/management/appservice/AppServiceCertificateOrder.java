@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.appservice.implementation.AppServiceCertificateOrderInner;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
+
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -24,7 +26,7 @@ import rx.Observable;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificateOrder extends
-        GroupableResource,
+        GroupableResource<AppServiceManager>,
         Refreshable<AppServiceCertificateOrder>,
         Updatable<AppServiceCertificateOrder.Update>,
         Wrapper<AppServiceCertificateOrderInner> {

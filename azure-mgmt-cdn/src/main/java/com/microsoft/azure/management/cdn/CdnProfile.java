@@ -8,6 +8,7 @@ package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfileInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Fluent
 public interface CdnProfile extends
-        GroupableResource,
+        GroupableResource<CdnManager>,
         Refreshable<CdnProfile>,
         Wrapper<ProfileInner>,
         Updatable<CdnProfile.Update> {

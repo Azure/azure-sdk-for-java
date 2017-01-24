@@ -43,7 +43,8 @@ class SqlDatabaseImpl
                             SqlDatabase,
                             SqlServer,
                             DatabaseInner,
-                            SqlDatabaseImpl>
+                            SqlDatabaseImpl,
+                            SqlServerManager>
         implements SqlDatabase,
             SqlDatabase.Definition,
             SqlDatabase.DefinitionStages.WithCreateWithElasticPoolOptions,
@@ -55,8 +56,9 @@ class SqlDatabaseImpl
 
     protected SqlDatabaseImpl(String name,
                             DatabaseInner innerObject,
-                            DatabasesInner innerCollection) {
-        super(name, innerObject);
+                            DatabasesInner innerCollection,
+                            SqlServerManager manager) {
+        super(name, innerObject, manager);
         this.innerCollection = innerCollection;
     }
 

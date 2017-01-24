@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.dns.implementation.ZoneInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public interface DnsZone extends
-        GroupableResource,
+        GroupableResource<DnsZoneManager>,
         Refreshable<DnsZone>,
         Wrapper<ZoneInner>,
         Updatable<DnsZone.Update> {

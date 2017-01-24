@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.AppServicePlanInner;
 
 /**
@@ -21,7 +22,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServicePlanIn
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServicePlan extends
-        GroupableResource,
+        GroupableResource<AppServiceManager>,
         HasName,
         Refreshable<AppServicePlan>,
         Updatable<AppServicePlan.Update>,

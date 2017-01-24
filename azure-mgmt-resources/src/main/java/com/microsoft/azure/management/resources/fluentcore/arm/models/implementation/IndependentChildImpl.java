@@ -23,21 +23,24 @@ import rx.Observable;
  * @param <FluentParentModelT> the fluent model for parent resource
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition
 public abstract class IndependentChildImpl<
-            FluentModelT extends IndependentChild,
-            FluentParentModelT extends GroupableResource,
+            FluentModelT extends IndependentChild<ManagerT>,
+            FluentParentModelT extends GroupableResource<ManagerT>,
             InnerModelT,
-            FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>>
+            FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+            ManagerT>
         extends
             CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-            IndependentChild,
+            IndependentChild<ManagerT>,
             IndependentChild.DefinitionStages.WithParentResource<FluentModelT, FluentParentModelT> {
     private String groupName;
     protected String parentName;
     private String creatableParentResourceKey;
+    private final ManagerT manager;
 
     /**
      * Creates a new instance of IndependentChildResourceImpl.
@@ -45,13 +48,19 @@ public abstract class IndependentChildImpl<
      * @param name        the name of the resource
      * @param innerObject the inner object
      */
-    protected IndependentChildImpl(String name, InnerModelT innerObject) {
+    protected IndependentChildImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject);
+        this.manager = manager;
     }
 
     /*******************************************
      * Getters.
      *******************************************/
+
+    @Override
+    public ManagerT manager() {
+        return this.manager;
+    }
 
     @Override
     public String resourceGroupName() {

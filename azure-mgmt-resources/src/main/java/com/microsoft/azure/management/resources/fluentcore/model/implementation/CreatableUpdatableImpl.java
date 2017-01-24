@@ -114,7 +114,6 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public FluentModelT create() {
         return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
     }
@@ -150,12 +149,10 @@ public abstract class CreatableUpdatableImpl<
         return this.createResourceAsync();
     }
 
-    @SuppressWarnings("unchecked")
     protected Observable<FluentModelT> executeTaskGroupAsync() {
         return taskGroup.executeAsync().last();
     }
 
-    @SuppressWarnings("unchecked")
     protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
         return taskGroup.executeAsync()
                 .map(new Func1<FluentModelT, Indexable>() {
