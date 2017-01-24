@@ -7,14 +7,19 @@
 
 package com.microsoft.azure.management.compute.samples;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -29,6 +34,8 @@ import java.util.List;
  * Azure Compute sample for managing virtual machine scale sets -
  *  - Create a virtual machine scale set behind an Internet facing load balancer
  *  - Install Apache Web servers in virtual machines in the virtual machine scale set
+ *  - List the network interfaces associated with the virtual machine scale set
+ *  - List scale set virtual machine instances and SSH collection string
  *  - Stop a virtual machine scale set
  *  - Start a virtual machine scale set
  *  - Update a virtual machine scale set
@@ -251,6 +258,38 @@ public final class ManageVirtualMachineScaleSet {
                 // Print virtual machine scale set details
                 // Utils.print(virtualMachineScaleSet);
 
+                //=============================================================
+                // List virtual machine scale set network interfaces
+
+                System.out.println("Listing scale set network interfaces ...");
+                PagedList<VirtualMachineScaleSetNetworkInterface> vmssNics = virtualMachineScaleSet.listNetworkInterfaces();
+                for (VirtualMachineScaleSetNetworkInterface vmssNic : vmssNics) {
+                    System.out.println(vmssNic.id());
+                }
+
+                //=============================================================
+                // List virtual machine scale set instance network interfaces and SSH connection string
+
+                System.out.println("Listing scale set virtual machine instance network interfaces and SSH connection string...");
+                for (VirtualMachineScaleSetVM instance : virtualMachineScaleSet.virtualMachines().list()) {
+                    System.out.println("Scale set virtual machine instance #" + instance.instanceId());
+                    System.out.println(instance.id());
+                    PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
+                    // Pick the first NIC
+                    VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
+                    for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                        if (ipConfig.isPrimary()) {
+                            List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+                            for (LoadBalancerInboundNatRule natRule : natRules) {
+                                if (natRule.backendPort() == 22) {
+                                    System.out.println("SSH connection string: " + userName + "@" + publicIpAddress.fqdn() + ":" + natRule.frontendPort());
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
 
                 //=============================================================
                 // Stop the virtual machine scale set
