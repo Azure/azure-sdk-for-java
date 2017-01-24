@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.rest.LogLevel;
@@ -39,12 +39,12 @@ public final class ManageTrafficManager {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String rgName                     = ResourceNamer.randomResourceName("rgNEMV_", 24);
-        final String domainName                 = ResourceNamer.randomResourceName("jsdkdemo-", 20) + ".com";
+        final String rgName                     = SdkContext.randomResourceName("rgNEMV_", 24);
+        final String domainName                 = SdkContext.randomResourceName("jsdkdemo-", 20) + ".com";
         final String certPassword               = "StrongPass!12";
-        final String appServicePlanNamePrefix   = ResourceNamer.randomResourceName("jplan1_", 15);
-        final String webAppNamePrefix           = ResourceNamer.randomResourceName("webapp1-", 20);
-        final String tmName                     = ResourceNamer.randomResourceName("jsdktm-", 20);
+        final String appServicePlanNamePrefix   = SdkContext.randomResourceName("jplan1_", 15);
+        final String webAppNamePrefix           = SdkContext.randomResourceName("webapp1-", 20);
+        final String tmName                     = SdkContext.randomResourceName("jsdktm-", 20);
         final List<Region> regions              = new ArrayList<>();
         Azure azure;
 

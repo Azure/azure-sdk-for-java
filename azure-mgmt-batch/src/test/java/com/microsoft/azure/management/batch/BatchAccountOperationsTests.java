@@ -6,35 +6,19 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import rx.Observable;
 
 import java.util.List;
 
-public class BatchAccountOperationsTests extends BatchManagementTestBase {
-    private static final String RG_NAME = "javacbatch382";
-    private static final String BATCH_NAME = "javacsmsa382";
-    private static final String SA_NAME = "javacsmsa382";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-    }
-
+public class BatchAccountOperationsTests extends BatchManagementTest {
     @Test
     public void canCRUDBatchAccount() throws Exception {
         // Create
@@ -92,7 +76,6 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         String applicationPackageName = "applicationPackage";
 
         boolean updatesAllowed = true;
-
         batchAccount.update()
                 .defineNewApplication(applicationId)
                     .defineNewApplicationPackage(applicationPackageName)
@@ -120,6 +103,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
                 .withoutApplication(applicationId)
                 .apply();
 
+        SdkContext.sleep(30 * 1000);
         batchAccount.refresh();
         Assert.assertFalse(batchAccount.applications().containsKey(applicationId));
 
@@ -147,7 +131,6 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
                 .apply();
         application = batchAccount.applications().get(applicationId);
         Assert.assertEquals(application.displayName(), newApplicationDisplayName);
-
 
         batchAccount.refresh();
         application = batchAccount.applications().get(applicationId);

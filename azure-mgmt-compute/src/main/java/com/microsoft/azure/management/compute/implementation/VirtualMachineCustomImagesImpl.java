@@ -4,8 +4,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import rx.Completable;
 
 /**
  * The implementation for {@link VirtualMachineCustomImages}.
@@ -25,13 +24,8 @@ class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).map(new Func1<OperationStatusResponseInner, Void>() {
-            @Override
-            public Void call(OperationStatusResponseInner operationStatusResponseInner) {
-                return null;
-            }
-        });
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

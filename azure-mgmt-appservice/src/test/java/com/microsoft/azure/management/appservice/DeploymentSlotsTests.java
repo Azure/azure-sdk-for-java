@@ -7,31 +7,29 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import org.junit.AfterClass;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-public class DeploymentSlotsTests extends AppServiceTestBase {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("javacsmrg", 20);
-    private static final String WEBAPP_NAME = ResourceNamer.randomResourceName("java-webapp-", 20);
-    private static final String SLOT_NAME_1 = ResourceNamer.randomResourceName("java-slot-", 20);
-    private static final String SLOT_NAME_2 = ResourceNamer.randomResourceName("java-slot-", 20);
-    private static final String SLOT_NAME_3 = ResourceNamer.randomResourceName("java-slot-", 20);
-    private static final String APP_SERVICE_PLAN_NAME = ResourceNamer.randomResourceName("java-asp-", 20);
+public class DeploymentSlotsTests extends AppServiceTest {
+    private static String WEBAPP_NAME = "";
+    private static String SLOT_NAME_1 = "";
+    private static String SLOT_NAME_2 = "";
+    private static String SLOT_NAME_3 = "";
+    private static String APP_SERVICE_PLAN_NAME = "";
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
+        SLOT_NAME_1 = generateRandomResourceName("java-slot-", 20);
+        SLOT_NAME_2 = generateRandomResourceName("java-slot-", 20);
+        SLOT_NAME_3 = generateRandomResourceName("java-slot-", 20);
+        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Test

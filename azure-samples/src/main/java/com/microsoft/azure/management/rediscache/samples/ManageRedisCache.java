@@ -13,9 +13,10 @@ import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
-import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.redis.RedisKeyType;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -65,63 +66,66 @@ public final class ManageRedisCache {
 
             try {
                 // ============================================================
-                // Create a redis cache
+                // Define a redis cache
 
                 System.out.println("Creating a Redis Cache");
 
-                RedisCache redisCache1 = azure.redisCaches().define(redisCacheName1)
+                Creatable<RedisCache> redisCache1Definition = azure.redisCaches().define(redisCacheName1)
                         .withRegion(Region.US_CENTRAL)
                         .withNewResourceGroup(rgName)
-                        .withBasicSku()
-                        .create();
+                        .withBasicSku();
 
-                System.out.println("Created a Redis Cache:");
-                Utils.print(redisCache1);
+                // ============================================================
+                // Define two more Redis caches
+
+                Creatable<RedisCache> redisCache2Definition = azure.redisCaches().define(redisCacheName2)
+                        .withRegion(Region.US_CENTRAL)
+                        .withNewResourceGroup(rgName)
+                        .withPremiumSku()
+                        .withShardCount(3);
+
+                Creatable<RedisCache> redisCache3Definition = azure.redisCaches().define(redisCacheName3)
+                        .withRegion(Region.US_CENTRAL)
+                        .withNewResourceGroup(rgName)
+                        .withPremiumSku(2)
+                        .withShardCount(3);
+
+                // ============================================================
+                // Create all the caches in parallel to save time
+
+                System.out.println("Creating three Redis Caches in parallel... (this will take several minutes)");
+
+                @SuppressWarnings("unchecked")
+                CreatedResources<RedisCache> createdCaches = azure.redisCaches().create(
+                                redisCache1Definition,
+                                redisCache2Definition,
+                                redisCache3Definition);
+
+                System.out.println("Created Redis caches:");
+                RedisCache redisCache1 = createdCaches.get(redisCache1Definition.key());
+
+                for (RedisCache redisCache : createdCaches.values()) {
+                    Utils.print(redisCache);
+                    System.out.println();
+                }
 
                 // ============================================================
                 // Get | regenerate Redis Cache access keys
 
-                System.out.println("Getting Redis Cache access keys");
+                System.out.println("Getting the first Redis cache's access keys");
                 RedisAccessKeys redisAccessKeys = redisCache1.keys();
                 Utils.print(redisAccessKeys);
 
-                System.out.println("Regenerating secondary Redis Cache access key");
+                System.out.println("Regenerating secondary Redis cache access key");
                 redisAccessKeys = redisCache1.regenerateKey(RedisKeyType.SECONDARY);
                 Utils.print(redisAccessKeys);
-
-                // ============================================================
-                // Create another two Redis Caches
-
-                System.out.println("Creating two more Redis Caches with Premium Sku");
-
-                RedisCache redisCache2 = azure.redisCaches().define(redisCacheName2)
-                        .withRegion(Region.US_CENTRAL)
-                        .withNewResourceGroup(rgName)
-                        .withPremiumSku()
-                        .withShardCount(3)
-                        .create();
-
-                System.out.println("Created a Redis Cache:");
-                Utils.print(redisCache2);
-
-                RedisCache redisCache3 = azure.redisCaches().define(redisCacheName3)
-                        .withRegion(Region.US_CENTRAL)
-                        .withNewResourceGroup(rgName)
-                        .withPremiumSku(2)
-                        .withShardCount(3)
-                        .create();
-
-                System.out.println("Created a Redis Cache:");
-                Utils.print(redisCache3);
 
                 // ============================================================
                 // List Redis Caches inside the resource group
 
                 System.out.println("Listing Redis Caches");
 
-                RedisCaches redisCaches = azure.redisCaches();
-
-                List<RedisCache> caches = redisCaches.listByGroup(rgName);
+                List<RedisCache> caches = azure.redisCaches().listByGroup(rgName);
 
                 // Walk through all the caches
                 for (RedisCache redis : caches) {

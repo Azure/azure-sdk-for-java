@@ -16,7 +16,7 @@ import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ManageCdn {
     private static OkHttpClient httpClient;
-    private static final String RG_NAME = ResourceNamer.randomResourceName("rgCDN_", 24);
+    private static final String RG_NAME = SdkContext.randomResourceName("rgCDN_", 24);
     private static final String SUFFIX = ".azurewebsites.net";
     private static Azure azure;
 
@@ -75,7 +75,7 @@ public final class ManageCdn {
                 // ============================================================
                 // Create 8 websites
                 for (int i = 0; i < 8; i++) {
-                    appNames[i] = ResourceNamer.randomResourceName("webapp" + (i + 1) + "-", 20);
+                    appNames[i] = SdkContext.randomResourceName("webapp" + (i + 1) + "-", 20);
                 }
 
                 // 2 in US
@@ -152,7 +152,7 @@ public final class ManageCdn {
     }
 
     private static WebApp createWebApp(String appName, Region region) {
-        final String planName = ResourceNamer.randomResourceName("jplan_", 15);
+        final String planName = SdkContext.randomResourceName("jplan_", 15);
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");

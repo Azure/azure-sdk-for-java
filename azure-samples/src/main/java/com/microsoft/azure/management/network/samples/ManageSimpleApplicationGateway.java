@@ -5,7 +5,7 @@ package com.microsoft.azure.management.network.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -57,7 +57,7 @@ public final class ManageSimpleApplicationGateway {
 
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgNEAGS", 15);
+        final String rgName = SdkContext.randomResourceName("rgNEAGS", 15);
 
          try {
 

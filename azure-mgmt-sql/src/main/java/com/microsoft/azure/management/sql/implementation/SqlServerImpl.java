@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ListToMapConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.RecommendedElasticPool;
@@ -23,6 +23,7 @@ import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -287,7 +288,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewFirewallRule(String startIpAddress, String endIpAddress) {
-        return this.withNewFirewallRule(startIpAddress, endIpAddress, ResourceNamer.randomResourceName("firewall_", 15));
+        return this.withNewFirewallRule(startIpAddress, endIpAddress, SdkContext.randomResourceName("firewall_", 15));
     }
 
     @Override
@@ -351,35 +352,33 @@ public class SqlServerImpl
     }
 
     private void deleteChildResources() {
-        Observable deleteFirewallRules = deleteFirewallRule();
-        Observable deleteDatabasesAndElasticPools = deleteDatabasesAndElasticPools();
-
-        Observable.merge(deleteFirewallRules, deleteDatabasesAndElasticPools).toBlocking().lastOrDefault(null);
+        Completable deleteFirewallRules = deleteFirewallRule();
+        Completable deleteDatabasesAndElasticPools = deleteDatabasesAndElasticPools();
+        Completable.merge(deleteFirewallRules, deleteDatabasesAndElasticPools).await();
     }
 
-    private Observable deleteDatabasesAndElasticPools() {
-        List<Observable<Void>> deleteTaskList = new ArrayList<>();
-
+    private Completable deleteDatabasesAndElasticPools() {
+        List<Completable> deleteDBList = new ArrayList<>();
         for (String databaseName : this.databasesToDelete) {
-            deleteTaskList.add(this.databases().deleteAsync(databaseName));
+            deleteDBList.add(this.databases().deleteAsync(databaseName));
         }
+        Completable deleteDBs = Completable.merge(deleteDBList);
 
-        Observable.merge(deleteTaskList).toBlocking().lastOrDefault(null);
-
+        List<Completable> deleteElasticPoolList = new ArrayList<>();
         for (String elasticPoolName : this.elasticPoolsToDelete) {
-            deleteTaskList.add(this.elasticPools().deleteAsync(elasticPoolName));
+            deleteElasticPoolList.add(this.elasticPools().deleteAsync(elasticPoolName));
         }
-
-        return Observable.merge(deleteTaskList);
+        Completable deletePools = Completable.merge(deleteElasticPoolList);
+        return Completable.concat(deleteDBs, deletePools);
     }
 
-    private Observable deleteFirewallRule() {
-        List<Observable<Void>> deleteTaskList = new ArrayList<>();
+    private Completable deleteFirewallRule() {
+        List<Completable> deleteTaskList = new ArrayList<>();
 
         for (String firewallRuleName : this.firewallRulesToDelete) {
             deleteTaskList.add(this.firewallRules().deleteAsync(firewallRuleName));
         }
-        return Observable.merge(deleteTaskList);
+        return Completable.merge(deleteTaskList);
     }
 
 }

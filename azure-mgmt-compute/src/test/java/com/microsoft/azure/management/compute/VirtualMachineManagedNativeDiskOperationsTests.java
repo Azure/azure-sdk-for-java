@@ -1,65 +1,21 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.compute.implementation.ComputeManager;
-import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.RestClient;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.File;
 import java.util.Map;
 
-public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTestBase {
-    private static ApplicationTokenCredentials credentials;
-    private static RestClient restClient;
+public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTest {
     private static Region region = Region.fromName("westcentralus"); // Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        File credFile = new File("C:\\my.azureauth");
-        credentials = ApplicationTokenCredentials.fromFile(credFile);
-
-        AzureEnvironment canary = new AzureEnvironment("https://login.microsoftonline.com/",
-                "https://management.core.windows.net/",
-                "https://management.azure.com/", // "https://brazilus.management.azure.com/",
-                "https://graph.windows.net/");
-
-        restClient = new RestClient.Builder()
-                .withBaseUrl(canary, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .build();
-
-        computeManager = ComputeManager
-                .authenticate(restClient, credentials.defaultSubscriptionId());
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(credentials.defaultSubscriptionId());
-        networkManager = NetworkManager
-                .authenticate(restClient, credentials.defaultSubscriptionId());
-
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
 
     @Test
     public void canCreateVirtualMachineFromPIRImageWithManagedOsDisk() {
         final VirtualMachineImage image = getImage();
         final String vmName1 = "myvm1";
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
-        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String rgName = generateRandomResourceName("rg-", 15);
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
 
@@ -114,16 +70,16 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     @Test
     public void canCreateVirtualMachineWithEmptyManagedDataDisks() {
         VirtualMachineImage image = getImage();
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
-        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String rgName = generateRandomResourceName("rg-", 15);
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
-        final String explicitlyCreatedEmptyDiskName1 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName2 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName3 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         System.out.println(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
@@ -214,16 +170,16 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     @Test
     public void canCreateVirtualMachineFromCustomImageWithManagedDisks() {
         VirtualMachineImage image = getImage();
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
-        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String rgName = generateRandomResourceName("rg-", 15);
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
-        final String explicitlyCreatedEmptyDiskName1 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName2 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName3 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         writeToFile(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
@@ -282,7 +238,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         virtualMachine1.deallocate();
         virtualMachine1.generalize();
 
-        final String customImageName = ResourceNamer.randomResourceName("img-", 10);
+        final String customImageName = generateRandomResourceName("img-", 10);
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages().define(customImageName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -376,16 +332,16 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
     @Test
     public void canUpdateVirtualMachineByAddingAndRemovingManagedDisks() {
         VirtualMachineImage image = getImage();
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
-        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String rgName = generateRandomResourceName("rg-", 15);
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
-        final String explicitlyCreatedEmptyDiskName1 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName2 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
-        final String explicitlyCreatedEmptyDiskName3 = ResourceNamer.randomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
+        final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         writeToFile(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
@@ -452,7 +408,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
     @Test
     public void canCreateVirtualMachineByAttachingManagedOsDisk() {
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
+        final String rgName = generateRandomResourceName("rg-", 15);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         final String vmName = "myvm6";
@@ -472,7 +428,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withRootPassword(password)
                 .withUnmanagedDisks()                  /* UN-MANAGED OS and DATA DISKS */
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
+                .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -482,7 +438,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
         computeManager.virtualMachines().deleteById(nativeVm.id());
 
-        final String diskName = ResourceNamer.randomResourceName("dsk-", 15);
+        final String diskName = generateRandomResourceName("dsk-", 15);
         Disk osDisk = computeManager.disks().define(diskName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
@@ -510,8 +466,8 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
     @Test
     public void canCreateVirtualMachineWithManagedDiskInManagedAvailabilitySet() {
-        final String rgName = ResourceNamer.randomResourceName("rg-", 15);
-        final String availSetName = ResourceNamer.randomResourceName("av-", 15);
+        final String rgName = generateRandomResourceName("rg-", 15);
+        final String availSetName = generateRandomResourceName("av-", 15);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         final String vmName = "myvm6";

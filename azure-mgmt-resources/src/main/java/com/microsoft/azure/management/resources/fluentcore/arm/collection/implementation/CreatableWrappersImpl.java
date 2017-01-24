@@ -29,11 +29,11 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).toBlocking().subscribe();
+        deleteByIdAsync(id).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByIdAsync(id), callback);
+        return ServiceCall.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
     }
 }

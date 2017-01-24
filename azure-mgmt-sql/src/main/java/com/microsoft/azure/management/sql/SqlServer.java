@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 import java.util.Map;
@@ -127,7 +127,7 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String firewallRuleName);
+        Completable deleteAsync(String firewallRuleName);
     }
 
     /**
@@ -170,7 +170,7 @@ public interface SqlServer extends
          * @param elasticPoolName name of the elastic pool to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String elasticPoolName);
+        Completable deleteAsync(String elasticPoolName);
     }
 
     /**
@@ -213,7 +213,7 @@ public interface SqlServer extends
          * @param databaseName name of the database to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String databaseName);
+        Completable deleteAsync(String databaseName);
     }
 
     /**************************************************************

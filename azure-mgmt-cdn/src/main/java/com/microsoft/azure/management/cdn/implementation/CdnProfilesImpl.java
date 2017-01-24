@@ -14,7 +14,7 @@ import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -132,7 +132,7 @@ class CdnProfilesImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 }

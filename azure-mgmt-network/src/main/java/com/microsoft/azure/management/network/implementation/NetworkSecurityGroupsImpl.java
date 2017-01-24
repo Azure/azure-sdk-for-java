@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import rx.Completable;
 
 /**
  *  Implementation for {@link NetworkSecurityGroups}.
@@ -47,8 +47,8 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

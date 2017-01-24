@@ -14,7 +14,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -37,12 +37,12 @@ public final class ManageIPAddress {
      */
     public static void main(String[] args) {
 
-        final String publicIpAddressName1 = ResourceNamer.randomResourceName("pip1", 20);
-        final String publicIpAddressName2 = ResourceNamer.randomResourceName("pip2", 20);
-        final String publicIpAddressLeafDNS1 = ResourceNamer.randomResourceName("pip1", 20);
-        final String publicIpAddressLeafDNS2 = ResourceNamer.randomResourceName("pip2", 20);
-        final String vmName = ResourceNamer.randomResourceName("vm", 8);
-        final String rgName = ResourceNamer.randomResourceName("rgNEMP", 24);
+        final String publicIpAddressName1 = SdkContext.randomResourceName("pip1", 20);
+        final String publicIpAddressName2 = SdkContext.randomResourceName("pip2", 20);
+        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 20);
+        final String publicIpAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 20);
+        final String vmName = SdkContext.randomResourceName("vm", 8);
+        final String rgName = SdkContext.randomResourceName("rgNEMP", 24);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
         try {

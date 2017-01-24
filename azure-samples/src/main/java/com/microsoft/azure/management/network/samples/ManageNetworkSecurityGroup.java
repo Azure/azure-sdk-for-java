@@ -16,7 +16,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -42,15 +42,15 @@ public final class ManageNetworkSecurityGroup {
      */
     public static void main(String[] args) {
 
-        final String frontEndNSGName = ResourceNamer.randomResourceName("fensg", 24);
-        final String backEndNSGName = ResourceNamer.randomResourceName("bensg", 24);
-        final String rgName = ResourceNamer.randomResourceName("rgNEMS", 24);
-        final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = ResourceNamer.randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = ResourceNamer.randomResourceName("nic2", 24);
-        final String publicIpAddressLeafDNS1 = ResourceNamer.randomResourceName("pip1", 24);
-        final String frontEndVMName = ResourceNamer.randomResourceName("fevm", 24);
-        final String backEndVMName = ResourceNamer.randomResourceName("bevm", 24);
+        final String frontEndNSGName = SdkContext.randomResourceName("fensg", 24);
+        final String backEndNSGName = SdkContext.randomResourceName("bensg", 24);
+        final String rgName = SdkContext.randomResourceName("rgNEMS", 24);
+        final String vnetName = SdkContext.randomResourceName("vnet", 24);
+        final String networkInterfaceName1 = SdkContext.randomResourceName("nic1", 24);
+        final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
+        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
+        final String frontEndVMName = SdkContext.randomResourceName("fevm", 24);
+        final String backEndVMName = SdkContext.randomResourceName("bevm", 24);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";

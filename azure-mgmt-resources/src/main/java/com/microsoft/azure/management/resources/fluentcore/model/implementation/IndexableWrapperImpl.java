@@ -28,7 +28,12 @@ public abstract class IndexableWrapperImpl<InnerT>
         return this.innerObject;
     }
 
-    @Override
+    /**
+     * Sets the inner object of the wrapper.
+     * <p>
+     * (Internal use only)
+     * @param innerObject an inner object
+     */
     public void setInner(InnerT innerObject) {
         this.innerObject = innerObject;
     }

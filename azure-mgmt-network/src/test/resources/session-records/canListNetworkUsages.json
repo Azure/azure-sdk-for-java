@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/usages?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (NetworkManagementClient, )",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 17 Jan 2017 22:09:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "2750",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14967",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5cf7de0f-6163-4674-8e1e-3b87e543535c",
+      "x-ms-routing-request-id" : "WESTUS2:20170117T220913Z:5cf7de0f-6163-4674-8e1e-3b87e543535c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "74bf8cc4-1e50-4837-aaf1-338856ebfcb2",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"currentValue\": 6.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/VirtualNetworks\",\r\n      \"limit\": 50.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Virtual Networks\",\r\n        \"value\": \"VirtualNetworks\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 0.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/StaticPublicIPAddresses\",\r\n      \"limit\": 20.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Static Public IP Addresses\",\r\n        \"value\": \"StaticPublicIPAddresses\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 0.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/NetworkSecurityGroups\",\r\n      \"limit\": 100.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Network Security Groups\",\r\n        \"value\": \"NetworkSecurityGroups\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 2.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/PublicIPAddresses\",\r\n      \"limit\": 60.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Public IP Addresses\",\r\n        \"value\": \"PublicIPAddresses\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 6.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/NetworkInterfaces\",\r\n      \"limit\": 300.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Network Interfaces\",\r\n        \"value\": \"NetworkInterfaces\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 0.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/LoadBalancers\",\r\n      \"limit\": 100.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Load Balancers\",\r\n        \"value\": \"LoadBalancers\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 0.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/ApplicationGateways\",\r\n      \"limit\": 50.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Application Gateways\",\r\n        \"value\": \"ApplicationGateways\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    },\r\n    {\r\n      \"currentValue\": 0.0,\r\n      \"id\": \"/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/providers/Microsoft.Network/locations/eastus/usages/RouteTables\",\r\n      \"limit\": 100.0,\r\n      \"name\": {\r\n        \"localizedValue\": \"Route Tables\",\r\n        \"value\": \"RouteTables\"\r\n      },\r\n      \"unit\": \"Count\"\r\n    }\r\n  ]\r\n}"
+    }
+  } ],
+  "variables" : [ "javanwmrg33870", "javanwmrg33870" ]
+}

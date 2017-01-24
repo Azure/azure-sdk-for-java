@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -77,8 +77,8 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.innerCollection.deleteAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override

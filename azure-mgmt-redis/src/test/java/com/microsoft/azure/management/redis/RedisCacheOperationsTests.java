@@ -12,34 +12,15 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.storage.StorageAccount;
-
 import org.joda.time.Period;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
 import java.util.List;
+
 import static org.junit.Assert.fail;
 
-public class RedisCacheOperationsTests extends RedisManagementTestBase {
-    private static final String RG_NAME = "javacsmrg3751";
-    private static final String RG_NAME_SECOND = "javacsmrg3751Second";
-    private static final String RR_NAME = "javacsmrc3751";
-    private static final String RR_NAME_SECOND = "javacsmrc3751Second";
-    private static final String RR_NAME_THIRD = "javacsmrc3751Third";
-    private static final String SA_NAME = "javacsmsa3751";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-        resourceManager.resourceGroups().deleteByName(RG_NAME_SECOND);
-    }
-
+public class RedisCacheOperationsTests extends RedisManagementTest {
     @Test
     public void canCRUDRedisCache() throws Exception {
         // Create
@@ -76,8 +57,8 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .withExistingResourceGroup(RG_NAME_SECOND)
                 .create();
 
-        RedisCache redisCache = batchRedisCaches.get(0);
-        RedisCache redisCachePremium = batchRedisCaches.get(2);
+        RedisCache redisCache = batchRedisCaches.get(redisCacheDefinition1.key());
+        RedisCache redisCachePremium = batchRedisCaches.get(redisCacheDefinition3.key());
         Assert.assertEquals(RG_NAME, redisCache.resourceGroupName());
         Assert.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
@@ -101,7 +82,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
             }
         }
         Assert.assertTrue(found);
-        Assert.assertEquals(3, redisCaches.size());
+        Assert.assertTrue(redisCaches.size() >= 3);
 
         // Get
         RedisCache redisCacheGet = redisManager.redisCaches().getByGroup(RG_NAME, RR_NAME);

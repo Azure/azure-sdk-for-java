@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:2468/tenants?api-version=2016-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (SubscriptionClient, 2016-06-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\"}]}",
+      "x-ms-ratelimit-remaining-tenant-reads" : "14999",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "CENTRALUS:20170121T013139Z:86bd9c72-d987-4444-bd95-e78811dc82b7",
+      "date" : "Sat, 21 Jan 2017 01:31:38 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "86bd9c72-d987-4444-bd95-e78811dc82b7",
+      "content-length" : "116",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "86bd9c72-d987-4444-bd95-e78811dc82b7"
+    }
+  } ],
+  "variables" : [ ]
+}

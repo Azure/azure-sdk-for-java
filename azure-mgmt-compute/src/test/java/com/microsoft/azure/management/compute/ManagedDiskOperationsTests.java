@@ -1,57 +1,18 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.RestClient;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import java.io.File;
 
-public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
-    private static ApplicationTokenCredentials credentials;
-    private static RestClient restClient;
+public class ManagedDiskOperationsTests extends ComputeManagementTest {
     private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        File credFile = new File("C:\\my.azureauth");
-        credentials = ApplicationTokenCredentials.fromFile(credFile);
-
-        AzureEnvironment canary = new AzureEnvironment("https://login.microsoftonline.com/",
-                "https://management.core.windows.net/",
-                "https://brazilus.management.azure.com/",
-                "https://graph.windows.net/");
-
-        restClient = new RestClient.Builder()
-                .withBaseUrl(canary, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .build();
-
-        computeManager = ComputeManager
-                .authenticate(restClient, credentials.defaultSubscriptionId());
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(credentials.defaultSubscriptionId());
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
 
     @Test
     public void CanOperateOnEmptyManagedDisk() {
-        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
-        final String diskName = ResourceNamer.randomResourceName("md-empty-", 20);
+        final String rgName = generateRandomResourceName("rg-md-", 20);
+        final String diskName = generateRandomResourceName("md-empty-", 20);
         // Cannot really test account update as canary deployment supports only STANDARD_LRS
         //
         final StorageAccountTypes updateTo = StorageAccountTypes.STANDARD_LRS;
@@ -116,9 +77,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
 
     @Test
     public void canOperateOnManagedDiskFromDisk() {
-        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
-        final String diskName1 = ResourceNamer.randomResourceName("md-1", 20);
-        final String diskName2 = ResourceNamer.randomResourceName("md-2", 20);
+        final String rgName = generateRandomResourceName("rg-md-", 20);
+        final String diskName1 = generateRandomResourceName("md-1", 20);
+        final String diskName2 = generateRandomResourceName("md-2", 20);
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()
@@ -169,10 +130,10 @@ public class ManagedDiskOperationsTests extends ComputeManagementTestBase {
 
     @Test
     public void canOperateOnManagedDiskFromSnapshot() {
-        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
-        final String emptyDiskName = ResourceNamer.randomResourceName("md-empty-", 20);
-        final String snapshotBasedDiskName = ResourceNamer.randomResourceName("md-snp-", 20);
-        final String snapshotName = ResourceNamer.randomResourceName("snp-", 20);
+        final String rgName = generateRandomResourceName("rg-md-", 20);
+        final String emptyDiskName = generateRandomResourceName("md-empty-", 20);
+        final String snapshotBasedDiskName = generateRandomResourceName("md-snp-", 20);
+        final String snapshotName = generateRandomResourceName("snp-", 20);
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()

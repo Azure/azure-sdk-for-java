@@ -7,31 +7,36 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import org.junit.AfterClass;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-public class WebAppsTests extends AppServiceTestBase {
-    private static final String RG_NAME_1 = ResourceNamer.randomResourceName("javacsmrg", 20);
-    private static final String RG_NAME_2 = ResourceNamer.randomResourceName("javacsmrg", 20);
-    private static final String WEBAPP_NAME_1 = ResourceNamer.randomResourceName("java-webapp-", 20);
-    private static final String WEBAPP_NAME_2 = ResourceNamer.randomResourceName("java-webapp-", 20);
-    private static final String APP_SERVICE_PLAN_NAME_1 = ResourceNamer.randomResourceName("java-asp-", 20);
-    private static final String APP_SERVICE_PLAN_NAME_2 = ResourceNamer.randomResourceName("java-asp-", 20);
+public class WebAppsTests extends AppServiceTest {
+    private static String RG_NAME_1 = "";
+    private static String RG_NAME_2 = "";
+    private static String WEBAPP_NAME_1 = "";
+    private static String WEBAPP_NAME_2 = "";
+    private static String APP_SERVICE_PLAN_NAME_1 = "";
+    private static String APP_SERVICE_PLAN_NAME_2 = "";
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
+        WEBAPP_NAME_2 = generateRandomResourceName("java-webapp-", 20);
+        APP_SERVICE_PLAN_NAME_1 = generateRandomResourceName("java-asp-", 20);
+        APP_SERVICE_PLAN_NAME_2 = generateRandomResourceName("java-asp-", 20);
+        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
+        RG_NAME_2 = generateRandomResourceName("javacsmrg", 20);
+
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME_1);
+    @Override
+    protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(RG_NAME_2);
+        resourceManager.resourceGroups().deleteByName(RG_NAME_1);
     }
 
     @Test

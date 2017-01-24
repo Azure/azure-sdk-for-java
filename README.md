@@ -2,11 +2,11 @@
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0.0-beta4). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released preview version (1.0 beta 4). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0.0-beta4** is a developer preview that supports major parts of: 
+**1.0 beta 4** is a developer preview that supports major parts of: 
 
 - Azure Virtual Machines and VM Extensions
 - Virtual Machine Scale Sets
@@ -17,7 +17,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 - App Service (Web Apps)
 - Key Vault, Redis, CDN and Batch.
 
-The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
+The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and applying finishing touches to the API.
 
 **Azure Authentication**
 
@@ -230,7 +230,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   <tr>
     <td>Networking - DNS</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/dns-java-host-and-manage-your-domains">Hosting and managing domains</a></li>
+<li><a href="https://github.com/Azure-Samples/dns-java-host-and-manage-your-domains">Host and manage domains</a></li>
 </ul></td>
   </tr>
 
@@ -310,15 +310,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 # Download
 
 
-**1.0.0-beta4**
+**1.0 Beta 4**
 
-If you are using released builds from 1.0.0-beta4, add the following to your POM file:
+If you are using released builds from 1.0 beta 4, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta4</version>
+    <version>1.0.0-beta4.1</version>
 </dependency>
 ```
 
@@ -331,7 +331,7 @@ If you are using released builds from 1.0.0-beta4, add the following to your POM
 
 ## Help
 
-If you are migrating your code to 1.0.0-beta4, you can use these notes for [preparing your code for 1.0.0-beta4 from 1.0.0-beta3](./notes/prepare-for-1.0.0-beta4.md).
+If you are migrating your code to 1.0 beta 4, you can use these notes for [preparing your code for 1.0 beta 4 from 1.0 beta 3](./notes/prepare-for-1.0.0-beta4.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 

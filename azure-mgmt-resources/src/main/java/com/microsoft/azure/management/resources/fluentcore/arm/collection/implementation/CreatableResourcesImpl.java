@@ -12,15 +12,14 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
 
 /**
- * Base class for creatable resource collection, i.e. those where the member of the collection is of Resource
- * type {@link com.microsoft.azure.Resource } and are creatable.
+ * Base class for creatable resource collection, i.e. those where the member of the collection is of <code>Resource</code>
+ * type and are creatable.
  * (Internal use only)
  *
  * @param <T> the individual resource type returned
@@ -87,6 +86,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
                 });
     }
 
+    @SuppressWarnings("unchecked")
     private Observable<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
         return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
                 .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
@@ -98,16 +98,20 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     /**
-     * Implements {@link CreatedResources}.
+     * Implements CreatedResources.
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends Indexable> implements CreatedResources<ResourceT> {
+    private class CreatedResourcesImpl<ResourceT extends Indexable>
+        extends HashMap<String, ResourceT>
+        implements CreatedResources<ResourceT> {
+        private static final long serialVersionUID = -1360746896732289907L;
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
-        private final List<ResourceT> list;
 
         CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
             this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;
-            this.list = this.creatableUpdatableResourcesRoot.createdTopLevelResources();
+            for (ResourceT resource : this.creatableUpdatableResourcesRoot.createdTopLevelResources()) {
+                super.put(resource.key(), resource);
+            }
         }
 
         @Override
@@ -116,134 +120,39 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         }
 
         @Override
-        public int size() {
-            return list.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return list.isEmpty();
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return list.contains(o);
-        }
-
-        @Override
-        public Iterator<ResourceT> iterator() {
-            return list.iterator();
-        }
-
-        @Override
-        public Object[] toArray() {
-            return list.toArray();
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return list.toArray(a);
-        }
-
-        @Override
-        public boolean add(ResourceT resourceT) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return list.containsAll(c);
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends ResourceT> c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends ResourceT> c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public void clear() {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public ResourceT get(int index) {
-            return this.list.get(index);
-        }
-
-        @Override
-        public ResourceT set(int index, ResourceT element) {
+        public ResourceT put(String key, ResourceT value) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void add(int index, ResourceT element) {
+        public ResourceT remove(Object key) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public ResourceT remove(int index) {
+        public void putAll(Map<? extends String, ? extends ResourceT> m) {
             throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return this.list.indexOf(o);
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return this.list.lastIndexOf(o);
-        }
-
-        @Override
-        public ListIterator<ResourceT> listIterator() {
-            return this.list.listIterator();
-        }
-
-        @Override
-        public ListIterator<ResourceT> listIterator(int index) {
-            return this.list.listIterator(index);
-        }
-
-        @Override
-        public List<ResourceT> subList(int fromIndex, int toIndex) {
-            return this.list.subList(fromIndex, toIndex);
         }
     }
 
      /**
      * The local root resource that is used as dummy parent resource for the batch creatable resources
-     * added via {@link SupportsBatchCreation#create} or {@link CreatableResourcesImpl#createAsync}.
+     * added via <code>SupportsBatchCreation.create()</code> or <code>CreatableResourcesImpl#createAsync</code>.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
     interface CreatableUpdatableResourcesRoot<ResourceT extends Indexable> extends Indexable {
         List<ResourceT> createdTopLevelResources();
-         Indexable createdRelatedResource(String key);
+        Indexable createdRelatedResource(String key);
     }
 
     /**
-     * Implementation of {@link CreatableUpdatableResourcesRoot}.
+     * Implementation of CreatableUpdatableResourcesRoot.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
@@ -260,6 +169,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
             this.keys = new ArrayList<>();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public List<ResourceT> createdTopLevelResources() {
             List<ResourceT> resources = new ArrayList<>();
@@ -274,6 +184,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
             return createdModel(key);
         }
 
+        @SuppressWarnings("unchecked")
         void addCreatableDependencies(Creatable<T> ... creatables) {
             for (Creatable<T> item : creatables) {
                 this.keys.add(item.key());

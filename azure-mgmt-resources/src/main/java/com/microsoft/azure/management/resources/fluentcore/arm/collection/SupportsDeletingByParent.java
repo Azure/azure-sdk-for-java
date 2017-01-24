@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
@@ -42,7 +42,7 @@ public interface SupportsDeletingByParent {
      * @param groupName The group the resource is part of
      * @param parentName the name of parent resource.
      * @param name The name of the resource
-     * @return an observable to the request
+     * @return a completable indicates completion or exception of the request
      */
-    Observable<Void> deleteByParentAsync(String groupName, String parentName, String name);
+    Completable deleteByParentAsync(String groupName, String parentName, String name);
 }

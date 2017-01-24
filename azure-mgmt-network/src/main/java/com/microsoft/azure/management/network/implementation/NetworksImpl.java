@@ -12,7 +12,7 @@ import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.ArrayList;
 
@@ -51,8 +51,8 @@ class NetworksImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import rx.Completable;
 
 /**
  *  Implementation for ApplicationGateways.
@@ -48,8 +48,8 @@ class ApplicationGatewaysImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

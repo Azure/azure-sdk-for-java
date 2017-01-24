@@ -1,63 +1,25 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.RestClient;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTestBase {
-    private static ApplicationTokenCredentials credentials;
-    private static RestClient restClient;
+public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        File credFile = new File("C:\\my.azureauth");
-        credentials = ApplicationTokenCredentials.fromFile(credFile);
-
-        AzureEnvironment canary = new AzureEnvironment("https://login.microsoftonline.com/",
-                "https://management.core.windows.net/",
-                "https://brazilus.management.azure.com/",
-                "https://graph.windows.net/");
-
-        restClient = new RestClient.Builder()
-                .withBaseUrl(canary, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .build();
-
-        computeManager = ComputeManager
-                .authenticate(restClient, credentials.defaultSubscriptionId());
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(credentials.defaultSubscriptionId());
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
 
     @Test
     public void canCreateImageFromNativeVhd() throws IOException {
-        final String rgName = ResourceNamer.randomResourceName("custo512ert", 20);
-        final String vhdBasedImageName = ResourceNamer.randomResourceName("img", 15);
+        final String rgName = generateRandomResourceName("custo512ert", 20);
+        final String vhdBasedImageName = generateRandomResourceName("img", 20);
         writeToFile(rgName);
 
         VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
-                ResourceNamer.randomResourceName("multidvm", 15),
+                generateRandomResourceName("multidvm", 15),
                 region,
                 computeManager);
         //
@@ -114,7 +76,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create virtual machine from custom image
         //
         VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(ResourceNamer.randomResourceName("cusvm", 15))
+                .define(generateRandomResourceName("cusvm", 15))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -135,13 +97,13 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Test
     public void canCreateImageByCapturingVM() {
-        final String rgName = ResourceNamer.randomResourceName("rg", 15);
-        String vmName = ResourceNamer.randomResourceName("vm67-", 20);
+        final String rgName = generateRandomResourceName("rg", 15);
+        String vmName = generateRandomResourceName("vm67-", 20);
         writeToFile(rgName);
 
         VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(rgName, vmName, region, computeManager);
         //
-        final String imageName = ResourceNamer.randomResourceName("img", 15);
+        final String imageName = generateRandomResourceName("img", 15);
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
                 .define(imageName)
                 .withRegion(region)
@@ -176,8 +138,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Test
     public void canCreateImageFromManagedDisk() {
-        String rgName = ResourceNamer.randomResourceName("rg-", 20);
-        String vmName = ResourceNamer.randomResourceName("vm7-", 20);
+        String rgName = generateRandomResourceName("rg-", 20);
+        String vmName = generateRandomResourceName("vm7-", 20);
         writeToFile(rgName);
 
         final String uname = "juser";
@@ -200,7 +162,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                     .attach()
                 .withNewUnmanagedDataDisk(100)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
+                .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -212,7 +174,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         computeManager.virtualMachines().deleteById(nativeVm.id());
 
-        final String osDiskName = ResourceNamer.randomResourceName("dsk", 15);
+        final String osDiskName = generateRandomResourceName("dsk", 15);
         // Create managed disk with Os from vm's Os disk
         //
         Disk managedOsDisk = computeManager.disks().define(osDiskName)
@@ -223,7 +185,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         // Create managed disk with Data from vm's lun0 data disk
         //
-        final String dataDiskName1 = ResourceNamer.randomResourceName("dsk", 15);
+        final String dataDiskName1 = generateRandomResourceName("dsk", 15);
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk1 = dataDisks.get(0);
         Disk managedDataDisk1 = computeManager.disks().define(dataDiskName1)
                 .withRegion(region)
@@ -234,7 +196,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         // Create managed disk with Data from vm's lun1 data disk
         //
-        final String dataDiskName2 = ResourceNamer.randomResourceName("dsk", 15);
+        final String dataDiskName2 = generateRandomResourceName("dsk", 15);
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk2 = dataDisks.get(1);
         Disk managedDataDisk2 = computeManager.disks().define(dataDiskName2)
                 .withRegion(region)
@@ -246,7 +208,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         // Create an image from the above managed disks
         // Note that this is not a direct user scenario, but including this as per CRP team request
         //
-        final String imageName = ResourceNamer.randomResourceName("img", 15);
+        final String imageName = generateRandomResourceName("img", 15);
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages().define(imageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -318,7 +280,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         Assert.assertNotNull("A linux image could not found",
                 linuxVmImage);
-        final String publicIpDnsLabel = ResourceNamer.randomResourceName("pip", 20);
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
                 .define(vmName)
@@ -340,7 +302,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                     .withCaching(CachingTypes.READ_ONLY)
                     .attach()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 17))
+                .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //

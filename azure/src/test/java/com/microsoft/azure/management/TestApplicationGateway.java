@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
@@ -37,16 +38,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * Test of application gateway management.
  */
 public class TestApplicationGateway {
-    static final long TEST_ID = System.currentTimeMillis();
+    static String TEST_ID = "";
     static final Region REGION = Region.US_WEST;
-    static final String GROUP_NAME = "rg" + TEST_ID;
-    static final String APP_GATEWAY_NAME = "ag" + TEST_ID;
-    static final String[] PIP_NAMES = {"pipa" + TEST_ID, "pipb" + TEST_ID};
+    static String GROUP_NAME = "";
+    static String APP_GATEWAY_NAME = "";
+    static String[] PIP_NAMES = null;
     static final String ID_TEMPLATE = "/subscriptions/${subId}/resourceGroups/${rgName}/providers/Microsoft.Network/applicationGateways/${resourceName}";
-    static final String[] VM_IDS = {
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1",
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest3"
-    };
 
     static String createResourceId(String subscriptionId) {
         return ID_TEMPLATE
@@ -55,10 +52,20 @@ public class TestApplicationGateway {
                 .replace("${resourceName}", APP_GATEWAY_NAME);
     }
 
+    static void initializeResourceNames() {
+        TEST_ID = SdkContext.randomResourceName("", 8);
+        GROUP_NAME = "rg" + TEST_ID;
+        APP_GATEWAY_NAME = "ag" + TEST_ID;
+        PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
+    }
     /**
      * Minimalistic internal (private) app gateway test.
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+        PrivateMinimal() {
+            initializeResourceNames();
+        }
+
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
@@ -91,7 +98,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             //...But bail out after 30 sec, as it is enough to test the results
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -153,7 +160,7 @@ public class TestApplicationGateway {
                     .withPrivateFrontend()
                     .withFrontendPort(81)
                     .withHttps()
-                    .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                    .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                     .withSslCertificatePassword("Abc123")
                     .attach()
                 .defineBackend("backend2")
@@ -229,9 +236,7 @@ public class TestApplicationGateway {
      * Complex internal (private) app gateway test.
      */
     public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        //private final VirtualMachines vms;
         private final Networks networks;
-        private final List<PublicIpAddress> testPips;
 
         /**
          * Tests minimal internal app gateways.
@@ -240,8 +245,9 @@ public class TestApplicationGateway {
          * @throws Exception when something goes wrong
          */
         public PrivateComplex(Networks networks, PublicIpAddresses pips) throws Exception {
+            initializeResourceNames();
             this.networks = networks;
-            this.testPips = ensurePIPs(pips);
+            ensurePIPs(pips);
         }
 
         @Override
@@ -287,7 +293,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule443")
                                 .fromPrivateFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpConfiguration("config1")
                                 .toBackend("backend1")
@@ -325,7 +331,7 @@ public class TestApplicationGateway {
 
                             // Additional/explicit certificates
                             .defineSslCertificate("cert1")
-                                .withPfxFromFile(new File("myTest2.pfx"))
+                                .withPfxFromFile(new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                 .withPfxPassword("Abc123")
                                 .attach()
 
@@ -334,7 +340,6 @@ public class TestApplicationGateway {
                             .withInstanceCount(2)
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     }
@@ -345,7 +350,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -456,6 +461,8 @@ public class TestApplicationGateway {
             final int configCount = resource.backendHttpConfigurations().size();
             final int certCount = resource.sslCertificates().size();
 
+            PublicIpAddress pip = resource.manager().publicIpAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+
             resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
@@ -482,7 +489,7 @@ public class TestApplicationGateway {
                     .toBackend("backend1")
                     .toBackendHttpConfiguration("config1")
                     .parent()
-                .withExistingPublicIpAddress(testPips.get(0)) // Associate with a public IP as well
+                .withExistingPublicIpAddress(pip) // Associate with a public IP as well
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -502,6 +509,7 @@ public class TestApplicationGateway {
             // Verify frontends
             Assert.assertTrue(resource.frontends().size() == frontendCount + 1);
             Assert.assertTrue(resource.publicFrontends().size() == 1);
+            Assert.assertTrue(resource.publicFrontends().values().iterator().next().publicIpAddressId().equalsIgnoreCase(pip.id()));
             Assert.assertTrue(resource.privateFrontends().size() == 1);
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
             Assert.assertTrue(!frontend.isPublic());
@@ -557,15 +565,14 @@ public class TestApplicationGateway {
      * Complex Internet-facing (public) app gateway test.
      */
     public static class PublicComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final List<PublicIpAddress> testPips;
-
         /**
          * Tests minimal internal app gateways.
          * @param pips public IPs
          * @throws Exception when something goes wrong with test PIP creation
          */
         public PublicComplex(PublicIpAddresses pips) throws Exception {
-            this.testPips = ensurePIPs(pips);
+            initializeResourceNames();
+            ensurePIPs(pips);
         }
 
         @Override
@@ -580,6 +587,8 @@ public class TestApplicationGateway {
                     System.out.println("Uncaught exception: " + ex);
                 }
             };
+
+            final PublicIpAddress pip = resources.manager().publicIpAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Prepare for execution in a separate thread to shorten the test
             Thread creationThread = new Thread(new Runnable() {
@@ -605,7 +614,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule443")
                                 .fromPublicFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpConfiguration("config1")
                                 .toBackend("backend1")
@@ -633,29 +642,28 @@ public class TestApplicationGateway {
                                 .withPublicFrontend()
                                 .withFrontendPort(9000)
                                 .withHttps()
-                                .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .withServerNameIndication()
                                 .withHostName("www.fabricam.com")
                                 .attach()
 
-                            .withExistingPublicIpAddress(testPips.get(0))
+                            .withExistingPublicIpAddress(pip)
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    }
-                });
+                }
+            });
 
             // Start creating in a separate thread...
             creationThread.setUncaughtExceptionHandler(threadException);
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -718,7 +726,7 @@ public class TestApplicationGateway {
 
             rule = appGateway.requestRoutingRules().get("rule80");
             Assert.assertTrue(rule != null);
-            Assert.assertTrue(testPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 80);
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.cookieBasedAffinity());
@@ -730,7 +738,7 @@ public class TestApplicationGateway {
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assert.assertTrue(rule != null);
-            Assert.assertTrue(testPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
+            Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 443);
             Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.sslCertificate() != null);
@@ -798,6 +806,9 @@ public class TestApplicationGateway {
      */
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
 
+        PublicMinimal() {
+            initializeResourceNames();
+        }
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
@@ -819,7 +830,7 @@ public class TestApplicationGateway {
                             .defineRequestRoutingRule("rule1")
                                 .fromPublicFrontend()
                                 .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificateFromPfxFile(new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
                                 .withSslCertificatePassword("Abc123")
                                 .toBackendHttpPort(8080)
                                 .toBackendIpAddress("11.1.1.1")
@@ -828,7 +839,6 @@ public class TestApplicationGateway {
 
                             .create();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -838,7 +848,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             //...But bail out after 30 sec, as it is enough to test the results
-            Thread.sleep(30 * 1000);
+            SdkContext.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -969,7 +979,7 @@ public class TestApplicationGateway {
     }
 
     // Create VNet for the app gateway
-    private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
+    private static Map<String, PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
         List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
             creatablePips.add(

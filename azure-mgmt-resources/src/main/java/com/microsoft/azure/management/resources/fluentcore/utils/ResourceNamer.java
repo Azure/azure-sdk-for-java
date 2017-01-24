@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
 import java.util.Random;
@@ -8,7 +14,7 @@ import java.util.UUID;
  */
 public class ResourceNamer {
     private final String randName;
-    private final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     /**
      * Creates ResourceNamer.
@@ -37,7 +43,8 @@ public class ResourceNamer {
             return randomString(maxLen);
         }
 
-        String minRandomString = String.format("%05d", Math.abs(random.nextInt() % 100000));
+        String minRandomString = String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+
         if (maxLen <= prefix.length() + randName.length() + minRandomnessLength) {
             String str = prefix + minRandomString;
             return str + randomString((maxLen - str.length()) / 2);
@@ -56,17 +63,5 @@ public class ResourceNamer {
                     .substring(0, Math.min(32, length)).toLowerCase();
         }
         return str;
-    }
-
-    /**
-     * Gets a random name.
-     *
-     * @param prefix the prefix to be used if possible
-     * @param maxLen the maximum length for the random generated name
-     * @return the random name
-     */
-    public static String randomResourceName(String prefix, int maxLen) {
-        ResourceNamer namer = new ResourceNamer("");
-        return namer.randomName(prefix, maxLen);
     }
 }

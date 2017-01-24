@@ -18,15 +18,16 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure network sample for managing application gateways.
@@ -83,8 +84,8 @@ public final class ManageApplicationGateway {
 
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rgNEAG", 15);
-        final String pipName = ResourceNamer.randomResourceName("pip" + "-", 18);
+        final String rgName = SdkContext.randomResourceName("rgNEAG", 15);
+        final String pipName = SdkContext.randomResourceName("pip" + "-", 18);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -154,7 +155,7 @@ public final class ManageApplicationGateway {
                     //=============================================================
                     // Create 1 network creatable per region
                     // Prepare Creatable Network definition (Where all the virtual machines get added to)
-                    String networkName = ResourceNamer.randomResourceName("vnetNEAG-", 20);
+                    String networkName = SdkContext.randomResourceName("vnetNEAG-", 20);
 
                     Creatable<Network> networkCreatable = azure.networks()
                             .define(networkName)
@@ -165,13 +166,13 @@ public final class ManageApplicationGateway {
 
                     //=============================================================
                     // Create 1 storage creatable per region (For storing VMs disk)
-                    String storageAccountName = ResourceNamer.randomResourceName("stgneag", 20);
+                    String storageAccountName = SdkContext.randomResourceName("stgneag", 20);
                     Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
                             .define(storageAccountName)
                             .withRegion(regions[i])
                             .withExistingResourceGroup(resourceGroup);
 
-                    String linuxVMNamePrefix = ResourceNamer.randomResourceName("vm-", 15);
+                    String linuxVMNamePrefix = SdkContext.randomResourceName("vm-", 15);
 
                     for (int j = 0; j < vmCountInAPool; j++) {
 
@@ -209,19 +210,20 @@ public final class ManageApplicationGateway {
                 //=============================================================
                 // Create two backend pools of virtual machines
 
-                Date t1 = new Date();
+                StopWatch stopwatch = new StopWatch();
                 System.out.println("Creating virtual machines (two backend pools)");
 
+                stopwatch.start();
                 CreatedResources<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines);
+                stopwatch.stop();
 
-                Date t2 = new Date();
                 System.out.println("Created virtual machines (two backend pools)");
 
-                for (VirtualMachine virtualMachine : virtualMachines) {
+                for (VirtualMachine virtualMachine : virtualMachines.values()) {
                     System.out.println(virtualMachine.id());
                 }
 
-                System.out.println("Virtual machines created: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) to create == " + virtualMachines.size()
+                System.out.println("Virtual machines created: (took " + (stopwatch.getTime() / 1000) + " seconds) to create == " + virtualMachines.size()
                         + " == virtual machines (4 virtual machines per backend pool)");
 
 
@@ -235,13 +237,7 @@ public final class ManageApplicationGateway {
                                 .createdRelatedResource(publicIpCreatableKeys[i][j]);
                         pip.refresh();
                         ipAddresses[i][j] = pip.ipAddress();
-                        System.out.println("[backend pool ="
-                                + i
-                                + "][vm = "
-                                + j
-                                + "] = "
-                                + ipAddresses[i][j]);
-
+                        System.out.println(String.format("[backend pool = %d][vm = %d] = %s", i, j, ipAddresses[i][j]));
                     }
 
                     System.out.println("======");
@@ -251,9 +247,10 @@ public final class ManageApplicationGateway {
                 //=======================================================================
                 // Create an application gateway
 
-                Date t3 = new Date();
                 System.out.println("================= CREATE ======================");
                 System.out.println("Creating an application gateway");
+                stopwatch.reset();
+                stopwatch.start();
 
                 ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
                         .withRegion(Region.US_EAST)
@@ -283,9 +280,8 @@ public final class ManageApplicationGateway {
                         .withExistingPublicIpAddress(publicIpAddress)
                         .create();
 
-                Date t4 = new Date();
-
-                System.out.println("Application gateway created: (took " + ((t4.getTime() - t3.getTime()) / 1000) + " seconds)");
+                stopwatch.stop();
+                System.out.println("Application gateway created: (took " + (stopwatch.getTime() / 1000) + " seconds)");
                 Utils.print(applicationGateway);
 
 
@@ -295,8 +291,8 @@ public final class ManageApplicationGateway {
 
                 System.out.println("================= UPDATE ======================");
                 System.out.println("Updating the application gateway");
-
-                Date t5 = new Date();
+                stopwatch.reset();
+                stopwatch.start();
 
                 applicationGateway.update()
                         .withoutRequestRoutingRule("HTTP-80-to-8080")
@@ -315,9 +311,8 @@ public final class ManageApplicationGateway {
                             .attach()
                         .apply();
 
-                Date t6 = new Date();
-
-                System.out.println("Application gateway updated: (took " + ((t6.getTime() - t5.getTime()) / 1000) + " seconds)");
+                stopwatch.stop();
+                System.out.println("Application gateway updated: (took " + (stopwatch.getTime() / 1000) + " seconds)");
                 Utils.print(applicationGateway);
 
             } catch (Exception f) {

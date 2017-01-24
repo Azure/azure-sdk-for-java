@@ -6,13 +6,11 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.junit.AfterClass;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import rx.Observable;
 
@@ -20,18 +18,19 @@ import java.util.List;
 
 import static org.junit.Assert.fail;
 
-public class StorageAccountOperationsTests extends StorageManagementTestBase {
-    private static final String RG_NAME = "javacsmrg385";
-    private static final String SA_NAME = "javacsmsa385";
-    private static ResourceGroup resourceGroup;
+public class StorageAccountOperationsTests extends StorageManagementTest {
+    private static String RG_NAME = "";
+    private static String SA_NAME = "";
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        SA_NAME = generateRandomResourceName("javacsmsa", 15);
+
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
+    @Override
+    protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 

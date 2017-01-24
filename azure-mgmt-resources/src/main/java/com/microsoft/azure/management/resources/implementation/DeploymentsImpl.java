@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -79,17 +79,17 @@ final class DeploymentsImpl
 
     @Override
     public void deleteByGroup(String groupName, String name) {
-        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
+        deleteByGroupAsync(groupName, name).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name), callback);
+        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return client.deleteAsync(groupName, name);
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return client.deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -123,16 +123,16 @@ final class DeploymentsImpl
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).toBlocking().subscribe();
+        deleteByIdAsync(id).await();
     }
 
     @Override
     public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByIdAsync(id), callback);
+        return ServiceCall.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
+    public Completable deleteByIdAsync(String id) {
         return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 

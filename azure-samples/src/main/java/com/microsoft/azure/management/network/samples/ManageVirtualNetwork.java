@@ -15,7 +15,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -39,20 +39,20 @@ public final class ManageVirtualNetwork {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String vnetName1 = ResourceNamer.randomResourceName("vnet1", 20);
-        final String vnetName2 = ResourceNamer.randomResourceName("vnet2", 20);
+        final String vnetName1 = SdkContext.randomResourceName("vnet1", 20);
+        final String vnetName2 = SdkContext.randomResourceName("vnet2", 20);
         final String vnet1FrontEndSubnetName = "frontend";
         final String vnet1BackEndSubnetName = "backend";
         final String vnet1FrontEndSubnetNsgName = "frontendnsg";
         final String vnet1BackEndSubnetNsgName = "backendnsg";
-        final String frontEndVmName = ResourceNamer.randomResourceName("fevm", 24);
-        final String backEndVmName = ResourceNamer.randomResourceName("bevm", 24);
-        final String publicIpAddressLeafDnsForFrontEndVm = ResourceNamer.randomResourceName("pip1", 24);
+        final String frontEndVmName = SdkContext.randomResourceName("fevm", 24);
+        final String backEndVmName = SdkContext.randomResourceName("bevm", 24);
+        final String publicIpAddressLeafDnsForFrontEndVm = SdkContext.randomResourceName("pip1", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
 
-        final String rgName = ResourceNamer.randomResourceName("rgNEMV", 24);
+        final String rgName = SdkContext.randomResourceName("rgNEMV", 24);
         try {
 
             //=============================================================

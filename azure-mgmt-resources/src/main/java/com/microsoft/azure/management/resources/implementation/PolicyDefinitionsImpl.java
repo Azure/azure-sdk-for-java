@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import rx.Completable;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -42,8 +42,8 @@ final class PolicyDefinitionsImpl
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String name) {
-        return client.deleteAsync(name);
+    public Completable deleteByIdAsync(String name) {
+        return client.deleteAsync(name).toCompletable();
     }
 
     @Override

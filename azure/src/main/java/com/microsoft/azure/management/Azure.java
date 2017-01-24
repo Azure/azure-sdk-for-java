@@ -84,6 +84,7 @@ public final class Azure {
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     private final String subscriptionId;
+    private final Authenticated authenticated;
 
     /**
      * Authenticate to Azure using an Azure credentials object.
@@ -132,7 +133,14 @@ public final class Azure {
         return new AuthenticatedImpl(restClient, tenantId);
     }
 
-    private static Authenticated authenticate(RestClient restClient, String tenantId, String subscriptionId) throws IOException {
+    /**
+     * Authenticates API access using a {@link RestClient} instance.
+     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * @param tenantId the tenantId in Active Directory
+     * @param subscriptionId the ID of the subscription
+     * @return authenticated Azure client
+     */
+    public static Authenticated authenticate(RestClient restClient, String tenantId, String subscriptionId) {
         return new AuthenticatedImpl(restClient, tenantId).withDefaultSubscription(subscriptionId);
     }
 
@@ -242,7 +250,7 @@ public final class Azure {
             this.tenantId = tenantId;
         }
 
-        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) throws IOException {
+        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
             this.defaultSubscription = subscriptionId;
             return this;
         }
@@ -259,7 +267,7 @@ public final class Azure {
 
         @Override
         public Azure withSubscription(String subscriptionId) {
-            return new Azure(restClient, subscriptionId, tenantId);
+            return new Azure(restClient, subscriptionId, tenantId, this);
         }
 
         @Override
@@ -277,7 +285,7 @@ public final class Azure {
         }
     }
 
-    private Azure(RestClient restClient, String subscriptionId, String tenantId) {
+    private Azure(RestClient restClient, String subscriptionId, String tenantId, Authenticated authenticated) {
         ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
         resourceManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
@@ -293,13 +301,28 @@ public final class Azure {
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
+        this.authenticated = authenticated;
     }
 
     /**
-     * @return the currently selected subscription ID this client is configured to work with
+     * @return the currently selected subscription ID this client is authenticated to work with
      */
     public String subscriptionId() {
         return this.subscriptionId;
+    }
+
+    /**
+     * @return the currently selected subscription this client is authenticated to work with
+     */
+    public Subscription getCurrentSubscription() {
+        return this.subscriptions().getById(this.subscriptionId());
+    }
+
+    /**
+     * @return subscriptions that this authenticated client has access to
+     */
+    public Subscriptions subscriptions() {
+        return this.authenticated.subscriptions();
     }
 
     /**
