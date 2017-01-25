@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.Subscription;
-import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -32,13 +31,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class AzureTests extends TestBase {
-    private Subscriptions subscriptions;
     private Azure azure;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         Azure.Authenticated azureAuthed = Azure.authenticate(restClient, defaultSubscription, domain);
-        subscriptions = azureAuthed.subscriptions();
         azure = azureAuthed.withSubscription(defaultSubscription);
     }
 
@@ -396,9 +393,13 @@ public class AzureTests extends TestBase {
         for (Location location : subscription.listLocations()) {
             Region region = Region.findByLabelOrName(location.name());
             Assert.assertNotNull(region);
-            Assert.assertEquals(region, location.asRegion());
+            Assert.assertEquals(region, location.region());
             Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
         }
+
+        Location location = subscription.getLocationByRegion(Region.US_WEST);
+        Assert.assertNotNull(location);
+        Assert.assertTrue(Region.US_WEST.name().equalsIgnoreCase(location.name()));
     }
 
     /**
