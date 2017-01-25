@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:2233/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1nemv_5ef450477571?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_5ef450477571\",\"name\":\"rg1nemv_5ef450477571\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "x-ms-routing-request-id" : "CENTRALUS:20170124T233637Z:4d54176e-8bcc-4b37-a889-514390c45b59",
+      "date" : "Tue, 24 Jan 2017 23:36:36 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "4d54176e-8bcc-4b37-a889-514390c45b59",
+      "content-length" : "193",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4d54176e-8bcc-4b37-a889-514390c45b59"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:2233/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1nemv_5ef450477571?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "202",
+      "Body" : "",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
+      "location" : "http://localhost:2233/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzFORU1WOjVGNUVGNDUwNDc3NTcxLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "CENTRALUS:20170124T233637Z:fe9e44b9-8ac5-43ce-9a10-8f5d249e8d24",
+      "date" : "Tue, 24 Jan 2017 23:36:37 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "fe9e44b9-8ac5-43ce-9a10-8f5d249e8d24",
+      "content-length" : "0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fe9e44b9-8ac5-43ce-9a10-8f5d249e8d24"
+    }
+  } ],
+  "variables" : [ "rg1nemv_5ef450477571", "webapp1-be65758519", "webapp2-17e297898e", "webapp3-ef14595335", "jplan_82981898" ]
+}

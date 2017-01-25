@@ -174,7 +174,6 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    // Rerecord this failing on single run as well.
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
                 azure.virtualMachines(),

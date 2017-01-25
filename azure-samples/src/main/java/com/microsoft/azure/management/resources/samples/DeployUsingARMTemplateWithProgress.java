@@ -30,92 +30,97 @@ import java.io.InputStream;
 public final class DeployUsingARMTemplateWithProgress {
 
     /**
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
+     */
+    public static boolean runSample(Azure azure) {
+        final String rgName = SdkContext.randomResourceName("rgRSAP", 24);
+        final String deploymentName = SdkContext.randomResourceName("dpRSAP", 24);
+        try {
+            String templateJson = DeployUsingARMTemplateWithProgress.getTemplate();
+
+            //=============================================================
+            // Create resource group.
+
+            System.out.println("Creating a resource group with name: " + rgName);
+
+            azure.resourceGroups().define(rgName)
+                    .withRegion(Region.US_WEST)
+                    .create();
+
+            System.out.println("Created a resource group with name: " + rgName);
+
+
+            //=============================================================
+            // Create a deployment for an Azure App Service via an ARM
+            // template.
+
+            System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
+
+            azure.deployments().define(deploymentName)
+                    .withExistingResourceGroup(rgName)
+                    .withTemplate(templateJson)
+                    .withParameters("{}")
+                    .withMode(DeploymentMode.INCREMENTAL)
+                    .beginCreate();
+
+            System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
+
+            Deployment deployment = azure.deployments().getByGroup(rgName, deploymentName);
+            System.out.println("Current deployment status : " + deployment.provisioningState());
+
+            while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
+                    || deployment.provisioningState().equalsIgnoreCase("Failed")
+                    || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
+                SdkContext.sleep(10000);
+                deployment = azure.deployments().getByGroup(rgName, deploymentName);
+                System.out.println("Current deployment status : " + deployment.provisioningState());
+            }
+            return true;
+        } catch (Exception f) {
+
+            System.out.println(f.getMessage());
+            f.printStackTrace();
+
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().deleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+
+        }
+        return false;
+    }
+
+    /**
      * Main entry point.
      * @param args the parameters
      */
     public static void main(String[] args) {
         try {
-            final String rgName = SdkContext.randomResourceName("rgRSAP", 24);
-            final String deploymentName = SdkContext.randomResourceName("dpRSAP", 24);
+            //=================================================================
+            // Authenticate
 
-            try {
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
+            Azure azure = Azure.configure()
+                    .withLogLevel(LogLevel.BASIC)
+                    .authenticate(credFile)
+                    .withDefaultSubscription();
 
-                //=================================================================
-                // Authenticate
-
-                final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-
-                Azure azure = Azure.configure()
-                        .withLogLevel(LogLevel.BASIC)
-                        .authenticate(credFile)
-                        .withDefaultSubscription();
-
-                try {
-                    String templateJson = DeployUsingARMTemplateWithProgress.getTemplate();
-
-                    //=============================================================
-                    // Create resource group.
-
-                    System.out.println("Creating a resource group with name: " + rgName);
-
-                    azure.resourceGroups().define(rgName)
-                            .withRegion(Region.US_WEST)
-                            .create();
-
-                    System.out.println("Created a resource group with name: " + rgName);
-
-
-                    //=============================================================
-                    // Create a deployment for an Azure App Service via an ARM
-                    // template.
-
-                    System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
-
-                    azure.deployments().define(deploymentName)
-                            .withExistingResourceGroup(rgName)
-                            .withTemplate(templateJson)
-                            .withParameters("{}")
-                            .withMode(DeploymentMode.INCREMENTAL)
-                            .beginCreate();
-
-                    System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
-
-                    Deployment deployment = azure.deployments().getByGroup(rgName, deploymentName);
-                    System.out.println("Current deployment status : " + deployment.provisioningState());
-
-                    while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
-                            || deployment.provisioningState().equalsIgnoreCase("Failed")
-                            || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
-                        Thread.sleep(10000);
-                        deployment = azure.deployments().getByGroup(rgName, deploymentName);
-                        System.out.println("Current deployment status : " + deployment.provisioningState());
-                    }
-                } catch (Exception f) {
-
-                    System.out.println(f.getMessage());
-                    f.printStackTrace();
-
-                } finally {
-
-                    try {
-                        System.out.println("Deleting Resource Group: " + rgName);
-                        azure.resourceGroups().deleteByName(rgName);
-                        System.out.println("Deleted Resource Group: " + rgName);
-                    } catch (NullPointerException npe) {
-                        System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                    } catch (Exception g) {
-                        g.printStackTrace();
-                    }
-
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+            runSample(azure);
         }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     private static String getTemplate() throws IllegalAccessException, JsonProcessingException, IOException {

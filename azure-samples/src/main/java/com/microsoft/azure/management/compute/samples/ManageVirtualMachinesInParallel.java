@@ -33,18 +33,96 @@ import org.apache.commons.lang3.time.StopWatch;
 public final class ManageVirtualMachinesInParallel {
 
     /**
-     * Main entry point.
-     * @param args the parameters
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
      */
-    public static void main(String[] args) {
-
+    public static boolean runSample(Azure azure) {
         final int vmCount = 10;
         final String rgName = SdkContext.randomResourceName("rgCOPP", 24);
         final String networkName = SdkContext.randomResourceName("vnetCOMV", 24);
         final String storageAccountName = SdkContext.randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
+        try {
+            // Create a resource group [Where all resources gets created]
+            ResourceGroup resourceGroup = azure.resourceGroups()
+                    .define(rgName)
+                    .withRegion(Region.US_EAST)
+                    .create();
 
+            // Prepare Creatable Network definition [Where all the virtual machines get added to]
+            Creatable<Network> creatableNetwork = azure.networks()
+                    .define(networkName)
+                    .withRegion(Region.US_EAST)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withAddressSpace("172.16.0.0/16");
+
+            // Prepare Creatable Storage account definition [For storing VMs disk]
+            Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
+                    .define(storageAccountName)
+                    .withRegion(Region.US_EAST)
+                    .withExistingResourceGroup(resourceGroup);
+
+            // Prepare a batch of Creatable Virtual Machines definitions
+            List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
+
+            for (int i = 0; i < vmCount; i++) {
+                Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
+                        .define("VM-" + i)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(resourceGroup)
+                        .withNewPrimaryNetwork(creatableNetwork)
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+                        .withNewStorageAccount(creatableStorageAccount);
+                creatableVirtualMachines.add(creatableVirtualMachine);
+            }
+
+            StopWatch stopwatch = new StopWatch();
+            System.out.println("Creating the virtual machines");
+            stopwatch.start();
+
+            Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines).values();
+
+            stopwatch.stop();
+            System.out.println("Created virtual machines");
+
+            for (VirtualMachine virtualMachine : virtualMachines) {
+                System.out.println(virtualMachine.id());
+            }
+
+            System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
+            return true;
+        } catch (Exception f) {
+
+            System.out.println(f.getMessage());
+            f.printStackTrace();
+
+        } finally {
+
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().deleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
         try {
 
             //=============================================================
@@ -61,77 +139,7 @@ public final class ManageVirtualMachinesInParallel {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            try {
-                // Create a resource group [Where all resources gets created]
-                ResourceGroup resourceGroup = azure.resourceGroups()
-                        .define(rgName)
-                        .withRegion(Region.US_EAST)
-                        .create();
-
-                // Prepare Creatable Network definition [Where all the virtual machines get added to]
-                Creatable<Network> creatableNetwork = azure.networks()
-                        .define(networkName)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withAddressSpace("172.16.0.0/16");
-
-                // Prepare Creatable Storage account definition [For storing VMs disk]
-                Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
-                        .define(storageAccountName)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(resourceGroup);
-
-                // Prepare a batch of Creatable Virtual Machines definitions
-                List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
-
-                for (int i = 0; i < vmCount; i++) {
-                    Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
-                            .define("VM-" + i)
-                            .withRegion(Region.US_EAST)
-                            .withExistingResourceGroup(resourceGroup)
-                            .withNewPrimaryNetwork(creatableNetwork)
-                            .withPrimaryPrivateIpAddressDynamic()
-                            .withoutPrimaryPublicIpAddress()
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername(userName)
-                            .withRootPassword(password)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
-                            .withNewStorageAccount(creatableStorageAccount);
-                    creatableVirtualMachines.add(creatableVirtualMachine);
-                }
-
-                StopWatch stopwatch = new StopWatch();
-                System.out.println("Creating the virtual machines");
-                stopwatch.start();
-
-                Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(creatableVirtualMachines).values();
-
-                stopwatch.stop();
-                System.out.println("Created virtual machines");
-
-                for (VirtualMachine virtualMachine : virtualMachines) {
-                    System.out.println(virtualMachine.id());
-                }
-
-                System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
-            } catch (Exception f) {
-
-                System.out.println(f.getMessage());
-                f.printStackTrace();
-
-            } finally {
-
-                try {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-
-            }
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -45,14 +45,96 @@ public final class ManageCdn {
     private static Azure azure;
 
     /**
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
+     */
+    public static boolean runSample(Azure azure) {
+        final String cdnProfileName = Utils.createRandomName("cdnStandardProfile");
+        String[] appNames = new String[8];
+
+        try {
+            // ============================================================
+            // Create 8 websites
+            for (int i = 0; i < 8; i++) {
+                appNames[i] = SdkContext.randomResourceName("webapp" + (i + 1) + "-", 20);
+            }
+
+            // 2 in US
+            createWebApp(appNames[0], Region.US_WEST);
+            createWebApp(appNames[1], Region.US_EAST);
+
+            // 2 in EU
+            createWebApp(appNames[2], Region.EUROPE_WEST);
+            createWebApp(appNames[3], Region.EUROPE_NORTH);
+
+            // 2 in Southeast
+            createWebApp(appNames[4], Region.ASIA_SOUTHEAST);
+            createWebApp(appNames[5], Region.AUSTRALIA_SOUTHEAST);
+
+            // 1 in Brazil
+            createWebApp(appNames[6], Region.BRAZIL_SOUTH);
+
+            // 1 in Japan
+            createWebApp(appNames[7], Region.JAPAN_WEST);
+            // =======================================================================================
+            // Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
+            System.out.println("Creating a CDN Profile");
+
+            // create Cdn Profile definition object that will let us do a for loop
+            // to define all 8 endpoints and then parallelize their creation
+            CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azure.cdnProfiles().define(cdnProfileName)
+                    .withRegion(Region.US_CENTRAL)
+                    .withExistingResourceGroup(RG_NAME)
+                    .withStandardVerizonSku();
+
+            // define all the endpoints. We need to keep track of the last creatable stage
+            // to be able to call create on the entire Cdn profile deployment definition.
+            Creatable<CdnProfile> cdnCreatable = null;
+            for (String webSite : appNames) {
+                cdnCreatable = profileDefinition
+                        .defineNewEndpoint()
+                        .withOrigin(webSite + SUFFIX)
+                        .withHostHeader(webSite + SUFFIX)
+                        .withCompressionEnabled(true)
+                        .withContentTypeToCompress("application/javascript")
+                        .withQueryStringCachingBehavior(QueryStringCachingBehavior.IGNORE_QUERY_STRING)
+                        .attach();
+            }
+
+            // create profile and then all the defined endpoints in parallel
+            CdnProfile profile = cdnCreatable.create();
+
+            // =======================================================================================
+            // Load some content (referenced by Web Apps) to the CDN endpoints.
+            ArrayList<String> contentToLoad = new ArrayList<>();
+            contentToLoad.add("/server.js");
+            contentToLoad.add("/pictures/microsoft_logo.png");
+
+            for (CdnEndpoint endpoint : profile.endpoints().values()) {
+                endpoint.loadContent(contentToLoad);
+            }
+            return true;
+        } catch (Exception f) {
+            System.out.println(f.getMessage());
+            f.printStackTrace();
+        } finally {
+            if (azure.resourceGroups().getByName(RG_NAME) != null) {
+                System.out.println("Deleting Resource Group: " + RG_NAME);
+                azure.resourceGroups().deleteByName(RG_NAME);
+                System.out.println("Deleted Resource Group: " + RG_NAME);
+            } else {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            }
+        }
+        return false;
+    }
+
+    /**
      * Main entry point.
      * @param args the parameters
      */
     public static void main(String[] args) {
-
-        final String cdnProfileName = Utils.createRandomName("cdnStandardProfile");
-        String[] appNames = new String[8];
-
         try {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
@@ -71,80 +153,7 @@ public final class ManageCdn {
                     .withRegion(Region.US_CENTRAL)
                     .create();
 
-            try {
-                // ============================================================
-                // Create 8 websites
-                for (int i = 0; i < 8; i++) {
-                    appNames[i] = SdkContext.randomResourceName("webapp" + (i + 1) + "-", 20);
-                }
-
-                // 2 in US
-                createWebApp(appNames[0], Region.US_WEST);
-                createWebApp(appNames[1], Region.US_EAST);
-
-                // 2 in EU
-                createWebApp(appNames[2], Region.EUROPE_WEST);
-                createWebApp(appNames[3], Region.EUROPE_NORTH);
-
-                // 2 in Southeast
-                createWebApp(appNames[4], Region.ASIA_SOUTHEAST);
-                createWebApp(appNames[5], Region.AUSTRALIA_SOUTHEAST);
-
-                // 1 in Brazil
-                createWebApp(appNames[6], Region.BRAZIL_SOUTH);
-
-                // 1 in Japan
-                createWebApp(appNames[7], Region.JAPAN_WEST);
-                // =======================================================================================
-                // Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
-                System.out.println("Creating a CDN Profile");
-
-                // create Cdn Profile definition object that will let us do a for loop
-                // to define all 8 endpoints and then parallelize their creation
-                CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azure.cdnProfiles().define(cdnProfileName)
-                        .withRegion(Region.US_CENTRAL)
-                        .withExistingResourceGroup(RG_NAME)
-                        .withStandardVerizonSku();
-
-                // define all the endpoints. We need to keep track of the last creatable stage
-                // to be able to call create on the entire Cdn profile deployment definition.
-                Creatable<CdnProfile> cdnCreatable = null;
-                for (String webSite : appNames) {
-                    cdnCreatable = profileDefinition
-                            .defineNewEndpoint()
-                                .withOrigin(webSite + SUFFIX)
-                                .withHostHeader(webSite + SUFFIX)
-                                .withCompressionEnabled(true)
-                                .withContentTypeToCompress("application/javascript")
-                                .withQueryStringCachingBehavior(QueryStringCachingBehavior.IGNORE_QUERY_STRING)
-                            .attach();
-                }
-
-                // create profile and then all the defined endpoints in parallel
-                CdnProfile profile = cdnCreatable.create();
-
-                // =======================================================================================
-                // Load some content (referenced by Web Apps) to the CDN endpoints.
-                ArrayList<String> contentToLoad = new ArrayList<>();
-                contentToLoad.add("/server.js");
-                contentToLoad.add("/pictures/microsoft_logo.png");
-
-                for (CdnEndpoint endpoint : profile.endpoints().values()) {
-                    endpoint.loadContent(contentToLoad);
-                }
-
-            } catch (Exception f) {
-                System.out.println(f.getMessage());
-                f.printStackTrace();
-            } finally {
-                if (azure.resourceGroups().getByName(RG_NAME) != null) {
-                    System.out.println("Deleting Resource Group: " + RG_NAME);
-                    azure.resourceGroups().deleteByName(RG_NAME);
-                    System.out.println("Deleted Resource Group: " + RG_NAME);
-                } else {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                }
-            }
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
