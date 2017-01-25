@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import java.util.Map;
 
-public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTest {
+public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
     private static Region region = Region.US_WEST_CENTRAL;
     private static KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
