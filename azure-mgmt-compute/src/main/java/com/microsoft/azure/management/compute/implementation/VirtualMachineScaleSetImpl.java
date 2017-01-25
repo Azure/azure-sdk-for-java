@@ -569,6 +569,30 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
+
+    @Override
+    public VirtualMachineScaleSetImpl withWindowsCustomImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().withImageReference(imageReferenceInner);
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
     @Override
     public VirtualMachineScaleSetImpl withStoredWindowsImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
@@ -619,6 +643,23 @@ public class VirtualMachineScaleSetImpl
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().withImageReference(imageReference.inner());
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.isMarketplaceLinuxImage = true;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withLinuxCustomImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().withImageReference(imageReferenceInner);
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().withLinuxConfiguration(new LinuxConfiguration());
@@ -1030,12 +1071,78 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public UpdateStages.WithApply withoutDataDisk(int lun) {
+    public VirtualMachineScaleSetImpl withoutDataDisk(int lun) {
         if (!isManagedDiskEnabled()) {
             return this;
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetStorageProfile storageProfile = this
+                .inner()
+                .virtualMachineProfile()
+                .storageProfile();
+        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
+                .dataDisks();
+        if (dataDisks != null) {
+            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk.withDiskSizeGB(newSizeInGB);
+                    return this;
+                }
+            }
+        }
+        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetStorageProfile storageProfile = this
+                .inner()
+                .virtualMachineProfile()
+                .storageProfile();
+        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
+                .dataDisks();
+        if (dataDisks != null) {
+            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk
+                        .withDiskSizeGB(newSizeInGB)
+                        .withCaching(cachingType);
+                    return this;
+                }
+            }
+        }
+        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingTypes, StorageAccountTypes storageAccountType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetStorageProfile storageProfile = this
+                .inner()
+                .virtualMachineProfile()
+                .storageProfile();
+        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
+                .dataDisks();
+        if (dataDisks != null) {
+            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk
+                            .withDiskSizeGB(newSizeInGB)
+                            .withCaching(cachingTypes)
+                            .managedDisk()
+                            .withStorageAccountType(storageAccountType);
+                    return this;
+                }
+            }
+        }
+        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
     }
 
     @Override
@@ -1113,7 +1220,7 @@ public class VirtualMachineScaleSetImpl
         if (isManagedDiskEnabled()) {
             this.managedDataDisks.setDataDisksDefaults();
         } else {
-            List<VirtualMachineScaleSetDataDisk>  dataDisks = this.inner()
+            List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
                     .virtualMachineProfile()
                     .storageProfile()
                     .dataDisks();
@@ -1217,9 +1324,10 @@ public class VirtualMachineScaleSetImpl
                 if (osDisk.managedDisk().storageAccountType() == null) {
                     osDisk.managedDisk()
                             .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
+                }
+                osDisk.withVhdContainers(null);
                 // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
                 // name for the disk resource within the resource group.
-                }
             } else {
                 // Note:
                 // Native (un-managed) disk

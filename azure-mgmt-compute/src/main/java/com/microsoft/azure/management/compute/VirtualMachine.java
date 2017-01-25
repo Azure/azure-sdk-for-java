@@ -142,7 +142,7 @@ public interface VirtualMachine extends
     StorageAccountTypes osDiskStorageAccountType();
 
     /**
-     * @return resource id of the managed disk backing Os disk
+     * @return resource id of the managed disk backing OS disk
      */
     String osDiskId();
 

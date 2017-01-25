@@ -89,6 +89,9 @@ class VirtualMachineScaleSetUnmanagedDataDiskImpl
 
     protected static void setDataDisksDefaults(List<VirtualMachineScaleSetDataDisk> dataDisks,
                                                String namePrefix) {
+        if (dataDisks == null) {
+            return;
+        }
         List<Integer> usedLuns = new ArrayList<>();
         for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
             if (dataDisk.lun() != -1) {

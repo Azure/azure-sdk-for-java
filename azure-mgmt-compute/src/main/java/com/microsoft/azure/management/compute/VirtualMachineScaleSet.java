@@ -511,6 +511,14 @@ public interface VirtualMachineScaleSet extends
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
+             * Specifies the id of a Windows custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the definition
+             */
+            WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
+
+            /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in the
              * scale set.
              * 
@@ -544,6 +552,14 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the definition
              */
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the id of a Linux custom image to be used.
+             *
+             * @param customImageId the resource id of the custom image
+             * @return the next stage of the definition
+             */
+            WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
@@ -1550,17 +1566,49 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of virtual machine scale set update
              */
             WithApply withNewDataDisk(int sizeInGB,
-                                              int lun,
-                                              CachingTypes cachingType,
-                                              StorageAccountTypes storageAccountType);
+                                      int lun,
+                                      CachingTypes cachingType,
+                                      StorageAccountTypes storageAccountType);
 
             /**
-             * Detaches managed data disk with the given lun from the virtual machine scale set.
+             * Detaches managed data disk with the given lun from the virtual machine scale set instances.
              *
              * @param lun the disk lun
              * @return the next stage of virtual machine scale set update
              */
             WithApply withoutDataDisk(int lun);
+
+            /**
+             * Updates the size of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withDataDiskUpdated(int lun, int newSizeInGB);
+
+            /**
+             * Updates the size and caching type of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingTypes the caching type
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingTypes);
+
+            /**
+             * Updates the size, caching type and storage account type of a managed data disk with the given lun.
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingTypes the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withDataDiskUpdated(int lun,
+                                          int newSizeInGB,
+                                          CachingTypes cachingTypes,
+                                          StorageAccountTypes storageAccountType);
         }
 
         /**
