@@ -1592,22 +1592,22 @@ public interface VirtualMachineScaleSet extends
              *
              * @param lun the disk lun
              * @param newSizeInGB the new size of the disk
-             * @param cachingTypes the caching type
+             * @param cachingType the caching type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingTypes);
+            WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Updates the size, caching type and storage account type of a managed data disk with the given lun.
              * @param lun the disk lun
              * @param newSizeInGB the new size of the disk
-             * @param cachingTypes the caching type
+             * @param cachingType the caching type
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine scale set update
              */
             WithApply withDataDiskUpdated(int lun,
                                           int newSizeInGB,
-                                          CachingTypes cachingTypes,
+                                          CachingTypes cachingType,
                                           StorageAccountTypes storageAccountType);
         }
 

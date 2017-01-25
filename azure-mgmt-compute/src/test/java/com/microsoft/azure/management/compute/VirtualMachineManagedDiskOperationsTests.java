@@ -70,7 +70,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     }
 
     @Test
-    public void canCreateVirtualMachineWithEmptyManagedDataDisks() {
+    public void canCreateUpdateVirtualMachineWithEmptyManagedDataDisks() {
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
@@ -129,7 +129,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .create();
 
         Assert.assertTrue(virtualMachine.isManagedDiskEnabled());
-        // There should not be any native data disks
+        // There should not be any un-managed data disks
         //
         Assert.assertNotNull(virtualMachine.unmanagedDataDisks());
         Assert.assertEquals(virtualMachine.unmanagedDataDisks().size(), 0);
@@ -159,6 +159,51 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         //
         for (VirtualMachineDataDisk dataDisk : dataDisks.values()) {
             if (dataDisk.lun() != 1 && dataDisk.lun() != 2 && dataDisk.lun() != 3) {
+                Assert.assertEquals(dataDisk.cachingType(), CachingTypes.READ_WRITE);
+                Assert.assertEquals(dataDisk.storageAccountType(), StorageAccountTypes.STANDARD_LRS);
+            }
+        }
+
+        virtualMachine.deallocate();
+
+        virtualMachine.update()
+                .withDataDiskUpdated(1, 200)
+                .withDataDiskUpdated(2, 200, CachingTypes.READ_WRITE)
+                .withNewDataDisk(60)
+                .apply();
+
+        Assert.assertTrue(virtualMachine.isManagedDiskEnabled());
+        // There should not be any un-managed data disks
+        //
+        Assert.assertNotNull(virtualMachine.unmanagedDataDisks());
+        Assert.assertEquals(virtualMachine.unmanagedDataDisks().size(), 0);
+
+        // Validate the managed data disks
+        //
+         dataDisks = virtualMachine.dataDisks();
+        Assert.assertNotNull(dataDisks);
+        Assert.assertTrue(dataDisks.size() == 6);
+        Assert.assertTrue(dataDisks.containsKey(1));
+        dataDiskLun1 = dataDisks.get(1);
+        Assert.assertNotNull(dataDiskLun1.id());
+        Assert.assertEquals(dataDiskLun1.cachingType(), CachingTypes.READ_ONLY);
+        Assert.assertEquals(dataDiskLun1.size(), 200);  // 100 -> 200
+
+        Assert.assertTrue(dataDisks.containsKey(2));
+        dataDiskLun2 = dataDisks.get(2);
+        Assert.assertNotNull(dataDiskLun2.id());
+        Assert.assertEquals(dataDiskLun2.cachingType(), CachingTypes.READ_WRITE); // NONE -> READ_WRITE
+        Assert.assertEquals(dataDiskLun2.size(), 200);  // 150 -> 200
+
+        Assert.assertTrue(dataDisks.containsKey(3));
+        dataDiskLun3 = dataDisks.get(3);
+        Assert.assertNotNull(dataDiskLun3.id());
+        Assert.assertEquals(dataDiskLun3.cachingType(), CachingTypes.NONE);
+        Assert.assertEquals(dataDiskLun3.size(), 150);
+
+        // Ensure defaults of other disks are not affected
+        for (VirtualMachineDataDisk dataDisk : dataDisks.values()) {
+            if (dataDisk.lun() != 1 && dataDisk.lun() != 3) {
                 Assert.assertEquals(dataDisk.cachingType(), CachingTypes.READ_WRITE);
                 Assert.assertEquals(dataDisk.storageAccountType(), StorageAccountTypes.STANDARD_LRS);
             }

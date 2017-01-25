@@ -153,8 +153,8 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
                 .withLinuxCustomImage(virtualMachineCustomImage.id())
-                .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootUsername(userName)
+                .withRootPassword(password)
                 .create();
 
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();

@@ -871,12 +871,66 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Update withoutDataDisk(int lun) {
+    public VirtualMachineImpl withoutDataDisk(int lun) {
         if (!isManagedDiskEnabled()) {
             return this;
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDiskUpdated(int lun, int newSizeInGB) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_NO_MANAGED_DISK_TO_UPDATE);
+        DataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with name '%d' not found", lun));
+        }
+        dataDisk.withDiskSizeGB(newSizeInGB);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_NO_MANAGED_DISK_TO_UPDATE);
+        DataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with name '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDiskUpdated(int lun,
+                                                  int newSizeInGB,
+                                                  CachingTypes cachingType,
+                                                  StorageAccountTypes storageAccountType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_NO_MANAGED_DISK_TO_UPDATE);
+        DataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with name '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType)
+            .managedDisk()
+            .withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    private DataDisk getDataDiskInner(int lun) {
+        if (this.inner().storageProfile().dataDisks() == null) {
+            return null;
+        }
+        for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
+            if (dataDiskInner.lun() == lun) {
+                return dataDiskInner;
+            }
+        }
+        return null;
     }
 
     // Virtual machine optional storage account fluent methods

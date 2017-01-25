@@ -1082,67 +1082,59 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
-        VirtualMachineScaleSetStorageProfile storageProfile = this
-                .inner()
-                .virtualMachineProfile()
-                .storageProfile();
-        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
-                .dataDisks();
-        if (dataDisks != null) {
-            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk.withDiskSizeGB(newSizeInGB);
-                    return this;
-                }
-            }
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
         }
-        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
+        dataDisk
+            .withDiskSizeGB(newSizeInGB);
+        return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
-        VirtualMachineScaleSetStorageProfile storageProfile = this
-                .inner()
-                .virtualMachineProfile()
-                .storageProfile();
-        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
-                .dataDisks();
-        if (dataDisks != null) {
-            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk
-                        .withDiskSizeGB(newSizeInGB)
-                        .withCaching(cachingType);
-                    return this;
-                }
-            }
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
         }
-        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType);
+        return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingTypes, StorageAccountTypes storageAccountType) {
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType)
+            .managedDisk()
+            .withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    private VirtualMachineScaleSetDataDisk getDataDiskInner(int lun) {
         VirtualMachineScaleSetStorageProfile storageProfile = this
                 .inner()
                 .virtualMachineProfile()
                 .storageProfile();
         List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
                 .dataDisks();
-        if (dataDisks != null) {
-            for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk
-                            .withDiskSizeGB(newSizeInGB)
-                            .withCaching(cachingTypes)
-                            .managedDisk()
-                            .withStorageAccountType(storageAccountType);
-                    return this;
-                }
+        if (dataDisks == null) {
+            return null;
+        }
+        for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+            if (dataDisk.lun() == lun) {
+                return dataDisk;
             }
         }
-        throw new RuntimeException(String.format("A data disk with lun  '%d' not found", lun));
+        return null;
     }
 
     @Override

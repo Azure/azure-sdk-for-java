@@ -1533,6 +1533,38 @@ public interface VirtualMachine extends
              * @return the next stage of virtual machine update
              */
             Update withoutDataDisk(int lun);
+
+            /**
+             * Updates the size of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun, int newSizeInGB);
+
+            /**
+             * Updates the size and caching type of a managed data disk with the given lun.
+             *
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+
+            /**
+             * Updates the size, caching type and storage account type of a managed data disk with the given lun.
+             * @param lun the disk lun
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine update
+             */
+            Update withDataDiskUpdated(int lun,
+                                          int newSizeInGB,
+                                          CachingTypes cachingType,
+                                          StorageAccountTypes storageAccountType);
         }
 
         /**
