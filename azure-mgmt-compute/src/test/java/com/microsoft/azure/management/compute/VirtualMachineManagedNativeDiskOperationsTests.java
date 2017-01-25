@@ -3,32 +3,41 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.Map;
 
 public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManagementTest {
-    private static Region region = Region.fromName("westcentralus"); // Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
+    private static String RG_NAME = "";
+    private static Region region = Region.US_WEST_CENTRAL;
+    private static KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
+
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        super.initializeClients(restClient, defaultSubscription, domain);
+    }
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
 
     @Test
     public void canCreateVirtualMachineFromPIRImageWithManagedOsDisk() {
-        final VirtualMachineImage image = getImage();
         final String vmName1 = "myvm1";
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
 
-        System.out.println(rgName);
-
         VirtualMachine virtualMachine = computeManager.virtualMachines()
                 .define(vmName1)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                .withSpecificLinuxImageVersion(image.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
@@ -58,19 +67,10 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         Assert.assertNull(virtualMachine.osUnmanagedDiskVhdUri());
         Assert.assertNotNull(virtualMachine.unmanagedDataDisks());
         Assert.assertTrue(virtualMachine.unmanagedDataDisks().size() == 0);
-        // clean
-        resourceManager.resourceGroups().deleteByName(rgName);
-    }
-
-    @Test
-    public void canCreateVirtualMachineFromPIRImageWithNativeOsDisk() {
-        VirtualMachineImage image = getImage();
     }
 
     @Test
     public void canCreateVirtualMachineWithEmptyManagedDataDisks() {
-        VirtualMachineImage image = getImage();
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
@@ -80,10 +80,9 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
-        System.out.println(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -115,7 +114,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                .withSpecificLinuxImageVersion(image.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 // Start: Add 5 empty managed disks
@@ -164,13 +163,10 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 Assert.assertEquals(dataDisk.storageAccountType(), StorageAccountTypes.STANDARD_LRS);
             }
         }
-        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateVirtualMachineFromCustomImageWithManagedDisks() {
-        VirtualMachineImage image = getImage();
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
@@ -180,10 +176,9 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
-        writeToFile(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -215,7 +210,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                .withSpecificLinuxImageVersion(image.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 // Start: Add bunch of empty managed disks
@@ -230,7 +225,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .create();
         System.out.println("Waiting for some time before de-provision");
         sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
-        deprovisionLinuxVM(virtualMachine1.getPrimaryPublicIpAddress().fqdn(),
+        deprovisionAgentInLinuxVM(virtualMachine1.getPrimaryPublicIpAddress().fqdn(),
                 22,
                 uname,
                 password);
@@ -331,8 +326,6 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
     @Test
     public void canUpdateVirtualMachineByAddingAndRemovingManagedDisks() {
-        VirtualMachineImage image = getImage();
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
@@ -342,10 +335,9 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         final String explicitlyCreatedEmptyDiskName1 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
-        writeToFile(rgName);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -377,7 +369,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                .withSpecificLinuxImageVersion(image.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 // Start: Add bunch of empty managed disks
@@ -408,18 +400,16 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
     @Test
     public void canCreateVirtualMachineByAttachingManagedOsDisk() {
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         final String vmName = "myvm6";
-        writeToFile(rgName);
 
         // Creates a native virtual machine
         //
         VirtualMachine nativeVm = computeManager.virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
@@ -441,7 +431,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         final String diskName = generateRandomResourceName("dsk-", 15);
         Disk osDisk = computeManager.disks().define(diskName)
                 .withRegion(region)
-                .withExistingResourceGroup(rgName)
+                .withExistingResourceGroup(RG_NAME)
                 .withLinuxFromVhd(osVhdUri)
                 .create();
 
@@ -450,7 +440,7 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         VirtualMachine managedVm = computeManager.virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withExistingResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
@@ -461,27 +451,23 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
 
         Assert.assertTrue(managedVm.isManagedDiskEnabled());
         Assert.assertTrue(managedVm.osDiskId().equalsIgnoreCase(osDisk.id().toLowerCase()));
-        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateVirtualMachineWithManagedDiskInManagedAvailabilitySet() {
-        final String rgName = generateRandomResourceName("rg-", 15);
         final String availSetName = generateRandomResourceName("av-", 15);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
         final String vmName = "myvm6";
-        writeToFile(rgName);
 
-        VirtualMachineImage image = getImage();
         VirtualMachine managedVm = computeManager.virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
-                .withSpecificLinuxImageVersion(image.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 .withNewDataDisk(100)
@@ -496,18 +482,5 @@ public class VirtualMachineManagedNativeDiskOperationsTests extends ComputeManag
         AvailabilitySet availabilitySet = computeManager.availabilitySets().getById(managedVm.availabilitySetId());
         Assert.assertTrue(availabilitySet.virtualMachineIds().size() > 0);
         Assert.assertTrue(availabilitySet.isManaged());
-
-        resourceManager.resourceGroups().deleteByName(rgName);
-    }
-
-    private VirtualMachineImage getImage() {
-        VirtualMachineImage linuxVmImage = computeManager.virtualMachineImages().getImage(region,
-                "Canonical",
-                "UbuntuServer",
-                "14.04.2-LTS",
-                "14.04.201507060");
-        Assert.assertNotNull(linuxVmImage);
-        Assert.assertNotNull(linuxVmImage.inner());
-        return linuxVmImage;
     }
 }

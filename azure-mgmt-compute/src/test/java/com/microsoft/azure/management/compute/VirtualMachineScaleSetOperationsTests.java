@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.jcraft.jsch.JSch;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -34,6 +33,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     public void canCreateVirtualMachineScaleSetWithCustomScriptExtension() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
+        final String uname = "jvuser";
+        final String password = "123OData!@#123";
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
@@ -63,8 +64,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootUsername(uname)
+                .withRootPassword(password)
                 .withUnmanagedDisks()
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
@@ -100,10 +101,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertEquals(networkInterfaces.size(), 1);
             VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
             VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = null;
-            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  networkInterface.ipConfigurations();
-            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs = networkInterface.ipConfigurations();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry : ipConfigs.entrySet()) {
                 VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
-                if(ipConfig.isPrimary()) {
+                if (ipConfig.isPrimary()) {
                     primaryIpConfig = ipConfig;
                     break;
                 }
@@ -119,24 +120,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
             Assert.assertNotNull(sshFrontendPort);
 
-            Thread.sleep(1000 * 60); // Wait some time for VM to be available
-            // Assert public ssh connection to vm
-            JSch jsch = new JSch();
-            com.jcraft.jsch.Session session = null;
-            try {
-                java.util.Properties config = new java.util.Properties();
-                config.put("StrictHostKeyChecking", "no");
-                session = jsch.getSession("jvuser", fqdn, sshFrontendPort);
-                session.setPassword("123OData!@#123");
-                session.setConfig(config);
-                session.connect();
-            } catch (Exception e) {
-                Assert.fail("SSH connection failed" + e.getMessage());
-            } finally {
-                if (session != null) {
-                    session.disconnect();
-                }
-            }
+            this.sleep(1000 * 60); // Wait some time for VM to be available
+            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
         }
     }
 

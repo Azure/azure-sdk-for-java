@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -46,7 +47,10 @@ public abstract class ComputeManagementTest extends TestBase {
     protected void cleanUpResources() {
     }
 
-    protected void deprovisionLinuxVM(String host, int port, String userName, String password) {
+    protected void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
+        if (IS_MOCKED) {
+            return;
+        }
         SSHShell shell = null;
         try {
             System.out.println("Trying to de-provision");
@@ -68,24 +72,38 @@ public abstract class ComputeManagementTest extends TestBase {
         }
     }
 
+    protected void ensureCanDoSsh(String fqdn, int sshPort, String uname, String password) {
+        if (IS_MOCKED) {
+            return;
+        }
+        JSch jsch = new JSch();
+        com.jcraft.jsch.Session session = null;
+        try {
+            java.util.Properties config = new java.util.Properties();
+            config.put("StrictHostKeyChecking", "no");
+            session = jsch.getSession(uname, fqdn, sshPort);
+            session.setPassword(password);
+            session.setConfig(config);
+            session.connect();
+        } catch (Exception e) {
+            Assert.fail("SSH connection failed" + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.disconnect();
+            }
+        }
+    }
+
     protected  void sleep(long milli) {
+        if (IS_MOCKED) {
+            return;
+        }
         try {
             Thread.sleep(milli);
         } catch (InterruptedException exception) {
         }
     }
 
-    protected void writeToFile(String content) {
-        try
-        {
-            String filename= "C:\\rgnames\\rg-names.txt";
-            FileWriter fw = new FileWriter(filename,true);
-            fw.write("\n" + content + "\n");
-            fw.close();
-        } catch(IOException ioe) {
-            System.err.println("IOException: " + ioe.getMessage());
-        }
-    }
 
     protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup,
                                                  String id) throws Exception {

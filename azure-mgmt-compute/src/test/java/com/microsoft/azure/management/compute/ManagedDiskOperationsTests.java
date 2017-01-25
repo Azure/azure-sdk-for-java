@@ -3,23 +3,31 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ManagedDiskOperationsTests extends ComputeManagementTest {
-    private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
+    private static String RG_NAME = "";
+    private static Region region = Region.US_WEST_CENTRAL;
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        super.initializeClients(restClient, defaultSubscription, domain);
+    }
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
 
     @Test
     public void CanOperateOnEmptyManagedDisk() {
-        final String rgName = generateRandomResourceName("rg-md-", 20);
         final String diskName = generateRandomResourceName("md-empty-", 20);
-        // Cannot really test account update as canary deployment supports only STANDARD_LRS
-        //
         final StorageAccountTypes updateTo = StorageAccountTypes.STANDARD_LRS;
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -72,18 +80,16 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         //
         disk.revokeAccess();
         computeManager.disks().deleteById(disk.id());
-        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canOperateOnManagedDiskFromDisk() {
-        final String rgName = generateRandomResourceName("rg-md-", 20);
         final String diskName1 = generateRandomResourceName("md-1", 20);
         final String diskName2 = generateRandomResourceName("md-2", 20);
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -130,14 +136,13 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canOperateOnManagedDiskFromSnapshot() {
-        final String rgName = generateRandomResourceName("rg-md-", 20);
         final String emptyDiskName = generateRandomResourceName("md-empty-", 20);
         final String snapshotBasedDiskName = generateRandomResourceName("md-snp-", 20);
         final String snapshotName = generateRandomResourceName("snp-", 20);
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()
-                .define(rgName)
+                .define(RG_NAME)
                 .withRegion(region)
                 .create();
 
@@ -186,97 +191,5 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assert.assertNotNull(fromSnapshotDisk.source());
         Assert.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
         Assert.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
-
-        resourceManager.resourceGroups().deleteByName(rgName);
     }
-
-//    @Test
-//    public void canOperateOnManagedDiskFromPIRImage() {
-//        final String rgName = ResourceNamer.randomResourceName("rg-md-", 20);
-//        final String osDiskName = ResourceNamer.randomResourceName("md-os-", 20);
-//        final String dataDiskNamePrefix = ResourceNamer.randomResourceName("md-data-", 20);
-//
-//        // TODO: Use this image once we move to production, canary does not have this image.
-//        //
-////        VirtualMachineImage linuxVmImage = computeManager.virtualMachineImages().getImage(region,
-////                "alienvault",
-////                "unified-security-management-anywhere",
-////                "unified-security-management-anywhere",
-////                "3.2.0");
-//
-//        VirtualMachineImage linuxVmImage = computeManager.virtualMachineImages().getImage(region,
-//                "Canonical",
-//                "UbuntuServer",
-//                "14.04.2-LTS",
-//                "14.04.201507060");
-//
-//        Assert.assertNotNull("Could not locate the PIR image", linuxVmImage.inner());
-//
-//        ResourceGroup resourceGroup = resourceManager
-//                .resourceGroups()
-//                .define(rgName)
-//                .withRegion(region)
-//                .create();
-//
-//        // Create managed disk containing os disk based on image's os disk image
-//        //
-//        Disk osDisk = computeManager.disks()
-//                .define(osDiskName)
-//                .withRegion(region)
-//                .withExistingResourceGroup(resourceGroup.name())
-//                .withOs()
-//                .fromImage(linuxVmImage)
-//                // Start Options
-//                .withSizeInGB(200)
-//                .withAccountType(StorageAccountTypes.STANDARD_LRS)
-//                // End options
-//                .create();
-//
-//        Assert.assertNotNull(osDisk.id());
-//        Assert.assertTrue(osDisk.name().equalsIgnoreCase(osDiskName));
-//        Assert.assertEquals(osDisk.accountType(), StorageAccountTypes.STANDARD_LRS);
-//        Assert.assertEquals(osDisk.creationMethod(), DiskCreateOption.FROM_IMAGE);
-//        Assert.assertFalse(osDisk.isAttachedToVirtualMachine());
-//        Assert.assertEquals(osDisk.sizeInGB(), 200);
-//        Assert.assertEquals(osDisk.osType(), OperatingSystemTypes.LINUX);
-//        Assert.assertNotNull(osDisk.source());
-//        Assert.assertEquals(osDisk.source().type(), DiskSourceType.FROM_OS_DISK_IMAGE);
-//        Assert.assertEquals(osDisk.source().sourceId(), linuxVmImage.id());
-//
-//        // Create managed disks containing data disks based on image's data disk images
-//        //
-//        for (DataDiskImage diskImage : linuxVmImage.dataDiskImages().values()) {
-//            final String dataDiskName = dataDiskNamePrefix + "-" + diskImage.lun();
-//            Disk dataDisk = computeManager.disks()
-//                    .define(dataDiskName)
-//                    .withRegion(region)
-//                    .withExistingResourceGroup(rgName)
-//                    .withData()
-//                    .fromImage(linuxVmImage, diskImage.lun())
-//                    // Start Options
-//                    .withSizeInGB(200)
-//                    .withAccountType(StorageAccountTypes.PREMIUM_LRS)
-//                    // End options
-//                    .create();
-//
-//            Assert.assertNotNull(dataDisk.id());
-//            Assert.assertTrue(dataDisk.name().equalsIgnoreCase(dataDiskName));
-//            Assert.assertEquals(dataDisk.accountType(), StorageAccountTypes.STANDARD_LRS);
-//            Assert.assertEquals(dataDisk.creationMethod(), DiskCreateOption.FROM_IMAGE);
-//            Assert.assertFalse(dataDisk.isAttachedToVirtualMachine());
-//            Assert.assertEquals(dataDisk.sizeInGB(), 200);
-//            Assert.assertNull(dataDisk.osType());
-//            Assert.assertNotNull(dataDisk.source());
-//            Assert.assertEquals(dataDisk.source().type(), DiskSourceType.FROM_DATA_DISK_IMAGE);
-//            Assert.assertEquals(dataDisk.source().sourceId(), linuxVmImage.id());
-//            Assert.assertEquals((long) dataDisk.source().sourceDataDiskImageLun(), (long) diskImage.lun());
-//        }
-//
-//        computeManager.disks().deleteById(osDisk.id());
-//        for (DataDiskImage diskImage : linuxVmImage.dataDiskImages().values()) {
-//            final String dataDiskName = dataDiskNamePrefix + "-" + diskImage.lun();
-//            computeManager.disks().deleteByGroup(rgName, dataDiskName);
-//        }
-//    }
-
 }

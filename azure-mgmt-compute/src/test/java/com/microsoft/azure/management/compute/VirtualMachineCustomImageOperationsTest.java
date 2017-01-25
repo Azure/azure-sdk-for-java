@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,16 +11,24 @@ import java.io.IOException;
 import java.util.Map;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
-    private static Region region = Region.fromName("eastus2euap");   // Special regions for canary deployment 'eastus2euap' and 'centraluseuap'
+    private static String RG_NAME = "";
+    private static Region region = Region.US_WEST_CENTRAL;
 
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        super.initializeClients(restClient, defaultSubscription, domain);
+    }
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
     @Test
     public void canCreateImageFromNativeVhd() throws IOException {
-        final String rgName = generateRandomResourceName("custo512ert", 20);
         final String vhdBasedImageName = generateRandomResourceName("img", 20);
-        writeToFile(rgName);
 
-        VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
-                generateRandomResourceName("multidvm", 15),
+        VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(RG_NAME,
+                generateRandomResourceName("muldvm", 15),
                 region,
                 computeManager);
         //
@@ -28,7 +37,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .virtualMachineCustomImages()
                 .define(vhdBasedImageName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
                 .withOsDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
@@ -66,11 +75,11 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         }
         VirtualMachineCustomImage image = computeManager
                 .virtualMachineCustomImages()
-                .getByGroup(rgName, vhdBasedImageName);
+                .getByGroup(RG_NAME, vhdBasedImageName);
         Assert.assertNotNull(image);
         PagedList<VirtualMachineCustomImage> images = computeManager
                 .virtualMachineCustomImages()
-                .listByGroup(rgName);
+                .listByGroup(RG_NAME);
         Assert.assertTrue(images.size() > 0);
 
         // Create virtual machine from custom image
@@ -78,7 +87,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         VirtualMachine virtualMachine = computeManager.virtualMachines()
                 .define(generateRandomResourceName("cusvm", 15))
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
@@ -92,22 +101,19 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
         Assert.assertNotNull(dataDisks);
         Assert.assertEquals(dataDisks.size(), image.dataDiskImages().size());
-        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateImageByCapturingVM() {
-        final String rgName = generateRandomResourceName("rg", 15);
-        String vmName = generateRandomResourceName("vm67-", 20);
-        writeToFile(rgName);
-
-        VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(rgName, vmName, region, computeManager);
-        //
+        final String vmName = generateRandomResourceName("vm67-", 20);
         final String imageName = generateRandomResourceName("img", 15);
+
+        VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(RG_NAME, vmName, region, computeManager);
+        //
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
                 .define(imageName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .fromVirtualMachine(vm.id())
                 .create();
 
@@ -129,26 +135,23 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             diskImage.blobUri().equalsIgnoreCase(vmDisk.vhdUri());
         }
 
-        customImage = computeManager.virtualMachineCustomImages().getByGroup(rgName, imageName);
+        customImage = computeManager.virtualMachineCustomImages().getByGroup(RG_NAME, imageName);
         Assert.assertNotNull(customImage);
         Assert.assertNotNull(customImage.inner());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
     public void canCreateImageFromManagedDisk() {
-        String rgName = generateRandomResourceName("rg-", 20);
-        String vmName = generateRandomResourceName("vm7-", 20);
-        writeToFile(rgName);
-
+        final String vmName = generateRandomResourceName("vm7-", 20);
         final String uname = "juser";
         final String password = "123tEst!@|ac";
 
         VirtualMachine nativeVm = computeManager.virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
@@ -179,7 +182,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         //
         Disk managedOsDisk = computeManager.disks().define(osDiskName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withLinuxFromVhd(osVhdUri)
                 .create();
 
@@ -189,7 +192,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk1 = dataDisks.get(0);
         Disk managedDataDisk1 = computeManager.disks().define(dataDiskName1)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withData()
                 .fromVhd(vmNativeDataDisk1.vhdUri())
                 .create();
@@ -200,7 +203,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk2 = dataDisks.get(1);
         Disk managedDataDisk2 = computeManager.disks().define(dataDiskName2)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withData()
                 .fromVhd(vmNativeDataDisk2.vhdUri())
                 .create();
@@ -211,7 +214,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String imageName = generateRandomResourceName("img", 15);
         VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages().define(imageName)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
+                .withNewResourceGroup(RG_NAME)
                 .withLinuxFromDisk(managedOsDisk, OperatingSystemStateTypes.GENERALIZED)
                 .defineDataDiskImage()
                     .withLun(vmNativeDataDisk1.lun())
@@ -253,11 +256,6 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         computeManager.disks().deleteById(managedDataDisk1.id());
         computeManager.disks().deleteById(managedDataDisk2.id());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
-        computeManager.resourceManager().resourceGroups().deleteByName(rgName);
-    }
-
-    @Test
-    public void canCreateImageFromSnapshot() {
     }
 
     private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(String rgName,
@@ -266,20 +264,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                                                          ComputeManager computeManager) {
         final String uname = "javauser";
         final String password = "12NewPA$$w0rd!";
-
-        VirtualMachineImage linuxVmImage = null;
-        PagedList<VirtualMachineImage> vmImages = computeManager
-                .virtualMachineImages()
-                .listByRegion(region);
-        for (VirtualMachineImage vmImage : vmImages) {
-            if (vmImage.osDiskImage().operatingSystem() == OperatingSystemTypes.LINUX) {
-                linuxVmImage = vmImage;
-                break;
-            }
-        }
-
-        Assert.assertNotNull("A linux image could not found",
-                linuxVmImage);
+        final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
@@ -289,7 +274,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
-                .withSpecificLinuxImageVersion(linuxVmImage.imageReference())
+                .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 .withUnmanagedDisks()
@@ -306,7 +291,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withOsDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-         deprovisionLinuxVM(virtualMachine.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);
+         deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);
          virtualMachine.deallocate();
          virtualMachine.generalize();
         return virtualMachine;
