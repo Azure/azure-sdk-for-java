@@ -160,7 +160,6 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    @Ignore("Failing")
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer.InternetMinimal(
                 azure.publicIpAddresses(),
