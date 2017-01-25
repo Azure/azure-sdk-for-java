@@ -34,7 +34,7 @@ public interface Location extends
     /**
      * @return the region of the data center location
      */
-    Region asRegion();
+    Region region();
 
     /**
      * @return the latitude of the location

@@ -69,7 +69,7 @@ final class SubscriptionImpl extends
         if (region != null) {
             PagedList<Location> locations = listLocations();
             for (Location location : locations) {
-                if (region.equals(location.asRegion())) {
+                if (region.equals(location.region())) {
                     return location;
                 }
             }

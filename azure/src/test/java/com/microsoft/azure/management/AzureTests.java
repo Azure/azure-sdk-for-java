@@ -393,7 +393,7 @@ public class AzureTests extends TestBase {
         for (Location location : subscription.listLocations()) {
             Region region = Region.findByLabelOrName(location.name());
             Assert.assertNotNull(region);
-            Assert.assertEquals(region, location.asRegion());
+            Assert.assertEquals(region, location.region());
             Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
         }
 
