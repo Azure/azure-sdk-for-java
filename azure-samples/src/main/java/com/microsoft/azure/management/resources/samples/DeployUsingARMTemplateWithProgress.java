@@ -73,7 +73,7 @@ public final class DeployUsingARMTemplateWithProgress {
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
-                Thread.sleep(10000);
+                SdkContext.sleep(10000);
                 deployment = azure.deployments().getByGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
