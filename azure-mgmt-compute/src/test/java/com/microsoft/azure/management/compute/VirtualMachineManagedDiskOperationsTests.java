@@ -526,6 +526,5 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         Assert.assertNotNull(managedVm.availabilitySetId());
         AvailabilitySet availabilitySet = computeManager.availabilitySets().getById(managedVm.availabilitySetId());
         Assert.assertTrue(availabilitySet.virtualMachineIds().size() > 0);
-        Assert.assertTrue(availabilitySet.isManaged());
     }
 }

@@ -39,9 +39,9 @@ public interface AvailabilitySet extends
     int faultDomainCount();
 
     /**
-     * @return true if the availability set is enabled for managed disks
+     * @return the availability set sku
      */
-    boolean isManaged();
+    AvailabilitySetSkuTypes sku();
 
     /**
      * @return the resource IDs of the virtual machines in the availability set
@@ -107,20 +107,14 @@ public interface AvailabilitySet extends
         /**
          * The stage of the availability set definition allowing enable or disable for managed disk.
          */
-        interface WithManagedDisk {
+        interface WithSku {
             /**
-             * Disables availability set for managed disk.
+             * Specifies the sku type for the availability set.
              *
+             * @param skuType the sku type
              * @return the next stage of the definition
              */
-            WithCreate withoutManaged();
-
-            /**
-             * Enables availability set for managed disk.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withManaged();
+            WithCreate withSku(AvailabilitySetSkuTypes skuType);
         }
 
         /**
@@ -133,7 +127,7 @@ public interface AvailabilitySet extends
                 Resource.DefinitionWithTags<WithCreate>,
                 WithUpdateDomainCount,
                 WithFaultDomainCount,
-                WithManagedDisk {
+                WithSku {
         }
     }
 
@@ -142,22 +136,16 @@ public interface AvailabilitySet extends
      */
     interface UpdateStages {
         /**
-         * The stage of the availability set update allowing enable or disable for managed disk.
+         * The stage of the availability set definition allowing to specify sku.
          */
-        interface WithManagedDisk {
+        interface WithSku {
             /**
-             * Disables availability set for managed disk.
+             * Specifies the sku type for the availability set.
              *
-             * @return the next stage of the update
+             * @param skuType the sku type
+             * @return the next stage of the definition
              */
-            Update withoutManaged();
-
-            /**
-             * Enables availability set for managed disk.
-             *
-             * @return the next stage of the update
-             */
-            Update withManaged();
+            Update withSku(AvailabilitySetSkuTypes skuType);
         }
     }
     /**
@@ -169,6 +157,6 @@ public interface AvailabilitySet extends
     interface Update extends
             Appliable<AvailabilitySet>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithManagedDisk {
+            UpdateStages.WithSku {
     }
 }

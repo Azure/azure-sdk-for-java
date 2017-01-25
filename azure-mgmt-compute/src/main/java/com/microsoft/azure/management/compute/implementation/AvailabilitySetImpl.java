@@ -8,7 +8,9 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -57,8 +59,11 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public boolean isManaged() {
-        return Utils.toPrimitiveBoolean(this.inner().managed());
+    public AvailabilitySetSkuTypes sku() {
+        if (this.inner().sku() != null || this.inner().sku().name() == null) {
+            return null;
+        }
+        return AvailabilitySetSkuTypes.CLASSIC;
     }
 
     @Override
@@ -98,14 +103,11 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl withoutManaged() {
-        this.inner().withManaged(false);
-        return this;
-    }
-
-    @Override
-    public AvailabilitySetImpl withManaged() {
-        this.inner().withManaged(true);
+    public AvailabilitySetImpl withSku(AvailabilitySetSkuTypes skuType) {
+        if (this.inner().sku() == null) {
+            this.inner().withSku(new Sku());
+        }
+        this.inner().sku().withName(skuType.toString());
         return this;
     }
 
@@ -119,9 +121,6 @@ class AvailabilitySetImpl
         }
         if (this.inner().platformUpdateDomainCount() == null) {
             this.inner().withPlatformUpdateDomainCount(5);
-        }
-        if (this.inner().managed() == null) {
-            this.inner().withManaged(true);
         }
         return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {

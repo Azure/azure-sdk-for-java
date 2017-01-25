@@ -7,6 +7,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
@@ -986,13 +987,19 @@ class VirtualMachineImpl
                 .availabilitySets()
                 .define(name)
                 .withRegion(this.regionName());
-        Creatable<AvailabilitySet> definitionAfterGroup;
+        AvailabilitySet.DefinitionStages.WithSku definitionWithSku;
         if (this.creatableGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+            definitionWithSku = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+            definitionWithSku = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
-        return withNewAvailabilitySet(definitionAfterGroup);
+        Creatable<AvailabilitySet> creatable;
+        if (isManagedDiskEnabled()) {
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.ALIGNED);
+        } else {
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.CLASSIC);
+        }
+        return withNewAvailabilitySet(creatable);
     }
 
     @Override
