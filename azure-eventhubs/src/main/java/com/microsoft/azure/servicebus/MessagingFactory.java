@@ -66,7 +66,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
 	 */
-	MessagingFactory(final ConnectionStringBuilder builder)
+	MessagingFactory(final ConnectionStringBuilder builder, final RetryPolicy retryPolicy)
 	{
             super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 
@@ -74,7 +74,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
             this.hostName = builder.getEndpoint().getHost();
 
             this.operationTimeout = builder.getOperationTimeout();
-            this.retryPolicy = builder.getRetryPolicy();
+            this.retryPolicy = retryPolicy; 
             this.registeredLinks = new LinkedList<>();
             this.reactorLock = new Object();
             this.connectionHandler = new ConnectionHandler(this);
@@ -188,11 +188,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		return this.retryPolicy;
 	}
-
+	
 	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
 	{
+		return createFromConnectionString(connectionString, RetryPolicy.getDefault());
+	}
+
+	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final RetryPolicy retryPolicy) throws IOException
+	{
 		final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		final MessagingFactory messagingFactory = new MessagingFactory(builder);
+		final MessagingFactory messagingFactory = new MessagingFactory(builder, (retryPolicy != null) ? retryPolicy : RetryPolicy.getDefault());
 
 		messagingFactory.createConnection(builder);
 		return messagingFactory.open;

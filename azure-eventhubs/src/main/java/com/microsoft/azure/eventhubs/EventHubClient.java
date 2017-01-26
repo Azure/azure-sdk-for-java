@@ -20,6 +20,7 @@ import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.IteratorUtil;
 import com.microsoft.azure.servicebus.MessageSender;
 import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.RetryPolicy;
 import com.microsoft.azure.servicebus.PayloadSizeExceededException;
 import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
 import com.microsoft.azure.servicebus.ServiceBusException;
@@ -59,9 +60,23 @@ public class EventHubClient extends ClientEntity
 	public static EventHubClient createFromConnectionStringSync(final String connectionString)
 			throws ServiceBusException, IOException
 	{
+		return createFromConnectionStringSync(connectionString, null);
+	}
+	
+	/**
+	 * Synchronous version of {@link #createFromConnectionString(String)}. 
+	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+	 * @param retryPolicy A custom {@link RetryPolicy} to be used when communicating with EventHub.
+	 * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+	 * @throws ServiceBusException If Service Bus service encountered problems during connection creation. 
+	 * @throws IOException  If the underlying Proton-J layer encounter network errors.
+	 */
+	public static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy)
+			throws ServiceBusException, IOException
+	{
 		try
 		{
-			return createFromConnectionString(connectionString).get();
+			return createFromConnectionString(connectionString, retryPolicy).get();
 		}
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -105,10 +120,28 @@ public class EventHubClient extends ClientEntity
 	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
 			throws ServiceBusException, IOException
 	{
+		return createFromConnectionString(connectionString, null);
+	}
+	
+	/**
+	 * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
+	 * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+	 * 
+	 * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+	 * 
+	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+	 * @param retryPolicy A custom {@link RetryPolicy} to be used when communicating with EventHub.
+	 * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+	 * @throws ServiceBusException If Service Bus service encountered problems during connection creation. 
+	 * @throws IOException  If the underlying Proton-J layer encounter network errors.
+	 */
+	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString, final RetryPolicy retryPolicy)
+			throws ServiceBusException, IOException
+	{
 		final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
-
-		return MessagingFactory.createFromConnectionString(connectionString.toString())
+		
+		return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy)
 				.thenApplyAsync(new Function<MessagingFactory, EventHubClient>()
 				{
 					@Override
