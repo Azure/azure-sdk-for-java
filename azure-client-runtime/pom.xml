@@ -8,7 +8,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-client-runtime</artifactId>
-  <version>1.0.0-RC1-SNAPSHOT</version>
+  <version>1.0.0-beta5-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Azure Java Client Runtime for AutoRest</name>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>1.0.0-RC1-SNAPSHOT</version>
+      <version>1.0.0-beta5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
