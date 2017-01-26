@@ -20,9 +20,9 @@ import java.io.File;
  * Azure Compute sample for managing virtual machines -
  *   - Create a virtual machine with un-managed OS and data disks
  *   - Deallocate the virtual machine
- *   - Migrate the virtual machine to use managed disk
+ *   - Migrate the virtual machine to use managed disk.
  */
-public class MigrateVirtualMachine {
+public final class MigrateVirtualMachine {
     /**
      * Main entry point.
      * @param args the parameters
@@ -118,5 +118,8 @@ public class MigrateVirtualMachine {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private MigrateVirtualMachine() {
     }
 }

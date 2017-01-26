@@ -36,9 +36,9 @@ import java.util.List;
  *  - Stop a virtual machine
  *  - Update a virtual machine
  *      - Expand the OS disk
- *      - Expand data disks
+ *      - Expand data disks.
  */
-public class ManageVirtualMachineWithDisk {
+public final class ManageVirtualMachineWithDisk {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
@@ -230,5 +230,8 @@ public class ManageVirtualMachineWithDisk {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private ManageVirtualMachineWithDisk() {
     }
 }

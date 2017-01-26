@@ -31,9 +31,9 @@ import java.util.List;
  *  - Create snapshot from the virtual machine's OS and data disks
  *  - Create managed disks from the snapshots
  *  - Create virtual machine by attaching the managed disks
- *  - Get SAS Uri to the virtual machine's managed disks
+ *  - Get SAS Uri to the virtual machine's managed disks.
  */
-public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
+public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
@@ -284,5 +284,8 @@ public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private CreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
     }
 }

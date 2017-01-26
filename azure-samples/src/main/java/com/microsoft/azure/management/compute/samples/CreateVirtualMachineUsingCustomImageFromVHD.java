@@ -37,9 +37,9 @@ import java.util.List;
  *  - Create a second virtual machine using the custom image
  *  - Create a second virtual machine using the custom image and configure the data disks
  *  - Deletes the custom image
- *  - Get SAS Uri to the virtual machine's managed disks
+ *  - Get SAS Uri to the virtual machine's managed disks.
  */
-public class CreateVirtualMachineUsingCustomImageFromVHD {
+public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
     /**
      * Main function which runs the actual sample.
@@ -180,7 +180,7 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized (e.g. withUpdatedDataDiskFromImage)
+                    .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)
                     .withNewDataDiskFromImage(1, 100, CachingTypes.READ_ONLY)
                     .withNewDataDiskFromImage(2, 100, CachingTypes.READ_WRITE)
                     .withNewDataDisk(50)
@@ -295,5 +295,8 @@ public class CreateVirtualMachineUsingCustomImageFromVHD {
                 shell.close();
             }
         }
+    }
+
+    private CreateVirtualMachineUsingCustomImageFromVHD() {
     }
 }

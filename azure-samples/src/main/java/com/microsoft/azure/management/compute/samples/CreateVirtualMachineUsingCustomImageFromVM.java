@@ -35,9 +35,9 @@ import java.util.List;
  *  - Create a second managed virtual machine using the custom image
  *  - Create a third virtual machine using the custom image and configure the data disks
  *  - Deletes the custom image
- *  - Get SAS Uri to the virtual machine's managed disks
+ *  - Get SAS Uri to the virtual machine's managed disks.
  */
-public class CreateVirtualMachineUsingCustomImageFromVM {
+public final class CreateVirtualMachineUsingCustomImageFromVM {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
@@ -283,5 +283,8 @@ public class CreateVirtualMachineUsingCustomImageFromVM {
                 shell.close();
             }
         }
+    }
+
+    private CreateVirtualMachineUsingCustomImageFromVM() {
     }
 }
