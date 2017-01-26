@@ -12,9 +12,9 @@ import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.CreationSource;
+import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
-import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -44,8 +44,8 @@ class DiskImpl
     }
 
     @Override
-    public StorageAccountTypes accountType() {
-        return this.inner().accountType();
+    public DiskSkuTypes sku() {
+        return new DiskSkuTypes(this.inner().accountType());
     }
 
     @Override
@@ -123,9 +123,9 @@ class DiskImpl
     public DiskImpl withLinuxFromDisk(Disk sourceDisk) {
         withLinuxFromDisk(sourceDisk.id());
         if (sourceDisk.osType() != null) {
-            this.withOsType(sourceDisk.osType());
+            this.withOSType(sourceDisk.osType());
         }
-        this.withAccountType(sourceDisk.accountType());
+        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -144,9 +144,9 @@ class DiskImpl
     public DiskImpl withLinuxFromSnapshot(Snapshot sourceSnapshot) {
         withLinuxFromSnapshot(sourceSnapshot.id());
         if (sourceSnapshot.osType() != null) {
-            this.withOsType(sourceSnapshot.osType());
+            this.withOSType(sourceSnapshot.osType());
         }
-        this.withAccountType(sourceSnapshot.accountType());
+        this.withSku(sourceSnapshot.sku());
         return this;
     }
 
@@ -176,9 +176,9 @@ class DiskImpl
     public DiskImpl withWindowsFromDisk(Disk sourceDisk) {
         withWindowsFromDisk(sourceDisk.id());
         if (sourceDisk.osType() != null) {
-            this.withOsType(sourceDisk.osType());
+            this.withOSType(sourceDisk.osType());
         }
-        this.withAccountType(sourceDisk.accountType());
+        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -197,9 +197,9 @@ class DiskImpl
     public DiskImpl withWindowsFromSnapshot(Snapshot sourceSnapshot) {
         withWindowsFromSnapshot(sourceSnapshot.id());
         if (sourceSnapshot.osType() != null) {
-            this.withOsType(sourceSnapshot.osType());
+            this.withOSType(sourceSnapshot.osType());
         }
-        this.withAccountType(sourceSnapshot.accountType());
+        this.withSku(sourceSnapshot.sku());
         return this;
     }
 
@@ -250,8 +250,8 @@ class DiskImpl
     @Override
     public DiskImpl fromDisk(Disk managedDisk) {
         return fromDisk(managedDisk.id())
-                .withOsType(managedDisk.osType())
-                .withAccountType(managedDisk.accountType());
+                .withOSType(managedDisk.osType())
+                .withSku(managedDisk.sku());
     }
 
     @Override
@@ -261,14 +261,14 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl withOsType(OperatingSystemTypes osType) {
+    public DiskImpl withOSType(OperatingSystemTypes osType) {
         this.inner().withOsType(osType);
         return this;
     }
 
     @Override
-    public DiskImpl withAccountType(StorageAccountTypes accountType) {
-        this.inner().withAccountType(accountType);
+    public DiskImpl withSku(DiskSkuTypes sku) {
+        this.inner().withAccountType(sku.accountType());
         return this;
     }
 

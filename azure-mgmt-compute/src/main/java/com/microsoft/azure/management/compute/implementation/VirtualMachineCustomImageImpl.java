@@ -201,14 +201,14 @@ class VirtualMachineCustomImageImpl
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withOsDiskSizeInGB(int diskSizeGB) {
+    public VirtualMachineCustomImageImpl withOSDiskSizeInGB(int diskSizeGB) {
         this.ensureOsDiskImage()
                 .withDiskSizeGB(diskSizeGB);
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withOsDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineCustomImageImpl withOSDiskCaching(CachingTypes cachingType) {
         this.ensureOsDiskImage()
                 .withCaching(cachingType);
         return this;

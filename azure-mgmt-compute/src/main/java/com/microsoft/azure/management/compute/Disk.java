@@ -26,9 +26,9 @@ public interface Disk extends
         Wrapper<DiskInner>,
         Updatable<Disk.Update> {
     /**
-     * @return the disk account type
+     * @return the disk sku
      */
-    StorageAccountTypes accountType();
+    DiskSkuTypes sku();
 
     /**
      * @return the disk creation method
@@ -371,14 +371,14 @@ public interface Disk extends
         /**
          * The stage of the managed disk definition allowing to choose account type.
          */
-        interface WithAccountType {
+        interface WithSku {
             /**
-             * Specifies the account type.
+             * Specifies the sku.
              *
-             * @param accountType account type
+             * @param sku the sku
              * @return the next stage of the managed disk definition
              */
-            WithCreate withAccountType(StorageAccountTypes accountType);
+            WithCreate withSku(DiskSkuTypes sku);
         }
 
         /**
@@ -389,7 +389,7 @@ public interface Disk extends
         interface WithCreate extends
                 Creatable<Disk>,
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
-                WithAccountType {
+                WithSku {
         }
     }
 
@@ -398,16 +398,16 @@ public interface Disk extends
      */
     interface UpdateStages {
         /**
-         * The stage of the managed disk update allowing to choose account type.
+         * The stage of the managed disk update allowing to choose sku type.
          */
-        interface WithAccountType {
+        interface WithSku {
             /**
-             * Specifies the account type.
+             * Specifies the sku.
              *
-             * @param accountType account type
+             * @param sku the sku
              * @return the next stage of the managed disk update
              */
-            Update withAccountType(StorageAccountTypes accountType);
+            Update withSku(DiskSkuTypes sku);
         }
 
         /**
@@ -433,7 +433,7 @@ public interface Disk extends
              * @param osType operating system type
              * @return the next stage of the managed disk update
              */
-            Update withOsType(OperatingSystemTypes osType);
+            Update withOSType(OperatingSystemTypes osType);
         }
     }
 
@@ -446,7 +446,7 @@ public interface Disk extends
     interface Update extends
             Appliable<Disk>,
             Resource.UpdateWithTags<Disk.Update>,
-            UpdateStages.WithAccountType,
+            UpdateStages.WithSku,
             UpdateStages.WithSize,
             UpdateStages.WithOsSettings {
     }

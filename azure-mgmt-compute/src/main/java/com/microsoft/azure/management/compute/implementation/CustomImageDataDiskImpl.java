@@ -20,7 +20,7 @@ class CustomImageDataDiskImpl
         extends ChildResourceImpl<ImageDataDisk, VirtualMachineCustomImageImpl, VirtualMachineCustomImage>
         implements
         VirtualMachineCustomImage.CustomImageDataDisk,
-        VirtualMachineCustomImage.CustomImageDataDisk.Definition<VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOsDiskSettings> {
+        VirtualMachineCustomImage.CustomImageDataDisk.Definition<VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings> {
 
     CustomImageDataDiskImpl(ImageDataDisk inner, VirtualMachineCustomImageImpl parent) {
         super(inner, parent);

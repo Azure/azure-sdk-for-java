@@ -32,14 +32,14 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 region,
                 computeManager);
         //
-        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOsDiskSettings
+        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings
                 creatableDisk = computeManager
                 .virtualMachineCustomImages()
                 .define(vhdBasedImageName)
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
-                .withOsDiskCaching(linuxVM.osDiskCachingType());
+                .withOSDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
             creatableDisk.defineDataDiskImage()
                     .withLun(disk.lun())
@@ -95,7 +95,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRootUsername("javauser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
@@ -165,7 +165,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewUnmanagedDataDisk(100)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertFalse(nativeVm.isManagedDiskEnabled());
@@ -287,7 +287,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                     .attach()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
          deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);

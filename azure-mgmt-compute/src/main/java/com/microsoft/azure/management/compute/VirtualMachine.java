@@ -964,7 +964,7 @@ public interface VirtualMachine extends
              * @param cachingType the caching type.
              * @return the stage representing creatable VM definition
              */
-            WithCreate withOsDiskCaching(CachingTypes cachingType);
+            WithCreate withOSDiskCaching(CachingTypes cachingType);
 
             /**
              * Specifies the encryption settings for the OS Disk.
@@ -980,7 +980,7 @@ public interface VirtualMachine extends
              * @param size the VHD size.
              * @return the stage representing creatable VM definition
              */
-            WithCreate withOsDiskSizeInGb(Integer size);
+            WithCreate withOSDiskSizeInGB(Integer size);
 
             /**
              * Specifies the name for the OS Disk.
@@ -1671,15 +1671,15 @@ public interface VirtualMachine extends
          * @param cachingType the caching type.
          * @return the stage representing updatable VM definition
          */
-        Update withOsDiskCaching(CachingTypes cachingType);
+        Update withOSDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the size of the OSDisk in GB.
          *
-         * @param size the VHD size.
+         * @param size the disk size.
          * @return the stage representing updatable VM definition
          */
-        Update withOsDiskSizeInGb(Integer size);
+        Update withOSDiskSizeInGB(Integer size);
 
         /**
          * Specifies the new size for the virtual machine.

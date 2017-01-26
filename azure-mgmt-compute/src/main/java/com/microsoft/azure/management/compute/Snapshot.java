@@ -26,9 +26,9 @@ public interface Snapshot extends
         Wrapper<SnapshotInner>,
         Updatable<Snapshot.Update> {
     /**
-     * @return the snapshot account type
+     * @return the snapshot sku type
      */
-    StorageAccountTypes accountType();
+    DiskSkuTypes sku();
 
     /**
      * @return the snapshot creation method
@@ -338,14 +338,14 @@ public interface Snapshot extends
         /**
          * The stage of the managed disk definition allowing to choose account type.
          */
-        interface WithAccountType {
+        interface WithSku {
             /**
-             * Specifies the account type.
+             * Specifies the sku type.
              *
-             * @param accountType account type
-             * @return the next stage of the managed disk definition
+             * @param sku sku type
+             * @return the next stage of the managed snapshot definition
              */
-            WithCreate withAccountType(StorageAccountTypes accountType);
+            WithCreate withSku(DiskSkuTypes sku);
         }
 
         /**
@@ -357,7 +357,7 @@ public interface Snapshot extends
                 Creatable<Snapshot>,
                 Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
                 WithSize,
-                WithAccountType {
+                WithSku {
         }
     }
 
@@ -368,14 +368,14 @@ public interface Snapshot extends
         /**
          * The stage of the managed snapshot update allowing to choose account type.
          */
-        interface WithAccountType {
+        interface WithSku {
             /**
              * Specifies the account type.
              *
-             * @param accountType account type
+             * @param sku sku type
              * @return the next stage of the managed snapshot update
              */
-            Update withAccountType(StorageAccountTypes accountType);
+            Update withSku(DiskSkuTypes sku);
         }
 
         /**
@@ -388,7 +388,7 @@ public interface Snapshot extends
              * @param osType operating system type
              * @return the next stage of the managed snapshot update
              */
-            Update withOsType(OperatingSystemTypes osType);
+            Update withOSType(OperatingSystemTypes osType);
         }
     }
 
@@ -401,7 +401,7 @@ public interface Snapshot extends
     interface Update extends
             Appliable<Snapshot>,
             Resource.UpdateWithTags<Snapshot.Update>,
-            UpdateStages.WithAccountType,
+            UpdateStages.WithSku,
             UpdateStages.WithOsSettings {
     }
 }

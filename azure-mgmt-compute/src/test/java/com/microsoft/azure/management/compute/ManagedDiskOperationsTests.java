@@ -10,6 +10,7 @@ import org.junit.Test;
 public class ManagedDiskOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
     private static Region region = Region.US_WEST_CENTRAL;
+
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         RG_NAME = generateRandomResourceName("javacsmrg", 15);
@@ -23,7 +24,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
     @Test
     public void CanOperateOnEmptyManagedDisk() {
         final String diskName = generateRandomResourceName("md-empty-", 20);
-        final StorageAccountTypes updateTo = StorageAccountTypes.STANDARD_LRS;
+        final DiskSkuTypes updateTo = DiskSkuTypes.STANDARD_LRS;
 
         ResourceGroup resourceGroup = resourceManager
                 .resourceGroups()
@@ -40,14 +41,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withData()
                 .withSizeInGB(100)
                 // Start option
-                .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                .withSku(DiskSkuTypes.STANDARD_LRS)
                 .withTag("tkey1", "tval1")
                 // End option
                 .create();
 
         Assert.assertNotNull(disk.id());
         Assert.assertTrue(disk.name().equalsIgnoreCase(diskName));
-        Assert.assertEquals(disk.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(disk.sku(), DiskSkuTypes.STANDARD_LRS);
         Assert.assertEquals(disk.creationMethod(), DiskCreateOption.EMPTY);
         Assert.assertFalse(disk.isAttachedToVirtualMachine());
         Assert.assertEquals(disk.sizeInGB(), 100);
@@ -59,11 +60,11 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         // Resize and change storage account type
         //
         disk = disk.update()
-                .withAccountType(updateTo)
+                .withSku(updateTo)
                 .withSizeInGB(200)
                 .apply();
 
-        Assert.assertEquals(disk.accountType(), updateTo);
+        Assert.assertEquals(disk.sku(), updateTo);
         Assert.assertEquals(disk.sizeInGB(), 200);
 
         disk = computeManager.disks().getByGroup(disk.resourceGroupName(), disk.name());
@@ -113,7 +114,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .fromDisk(emptyDisk)
                 // Start Option
                 .withSizeInGB(200)
-                .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                .withSku(DiskSkuTypes.STANDARD_LRS)
                 // End Option
                 .create();
 
@@ -121,7 +122,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         Assert.assertNotNull(disk.id());
         Assert.assertTrue(disk.name().equalsIgnoreCase(diskName2));
-        Assert.assertEquals(disk.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(disk.sku(), DiskSkuTypes.STANDARD_LRS);
         Assert.assertEquals(disk.creationMethod(), DiskCreateOption.COPY);
         Assert.assertFalse(disk.isAttachedToVirtualMachine());
         Assert.assertEquals(disk.sizeInGB(), 200);
@@ -160,12 +161,12 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
                 .withExistingResourceGroup(resourceGroup)
                 .withDataFromDisk(emptyDisk)
                 .withSizeInGB(200)
-                .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                .withSku(DiskSkuTypes.STANDARD_LRS)
                 .create();
 
         Assert.assertNotNull(snapshot.id());
         Assert.assertTrue(snapshot.name().equalsIgnoreCase(snapshotName));
-        Assert.assertEquals(snapshot.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(snapshot.sku(), DiskSkuTypes.STANDARD_LRS);
         Assert.assertEquals(snapshot.creationMethod(), DiskCreateOption.COPY);
         Assert.assertEquals(snapshot.sizeInGB(), 200);
         Assert.assertNull(snapshot.osType());
@@ -184,7 +185,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         Assert.assertNotNull(fromSnapshotDisk.id());
         Assert.assertTrue(fromSnapshotDisk.name().equalsIgnoreCase(snapshotBasedDiskName));
-        Assert.assertEquals(fromSnapshotDisk.accountType(), StorageAccountTypes.STANDARD_LRS);
+        Assert.assertEquals(fromSnapshotDisk.sku(), DiskSkuTypes.STANDARD_LRS);
         Assert.assertEquals(fromSnapshotDisk.creationMethod(), DiskCreateOption.COPY);
         Assert.assertEquals(fromSnapshotDisk.sizeInGB(), 300);
         Assert.assertNull(fromSnapshotDisk.osType());

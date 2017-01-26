@@ -164,7 +164,7 @@ public final class ManageVirtualMachine {
                 }
 
                 windowsVM.update()
-                        .withOsDiskSizeInGb(osDiskSizeInGb + 10)
+                        .withOSDiskSizeInGB(osDiskSizeInGb + 10)
                         .apply();
 
                 System.out.println("Expanded VM " + windowsVM.id() + "'s OS disk to " + (osDiskSizeInGb + 10));

@@ -10,10 +10,10 @@ package com.microsoft.azure.management.compute.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
+import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
-import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -149,7 +149,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                             .withRegion(region)
                             .withExistingResourceGroup(rgName)
                             .withDataFromDisk(dataDisk)
-                            .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                            .withSku(DiskSkuTypes.STANDARD_LRS)
                             .create();
                     dataSnapshots.add(dataSnapshot);
 

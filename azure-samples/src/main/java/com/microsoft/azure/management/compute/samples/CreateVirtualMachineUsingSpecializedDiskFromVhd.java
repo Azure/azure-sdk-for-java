@@ -10,9 +10,9 @@ package com.microsoft.azure.management.compute.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
+import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -153,7 +153,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                             .withData()
                             .fromVhd(dataVhdUri)
                             .withSizeInGB(150)
-                            .withAccountType(StorageAccountTypes.STANDARD_LRS)
+                            .withSku(DiskSkuTypes.STANDARD_LRS)
                             .create();
                     dataDisks.add(dataDisk);
 

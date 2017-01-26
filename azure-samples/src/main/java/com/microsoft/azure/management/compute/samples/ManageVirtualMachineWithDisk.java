@@ -10,6 +10,7 @@ package com.microsoft.azure.management.compute.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
+import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -101,7 +102,7 @@ public class ManageVirtualMachineWithDisk {
                             .withExistingResourceGroup(rgName)
                             .withData()
                             .withSizeInGB(50)
-                            .withAccountType(StorageAccountTypes.STANDARD_LRS);
+                            .withSku(DiskSkuTypes.STANDARD_LRS);
 
                 //======================================================================
                 // Create a Linux VM using a PIR image with managed OS and Data disks

@@ -53,7 +53,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withAdminPassword("BaR@12")
                 .withUnmanagedDisks()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withOsDiskName("javatest")
                 .create();
 

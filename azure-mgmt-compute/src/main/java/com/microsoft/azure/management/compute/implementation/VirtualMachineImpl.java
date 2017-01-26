@@ -579,7 +579,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineImpl withOSDiskCaching(CachingTypes cachingType) {
         this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
@@ -668,7 +668,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskSizeInGb(Integer size) {
+    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
         this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
@@ -1422,7 +1422,7 @@ class VirtualMachineImpl
             }
         }
         if (osDisk.caching() == null) {
-            withOsDiskCaching(CachingTypes.READ_WRITE);
+            withOSDiskCaching(CachingTypes.READ_WRITE);
         }
     }
 

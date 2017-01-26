@@ -41,7 +41,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         // Ensure default to managed disk
         //
@@ -125,7 +125,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE)       // CreateOption: ATTACH
                 // End : Add 5 empty managed disks
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertTrue(virtualMachine.isManagedDiskEnabled());
@@ -266,7 +266,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE)       // CreateOption: ATTACH
                 // End : Add bunch of empty managed disks
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         System.out.println("Waiting for some time before de-provision");
         sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
@@ -314,7 +314,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRootPassword(password)
                 // No explicit data disks, let CRP create it from the image's data disk images
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine2.dataDisks();
@@ -354,7 +354,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         VirtualMachine virtualMachine3 = creatableVirtualMachine3
                 .withNewDataDisk(200)                               // CreateOption: EMPTY
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         dataDisks = virtualMachine3.dataDisks();
@@ -427,7 +427,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withDataDiskDefaultCachingType(CachingTypes.READ_ONLY)
                 .withDataDiskDefaultStorageAccountType(StorageAccountTypes.STANDARD_LRS)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         virtualMachine1.update()
@@ -464,7 +464,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withUnmanagedDisks()                  /* UN-MANAGED OS and DATA DISKS */
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertFalse(nativeVm.isManagedDiskEnabled());
@@ -491,7 +491,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withoutPrimaryPublicIpAddress()
                 .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertTrue(managedVm.isManagedDiskEnabled());
@@ -520,7 +520,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
                 .withNewAvailabilitySet(availSetName)           // Default to managed availability set
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
-                .withOsDiskCaching(CachingTypes.READ_WRITE)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
         Assert.assertNotNull(managedVm.availabilitySetId());
