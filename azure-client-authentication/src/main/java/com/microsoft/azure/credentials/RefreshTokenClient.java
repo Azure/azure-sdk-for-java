@@ -1,0 +1,74 @@
+package com.microsoft.azure.credentials;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.interceptors.LoggingInterceptor;
+import com.microsoft.rest.serializer.JacksonAdapter;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import rx.Observable;
+
+import java.util.Date;
+
+public class RefreshTokenClient {
+    private final RefreshTokenService service;
+
+    public RefreshTokenClient(String baseUrl) {
+        service = new Retrofit.Builder()
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addConverterFactory(new JacksonAdapter().converterFactory())
+            .baseUrl(baseUrl)
+            .client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS)).build())
+            .build().create(RefreshTokenService.class);
+    }
+
+    public AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+        try {
+            RefreshTokenResult result = service.refreshToken(tenant, clientId, "refresh_token", resource, refreshToken)
+                .toBlocking().single();
+            if (result == null) {
+                return null;
+            }
+            return new AuthenticationResult(
+                result.tokenType,
+                result.accessToken,
+                result.refreshToken,
+                result.expiresIn,
+                null,
+                null,
+                isMultipleResourceRefreshToken);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private interface RefreshTokenService {
+        @FormUrlEncoded
+        @POST("{tenant}/oauth2/token")
+        Observable<RefreshTokenResult> refreshToken(
+            @Path("tenant") String tenant,
+            @Field("client_id") String clientId,
+            @Field("grant_type") String grant_type,
+            @Field("resource") String resource,
+            @Field("refresh_token") String refreshToken);
+    }
+
+    private static class RefreshTokenResult {
+        @JsonProperty("token_type")
+        private String tokenType;
+        @JsonProperty("expires_in")
+        private long expiresIn;
+        @JsonProperty("expires_on")
+        private Date expiresOn;
+        @JsonProperty("access_token")
+        private String accessToken;
+        @JsonProperty("refresh_token")
+        private String refreshToken;
+    }
+}

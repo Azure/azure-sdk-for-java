@@ -34,25 +34,9 @@ final class AzureTokenCredentialsInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String resource = credentials.environment().managementEndpoint();
-        // Use graph resource if the host if graph endpoint
-        if (credentials.environment().graphEndpoint().contains(chain.request().url().host())) {
-            resource = credentials.environment().graphEndpoint();
-        }
+        String token = credentials.getToken(chain.request());
         Request newRequest = chain.request().newBuilder()
-                .header("Authorization", "Bearer " + credentials.getToken(resource))
-                .build();
-        return chain.proceed(newRequest);
-    }
-
-    private Response sendRequestWithToken(Chain chain) throws IOException {
-        String resource = credentials.environment().managementEndpoint();
-        // Use graph resource if the host if graph endpoint
-        if (chain.request().url().host().equals(credentials.environment().graphEndpoint())) {
-            resource = credentials.environment().graphEndpoint();
-        }
-        Request newRequest = chain.request().newBuilder()
-                .header("Authorization", "Bearer " + credentials.getToken(resource))
+                .header("Authorization", "Bearer " + token)
                 .build();
         return chain.proceed(newRequest);
     }
