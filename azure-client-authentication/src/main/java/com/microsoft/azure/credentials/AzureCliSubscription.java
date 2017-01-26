@@ -111,6 +111,9 @@ public class AzureCliSubscription {
                     }
                     if (shouldRefresh) {
                         AuthenticationResult authenticationResult = acquireAccessTokenFromRefreshToken(resource, token.refreshToken(), token.isMRRT());
+                        if (authenticationResult == null) {
+                            return null;
+                        }
                         try {
                             AzureCliToken newToken = token.clone().withResource(resource).withAuthenticationResult(authenticationResult);
                             userTokens.put(resource, newToken);

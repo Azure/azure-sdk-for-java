@@ -62,7 +62,7 @@ public class AzureCliToken implements Cloneable {
     public Date expiresOn() {
         if (expiresOnDate == null) {
             try {
-                expiresOnDate = DateTime.parse(expiresOn, DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss.SSSSSS")).toDate();
+                expiresOnDate = DateTime.parse(expiresOn, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")).toDate();
             } catch (IllegalArgumentException e) {
                 expiresOnDate = DateTime.parse(expiresOn).toDate();
             }
