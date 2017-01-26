@@ -6,7 +6,6 @@
 package com.microsoft.azure.management;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -523,8 +522,8 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            Map<String, PublicIpAddress> existingPips = ensurePIPs(pips);
-            PublicIpAddress pip = existingPips.get(1);
+            ensurePIPs(pips);
+            PublicIpAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .withExistingPublicIpAddress(pip)
                     .updateTcpProbe("default")

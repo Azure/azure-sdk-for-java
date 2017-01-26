@@ -42,7 +42,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptor), true);
 
-            defaultSubscription = super.MOCK_SUBSCRIPTION;
+            defaultSubscription = MOCK_SUBSCRIPTION;
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -61,7 +61,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withNetworkInterceptor(interceptor), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
-            addTextReplacementRule(defaultSubscription, super.MOCK_SUBSCRIPTION);
+            addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }
