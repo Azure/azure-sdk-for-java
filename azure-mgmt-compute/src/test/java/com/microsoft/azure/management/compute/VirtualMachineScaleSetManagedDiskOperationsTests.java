@@ -179,6 +179,20 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         vmScaleSet.deallocate();
 
+// Updating and adding disk as part of VMSS Update seems consistency failing, CRP is aware of
+// this, hence until it is fixed comment-out the test
+//
+//        {
+//            "startTime": "2017-01-25T06:10:55.2243509+00:00",
+//                "endTime": "2017-01-25T06:11:07.8649525+00:00",
+//                "status": "Failed",
+//                "error": {
+//            "code": "InternalExecutionError",
+//                    "message": "An internal execution error occurred."
+//        },
+//            "name": "6786df83-ed3f-4d7a-bf58-d295b96fef46"
+//        }
+//
 //        vmScaleSet.update()
 //                .withDataDiskUpdated(1, 200) // update not supported
 //                .withNewDataDisk(100)

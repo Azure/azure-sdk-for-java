@@ -60,10 +60,10 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetSkuTypes sku() {
-        if (this.inner().sku() != null || this.inner().sku().name() == null) {
-            return null;
+        if (this.inner().sku() != null && this.inner().sku().name() != null) {
+            return new AvailabilitySetSkuTypes(this.inner().sku().name());
         }
-        return AvailabilitySetSkuTypes.CLASSIC;
+        return null;
     }
 
     @Override
