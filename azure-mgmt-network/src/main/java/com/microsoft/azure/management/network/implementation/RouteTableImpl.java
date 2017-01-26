@@ -116,10 +116,6 @@ class RouteTableImpl
 
     // Helpers
 
-    NetworkManager manager() {
-        return super.myManager;
-    }
-
     @Override
     protected void beforeCreating() {
         // Reset and update routes

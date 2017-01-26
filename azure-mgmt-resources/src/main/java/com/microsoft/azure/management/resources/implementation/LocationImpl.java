@@ -47,7 +47,7 @@ final class LocationImpl extends
     }
 
     @Override
-    public Region asRegion() {
+    public Region region() {
         return Region.findByLabelOrName(this.name());
     }
 }

@@ -13,9 +13,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
  * Provides access to getting a specific Azure resource based on its resource group and parent.
  *
  * @param <T> the type of the resource collection
+ * @param <ParentT> the parent resource type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
-public interface SupportsGettingByParent<T> {
+public interface SupportsGettingByParent<T, ParentT extends GroupableResource<ManagerT>, ManagerT> {
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *
@@ -33,5 +35,5 @@ public interface SupportsGettingByParent<T> {
      * @param name the name of resource.
      * @return an immutable representation of the resource
      */
-    T getByParent(GroupableResource parentResource, String name);
+    T getByParent(ParentT parentResource, String name);
 }

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.AvailabilitySetInner;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -22,11 +23,10 @@ import java.util.List;
  */
 @Fluent()
 public interface AvailabilitySet extends
-        GroupableResource,
+        GroupableResource<ComputeManager>,
         Refreshable<AvailabilitySet>,
         Wrapper<AvailabilitySetInner>,
         Updatable<AvailabilitySet.Update> {
-
 
     /**
      * @return the update domain count of this availability set

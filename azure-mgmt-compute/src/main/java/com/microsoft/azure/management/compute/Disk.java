@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.DiskInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -21,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent
 public interface Disk extends
-        GroupableResource,
+        GroupableResource<ComputeManager>,
         Refreshable<Disk>,
         Wrapper<DiskInner>,
         Updatable<Disk.Update> {

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
+import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
@@ -26,7 +27,8 @@ class DeploymentSlotsImpl
                         DeploymentSlotImpl,
                         SiteInner,
                         WebAppsInner,
-                        AppServiceManager>
+                        AppServiceManager,
+                        WebApp>
         implements DeploymentSlots {
 
     private final PagedListConverter<SiteInner, DeploymentSlot> converter;

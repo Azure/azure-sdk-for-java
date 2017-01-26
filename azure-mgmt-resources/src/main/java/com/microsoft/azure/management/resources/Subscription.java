@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.SubscriptionInner;
@@ -47,4 +48,11 @@ public interface Subscription extends
      */
 
     PagedList<Location> listLocations();
+
+    /**
+     * Gets the data center location for the specified region, if the selected subscription has access to it.
+     * @param region an Azure region
+     * @return an Azure data center location, or null if the location is not accessible to this subscription
+     */
+    Location getLocationByRegion(Region region);
 }

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ListToMapConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -206,8 +207,11 @@ public class SqlServerImpl
 
             @Override
             protected RecommendedElasticPool impl(RecommendedElasticPoolInner recommendedElasticPoolInner) {
-                return new RecommendedElasticPoolImpl(recommendedElasticPoolInner,
-                        self.databasesInner, self.recommendedElasticPoolsInner);
+                return new RecommendedElasticPoolImpl(
+                        recommendedElasticPoolInner,
+                        self.databasesInner,
+                        self.recommendedElasticPoolsInner,
+                        self.manager());
             }
         };
         return converter.convertToUnmodifiableMap(this.recommendedElasticPoolsInner.list(
@@ -264,7 +268,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition) {
-        return withNewElasticPool(elasticPoolName, elasticPoolEdition, null);
+        return withNewElasticPool(elasticPoolName, elasticPoolEdition, (String[]) null);
     }
 
     @Override
@@ -306,12 +310,12 @@ public class SqlServerImpl
         return this;
     }
 
-    private Observable createOrUpdateFirewallRulesAsync() {
+    private Observable<Indexable> createOrUpdateFirewallRulesAsync() {
         final SqlServerImpl self = this;
         if (this.firewallRuleCreatableMap.size() > 0) {
             return Utils.rootResource(this.firewallRulesImpl
                     .sqlFirewallRules()
-                    .createAsync(new ArrayList(this.firewallRuleCreatableMap.values())))
+                    .createAsync(new ArrayList<Creatable<SqlFirewallRule>>(this.firewallRuleCreatableMap.values())))
                     .map(new Func1<Indexable, Indexable>() {
                         @Override
                         public Indexable call(Indexable indexable) {
@@ -323,9 +327,9 @@ public class SqlServerImpl
         return Observable.empty();
     }
 
-    private Observable createOrUpdateElasticPoolsAndDatabasesAsync() {
+    private Observable<Indexable> createOrUpdateElasticPoolsAndDatabasesAsync() {
         if (this.elasticPoolCreatableMap.size() > 0) {
-            this.elasticPoolsImpl.elasticPools().create(new ArrayList(this.elasticPoolCreatableMap.values()));
+            this.elasticPoolsImpl.elasticPools().create(new ArrayList<Creatable<SqlElasticPool>>(this.elasticPoolCreatableMap.values()));
             this.elasticPoolCreatableMap.clear();
         }
 
@@ -333,7 +337,7 @@ public class SqlServerImpl
         if (this.databaseCreatableMap.size() > 0) {
             return Utils.rootResource(this.databasesImpl
                     .databases()
-                    .createAsync(new ArrayList(this.databaseCreatableMap.values())))
+                    .createAsync(new ArrayList<Creatable<SqlDatabase>>(this.databaseCreatableMap.values())))
                     .map(new Func1<Indexable, Indexable>() {
                         @Override
                         public Indexable call(Indexable indexable) {
@@ -346,8 +350,8 @@ public class SqlServerImpl
     }
 
     private void createOrUpdateChildResources() {
-        Observable createFirewallRules = createOrUpdateFirewallRulesAsync();
-        Observable createDatabases = createOrUpdateElasticPoolsAndDatabasesAsync();
+        Observable<Indexable> createFirewallRules = createOrUpdateFirewallRulesAsync();
+        Observable<Indexable> createDatabases = createOrUpdateElasticPoolsAndDatabasesAsync();
         Observable.merge(createFirewallRules, createDatabases).defaultIfEmpty(null).toBlocking().last();
     }
 

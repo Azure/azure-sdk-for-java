@@ -51,14 +51,98 @@ import java.io.File;
 public final class ManageSimpleApplicationGateway {
 
     /**
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
+     */
+    public static boolean runSample(Azure azure) {
+        final String rgName = SdkContext.randomResourceName("rgNEAGS", 15);
+        try {
+            //=======================================================================
+            // Create an application gateway
+
+            System.out.println("================= CREATE ======================");
+            System.out.println("Creating an application gateway... (this can take about 20 min)");
+            long t1 = System.currentTimeMillis();
+
+            ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(rgName)
+                    // Request routing rule for HTTP from public 80 to public 8080
+                    .defineRequestRoutingRule("HTTP-80-to-8080")
+                    .fromPublicFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIpAddress("11.1.1.1")
+                    .toBackendIpAddress("11.1.1.2")
+                    .toBackendIpAddress("11.1.1.3")
+                    .toBackendIpAddress("11.1.1.4")
+                    .attach()
+                    .withNewPublicIpAddress()
+                    .create();
+
+            long t2 = System.currentTimeMillis();
+
+            System.out.println("Application gateway created: (took " + (t2 - t1) / 1000 + " seconds)");
+            Utils.print(applicationGateway);
+
+
+            //=======================================================================
+            // Update an application gateway
+            // configure the first routing rule for SSL offload
+
+            System.out.println("================= UPDATE ======================");
+            System.out.println("Updating the application gateway");
+
+            t1 = System.currentTimeMillis();
+
+            applicationGateway.update()
+                    .withoutRequestRoutingRule("HTTP-80-to-8080")
+                    .defineRequestRoutingRule("HTTPs-1443-to-8080")
+                    .fromPublicFrontend()
+                    .fromFrontendHttpsPort(1443)
+                    .withSslCertificateFromPfxFile(new File(ManageSimpleApplicationGateway.class.getClassLoader().getResource("myTest.pfx").getPath()))
+                    .withSslCertificatePassword("Abc123")
+                    .toBackendHttpPort(8080)
+                    .toBackendIpAddress("11.1.1.1")
+                    .toBackendIpAddress("11.1.1.2")
+                    .toBackendIpAddress("11.1.1.3")
+                    .toBackendIpAddress("11.1.1.4")
+                    .withHostName("www.contoso.com")
+                    .withCookieBasedAffinity()
+                    .attach()
+                    .apply();
+
+            t2 = System.currentTimeMillis();
+
+            System.out.println("Application gateway updated: (took " + (t2 - t1) / 1000 + " seconds)");
+            Utils.print(applicationGateway);
+            return true;
+        } catch (Exception f) {
+
+            System.out.println(f.getMessage());
+            f.printStackTrace();
+
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().deleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    /**
      * Main entry point.
      * @param args parameters
      */
 
     public static void main(String[] args) {
-
-        final String rgName = SdkContext.randomResourceName("rgNEAGS", 15);
-
          try {
 
             //=============================================================
@@ -75,83 +159,7 @@ public final class ManageSimpleApplicationGateway {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            try {
-                //=======================================================================
-                // Create an application gateway
-
-                System.out.println("================= CREATE ======================");
-                System.out.println("Creating an application gateway... (this can take about 20 min)");
-                long t1 = System.currentTimeMillis();
-
-                ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
-                        .withRegion(Region.US_EAST)
-                        .withNewResourceGroup(rgName)
-                        // Request routing rule for HTTP from public 80 to public 8080
-                        .defineRequestRoutingRule("HTTP-80-to-8080")
-                            .fromPublicFrontend()
-                            .fromFrontendHttpPort(80)
-                            .toBackendHttpPort(8080)
-                            .toBackendIpAddress("11.1.1.1")
-                            .toBackendIpAddress("11.1.1.2")
-                            .toBackendIpAddress("11.1.1.3")
-                            .toBackendIpAddress("11.1.1.4")
-                            .attach()
-                        .withNewPublicIpAddress()
-                        .create();
-
-                long t2 = System.currentTimeMillis();
-
-                System.out.println("Application gateway created: (took " + (t2 - t1) / 1000 + " seconds)");
-                Utils.print(applicationGateway);
-
-
-                //=======================================================================
-                // Update an application gateway
-                // configure the first routing rule for SSL offload
-
-                System.out.println("================= UPDATE ======================");
-                System.out.println("Updating the application gateway");
-
-                t1 = System.currentTimeMillis();
-
-                applicationGateway.update()
-                        .withoutRequestRoutingRule("HTTP-80-to-8080")
-                        .defineRequestRoutingRule("HTTPs-1443-to-8080")
-                            .fromPublicFrontend()
-                            .fromFrontendHttpsPort(1443)
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .toBackendHttpPort(8080)
-                            .toBackendIpAddress("11.1.1.1")
-                            .toBackendIpAddress("11.1.1.2")
-                            .toBackendIpAddress("11.1.1.3")
-                            .toBackendIpAddress("11.1.1.4")
-                            .withHostName("www.contoso.com")
-                            .withCookieBasedAffinity()
-                            .attach()
-                        .apply();
-
-                t2 = System.currentTimeMillis();
-
-                System.out.println("Application gateway updated: (took " + (t2 - t1) / 1000 + " seconds)");
-                Utils.print(applicationGateway);
-
-            } catch (Exception f) {
-
-                System.out.println(f.getMessage());
-                f.printStackTrace();
-
-            } finally {
-                try {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-            }
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

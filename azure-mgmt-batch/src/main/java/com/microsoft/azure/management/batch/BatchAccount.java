@@ -8,6 +8,7 @@ package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
+import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Fluent
 public interface BatchAccount extends
-        GroupableResource,
+        GroupableResource<BatchManager>,
         Refreshable<BatchAccount>,
         Updatable<BatchAccount.Update>,
         Wrapper<BatchAccountInner> {

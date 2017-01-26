@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Fluent
 public interface SqlServer extends
-        GroupableResource,
+        GroupableResource<SqlServerManager>,
         Refreshable<SqlServer>,
         Updatable<SqlServer.Update>,
         HasManager<SqlServerManager>,

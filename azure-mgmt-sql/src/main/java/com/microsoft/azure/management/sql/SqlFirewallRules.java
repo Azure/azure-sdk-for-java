@@ -9,7 +9,6 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
@@ -45,7 +44,7 @@ public interface SqlFirewallRules extends
      * @param name the name of SQLDatabase
      * @return an immutable representation of the SQLDatabase
      */
-    SqlFirewallRule getBySqlServer(GroupableResource sqlServer, String name);
+    SqlFirewallRule getBySqlServer(SqlServer sqlServer, String name);
 
     /**
      * Lists resources of the specified type in the specified resource group and SQLServer.
@@ -62,7 +61,7 @@ public interface SqlFirewallRules extends
      * @param sqlServer the instance of SQLServer
      * @return the list of SQLDatabases in a SQLServer
      */
-    List<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer);
+    List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer);
 
     /**
      * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.

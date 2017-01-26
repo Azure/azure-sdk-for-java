@@ -16,8 +16,12 @@ import org.junit.Assert;
 import org.junit.Before;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public abstract class TestBase extends MockIntegrationTestBase {
+    private PrintStream out;
+
     public static String generateRandomResourceName(String prefix, int maxLen) {
         return SdkContext.randomResourceName(prefix, maxLen);
     }
@@ -38,7 +42,13 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptor), true);
 
-            defaultSubscription = super.MOCK_SUBSCRIPTION;
+            defaultSubscription = MOCK_SUBSCRIPTION;
+            out = System.out;
+            System.setOut(new PrintStream(new OutputStream() {
+                public void write(int b) {
+                    //DO NOTHING
+                }
+            }));
         }
         else {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
@@ -51,7 +61,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withNetworkInterceptor(interceptor), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
-            addTextReplacementRule(defaultSubscription, super.MOCK_SUBSCRIPTION);
+            addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }
@@ -68,6 +78,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                 }
                 Assert.assertEquals(testRecord.networkCallRecords.size(), 0);
             }
+            System.setOut(out);
         }
         resetTest(name.getMethodName());
     }

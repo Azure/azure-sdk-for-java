@@ -12,10 +12,15 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
  * Interface for the child resource which can be CRUDed independently from the parent resource.
+ * @param <ManagerT> the client manager type representing the service
  */
 @Fluent
-public interface IndependentChild
-        extends HasName, HasId, Indexable, HasResourceGroup {
+public interface IndependentChild<ManagerT> extends
+    HasName,
+    HasId,
+    Indexable,
+    HasResourceGroup,
+    HasManager<ManagerT> {
 
     /**
      * Grouping of all the definition stages.

@@ -75,10 +75,6 @@ class NetworkImpl
         return this;
     }
 
-    NetworkManager manager() {
-        return super.myManager;
-    }
-
     // Setters (fluent)
 
     @Override

@@ -10,8 +10,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * Interface for the child resource which can be CRUDed independently from the parent resource.
+ *
+ * @param <ManagerT> the client manager type representing the service
  */
 @Fluent
-public interface IndependentChildResource
-        extends GroupableResource, IndependentChild {
+public interface IndependentChildResource<ManagerT>
+        extends GroupableResource<ManagerT>, IndependentChild<ManagerT> {
 }

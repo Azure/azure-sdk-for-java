@@ -17,6 +17,62 @@ import java.util.List;
  * by browsing through extension image publishers, types, and versions.
  */
 public final class ListVirtualMachineExtensionImages {
+
+    /**
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
+     */
+    public static boolean runSample(Azure azure) {
+        //=================================================================
+        // List all virtual machine extension image publishers and
+        // list all virtual machine extension images
+        // published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions
+        // by browsing through extension image publishers, types, and versions
+
+        List<VirtualMachinePublisher> publishers = azure
+                .virtualMachineImages()
+                .publishers()
+                .listByRegion(Region.US_EAST);
+
+        VirtualMachinePublisher chosenPublisher;
+
+        System.out.println("US East data center: printing list of \n"
+                + "a) Publishers and\n"
+                + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
+        System.out.println("=======================================================");
+        System.out.println("\n");
+
+        for (VirtualMachinePublisher publisher : publishers) {
+
+            System.out.println("Publisher - " + publisher.name());
+
+            if (publisher.name().equalsIgnoreCase("Microsoft.OSTCExtensions")
+                    | publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
+
+                chosenPublisher = publisher;
+                System.out.print("\n\n");
+                System.out.println("=======================================================");
+                System.out.println("Located " + chosenPublisher.name());
+                System.out.println("=======================================================");
+                System.out.println("Printing entries as publisher/type/version");
+
+                for (VirtualMachineExtensionImageType imageType : chosenPublisher.extensionTypes().list()) {
+                    for (VirtualMachineExtensionImageVersion version: imageType.versions().list()) {
+                        VirtualMachineExtensionImage image = version.getImage();
+                        System.out.println("Image - " + chosenPublisher.name() + "/"
+                                + image.typeName() + "/"
+                                + image.versionName());
+                    }
+                }
+
+                System.out.print("\n\n");
+
+            }
+        }
+        return true;
+    }
+
     /**
      * The main entry point.
      *
@@ -24,8 +80,6 @@ public final class ListVirtualMachineExtensionImages {
      */
     public static void main(String[] args) {
         try {
-
-
             //=================================================================
             // Authenticate
 
@@ -37,52 +91,7 @@ public final class ListVirtualMachineExtensionImages {
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
-            //=================================================================
-            // List all virtual machine extension image publishers and
-            // list all virtual machine extension images
-            // published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions
-            // by browsing through extension image publishers, types, and versions
-
-            List<VirtualMachinePublisher> publishers = azure
-                    .virtualMachineImages()
-                    .publishers()
-                    .listByRegion(Region.US_EAST);
-
-            VirtualMachinePublisher chosenPublisher;
-
-            System.out.println("US East data center: printing list of \n"
-                    + "a) Publishers and\n"
-                    + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
-            System.out.println("=======================================================");
-            System.out.println("\n");
-
-            for (VirtualMachinePublisher publisher : publishers) {
-
-                System.out.println("Publisher - " + publisher.name());
-
-                if (publisher.name().equalsIgnoreCase("Microsoft.OSTCExtensions")
-                        | publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
-
-                    chosenPublisher = publisher;
-                    System.out.print("\n\n");
-                    System.out.println("=======================================================");
-                    System.out.println("Located " + chosenPublisher.name());
-                    System.out.println("=======================================================");
-                    System.out.println("Printing entries as publisher/type/version");
-
-                    for (VirtualMachineExtensionImageType imageType : chosenPublisher.extensionTypes().list()) {
-                        for (VirtualMachineExtensionImageVersion version: imageType.versions().list()) {
-                            VirtualMachineExtensionImage image = version.getImage();
-                                System.out.println("Image - " + chosenPublisher.name() + "/"
-                                        + image.typeName() + "/"
-                                        + image.versionName());
-                        }
-                    }
-
-                    System.out.print("\n\n");
-
-                }
-            }
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

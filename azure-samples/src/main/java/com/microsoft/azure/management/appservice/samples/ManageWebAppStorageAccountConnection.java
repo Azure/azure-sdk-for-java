@@ -50,10 +50,11 @@ public final class ManageWebAppStorageAccountConnection {
     private static OkHttpClient httpClient;
 
     /**
-     * Main entry point.
-     * @param args the parameters
+     * Main function which runs the actual sample.
+     * @param azure instance of the azure client
+     * @return true if sample runs successfully
      */
-    public static void main(String[] args) {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
@@ -62,6 +63,99 @@ public final class ManageWebAppStorageAccountConnection {
         final String containerName  = SdkContext.randomResourceName("jcontainer", 20);
         final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
+
+        try {
+
+            //============================================================
+            // Create a storage account for the web app to use
+
+            System.out.println("Creating storage account " + storageName + "...");
+
+            StorageAccount storageAccount = azure.storageAccounts()
+                    .define(storageName)
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName)
+                    .create();
+
+            String accountKey = storageAccount.getKeys().get(0).value();
+
+            String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
+                    storageAccount.name(), accountKey);
+
+            System.out.println("Created storage account " + storageAccount.name());
+
+            //============================================================
+            // Upload a few files to the storage account blobs
+
+            System.out.println("Uploading 2 blobs to container " + containerName + "...");
+
+            CloudBlobContainer container = setUpStorageAccount(connectionString, containerName);
+            uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
+            uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
+
+            System.out.println("Uploaded 2 blobs to container " + container.getName());
+
+            //============================================================
+            // Create a web app with a new app service plan
+
+            System.out.println("Creating web app " + app1Name + "...");
+
+            WebApp app1 = azure.webApps()
+                    .define(app1Name)
+                    .withExistingResourceGroup(rgName)
+                    .withNewAppServicePlan(planName)
+                    .withRegion(Region.US_WEST)
+                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                    .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
+                    .withAppSetting("storage.containerName", containerName)
+                    .create();
+
+            System.out.println("Created web app " + app1.name());
+            Utils.print(app1);
+
+            //============================================================
+            // Deploy a web app that connects to the storage account
+            // Source code: https://github.com/jianghaolu/azure-samples-blob-explorer
+
+            System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
+
+            uploadFileToFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
+
+            System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
+            Utils.print(app1);
+
+            // warm up
+            System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
+            curl("http://" + app1Url + "/azure-samples-blob-traverser");
+            Thread.sleep(5000);
+            System.out.println("CURLing " + app1Url + "/azure-samples-blob-traverser...");
+            System.out.println(curl("http://" + app1Url + "/azure-samples-blob-traverser"));
+
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
+            } catch (NullPointerException npe) {
+                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+            } catch (Exception g) {
+                g.printStackTrace();
+            }
+        }
+        return false;
+    }
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
+
 
         try {
 
@@ -78,94 +172,8 @@ public final class ManageWebAppStorageAccountConnection {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            try {
 
-
-                //============================================================
-                // Create a storage account for the web app to use
-
-                System.out.println("Creating storage account " + storageName + "...");
-
-                StorageAccount storageAccount = azure.storageAccounts()
-                        .define(storageName)
-                        .withRegion(Region.US_WEST)
-                        .withNewResourceGroup(rgName)
-                        .create();
-
-                String accountKey = storageAccount.getKeys().get(0).value();
-
-                String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                        storageAccount.name(), accountKey);
-
-                System.out.println("Created storage account " + storageAccount.name());
-
-                //============================================================
-                // Upload a few files to the storage account blobs
-
-                System.out.println("Uploading 2 blobs to container " + containerName + "...");
-
-                CloudBlobContainer container = setUpStorageAccount(connectionString, containerName);
-                uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
-                uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
-
-                System.out.println("Uploaded 2 blobs to container " + container.getName());
-
-                //============================================================
-                // Create a web app with a new app service plan
-
-                System.out.println("Creating web app " + app1Name + "...");
-
-                WebApp app1 = azure.webApps()
-                        .define(app1Name)
-                        .withExistingResourceGroup(rgName)
-                        .withNewAppServicePlan(planName)
-                        .withRegion(Region.US_WEST)
-                        .withPricingTier(AppServicePricingTier.STANDARD_S1)
-                        .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                        .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                        .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
-                        .withAppSetting("storage.containerName", containerName)
-                        .create();
-
-                System.out.println("Created web app " + app1.name());
-                Utils.print(app1);
-
-                //============================================================
-                // Deploy a web app that connects to the storage account
-                // Source code: https://github.com/jianghaolu/azure-samples-blob-explorer
-
-                System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
-
-                uploadFileToFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
-
-                System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
-                Utils.print(app1);
-
-                // warm up
-                System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
-                curl("http://" + app1Url + "/azure-samples-blob-traverser");
-                Thread.sleep(5000);
-                System.out.println("CURLing " + app1Url + "/azure-samples-blob-traverser...");
-                System.out.println(curl("http://" + app1Url + "/azure-samples-blob-traverser"));
-
-
-
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().beginDeleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
-                } catch (NullPointerException npe) {
-                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
-                } catch (Exception g) {
-                    g.printStackTrace();
-                }
-            }
-
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachine extends
-        GroupableResource,
+        GroupableResource<ComputeManager>,
         Refreshable<VirtualMachine>,
         Wrapper<VirtualMachineInner>,
         Updatable<VirtualMachine.Update>,

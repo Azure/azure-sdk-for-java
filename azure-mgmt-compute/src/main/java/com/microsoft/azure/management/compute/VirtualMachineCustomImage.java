@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineCustomImage extends
-        GroupableResource,
+        GroupableResource<ComputeManager>,
         Refreshable<VirtualMachineCustomImage>,
         Wrapper<ImageInner> {
     /**

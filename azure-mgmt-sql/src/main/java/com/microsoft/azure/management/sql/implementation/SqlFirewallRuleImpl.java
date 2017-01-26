@@ -25,7 +25,8 @@ class SqlFirewallRuleImpl
                                     SqlFirewallRule,
                                     SqlServer,
                                     ServerFirewallRuleInner,
-                                    SqlFirewallRuleImpl>
+                                    SqlFirewallRuleImpl,
+                                    SqlServerManager>
         implements SqlFirewallRule,
             SqlFirewallRule.Definition,
             SqlFirewallRule.Update,
@@ -34,8 +35,9 @@ class SqlFirewallRuleImpl
 
     protected SqlFirewallRuleImpl(String name,
                                   ServerFirewallRuleInner innerObject,
-                                  ServersInner innerCollection) {
-        super(name, innerObject);
+                                  ServersInner innerCollection,
+                                  SqlServerManager manager) {
+        super(name, innerObject, manager);
         this.innerCollection = innerCollection;
     }
 

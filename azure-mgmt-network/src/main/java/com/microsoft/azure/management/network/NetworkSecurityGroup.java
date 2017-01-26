@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.network.model.HasAssociatedSubnets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -25,7 +26,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent()
 public interface NetworkSecurityGroup extends
-        GroupableResource,
+        GroupableResource<NetworkManager>,
         Refreshable<NetworkSecurityGroup>,
         Wrapper<NetworkSecurityGroupInner>,
         Updatable<NetworkSecurityGroup.Update>,
