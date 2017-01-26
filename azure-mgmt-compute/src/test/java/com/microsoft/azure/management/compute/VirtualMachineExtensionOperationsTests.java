@@ -170,7 +170,6 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     }
 
     @Test
-    @Ignore("Test failed with SocketTimeoutException, during cleanup resources.")
     public void canHandleExtensionReference() throws Exception {
         final String VMNAME = "javavm4";
 
