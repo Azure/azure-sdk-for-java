@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentBase;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -67,7 +67,7 @@ public final class DeployUsingARMTemplateWithProgress {
 
             System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
 
-            Deployment deployment = azure.deployments().getByGroup(rgName, deploymentName);
+            DeploymentBase deployment = azure.deployments().getByGroup(rgName, deploymentName);
             System.out.println("Current deployment status : " + deployment.provisioningState());
 
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")

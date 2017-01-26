@@ -3,8 +3,10 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
 import org.junit.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DeploymentsTests extends ResourceManagerTestBase {
@@ -15,7 +17,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     private static String rgName = "javacsmrg2";
     private static String dp1 = "javacsmdep1";
     private static String dp2 = "javacsmdep2";
-    private static String dp3 = "javacsmdep2";
+    private static String dp3 = "javacsmdep3";
     private static String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
     private static String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
     private static String updateTemplate = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
@@ -122,5 +124,65 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
         Assert.assertNotNull(genericVnet);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
+    }
+
+    @Test
+    public void canCancelDeployment() throws Exception {
+        String deploymentName = dp3;
+        // Begin create
+        resourceClient.deployments()
+                .define(deploymentName)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(templateUri, contentVersion)
+                .withParametersLink(parametersUri, contentVersion)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+        Deployment deployment = resourceClient.deployments().getByGroup(rgName, deploymentName);
+
+        Assert.assertEquals(deploymentName, deployment.name());
+
+        deployment.cancelAsync().toBlocking().last();
+        deployment = resourceClient.deployments().getByGroup(rgName, deploymentName);
+        Assert.assertEquals("Canceled", deployment.provisioningState());
+
+        deploymentName = dp3 + 1;
+        resourceClient.deployments()
+                .define(deploymentName)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(templateUri, contentVersion)
+                .withParametersLink(parametersUri, contentVersion)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+        deployment = resourceClient.deployments().getByGroup(rgName, deploymentName);
+        deployment.cancel();
+        deployment = resourceClient.deployments().getByGroup(rgName, deploymentName);
+        Assert.assertEquals("Canceled", deployment.provisioningState());
+
+        deploymentName = dp3 + 2;
+        resourceClient.deployments()
+                .define(deploymentName)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(templateUri, contentVersion)
+                .withParametersLink(parametersUri, contentVersion)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+        deployment = resourceClient.deployments().getByGroup(rgName, deploymentName);
+
+        final String deploymentNameForCallback = deploymentName;
+        // Cancel
+        ServiceCallback<Void> serviceCallback = new ServiceCallback<Void>() {
+            @Override
+            public void failure(Throwable throwable) {
+                System.out.println("Failure");
+                Assert.assertTrue(false);
+            }
+
+            @Override
+            public void success(Void aVoid) {
+                Deployment deployment1 = resourceClient.deployments().getByGroup(rgName, deploymentNameForCallback);
+                Assert.assertEquals("Canceled", deployment1.provisioningState());
+            }
+        };
+        deployment.cancelAsync(serviceCallback).get();
     }
 }

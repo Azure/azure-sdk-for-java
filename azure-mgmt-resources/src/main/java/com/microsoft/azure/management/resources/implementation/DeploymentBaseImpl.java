@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.Dependency;
 import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentBase;
 import com.microsoft.azure.management.resources.DeploymentExportResult;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.DeploymentOperations;
@@ -18,26 +19,28 @@ import com.microsoft.azure.management.resources.ParametersLink;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.TemplateLink;
+import com.microsoft.azure.management.resources.fluentcore.ActionProxy;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The implementation of {@link Deployment} and its nested interfaces.
+ * The implementation of {@link DeploymentBase} and its nested interfaces.
  */
-final class DeploymentImpl extends
-        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
+final class DeploymentBaseImpl extends
+        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentBaseImpl>
         implements
-        Deployment,
-        Deployment.Definition,
-        Deployment.Update {
+        DeploymentBase,
+        DeploymentBase.Definition,
+        DeploymentBase.Update {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
@@ -46,10 +49,10 @@ final class DeploymentImpl extends
     private Creatable<ResourceGroup> creatableResourceGroup;
     private ObjectMapper objectMapper;
 
-    DeploymentImpl(DeploymentExtendedInner innerModel,
-                          final DeploymentsInner client,
-                          final DeploymentOperationsInner deploymentOperationsClient,
-                          final ResourceManager resourceManager) {
+    DeploymentBaseImpl(DeploymentExtendedInner innerModel,
+                       final DeploymentsInner client,
+                       final DeploymentOperationsInner deploymentOperationsClient,
+                       final ResourceManager resourceManager) {
         super(innerModel.name(), innerModel);
         this.client = client;
         this.deploymentOperationsClient = deploymentOperationsClient;
@@ -165,8 +168,8 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public void cancel() {
-        client.cancel(resourceGroupName, name());
+    public Observable<Void> cancelAsync() {
+        return client.cancelAsync(resourceGroupName, name());
     }
 
     @Override
@@ -178,7 +181,7 @@ final class DeploymentImpl extends
     // Withers
 
     @Override
-    public DeploymentImpl withNewResourceGroup(String resourceGroupName, Region region) {
+    public DeploymentBaseImpl withNewResourceGroup(String resourceGroupName, Region region) {
         this.creatableResourceGroup = this.resourceManager.resourceGroups()
                 .define(resourceGroupName)
                 .withRegion(region);
@@ -188,7 +191,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
+    public DeploymentBaseImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
         this.resourceGroupName = resourceGroupDefinition.name();
         addCreatableDependency(resourceGroupDefinition);
         this.creatableResourceGroup = resourceGroupDefinition;
@@ -196,19 +199,19 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withExistingResourceGroup(String resourceGroupName) {
+    public DeploymentBaseImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DeploymentImpl withExistingResourceGroup(ResourceGroup resourceGroup) {
+    public DeploymentBaseImpl withExistingResourceGroup(ResourceGroup resourceGroup) {
         this.resourceGroupName = resourceGroup.name();
         return this;
     }
 
     @Override
-    public DeploymentImpl withTemplate(Object template) {
+    public DeploymentBaseImpl withTemplate(Object template) {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
@@ -218,12 +221,12 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withTemplate(String templateJson) throws IOException {
+    public DeploymentBaseImpl withTemplate(String templateJson) throws IOException {
         return withTemplate(objectMapper.readTree(templateJson));
     }
 
     @Override
-    public DeploymentImpl withTemplateLink(String uri, String contentVersion) {
+    public DeploymentBaseImpl withTemplateLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
@@ -233,7 +236,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withMode(DeploymentMode mode) {
+    public DeploymentBaseImpl withMode(DeploymentMode mode) {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
@@ -242,7 +245,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withParameters(Object parameters) {
+    public DeploymentBaseImpl withParameters(Object parameters) {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
@@ -252,12 +255,12 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withParameters(String parametersJson) throws IOException {
+    public DeploymentBaseImpl withParameters(String parametersJson) throws IOException {
         return withParameters(objectMapper.readTree(parametersJson));
     }
 
     @Override
-    public DeploymentImpl withParametersLink(String uri, String contentVersion) {
+    public DeploymentBaseImpl withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
@@ -267,7 +270,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl beginCreate() {
+    public Deployment beginCreate() {
         if (creatableResourceGroup != null) {
             creatableResourceGroup.create();
         }
@@ -279,11 +282,12 @@ final class DeploymentImpl extends
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
         client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
-        return this;
+        return wrap(this);
     }
 
     @Override
     public Observable<Deployment> createResourceAsync() {
+        final DeploymentBaseImpl self = this;
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -292,8 +296,16 @@ final class DeploymentImpl extends
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner)
-                .map(innerToFluentMap(this));
+                .map(new Func1<DeploymentExtendedInner, Deployment>() {
+                    @Override
+                    public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                        self.setInner(deploymentExtendedInner);
+                        Deployment toReturn = wrap(self);
+                        return toReturn;
+                    }
+                });
     }
+
 
     @Override
     public Observable<Deployment> applyAsync() {
@@ -318,7 +330,11 @@ final class DeploymentImpl extends
     @Override
     public Deployment refresh() {
         setInner(client.get(resourceGroupName(), name()));
-        return this;
+        return wrap(this);
+    }
+
+    private Deployment wrap(DeploymentBaseImpl impl) {
+        return ActionProxy.newInstance(Deployment.class, impl);
     }
 
     @Override

@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentBase;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -19,10 +19,10 @@ final class DeploymentOperationsImpl
         extends ReadableWrappersImpl<DeploymentOperation, DeploymentOperationImpl, DeploymentOperationInner>
         implements DeploymentOperations {
     private final DeploymentOperationsInner client;
-    private final Deployment deployment;
+    private final DeploymentBase deployment;
 
     DeploymentOperationsImpl(final DeploymentOperationsInner client,
-                                    final Deployment deployment) {
+                                    final DeploymentBase deployment) {
         this.client = client;
         this.deployment = deployment;
     }

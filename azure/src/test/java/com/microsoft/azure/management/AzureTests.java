@@ -66,7 +66,6 @@ public class AzureTests extends TestBase {
             .withMode(DeploymentMode.COMPLETE)
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
-
         azure.resourceGroups().deleteByName("rg" + testId);
     }
 
