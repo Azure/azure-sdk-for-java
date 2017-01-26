@@ -6,6 +6,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.InputStream;
