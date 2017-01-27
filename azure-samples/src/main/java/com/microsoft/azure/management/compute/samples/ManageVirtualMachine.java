@@ -44,6 +44,7 @@ public final class ManageVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_WEST_CENTRAL;
         final String windowsVmName = Utils.createRandomName("wVM");
         final String linuxVmName = Utils.createRandomName("lVM");
         final String rgName = Utils.createRandomName("rgCOMV");
@@ -61,7 +62,7 @@ public final class ManageVirtualMachine {
             Date t1 = new Date();
 
             VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIpAddressDynamic()
@@ -69,6 +70,7 @@ public final class ManageVirtualMachine {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
@@ -193,7 +195,7 @@ public final class ManageVirtualMachine {
             System.out.println("Creating a Linux VM in the network");
 
             VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
@@ -202,6 +204,7 @@ public final class ManageVirtualMachine {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 

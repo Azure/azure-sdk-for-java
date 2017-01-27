@@ -15,6 +15,7 @@ import org.junit.Test;
 public class NetworkSampleTests extends SamplesTestBase {
 
     @Test
+    @Ignore("Only one region available for MD, sample require 2")
     public void testManageApplicationGateway() {
         Assert.assertTrue(ManageApplicationGateway.runSample(azure));
     }

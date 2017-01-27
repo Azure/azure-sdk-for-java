@@ -9,6 +9,7 @@ package com.microsoft.azure.management.compute.samples;
 
  import com.microsoft.azure.management.Azure;
  import com.microsoft.azure.management.compute.AvailabilitySet;
+ import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
  import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
  import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
  import com.microsoft.azure.management.compute.VirtualMachine;
@@ -40,6 +41,7 @@ public final class ManageAvailabilitySet {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_WEST_CENTRAL;
         final String rgName = Utils.createRandomName("rgCOMA");
         final String availSetName1 = Utils.createRandomName("av1");
         final String availSetName2 = Utils.createRandomName("av2");
@@ -58,10 +60,11 @@ public final class ManageAvailabilitySet {
             System.out.println("Creating an availability set");
 
             AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName1)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
                     .withUpdateDomainCount(4)
+                    .withSku(AvailabilitySetSkuTypes.ALIGNED)
                     .withTag("cluster", "Windowslinux")
                     .withTag("tag1", "tag1val")
                     .create();
@@ -74,7 +77,7 @@ public final class ManageAvailabilitySet {
 
             Creatable<Network> networkDefinition = azure.networks()
                     .define(vnetName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("10.0.0.0/28");
 
@@ -85,7 +88,7 @@ public final class ManageAvailabilitySet {
             System.out.println("Creating a Windows VM in the availability set");
 
             VirtualMachine vm1 = azure.virtualMachines().define(vm1Name)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork(networkDefinition)
                     .withPrimaryPrivateIpAddressDynamic()
@@ -108,7 +111,7 @@ public final class ManageAvailabilitySet {
             System.out.println("Creating a Linux VM in the availability set");
 
             VirtualMachine vm2 = azure.virtualMachines().define(vm2Name)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork(networkDefinition)
                     .withPrimaryPrivateIpAddressDynamic()
@@ -142,7 +145,7 @@ public final class ManageAvailabilitySet {
             System.out.println("Creating an availability set");
 
             AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName2)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
 

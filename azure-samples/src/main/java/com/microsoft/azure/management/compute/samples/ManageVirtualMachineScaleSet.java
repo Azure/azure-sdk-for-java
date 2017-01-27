@@ -50,6 +50,7 @@ public final class ManageVirtualMachineScaleSet {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_WEST_CENTRAL;
         final String rgName = SdkContext.randomResourceName("rgCOVS", 15);
         final String vnetName = SdkContext.randomResourceName("vnet", 24);
         final String loadBalancerName1 = SdkContext.randomResourceName("intlb" + "-", 18);
@@ -84,7 +85,7 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println("Creating virtual network with a frontend subnet ...");
 
             Network network = azure.networks().define(vnetName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
@@ -101,7 +102,7 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println("Creating a public IP address...");
 
             PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName)
                     .create();
@@ -136,7 +137,7 @@ public final class ManageVirtualMachineScaleSet {
                     + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
             LoadBalancer loadBalancer1 = azure.loadBalancers().define(loadBalancerName1)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
                     .withExistingPublicIpAddress(publicIpAddress)
@@ -202,7 +203,7 @@ public final class ManageVirtualMachineScaleSet {
 
             VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
                     .define(vmssName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                     .withExistingPrimaryNetworkSubnet(network, "Front-end")
@@ -213,6 +214,7 @@ public final class ManageVirtualMachineScaleSet {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
+                    .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountName1)
                     .withNewStorageAccount(storageAccountName2)
                     .withNewStorageAccount(storageAccountName3)

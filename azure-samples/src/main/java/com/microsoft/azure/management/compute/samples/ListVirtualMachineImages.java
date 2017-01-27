@@ -30,6 +30,8 @@ public final class ListVirtualMachineImages {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_WEST_CENTRAL;
+
         //=================================================================
         // List all virtual machine image publishers and
         // list all virtual machine images
@@ -39,7 +41,7 @@ public final class ListVirtualMachineImages {
         List<VirtualMachinePublisher> publishers = azure
                 .virtualMachineImages()
                 .publishers()
-                .listByRegion(Region.US_EAST);
+                .listByRegion(region);
 
         VirtualMachinePublisher chosenPublisher;
 

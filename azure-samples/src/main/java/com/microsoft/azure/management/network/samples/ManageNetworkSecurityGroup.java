@@ -42,6 +42,7 @@ public final class ManageNetworkSecurityGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_NORTH_CENTRAL;
         final String frontEndNSGName = SdkContext.randomResourceName("fensg", 24);
         final String backEndNSGName = SdkContext.randomResourceName("bensg", 24);
         final String rgName = SdkContext.randomResourceName("rgNEMS", 24);
@@ -62,7 +63,7 @@ public final class ManageNetworkSecurityGroup {
 
             Network network = azure.networks()
                     .define(vnetName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
@@ -84,7 +85,7 @@ public final class ManageNetworkSecurityGroup {
 
             System.out.println("Creating a security group for the front end - allows SSH and HTTP");
             NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .defineRule("ALLOW-SSH")
                     .allowInbound()
@@ -122,7 +123,7 @@ public final class ManageNetworkSecurityGroup {
                     + "denies all outbound internet traffic  ");
 
             NetworkSecurityGroup backEndNSG = azure.networkSecurityGroups().define(backEndNSGName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .defineRule("ALLOW-SQL")
                     .allowInbound()
@@ -160,7 +161,7 @@ public final class ManageNetworkSecurityGroup {
             System.out.println("Creating a network interface for the front end");
 
             NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
@@ -182,7 +183,7 @@ public final class ManageNetworkSecurityGroup {
             System.out.println("Creating a network interface for the back end");
 
             NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
@@ -203,7 +204,7 @@ public final class ManageNetworkSecurityGroup {
             Date t1 = new Date();
 
             VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetworkInterface(networkInterface1)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -229,7 +230,7 @@ public final class ManageNetworkSecurityGroup {
             t1 = new Date();
 
             VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetworkInterface(networkInterface2)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)

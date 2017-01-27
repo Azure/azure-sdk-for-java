@@ -167,8 +167,8 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withNewDataDiskFromImage(0, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
-                    .withNewDataDiskFromImage(1, 100, CachingTypes.READ_ONLY)
+                    .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
+                    .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
                     .withNewDataDisk(50)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();

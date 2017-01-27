@@ -38,6 +38,7 @@ public final class ManageNetworkInterface {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_NORTH_CENTRAL;
         final String vnetName = SdkContext.randomResourceName("vnet", 24);
         final String networkInterfaceName1 = SdkContext.randomResourceName("nic1", 24);
         final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
@@ -61,7 +62,7 @@ public final class ManageNetworkInterface {
 
             Network network = azure.networks()
                     .define(vnetName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
@@ -82,7 +83,7 @@ public final class ManageNetworkInterface {
             System.out.println("Creating network interface 1");
 
             NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
@@ -96,7 +97,7 @@ public final class ManageNetworkInterface {
             System.out.println("Creating network interface 2");
 
             NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Mid-tier")
@@ -109,7 +110,7 @@ public final class ManageNetworkInterface {
             System.out.println("Creating network interface 3");
 
             NetworkInterface networkInterface3 = azure.networkInterfaces().define(networkInterfaceName3)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
@@ -128,7 +129,7 @@ public final class ManageNetworkInterface {
             Date t1 = new Date();
 
             VirtualMachine vm = azure.virtualMachines().define(vmName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetworkInterface(networkInterface1)
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
