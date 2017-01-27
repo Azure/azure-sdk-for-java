@@ -11,7 +11,6 @@ import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
-import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -222,14 +221,6 @@ public class AzureTests extends TestBase {
         new TestApplicationGateway.PublicComplex(
                 azure.publicIpAddresses())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
-    }
-
-    @Test
-    @Ignore("Based on existing resource")
-    public void testAppGatewaysExisting() {
-        String appGatewayId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/rg1478645787244/providers/Microsoft.Network/applicationGateways/ag1478645787244";
-        ApplicationGateway ag  = azure.applicationGateways().getById(appGatewayId);
-        TestApplicationGateway.printAppGateway(ag);
     }
 
     /**
