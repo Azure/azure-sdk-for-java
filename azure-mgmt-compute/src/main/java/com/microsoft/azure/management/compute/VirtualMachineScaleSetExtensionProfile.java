@@ -8,8 +8,9 @@
 
 package com.microsoft.azure.management.compute;
 
-import java.util.List;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
+
+import java.util.List;
 
 /**
  * Describes a virtual machine scale set extension profile.

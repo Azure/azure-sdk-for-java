@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +25,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      * The virtual machine scale set sku.
      */
     private Sku sku;
+
+    /**
+     * The purchase plan when deploying a virtual machine scale set from VM
+     * Marketplace images.
+     */
+    private Plan plan;
 
     /**
      * The upgrade policy.
@@ -51,6 +58,13 @@ public class VirtualMachineScaleSetInner extends Resource {
     private Boolean overprovision;
 
     /**
+     * When true this limits the scale set to a single placement group, of max
+     * size 100 virtual machines.
+     */
+    @JsonProperty(value = "properties.singlePlacementGroup")
+    private Boolean singlePlacementGroup;
+
+    /**
      * Get the sku value.
      *
      * @return the sku value
@@ -67,6 +81,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the plan value.
+     *
+     * @return the plan value
+     */
+    public Plan plan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan value.
+     *
+     * @param plan the plan value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPlan(Plan plan) {
+        this.plan = plan;
         return this;
     }
 
@@ -136,6 +170,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withOverprovision(Boolean overprovision) {
         this.overprovision = overprovision;
+        return this;
+    }
+
+    /**
+     * Get the singlePlacementGroup value.
+     *
+     * @return the singlePlacementGroup value
+     */
+    public Boolean singlePlacementGroup() {
+        return this.singlePlacementGroup;
+    }
+
+    /**
+     * Set the singlePlacementGroup value.
+     *
+     * @param singlePlacementGroup the singlePlacementGroup value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSinglePlacementGroup(Boolean singlePlacementGroup) {
+        this.singlePlacementGroup = singlePlacementGroup;
         return this;
     }
 

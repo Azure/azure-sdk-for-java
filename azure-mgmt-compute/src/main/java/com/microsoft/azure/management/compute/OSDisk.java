@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.compute.implementation.ManagedDiskParametersInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,13 +28,11 @@ public class OSDisk {
     /**
      * The disk name.
      */
-    @JsonProperty(required = true)
     private String name;
 
     /**
      * The virtual hard disk.
      */
-    @JsonProperty(required = true)
     private VirtualHardDisk vhd;
 
     /**
@@ -61,6 +60,11 @@ public class OSDisk {
      * size for resizing existing OS and data disks.
      */
     private Integer diskSizeGB;
+
+    /**
+     * The managed disk parameters.
+     */
+    private ManagedDiskParametersInner managedDisk;
 
     /**
      * Get the osType value.
@@ -219,6 +223,26 @@ public class OSDisk {
      */
     public OSDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the managedDisk value.
+     *
+     * @return the managedDisk value
+     */
+    public ManagedDiskParametersInner managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk value.
+     *
+     * @param managedDisk the managedDisk value to set
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withManagedDisk(ManagedDiskParametersInner managedDisk) {
+        this.managedDisk = managedDisk;
         return this;
     }
 
