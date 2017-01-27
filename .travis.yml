@@ -5,7 +5,12 @@ jdk:
 - oraclejdk8
 - openjdk7
 script:
-- mvn install -DskipTests=true
-- mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error
-- mvn checkstyle:check
-- mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true
+ - 'if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
+    export AZURE_TEST_MODE=RECORD;
+    mvn install -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
+  else
+    mvn install -DskipTests=true ;
+    mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
+    mvn checkstyle:check ;
+    mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true ;
+fi'
