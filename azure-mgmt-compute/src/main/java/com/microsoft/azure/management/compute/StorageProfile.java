@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.compute.implementation.ImageReferenceInner;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class StorageProfile {
     /**
      * The image reference.
      */
-    private ImageReference imageReference;
+    private ImageReferenceInner imageReference;
 
     /**
      * The OS disk.
@@ -34,7 +35,7 @@ public class StorageProfile {
      *
      * @return the imageReference value
      */
-    public ImageReference imageReference() {
+    public ImageReferenceInner imageReference() {
         return this.imageReference;
     }
 
@@ -44,7 +45,7 @@ public class StorageProfile {
      * @param imageReference the imageReference value to set
      * @return the StorageProfile object itself.
      */
-    public StorageProfile withImageReference(ImageReference imageReference) {
+    public StorageProfile withImageReference(ImageReferenceInner imageReference) {
         this.imageReference = imageReference;
         return this;
     }

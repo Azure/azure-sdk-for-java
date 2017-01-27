@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -92,13 +92,14 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - Attach data disks
 
-            windowsVM.update()
-                    .withNewDataDisk(10)
-                    .defineNewDataDisk(dataDiskName)
-                    .withSizeInGB(20)
-                    .withCaching(CachingTypes.READ_WRITE)
-                    .attach()
-                    .apply();
+                windowsVM.update()
+                        .withNewUnmanagedDataDisk(10)
+                        .defineUnmanagedDataDisk(dataDiskName)
+                            .withNewVhd(20)
+                            .withCaching(CachingTypes.READ_WRITE)
+                            .attach()
+                        .apply();
+
 
             System.out.println("Attached a new data disk" + dataDiskName + " to VM" + windowsVM.id());
             Utils.print(windowsVM);
@@ -107,9 +108,9 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - detach data disk
 
-            windowsVM.update()
-                    .withoutDataDisk(dataDiskName)
-                    .apply();
+                windowsVM.update()
+                        .withoutUnmanagedDataDisk(dataDiskName)
+                        .apply();
 
             System.out.println("Detached data disk " + dataDiskName + " from VM " + windowsVM.id());
 
@@ -124,13 +125,13 @@ public final class ManageVirtualMachine {
 
             System.out.println("De-allocated VM: " + windowsVM.id());
 
-            VirtualMachineDataDisk dataDisk = windowsVM.dataDisks().get(0);
+                VirtualMachineUnmanagedDataDisk dataDisk = windowsVM.unmanagedDataDisks().get(0);
 
-            windowsVM.update()
-                    .updateDataDisk(dataDisk.name())
-                    .withSizeInGB(30)
-                    .parent()
-                    .apply();
+                windowsVM.update()
+                            .updateUnmanagedDataDisk(dataDisk.name())
+                            .withSizeInGB(30)
+                            .parent()
+                        .apply();
 
             System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");
 
@@ -146,9 +147,9 @@ public final class ManageVirtualMachine {
                 osDiskSizeInGb = 256;
             }
 
-            windowsVM.update()
-                    .withOsDiskSizeInGb(osDiskSizeInGb + 10)
-                    .apply();
+                windowsVM.update()
+                        .withOSDiskSizeInGB(osDiskSizeInGb + 10)
+                        .apply();
 
             System.out.println("Expanded VM " + windowsVM.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
 
@@ -217,7 +218,6 @@ public final class ManageVirtualMachine {
             for (VirtualMachine virtualMachine : azure.virtualMachines().listByGroup(resourceGroupName)) {
                 Utils.print(virtualMachine);
             }
-
 
             //=============================================================
             // Delete the virtual machine

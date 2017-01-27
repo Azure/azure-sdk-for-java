@@ -45,10 +45,19 @@ public interface VirtualMachineScaleSetVM extends
     boolean isLatestScaleSetUpdateApplied();
 
     /**
-     * @return true if the operating system of the virtual machine instance is based on platform image,
-     * false if based on custom image
+     * @return true if the operating system of the virtual machine instance is based on platform image
      */
-    boolean isOsBasedOnPlatformImage();
+    boolean isOSBasedOnPlatformImage();
+
+    /**
+     * @return true if the operating system of the virtual machine instance is based on custom image
+     */
+    boolean isOSBasedOnCustomImage();
+
+    /**
+     * @return true if the operating system of the virtual machine instance is based on stored image
+     */
+    boolean isOSBasedOnStoredImage();
 
     /**
      * @return reference to the platform image that the virtual machine instance operating system is based on,
@@ -58,15 +67,21 @@ public interface VirtualMachineScaleSetVM extends
 
     /**
      * @return the platform image that the virtual machine instance operating system is based on, null be
-     * returned if the operating system is based on custom image
+     * returned otherwise
      */
-    VirtualMachineImage getPlatformImage();
+    VirtualMachineImage getOSPlatformImage();
+
+    /**
+     * @return the custom image that the virtual machine instance operating system is based on, null be
+     * returned otherwise
+     */
+    VirtualMachineCustomImage getOSCustomImage();
 
     /**
      * @return vhd uri of the custom image that the virtual machine instance operating system is based on,
      * null will be returned if the operating system is based on platform image
      */
-    String customImageVhdUri();
+    String storedImageUnmanagedVhdUri();
 
     /**
      * @return the name of the operating system disk
@@ -76,7 +91,22 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * @return vhd uri to the operating system disk
      */
-    String osDiskVhdUri();
+    String osUnmanagedDiskVhdUri();
+
+    /**
+     * @return resource id of the managed disk backing OS disk
+     */
+    String osDiskId();
+
+    /**
+     * @return the unmanaged data disks associated with this virtual machine instance, indexed by lun
+     */
+    Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
+
+    /**
+     * @return the managed data disks associated with this virtual machine instance, indexed by lun
+     */
+    Map<Integer, VirtualMachineDataDisk> dataDisks();
 
     /**
      * @return the caching type of the operating system disk
@@ -167,6 +197,11 @@ public interface VirtualMachineScaleSetVM extends
      * @return the diagnostics profile of the virtual machine instance
      */
     DiagnosticsProfile diagnosticsProfile();
+
+    /**
+     * @return true if managed disk is used for the virtual machine's disks (os, data)
+     */
+    boolean isManagedDiskEnabled();
 
     /**
      * Updates the version of the installed operating system in the virtual machine instance.

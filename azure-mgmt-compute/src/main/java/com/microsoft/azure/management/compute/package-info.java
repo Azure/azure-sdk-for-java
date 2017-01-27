@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for ComputeManagementClient.
- * The Compute Management Client.
+ * Composite Swagger for Compute Client.
  */
 package com.microsoft.azure.management.compute;

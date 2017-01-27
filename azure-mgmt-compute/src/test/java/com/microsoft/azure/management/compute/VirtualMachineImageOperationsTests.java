@@ -53,8 +53,87 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         }
 
         Assert.assertNotNull(firstVMImage);
-        for (DataDiskImage diskImage : firstVMImage.dataDiskImages()) {
+        for (DataDiskImage diskImage : firstVMImage.dataDiskImages().values()) {
             Assert.assertNotNull(diskImage.lun());
         }
     }
+
+
+    private void foo() {
+        computeManager.virtualMachineCustomImages()
+                .define("myimage")
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup("rg")
+                .fromVirtualMachine("")
+                .createAsync();
+
+        // withWindowsFromDisk(Disk, OperatingSystemStateTypes)
+        // withWindowsFromSnapshot(Snapshot, OperatingSystemStateTypes)
+        // withWindowsFromVhd(string vhdUrl, OperatingSystemStateTypes)
+
+        // .defineDataDiskImage(void)
+        //        .withLun(int)
+        //        .withSizeInGB(int)
+
+
+//        computeManager.disks()
+//                .define("")
+//                .withRegion(Region.US_EAST)
+//                .withNewResourceGroup("")
+//                .withWindowsFromDisk | withLinuxFromDisk |
+
+        // Operating System short form is "OS" not 'Os'
+
+//        computeManager.disks()
+//                .define("")
+//                .withRegion(Region.US_EAST)
+//                .withNewResourceGroup("")
+//                .withWindowsFromSnapshot()
+//                .create();
+//
+//
+//        computeManager.disks()
+//                .define("")
+//                .withRegion(Region.US_EAST)
+//                .withNewResourceGroup("")
+//                .withData()
+//                .withSize(100)
+//                // Optionals
+//                .create();
+//                // Optionals
+//
+//
+//
+//        computeManager.disks()
+//                .define("")
+//                .withRegion(Region.US_EAST)
+//                .withNewResourceGroup("")
+//                .withDataFromSnapshot(id)
+//                // Optionals
+//                .withSize()
+//                .create();
+//                // Optionals
+//
+//
+//
+//
+//        // withSpecializedLinuxOSDisk() -> for native
+//
+//        computeManager.virtualMachines()
+//                .define("")
+//                .withRegion(Region.US_EAST)
+//                .withNewResourceGroup("")
+//                .withNewPrimaryNetwork("111")
+//                .withPrimaryPrivateIpAddressDynamic()
+//                .withoutPrimaryPublicIpAddress()
+//                .withStoredLinuxImage()
+//                .withRootUsername()
+//                .withRootPassword()
+//                .
+
+
+
+
+    }
+
 }

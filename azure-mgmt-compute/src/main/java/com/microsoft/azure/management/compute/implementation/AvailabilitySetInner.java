@@ -11,6 +11,7 @@ package com.microsoft.azure.management.compute.implementation;
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -43,6 +44,17 @@ public class AvailabilitySetInner extends Resource {
      */
     @JsonProperty(value = "properties.statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
+
+    /**
+     * If the availability set supports managed disks.
+     */
+    @JsonProperty(value = "properties.managed")
+    private Boolean managed;
+
+    /**
+     * Sku of the availability set.
+     */
+    private Sku sku;
 
     /**
      * Get the platformUpdateDomainCount value.
@@ -111,6 +123,46 @@ public class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withManaged(Boolean managed) {
+        this.managed = managed;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
     }
 
 }
