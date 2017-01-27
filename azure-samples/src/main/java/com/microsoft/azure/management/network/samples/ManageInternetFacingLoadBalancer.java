@@ -100,8 +100,6 @@ public final class ManageInternetFacingLoadBalancer {
         final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
 
         final String availSetName = SdkContext.randomResourceName("av", 24);
-        final String vmName1 = SdkContext.randomResourceName("lVM1", 24);
-        final String vmName2 = SdkContext.randomResourceName("lVM2", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
@@ -115,14 +113,15 @@ public final class ManageInternetFacingLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .defineSubnet("Back-end")
-                    .withAddressPrefix("172.16.3.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.3.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network");
+
             // Print the virtual network details
             Utils.print(network);
 
@@ -137,6 +136,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .create();
 
             System.out.println("Created a public IP address");
+
             // Print the virtual network details
             Utils.print(publicIpAddress);
 
@@ -169,63 +169,73 @@ public final class ManageInternetFacingLoadBalancer {
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIpAddress)
-                    .attach()
+                        .withExistingPublicIpAddress(publicIpAddress)
+                        .attach()
+
                     // Add two backend one per rule
                     .defineBackend(backendPoolName1)
-                    .attach()
+                        .attach()
+
                     .defineBackend(backendPoolName2)
-                    .attach()
+                        .attach()
+
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
-                    .withRequestPath("/")
-                    .withPort(80)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
+
                     .defineHttpProbe(httpsProbe)
-                    .withRequestPath("/")
-                    .withPort(443)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(80)
-                    .withProbe(httpProbe)
-                    .withBackend(backendPoolName1)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(80)
+                        .withProbe(httpProbe)
+                        .withBackend(backendPoolName1)
+                        .attach()
+
                     .defineLoadBalancingRule(httpsLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(443)
-                    .withProbe(httpsProbe)
-                    .withBackend(backendPoolName2)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(443)
+                        .withProbe(httpsProbe)
+                        .withBackend(backendPoolName2)
+                        .attach()
+
                     // Add two nat pools to enable direct VM connectivity for
                     //  SSH to port 22 and TELNET to port 23
                     .defineInboundNatRule(natRule5000to22forVM1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5000)
-                    .withBackendPort(22)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5000)
+                        .withBackendPort(22)
+                        .attach()
+
                     .defineInboundNatRule(natRule5001to23forVM1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5001)
-                    .withBackendPort(23)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5001)
+                        .withBackendPort(23)
+                        .attach()
+
                     .defineInboundNatRule(natRule5002to22forVM2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5002)
-                    .withBackendPort(22)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5002)
+                        .withBackendPort(22)
+                        .attach()
+
                     .defineInboundNatRule(natRule5003to23forVM2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5003)
-                    .withBackendPort(23)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5003)
+                        .withBackendPort(23)
+                        .attach()
                     .create();
 
             // Print load balancer details
@@ -241,8 +251,7 @@ public final class ManageInternetFacingLoadBalancer {
 
             List <Creatable<NetworkInterface>> networkInterfaceCreatables = new ArrayList<Creatable<NetworkInterface>>();
 
-            Creatable<NetworkInterface> networkInterface1Creatable = azure.networkInterfaces()
-                    .define(networkInterfaceName1)
+            Creatable<NetworkInterface> networkInterface1Creatable = azure.networkInterfaces().define(networkInterfaceName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -255,8 +264,7 @@ public final class ManageInternetFacingLoadBalancer {
 
             networkInterfaceCreatables.add(networkInterface1Creatable);
 
-            Creatable<NetworkInterface> networkInterface2Creatable = azure.networkInterfaces()
-                    .define(networkInterfaceName2)
+            Creatable<NetworkInterface> networkInterface2Creatable = azure.networkInterfaces().define(networkInterfaceName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -289,8 +297,7 @@ public final class ManageInternetFacingLoadBalancer {
             List <Creatable<VirtualMachine>> virtualMachineCreateables1 = new ArrayList<Creatable<VirtualMachine>>();
 
             for (Creatable<NetworkInterface> nicDefinition : networkInterfaceCreatables) {
-                virtualMachineCreateables1.add(azure.virtualMachines()
-                        .define(SdkContext.randomResourceName("lVM1", 24))
+                virtualMachineCreateables1.add(azure.virtualMachines().define(SdkContext.randomResourceName("lVM1", 24))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withNewPrimaryNetworkInterface(nicDefinition)
@@ -324,11 +331,11 @@ public final class ManageInternetFacingLoadBalancer {
 
             loadBalancer1.update()
                     .updateLoadBalancingRule(httpLoadBalancingRule)
-                    .withIdleTimeoutInMinutes(15)
-                    .parent()
+                        .withIdleTimeoutInMinutes(15)
+                        .parent()
                     .updateLoadBalancingRule(httpsLoadBalancingRule)
-                    .withIdleTimeoutInMinutes(15)
-                    .parent()
+                        .withIdleTimeoutInMinutes(15)
+                        .parent()
                     .apply();
 
             System.out.println("Update the load balancer with a TCP idle timeout to 15 minutes");
@@ -378,69 +385,78 @@ public final class ManageInternetFacingLoadBalancer {
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIpAddress2)
-                    .attach()
+                        .withExistingPublicIpAddress(publicIpAddress2)
+                        .attach()
+
                     // Add two backend one per rule
                     .defineBackend(backendPoolName1)
-                    .attach()
+                        .attach()
+
                     .defineBackend(backendPoolName2)
-                    .attach()
+                        .attach()
+
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
-                    .withRequestPath("/")
-                    .withPort(80)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
+
                     .defineHttpProbe(httpsProbe)
-                    .withRequestPath("/")
-                    .withPort(443)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(80)
-                    .withProbe(httpProbe)
-                    .withBackend(backendPoolName1)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(80)
+                        .withProbe(httpProbe)
+                        .withBackend(backendPoolName1)
+                        .attach()
+
                     .defineLoadBalancingRule(httpsLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(443)
-                    .withProbe(httpsProbe)
-                    .withBackend(backendPoolName2)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(443)
+                        .withProbe(httpsProbe)
+                        .withBackend(backendPoolName2)
+                        .attach()
+
                     // Add two nat pools to enable direct VM connectivity for
                     //  SSH to port 22 and TELNET to port 23
                     .defineInboundNatRule(natRule5000to22forVM1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5000)
-                    .withBackendPort(22)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5000)
+                        .withBackendPort(22)
+                        .attach()
+
                     .defineInboundNatRule(natRule5001to23forVM1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5001)
-                    .withBackendPort(23)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5001)
+                        .withBackendPort(23)
+                        .attach()
+
                     .defineInboundNatRule(natRule5002to22forVM2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5002)
-                    .withBackendPort(22)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5002)
+                        .withBackendPort(22)
+                        .attach()
+
                     .defineInboundNatRule(natRule5003to23forVM2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(5003)
-                    .withBackendPort(23)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(5003)
+                        .withBackendPort(23)
+                        .attach()
                     .create();
 
             // Print load balancer details
             System.out.println("Created another load balancer");
             Utils.print(loadBalancer2);
-
 
             //=============================================================
             // List load balancers
