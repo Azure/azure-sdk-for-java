@@ -329,7 +329,6 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    @Ignore("Failing")
     public void testVirtualMachineNics() throws Exception {
         new TestVirtualMachineNics(azure.resourceGroups(),
                     azure.networks(),

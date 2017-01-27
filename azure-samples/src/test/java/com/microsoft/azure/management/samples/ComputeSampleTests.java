@@ -7,6 +7,10 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingCustomImageFromVHD;
+import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingCustomImageFromVM;
+import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromSnapshot;
+import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromVhd;
 import com.microsoft.azure.management.compute.samples.CreateVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.CreateVirtualMachinesUsingCustomImageOrSpecializedVHD;
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineExtensionImages;
@@ -15,7 +19,9 @@ import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
+import com.microsoft.azure.management.compute.samples.MigrateVirtualMachine;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +37,26 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Ignore("Failing")
     public void testCreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
         Assert.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azure));
+    }
+
+    @Test
+    public void testCreateVirtualMachineUsingCustomImageFromVHD() {
+        Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azure));
+    }
+
+    @Test
+    public void testCreateVirtualMachineUsingCustomImageFromVM() {
+        Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azure));
+    }
+
+    @Test
+    public void CreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
+        Assert.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromSnapshot.runSample(azure));
+    }
+
+    @Test
+    public void CreateVirtualMachineUsingSpecializedDiskFromVhd() {
+        Assert.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromVhd.runSample(azure));
     }
 
     @Test
@@ -71,4 +97,8 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assert.assertTrue(ManageVirtualMachinesInParallel.runSample(azure));
     }
 
+    @Test
+    public void testManageVirtualMachineWithDisk() {
+        Assert.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
+    }
 }
