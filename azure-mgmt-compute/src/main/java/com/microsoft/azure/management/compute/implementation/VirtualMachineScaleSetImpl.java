@@ -1983,11 +1983,13 @@ public class VirtualMachineScaleSetImpl
             }
             if (storageProfile.dataDisks() != null
                     && storageProfile.dataDisks().size() == 0) {
-                // If there is no data disks at all, then setting it to null rather than [] is necessary.
-                // This is for take advantage of CRP's implicit creation of the data disks if the image has
-                // more than one data disk image(s).
-                //
-                storageProfile.withDataDisks(null);
+                if (vmss.isInCreateMode()) {
+                    // If there is no data disks at all, then setting it to null rather than [] is necessary.
+                    // This is for take advantage of CRP's implicit creation of the data disks if the image has
+                    // more than one data disk image(s).
+                    //
+                    storageProfile.withDataDisks(null);
+                }
             }
             this.clear();
         }

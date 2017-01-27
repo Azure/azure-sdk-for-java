@@ -1853,11 +1853,13 @@ class VirtualMachineImpl
             }
             if (vmInner.storageProfile().dataDisks() != null
                     && vmInner.storageProfile().dataDisks().size() == 0) {
-                // If there is no data disks at all, then setting it to null rather than [] is necessary.
-                // This is for take advantage of CRP's implicit creation of the data disks if the image has
-                // more than one data disk image(s).
-                //
-                vmInner.storageProfile().withDataDisks(null);
+                if (vm.isInCreateMode()) {
+                    // If there is no data disks at all, then setting it to null rather than [] is necessary.
+                    // This is for take advantage of CRP's implicit creation of the data disks if the image has
+                    // more than one data disk image(s).
+                    //
+                    vmInner.storageProfile().withDataDisks(null);
+                }
             }
             this.clear();
         }
