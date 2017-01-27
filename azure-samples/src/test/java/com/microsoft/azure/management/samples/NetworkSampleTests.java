@@ -20,13 +20,13 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
+    @Ignore("Parallel creation cannot be handled by mock tests reliably yet")
     public void testManageInternalLoadBalancer() {
         Assert.assertTrue(ManageInternalLoadBalancer.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing")
+    @Ignore("Parallel creation cannot be handled by mock tests reliably yet")
     public void testManageInternetFacingLoadBalancer() {
         Assert.assertTrue(ManageInternetFacingLoadBalancer.runSample(azure));
     }
