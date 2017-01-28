@@ -83,6 +83,11 @@ public abstract class RetryPolicy
 	 */
 	public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
 	{
+		if (!RetryPolicy.isRetryableException(lastException))
+		{
+			return null;
+		}
+		
 		int baseWaitTime = 0;
 		synchronized (this.serverBusySync)
 		{

@@ -47,7 +47,7 @@ public class RequestResponseUtils {
 		return (Map)((AmqpValue)responseMessage.getBody()).getValue();				
 	}
 	
-	public static Exception genereateExceptionFromResponse(int responseStatusCode, Message responseMessage)
+	public static Exception genereateExceptionFromResponse(Message responseMessage)
 	{
 		Symbol errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
 		Object statusDescription = responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_DESCRIPTION);

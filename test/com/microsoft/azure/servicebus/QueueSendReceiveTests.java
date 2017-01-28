@@ -186,7 +186,7 @@ public class QueueSendReceiveTests {
 	@Test
 	public void testBasicQueueReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, IOException, ExecutionException
 	{		
-		int numMessages = 10;		
+		int numMessages = 10;
 		List<BrokeredMessage> messages = new ArrayList<BrokeredMessage>();
 		for(int i=0; i<numMessages; i++)
 		{
@@ -213,7 +213,7 @@ public class QueueSendReceiveTests {
 		}
 		
 		Thread.sleep(1000);
-		Collection<Instant> newLockTimes = this.receiver.renewMessageLockBatch(totalReceivedMessages);
+		Collection<Instant> newLockTimes = ((BrokeredMessageReceiver)this.receiver).renewMessageLockBatch(totalReceivedMessages);
 		Assert.assertEquals("RenewLock didn't return one instant per message in the collection", totalReceivedMessages.size(), newLockTimes.size());
 		Iterator<Instant> newLockTimeIterator = newLockTimes.iterator();
 		Iterator<Instant> oldLockTimeIterator = oldLockTimes.iterator();

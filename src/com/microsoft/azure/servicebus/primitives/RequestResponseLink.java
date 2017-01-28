@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -234,7 +237,7 @@ public class RequestResponseLink extends ClientEntity{
 			requestMessage.setReplyTo(this.replyTo);
 			this.pendingRequests.put(requestId, workItem);
 			workItem.setTimeoutTask(this.scheduleRequestTimeout(requestId, timeout));
-			this.amqpSender.sendRequest(requestMessage);			
+			this.amqpSender.sendRequest(requestMessage, false);			
 		}
 		
 		return responseFuture;
@@ -245,15 +248,17 @@ public class RequestResponseLink extends ClientEntity{
 		return Timer.schedule(new Runnable() {
 				public void run()
 				{
-					RequestResponseLink.this.exceptionallyCompleteRequest(requestId, new TimeoutException("Request timed out."), true);
+					RequestResponseWorkItem completedWorkItem = RequestResponseLink.this.exceptionallyCompleteRequest(requestId, new TimeoutException("Request timed out."), true);
+					boolean isRetriedWorkItem = completedWorkItem.getLastKnownException() != null;
+					RequestResponseLink.this.amqpSender.removeEnqueuedRequest(completedWorkItem.request, isRetriedWorkItem);					
 				}
 			}, timeout, TimerType.OneTimeRun);
 	}
 	
 	
-	private void exceptionallyCompleteRequest(String requestId, Exception exception, boolean useLastKnownException)
+	private RequestResponseWorkItem exceptionallyCompleteRequest(String requestId, Exception exception, boolean useLastKnownException)
 	{
-		RequestResponseWorkItem workItem = RequestResponseLink.this.pendingRequests.remove(requestId);
+		RequestResponseWorkItem workItem = this.pendingRequests.remove(requestId);
 		if(workItem != null)
 		{
 			Exception exceptionToReport = exception;
@@ -265,20 +270,60 @@ public class RequestResponseLink extends ClientEntity{
 			workItem.getWork().completeExceptionally(exceptionToReport);
 			workItem.cancelTimeoutTask(true);
 		}
+		
+		return workItem;
 	}
 	
-	private void completeRequestWithResponse(String requestId, Message responseMessage)
+	private RequestResponseWorkItem completeRequestWithResponse(String requestId, Message responseMessage)
 	{
-		RequestResponseWorkItem workItem = RequestResponseLink.this.pendingRequests.remove(requestId);
+		RequestResponseWorkItem workItem = this.pendingRequests.get(requestId);
 		if(workItem != null)
-		{			
-			workItem.getWork().complete(responseMessage);
-			workItem.cancelTimeoutTask(true);
+		{
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode != ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{			
+				// error response
+				Exception responseException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
+				
+				// May be retry-able
+				Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(requestId, responseException, workItem.getTimeoutTracker().remaining());
+				if (retryInterval == null)
+				{
+					// Either not retry-able or not enough time to retry
+					this.exceptionallyCompleteRequest(requestId, responseException, false);
+				}
+				else
+				{
+					// Retry
+					workItem.setLastKnownException(responseException);
+					try {
+						this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(),
+								new DispatchHandler()
+								{
+									@Override
+									public void onEvent()
+									{
+										RequestResponseLink.this.amqpSender.sendRequest(workItem.getRequest(), true);
+									}
+								});
+					} catch (IOException e) {
+						this.exceptionallyCompleteRequest(requestId, responseException, false);
+					}
+				}
+			}
+			else
+			{
+				this.pendingRequests.remove(requestId);
+				workItem.getWork().complete(responseMessage);
+				workItem.cancelTimeoutTask(true);
+			}
 		}
 		else
 		{
 			System.out.println("Request with id:" + requestId + " not found in the requestresponse link.");
-		}
+		}		
+		
+		return workItem;
 	}
 
 	@Override
@@ -453,7 +498,8 @@ public class RequestResponseLink extends ClientEntity{
 		private CompletableFuture<Void> openFuture;
 		private CompletableFuture<Void> closeFuture;
 		private AtomicInteger availableCredit;
-		private LinkedList<Message> pendingSends;
+		private LinkedList<Message> pendingFreshSends;
+		private LinkedList<Message> pendingRetrySends;
 		private Object syncLock;
 		private AtomicBoolean isSendLoopRunning;
 
@@ -463,7 +509,8 @@ public class RequestResponseLink extends ClientEntity{
 			this.availableCredit = new AtomicInteger(0);
 			this.syncLock = new Object();
 			this.isSendLoopRunning = new AtomicBoolean(false);
-			this.pendingSends = new LinkedList<>();
+			this.pendingFreshSends = new LinkedList<>();
+			this.pendingRetrySends = new LinkedList<>();
 			this.openFuture = new CompletableFuture<Void>();
 			this.closeFuture = new CompletableFuture<Void>();
 		}
@@ -551,11 +598,18 @@ public class RequestResponseLink extends ClientEntity{
 			}
 		}
 		
-		public void sendRequest(Message requestMessage)
+		public void sendRequest(Message requestMessage, boolean isRetry)
 		{
-			synchronized(syncLock)
+			synchronized(this.syncLock)
 			{
-				this.pendingSends.add(requestMessage);
+				if(isRetry)
+				{
+					this.pendingRetrySends.add(requestMessage);
+				}
+				else
+				{
+					this.pendingFreshSends.add(requestMessage);
+				}				
 			}						
 							
 			if(!this.isSendLoopRunning.get())
@@ -571,6 +625,22 @@ public class RequestResponseLink extends ClientEntity{
 					this.parent.exceptionallyCompleteRequest((String)requestMessage.getMessageId(), e, true);
 				}
 			}			
+		}
+		
+		public void removeEnqueuedRequest(Message requestMessage, boolean isRetry)
+		{
+			synchronized(this.syncLock)
+			{
+				// Collections are more likely to be very small. So remove() shouldn't be a problem.
+				if(isRetry)
+				{
+					this.pendingRetrySends.remove(requestMessage);
+				}
+				else
+				{
+					this.pendingFreshSends.remove(requestMessage);
+				}				
+			}
 		}
 
 		@Override
@@ -609,11 +679,16 @@ public class RequestResponseLink extends ClientEntity{
 						Message requestToBeSent = null;
 						synchronized(syncLock)
 						{
-							requestToBeSent = this.pendingSends.poll();
+							// First send retries and then fresh ones
+							requestToBeSent = this.pendingRetrySends.poll();
 							if(requestToBeSent == null)
 							{
-								break;
-							}
+								requestToBeSent = this.pendingFreshSends.poll();
+								if(requestToBeSent == null)
+								{
+									break;
+								}
+							}							
 						}
 						
 						Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes());

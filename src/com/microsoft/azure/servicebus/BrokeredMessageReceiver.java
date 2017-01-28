@@ -389,8 +389,8 @@ class BrokeredMessageReceiver extends InitializableEntity implements IMessageRec
 		return this.renewMessageLockBatchAsync(list).thenApply((c) -> c.toArray(new Instant[0])[0]);
 	}
 
-	@Override
-	public CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages) {
+//	@Override
+	public CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages) {	
 		this.ensurePeekLockReceiveMode();
 		
 		UUID[] lockTokens = new UUID[messages.size()];
@@ -425,7 +425,7 @@ class BrokeredMessageReceiver extends InitializableEntity implements IMessageRec
 		return Utils.completeFuture(this.renewMessageLockAsync(message));
 	}
 
-	@Override
+//	@Override
 	public Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.renewMessageLockBatchAsync(messages));
 	}

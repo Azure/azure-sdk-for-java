@@ -905,7 +905,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			else
 			{
 				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(statusCode, responseMessage));
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
 			}
 			return returningFuture;
 		});				

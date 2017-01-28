@@ -77,11 +77,11 @@ public interface IMessageReceiver extends IMessageEntity{
     
     CompletableFuture<Instant> renewMessageLockAsync(IBrokeredMessage message);
     
-    CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages);
+    //CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages);
     
     Instant renewMessageLock(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
     
-    Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException;    
+    //Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException;    
     
     int getPrefetchCount();
     
