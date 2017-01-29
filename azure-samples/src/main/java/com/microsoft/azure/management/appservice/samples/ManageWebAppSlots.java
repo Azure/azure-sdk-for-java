@@ -182,9 +182,9 @@ public final class ManageWebAppSlots {
 
         slot.update()
                 .defineSourceControl()
-                .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
-                .withBranch("staging")
-                .attach()
+                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
+                    .withBranch("staging")
+                    .attach()
                 .apply();
 
         System.out.println("Deployed staging branch to slot " + slot.name());

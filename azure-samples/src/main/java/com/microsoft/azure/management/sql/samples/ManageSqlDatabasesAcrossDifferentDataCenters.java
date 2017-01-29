@@ -75,8 +75,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             // Create a Database in master SQL server created above.
             System.out.println("Creating a database");
 
-            SqlDatabase masterDatabase = masterSqlServer.databases()
-                    .define(databaseName)
+            SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName)
                     .withEdition(DatabaseEditions.BASIC)
                     .create();
             Utils.print(masterDatabase);
@@ -87,11 +86,11 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             SqlServer sqlServerInSecondaryLocation = azure.sqlServers()
                     .define(Utils.createRandomName(slaveSqlServer1Name))
-                    .withRegion(masterDatabase.defaultSecondaryLocation())
-                    .withExistingResourceGroup(rgName)
-                    .withAdministratorLogin(administratorLogin)
-                    .withAdministratorPassword(administratorPassword)
-                    .create();
+                        .withRegion(masterDatabase.defaultSecondaryLocation())
+                        .withExistingResourceGroup(rgName)
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
+                        .create();
             Utils.print(sqlServerInSecondaryLocation);
 
             System.out.println("Creating database in slave SQL Server.");
@@ -106,11 +105,11 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating server in another location for master SQL Server");
             SqlServer sqlServerInEurope = azure.sqlServers()
                     .define(Utils.createRandomName(slaveSqlServer2Name))
-                    .withRegion(Region.EUROPE_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .withAdministratorLogin(administratorLogin)
-                    .withAdministratorPassword(administratorPassword)
-                    .create();
+                        .withRegion(Region.EUROPE_WEST)
+                        .withExistingResourceGroup(rgName)
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
+                        .create();
             Utils.print(sqlServerInEurope);
 
             System.out.println("Creating database in second slave SQL Server.");
@@ -148,8 +147,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             for (Network network: networks) {
                 String vmName = Utils.createRandomName(virtualMachineNamePrefix);
-                Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
-                        .define(vmName)
+                Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses().define(vmName)
                         .withRegion(network.region())
                         .withExistingResourceGroup(rgName)
                         .withLeafDomainLabel(vmName);
@@ -224,8 +222,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

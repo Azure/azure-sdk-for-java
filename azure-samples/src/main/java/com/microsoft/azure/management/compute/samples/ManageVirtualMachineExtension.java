@@ -120,13 +120,13 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .defineNewExtension(linuxVmAccessExtensionName)
-                    .withPublisher(linuxVmAccessExtensionPublisherName)
-                    .withType(linuxVmAccessExtensionTypeName)
-                    .withVersion(linuxVmAccessExtensionVersionName)
-                    .withProtectedSetting("username", secondLinuxUserName)
-                    .withProtectedSetting("password", secondLinuxUserPassword)
-                    .withProtectedSetting("expiration", secondLinuxUserExpiration)
-                    .attach()
+                        .withPublisher(linuxVmAccessExtensionPublisherName)
+                        .withType(linuxVmAccessExtensionTypeName)
+                        .withVersion(linuxVmAccessExtensionVersionName)
+                        .withProtectedSetting("username", secondLinuxUserName)
+                        .withProtectedSetting("password", secondLinuxUserPassword)
+                        .withProtectedSetting("expiration", secondLinuxUserExpiration)
+                        .attach()
                     .apply();
 
             System.out.println("Added a second sudo user to the Linux VM");
@@ -136,10 +136,10 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .updateExtension(linuxVmAccessExtensionName)
-                    .withProtectedSetting("username", thirdLinuxUserName)
-                    .withProtectedSetting("password", thirdLinuxUserPassword)
-                    .withProtectedSetting("expiration", thirdLinuxUserExpiration)
-                    .parent()
+                        .withProtectedSetting("username", thirdLinuxUserName)
+                        .withProtectedSetting("password", thirdLinuxUserPassword)
+                        .withProtectedSetting("expiration", thirdLinuxUserExpiration)
+                        .parent()
                     .apply();
 
             System.out.println("Added a third sudo user to the Linux VM");
@@ -149,10 +149,10 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .updateExtension(linuxVmAccessExtensionName)
-                    .withProtectedSetting("username", firstLinuxUserName)
-                    .withProtectedSetting("password", firstLinuxUserNewPassword)
-                    .withProtectedSetting("reset_ssh", "true")
-                    .parent()
+                        .withProtectedSetting("username", firstLinuxUserName)
+                        .withProtectedSetting("password", firstLinuxUserNewPassword)
+                        .withProtectedSetting("reset_ssh", "true")
+                        .parent()
                     .apply();
 
             System.out.println("Password of first user of Linux VM has been updated");
@@ -162,8 +162,8 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .updateExtension(linuxVmAccessExtensionName)
-                    .withProtectedSetting("remove_user", secondLinuxUserName)
-                    .parent()
+                        .withProtectedSetting("remove_user", secondLinuxUserName)
+                        .parent()
                     .apply();
 
             //=============================================================
@@ -171,13 +171,13 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .defineNewExtension(linuxCustomScriptExtensionName)
-                    .withPublisher(linuxCustomScriptExtensionPublisherName)
-                    .withType(linuxCustomScriptExtensionTypeName)
-                    .withVersion(linuxCustomScriptExtensionVersionName)
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", linuxScriptFileUris)
-                    .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
-                    .attach()
+                        .withPublisher(linuxCustomScriptExtensionPublisherName)
+                        .withType(linuxCustomScriptExtensionTypeName)
+                        .withVersion(linuxCustomScriptExtensionVersionName)
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", linuxScriptFileUris)
+                        .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
+                        .attach()
                     .apply();
 
             System.out.println("Installed MySql using custom script extension");
@@ -209,13 +209,13 @@ public final class ManageVirtualMachineExtension {
                     .withAdminPassword(firstWindowsUserPassword)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .defineNewExtension(windowsCustomScriptExtensionName)
-                    .withPublisher(windowsCustomScriptExtensionPublisherName)
-                    .withType(windowsCustomScriptExtensionTypeName)
-                    .withVersion(windowsCustomScriptExtensionVersionName)
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", windowsScriptFileUris)
-                    .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
-                    .attach()
+                        .withPublisher(windowsCustomScriptExtensionPublisherName)
+                        .withType(windowsCustomScriptExtensionTypeName)
+                        .withVersion(windowsCustomScriptExtensionVersionName)
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", windowsScriptFileUris)
+                        .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
+                        .attach()
                     .create();
 
             System.out.println("Created a Windows VM" + windowsVM.id());
@@ -226,12 +226,12 @@ public final class ManageVirtualMachineExtension {
 
             windowsVM.update()
                     .defineNewExtension(windowsVmAccessExtensionName)
-                    .withPublisher(windowsVmAccessExtensionPublisherName)
-                    .withType(windowsVmAccessExtensionTypeName)
-                    .withVersion(windowsVmAccessExtensionVersionName)
-                    .withProtectedSetting("username", secondWindowsUserName)
-                    .withProtectedSetting("password", secondWindowsUserPassword)
-                    .attach()
+                        .withPublisher(windowsVmAccessExtensionPublisherName)
+                        .withType(windowsVmAccessExtensionTypeName)
+                        .withVersion(windowsVmAccessExtensionVersionName)
+                        .withProtectedSetting("username", secondWindowsUserName)
+                        .withProtectedSetting("password", secondWindowsUserPassword)
+                        .attach()
                     .apply();
 
             System.out.println("Added a second admin user to the Windows VM");
@@ -241,9 +241,9 @@ public final class ManageVirtualMachineExtension {
 
             windowsVM.update()
                     .updateExtension(windowsVmAccessExtensionName)
-                    .withProtectedSetting("username", thirdWindowsUserName)
-                    .withProtectedSetting("password", thirdWindowsUserPassword)
-                    .parent()
+                        .withProtectedSetting("username", thirdWindowsUserName)
+                        .withProtectedSetting("password", thirdWindowsUserPassword)
+                        .parent()
                     .apply();
 
             System.out.println("Added a third admin user to the Windows VM");
@@ -253,9 +253,9 @@ public final class ManageVirtualMachineExtension {
 
             windowsVM.update()
                     .updateExtension(windowsVmAccessExtensionName)
-                    .withProtectedSetting("username", firstWindowsUserName)
-                    .withProtectedSetting("password", firstWindowsUserNewPassword)
-                    .parent()
+                        .withProtectedSetting("username", firstWindowsUserName)
+                        .withProtectedSetting("password", firstWindowsUserNewPassword)
+                        .parent()
                     .apply();
 
             System.out.println("Password of first user of Windows VM has been updated");
@@ -300,8 +300,7 @@ public final class ManageVirtualMachineExtension {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

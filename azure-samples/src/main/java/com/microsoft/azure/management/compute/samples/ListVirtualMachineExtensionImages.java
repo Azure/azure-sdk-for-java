@@ -87,8 +87,7 @@ public final class ListVirtualMachineExtensionImages {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.NONE)
                     .authenticate(credFile)
                     .withDefaultSubscription();

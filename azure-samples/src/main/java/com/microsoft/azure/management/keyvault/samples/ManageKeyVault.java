@@ -49,8 +49,7 @@ public final class ManageKeyVault {
 
             System.out.println("Creating a key vault...");
 
-            Vault vault1 = azure.vaults()
-                    .define(vaultName1)
+            Vault vault1 = azure.vaults().define(vaultName1)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withEmptyAccessPolicy()
@@ -66,11 +65,11 @@ public final class ManageKeyVault {
 
             vault1 = vault1.update()
                     .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyAllPermissions()
-                    .allowSecretPermissions(SecretPermissions.GET)
-                    .allowSecretPermissions(SecretPermissions.LIST)
-                    .attach()
+                        .forServicePrincipal(clientId)
+                        .allowKeyAllPermissions()
+                        .allowSecretPermissions(SecretPermissions.GET)
+                        .allowSecretPermissions(SecretPermissions.LIST)
+                        .attach()
                     .apply();
 
             System.out.println("Updated key vault");
@@ -85,8 +84,8 @@ public final class ManageKeyVault {
                     .withDeploymentEnabled()
                     .withTemplateDeploymentEnabled()
                     .updateAccessPolicy(vault1.accessPolicies().get(0).objectId())
-                    .allowSecretAllPermissions()
-                    .parent()
+                        .allowSecretAllPermissions()
+                        .parent()
                     .apply();
 
             System.out.println("Updated key vault");
@@ -97,17 +96,16 @@ public final class ManageKeyVault {
             //============================================================
             // Create another key vault
 
-            Vault vault2 = azure.vaults()
-                    .define(vaultName2)
+            Vault vault2 = azure.vaults().define(vaultName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyPermissions(KeyPermissions.LIST)
-                    .allowKeyPermissions(KeyPermissions.GET)
-                    .allowKeyPermissions(KeyPermissions.DECRYPT)
-                    .allowSecretPermissions(SecretPermissions.GET)
-                    .attach()
+                        .forServicePrincipal(clientId)
+                        .allowKeyPermissions(KeyPermissions.LIST)
+                        .allowKeyPermissions(KeyPermissions.GET)
+                        .allowKeyPermissions(KeyPermissions.DECRYPT)
+                        .allowSecretPermissions(SecretPermissions.GET)
+                        .attach()
                     .create();
 
             System.out.println("Created key vault");
@@ -160,8 +158,7 @@ public final class ManageKeyVault {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

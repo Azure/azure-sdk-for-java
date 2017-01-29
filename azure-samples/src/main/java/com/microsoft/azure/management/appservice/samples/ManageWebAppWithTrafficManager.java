@@ -78,17 +78,17 @@ public final class ManageWebAppWithTrafficManager {
             domain = azure.appServices().domains().define(domainName)
                     .withExistingResourceGroup(RG_NAME)
                     .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                        .withFirstName("Jon")
+                        .withLastName("Doe")
+                        .withEmail("jondoe@contoso.com")
+                        .withAddressLine1("123 4th Ave")
+                        .withCity("Redmond")
+                        .withStateOrProvince("WA")
+                        .withCountry(CountryISOCode.UNITED_STATES)
+                        .withPostalCode("98052")
+                        .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                        .withPhoneNumber("4258828080")
+                        .attach()
                     .withDomainPrivacyEnabled(true)
                     .withAutoRenewEnabled(false)
                     .create();
@@ -168,23 +168,22 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Creating a traffic manager " + tmName + " for the web apps...");
 
-            TrafficManagerProfile trafficManager = azure.trafficManagerProfiles()
-                    .define(tmName)
+            TrafficManagerProfile trafficManager = azure.trafficManagerProfiles().define(tmName)
                     .withExistingResourceGroup(RG_NAME)
                     .withLeafDomainLabel(tmName)
                     .withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY)
                     .defineAzureTargetEndpoint("endpoint1")
-                    .toResourceId(app1.id())
-                    .withRoutingPriority(1)
-                    .attach()
+                        .toResourceId(app1.id())
+                        .withRoutingPriority(1)
+                        .attach()
                     .defineAzureTargetEndpoint("endpoint2")
-                    .toResourceId(app2.id())
-                    .withRoutingPriority(2)
-                    .attach()
+                        .toResourceId(app2.id())
+                        .withRoutingPriority(2)
+                        .attach()
                     .defineAzureTargetEndpoint("endpoint3")
-                    .toResourceId(app3.id())
-                    .withRoutingPriority(3)
-                    .attach()
+                        .toResourceId(app3.id())
+                        .withRoutingPriority(3)
+                        .attach()
                     .create();
 
             System.out.println("Created traffic manager " + trafficManager.name());
@@ -267,8 +266,7 @@ public final class ManageWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azure.appServices().appServicePlans()
-                .define(name)
+        return azure.appServices().appServicePlans().define(name)
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
                 .withPricingTier(AppServicePricingTier.BASIC_B1)
@@ -300,6 +298,4 @@ public final class ManageWebAppWithTrafficManager {
     static {
         httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
     }
-
-
 }

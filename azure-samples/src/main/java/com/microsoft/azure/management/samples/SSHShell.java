@@ -47,7 +47,7 @@ public class SSHShell {
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
         Closure expectClosure = getExpectClosure();
-        for (String linuxPromptPattern : new String[]{"\\>","#", "~#", "~\\$"}) {
+        for (String linuxPromptPattern : new String[]{"\\>", "#", "~#", "~\\$"}) {
             try {
                 Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
                 linuxPromptMatches.add(match);
@@ -58,7 +58,7 @@ public class SSHShell {
         JSch jsch = new JSch();
         this.session = jsch.getSession(userName, host, port);
         session.setPassword(password);
-        Hashtable<String,String> config = new Hashtable<>();
+        Hashtable<String, String> config = new Hashtable<>();
         config.put("StrictHostKeyChecking", "no");
         session.setConfig(config);
         session.connect(60000);

@@ -77,21 +77,21 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withRootPassword(password)
                     .withUnmanagedDisks()
                     .defineUnmanagedDataDisk("disk-1")
-                    .withNewVhd(100)
-                    .withLun(1)
-                    .attach()
+                        .withNewVhd(100)
+                        .withLun(1)
+                        .attach()
                     .defineUnmanagedDataDisk("disk-2")
-                    .withNewVhd(50)
-                    .withLun(2)
-                    .attach()
+                        .withNewVhd(50)
+                        .withLun(2)
+                        .attach()
                     .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", apacheInstallScriptUris)
-                    .withPublicSetting("commandToExecute", apacheInstallCommand)
-                    .attach()
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", apacheInstallScriptUris)
+                        .withPublicSetting("commandToExecute", apacheInstallCommand)
+                        .attach()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
@@ -124,10 +124,10 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             VirtualMachineCustomImage virtualMachineCustomImage = azure.virtualMachineCustomImages()
                     .define(customImageName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .fromVirtualMachine(linuxVM)
-                    .create();
+                        .withRegion(region)
+                        .withExistingResourceGroup(rgName)
+                        .fromVirtualMachine(linuxVM)
+                        .create();
 
             System.out.println("Captured VM: " + linuxVM.id());
 
@@ -239,8 +239,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
