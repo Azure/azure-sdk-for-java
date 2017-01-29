@@ -18,10 +18,8 @@ import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -84,17 +82,16 @@ public final class ManageWebAppSqlConnection {
 
             System.out.println("Creating web app " + appName + "...");
 
-            WebApp app = azure.webApps()
-                    .define(appName)
+            WebApp app = azure.webApps().define(appName)
                     .withExistingResourceGroup(rgName)
                     .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
                     .withPricingTier(AppServicePricingTier.STANDARD_S1)
                     .withPhpVersion(PhpVersion.PHP5_6)
                     .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
-                    .withBranch("master")
-                    .attach()
+                        .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
+                        .withBranch("master")
+                        .attach()
                     .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
                     .withAppSetting("ProjectNami.DBName", db.name())
                     .withAppSetting("ProjectNami.DBUser", admin)
@@ -151,8 +148,7 @@ public final class ManageWebAppSqlConnection {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
@@ -164,15 +160,6 @@ public final class ManageWebAppSqlConnection {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private static String curl(String url) {
-        Request request = new Request.Builder().url(url).get().build();
-        try {
-            return httpClient.newCall(request).execute().body().string();
-        } catch (IOException e) {
-            return null;
         }
     }
 

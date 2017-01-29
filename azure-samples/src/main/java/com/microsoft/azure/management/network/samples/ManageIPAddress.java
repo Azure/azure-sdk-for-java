@@ -55,8 +55,7 @@ public final class ManageIPAddress {
 
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIpAddress = azure.publicIpAddresses()
-                    .define(publicIpAddressName1)
+            PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpAddressName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpAddressLeafDNS1)
@@ -104,8 +103,7 @@ public final class ManageIPAddress {
 
             // Define a new public IP address
 
-            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses()
-                    .define(publicIpAddressName2)
+            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIpAddressName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpAddressLeafDNS2)
@@ -116,10 +114,9 @@ public final class ManageIPAddress {
             System.out.println("Updating the VM's primary NIC with new public IP address");
 
             NetworkInterface primaryNetworkInterface = vm.getPrimaryNetworkInterface();
-            primaryNetworkInterface
-                    .update()
-                    .withExistingPrimaryPublicIpAddress(publicIpAddress2)
-                    .apply();
+            primaryNetworkInterface.update()
+                .withExistingPrimaryPublicIpAddress(publicIpAddress2)
+                .apply();
 
 
             //============================================================
@@ -139,8 +136,8 @@ public final class ManageIPAddress {
             primaryNetworkInterface = vm.getPrimaryNetworkInterface();
             publicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
             primaryNetworkInterface.update()
-                    .withoutPrimaryPublicIpAddress()
-                    .apply();
+                .withoutPrimaryPublicIpAddress()
+                .apply();
 
             System.out.println("Removed public IP address associated with the VM");
 
@@ -180,8 +177,7 @@ public final class ManageIPAddress {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

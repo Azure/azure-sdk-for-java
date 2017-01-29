@@ -71,8 +71,7 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Creating web app " + app1Name + " in resource group " + rgName + "...");
 
-            WebApp app1 = azure.webApps()
-                    .define(app1Name)
+            WebApp app1 = azure.webApps().define(app1Name)
                     .withNewResourceGroup(rgName)
                     .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
@@ -106,8 +105,7 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
-            WebApp app2 = azure.webApps()
-                    .define(app2Name)
+            WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingResourceGroup(rgName)
                     .withExistingAppServicePlan(plan)
                     .withLocalGitSourceControl()
@@ -151,14 +149,13 @@ public final class ManageWebAppSourceControl {
             // Create a 3rd web app with a public GitHub repo in Azure-Samples
 
             System.out.println("Creating another web app " + app3Name + "...");
-            WebApp app3 = azure.webApps()
-                    .define(app3Name)
+            WebApp app3 = azure.webApps().define(app3Name)
                     .withNewResourceGroup(rgName)
                     .withExistingAppServicePlan(plan)
                     .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
-                    .withBranch("master")
-                    .attach()
+                        .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
+                        .withBranch("master")
+                        .attach()
                     .create();
 
             System.out.println("Created web app " + app3.name());

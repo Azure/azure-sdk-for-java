@@ -43,8 +43,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            ResourceGroup resourceGroup = azure.resourceGroups()
-                    .define(rgName)
+            ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -68,8 +67,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating another resource group with name: " + rgName2);
 
-            azure.resourceGroups()
-                    .define(rgName2)
+            azure.resourceGroups().define(rgName2)
                     .withRegion(Region.US_WEST)
                     .create();
 

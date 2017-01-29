@@ -53,7 +53,6 @@ public final class ManageNetworkSecurityGroup {
         final String frontEndVMName = SdkContext.randomResourceName("fevm", 24);
         final String backEndVMName = SdkContext.randomResourceName("bevm", 24);
         final String userName = "tirekicker";
-        final String password = "12NewPA$$w0rd!";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
 
@@ -61,17 +60,16 @@ public final class ManageNetworkSecurityGroup {
 
             System.out.println("Creating a virtual network ...");
 
-            Network network = azure.networks()
-                    .define(vnetName)
+            Network network = azure.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .defineSubnet("Back-end")
-                    .withAddressPrefix("172.16.2.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.2.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network: " + network.id());
@@ -88,25 +86,25 @@ public final class ManageNetworkSecurityGroup {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .defineRule("ALLOW-SSH")
-                    .allowInbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPort(22)
-                    .withProtocol(SecurityRuleProtocol.TCP)
-                    .withPriority(100)
-                    .withDescription("Allow SSH")
-                    .attach()
+                        .allowInbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toPort(22)
+                        .withProtocol(SecurityRuleProtocol.TCP)
+                        .withPriority(100)
+                        .withDescription("Allow SSH")
+                        .attach()
                     .defineRule("ALLOW-HTTP")
-                    .allowInbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPort(80)
-                    .withProtocol(SecurityRuleProtocol.TCP)
-                    .withPriority(101)
-                    .withDescription("Allow HTTP")
-                    .attach()
+                        .allowInbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toPort(80)
+                        .withProtocol(SecurityRuleProtocol.TCP)
+                        .withPriority(101)
+                        .withDescription("Allow HTTP")
+                        .attach()
                     .create();
 
             System.out.println("Created a security group for the front end: " + frontEndNSG.id());
@@ -126,25 +124,25 @@ public final class ManageNetworkSecurityGroup {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .defineRule("ALLOW-SQL")
-                    .allowInbound()
-                    .fromAddress("172.16.1.0/24")
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPort(1433)
-                    .withProtocol(SecurityRuleProtocol.TCP)
-                    .withPriority(100)
-                    .withDescription("Allow SQL")
-                    .attach()
+                        .allowInbound()
+                        .fromAddress("172.16.1.0/24")
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toPort(1433)
+                        .withProtocol(SecurityRuleProtocol.TCP)
+                        .withPriority(100)
+                        .withDescription("Allow SQL")
+                        .attach()
                     .defineRule("DENY-WEB")
-                    .denyOutbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toAnyPort()
-                    .withAnyProtocol()
-                    .withDescription("Deny Web")
-                    .withPriority(200)
-                    .attach()
+                        .denyOutbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toAnyPort()
+                        .withAnyProtocol()
+                        .withDescription("Deny Web")
+                        .withPriority(200)
+                        .attach()
                     .create();
 
             System.out.println("Created a security group for the back end: " + backEndNSG.id());
@@ -263,15 +261,15 @@ public final class ManageNetworkSecurityGroup {
 
             frontEndNSG.update()
                     .defineRule("ALLOW-FTP")
-                    .allowInbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPortRange(20, 21)
-                    .withProtocol(SecurityRuleProtocol.TCP)
-                    .withDescription("Allow FTP")
-                    .withPriority(200)
-                    .attach()
+                        .allowInbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toPortRange(20, 21)
+                        .withProtocol(SecurityRuleProtocol.TCP)
+                        .withDescription("Allow FTP")
+                        .withPriority(200)
+                        .attach()
                     .apply();
 
             System.out.println("Updated the front end network security group");
@@ -312,8 +310,7 @@ public final class ManageNetworkSecurityGroup {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

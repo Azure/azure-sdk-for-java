@@ -71,8 +71,7 @@ public final class CreateVirtualMachinesInParallel {
             //=============================================================
             // Create a resource group (Where all resources gets created)
             //
-            ResourceGroup resourceGroup = azure.resourceGroups()
-                    .define(rgName)
+            ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
                     .withRegion(Region.US_EAST)
                     .create();
 
@@ -91,8 +90,7 @@ public final class CreateVirtualMachinesInParallel {
                 // Prepare Creatable Network definition (Where all the virtual machines get added to)
                 //
                 String networkName = SdkContext.randomResourceName("vnetCOPD-", 20);
-                Creatable<Network> networkCreatable = azure.networks()
-                        .define(networkName)
+                Creatable<Network> networkCreatable = azure.networks().define(networkName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withAddressSpace("172.16.0.0/16");
@@ -102,8 +100,7 @@ public final class CreateVirtualMachinesInParallel {
                 // Create 1 storage creatable per region (For storing VMs disk)
                 //
                 String storageAccountName = SdkContext.randomResourceName("stgcopd", 20);
-                Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
-                        .define(storageAccountName)
+                Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts().define(storageAccountName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
 
@@ -114,9 +111,9 @@ public final class CreateVirtualMachinesInParallel {
                     //
                     Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
-                            .withRegion(region)
-                            .withExistingResourceGroup(resourceGroup)
-                            .withLeafDomainLabel(SdkContext.randomResourceName("pip", 10));
+                                .withRegion(region)
+                                .withExistingResourceGroup(resourceGroup)
+                                .withLeafDomainLabel(SdkContext.randomResourceName("pip", 10));
 
                     publicIpCreatableKeys.add(publicIpAddressCreatable.key());
 
@@ -124,16 +121,16 @@ public final class CreateVirtualMachinesInParallel {
                     // Create 1 virtual machine creatable
                     Creatable<VirtualMachine> virtualMachineCreatable = azure.virtualMachines()
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
-                            .withRegion(region)
-                            .withExistingResourceGroup(resourceGroup)
-                            .withNewPrimaryNetwork(networkCreatable)
-                            .withPrimaryPrivateIpAddressDynamic()
-                            .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername(userName)
-                            .withSsh(sshKey)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
-                            .withNewStorageAccount(storageAccountCreatable);
+                                .withRegion(region)
+                                .withExistingResourceGroup(resourceGroup)
+                                .withNewPrimaryNetwork(networkCreatable)
+                                .withPrimaryPrivateIpAddressDynamic()
+                                .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
+                                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                                .withRootUsername(userName)
+                                .withSsh(sshKey)
+                                .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+                                .withNewStorageAccount(storageAccountCreatable);
                     creatableVirtualMachines.add(virtualMachineCreatable);
                 }
             }
@@ -224,8 +221,6 @@ public final class CreateVirtualMachinesInParallel {
      * @param args the parameters
      */
     public static void main(String[] args) {
-
-
         try {
             //=============================================================
             // Authenticate

@@ -75,8 +75,7 @@ public final class ManageAvailabilitySet {
             //=============================================================
             // Define a virtual network for the VMs in this availability set
 
-            Creatable<Network> networkDefinition = azure.networks()
-                    .define(vnetName)
+            Creatable<Network> networkDefinition = azure.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("10.0.0.0/28");
@@ -206,8 +205,7 @@ public final class ManageAvailabilitySet {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

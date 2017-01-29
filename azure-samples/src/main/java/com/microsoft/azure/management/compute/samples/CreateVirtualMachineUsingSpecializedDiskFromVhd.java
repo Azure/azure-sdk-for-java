@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Azure Compute sample for managing virtual machines -
+ * Azure Compute sample for managing virtual machines.
  *  - Create an un-managed virtual machine from PIR image with data disks
  *  - Create managed disks from specialized un-managed OS and Data disk of virtual machine
  *  - Create a virtual machine by attaching the managed disks
@@ -70,21 +70,21 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .withRootPassword(password)
                     .withUnmanagedDisks()
                     .defineUnmanagedDataDisk("disk-1")
-                    .withNewVhd(50)
-                    .withLun(1)
-                    .attach()
+                        .withNewVhd(50)
+                        .withLun(1)
+                        .attach()
                     .defineUnmanagedDataDisk("disk-2")
-                    .withNewVhd(50)
-                    .withLun(2)
-                    .attach()
+                        .withNewVhd(50)
+                        .withLun(2)
+                        .attach()
                     .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", apacheInstallScriptUris)
-                    .withPublicSetting("commandToExecute", apacheInstallCommand)
-                    .attach()
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", apacheInstallScriptUris)
+                        .withPublicSetting("commandToExecute", apacheInstallCommand)
+                        .attach()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 

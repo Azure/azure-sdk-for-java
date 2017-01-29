@@ -132,8 +132,7 @@ public final class ManageSqlFirewallRules {
         try {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
@@ -151,6 +150,4 @@ public final class ManageSqlFirewallRules {
     private ManageSqlFirewallRules() {
 
     }
-
-
 }

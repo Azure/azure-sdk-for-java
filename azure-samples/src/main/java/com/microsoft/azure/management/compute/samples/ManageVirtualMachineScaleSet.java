@@ -89,8 +89,8 @@ public final class ManageVirtualMachineScaleSet {
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network");
@@ -140,51 +140,55 @@ public final class ManageVirtualMachineScaleSet {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIpAddress)
-                    .attach()
+                        .withExistingPublicIpAddress(publicIpAddress)
+                        .attach()
+
                     // Add two backend one per rule
                     .defineBackend(backendPoolName1)
-                    .attach()
+                        .attach()
                     .defineBackend(backendPoolName2)
-                    .attach()
+                        .attach()
+
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
-                    .withRequestPath("/")
-                    .withPort(80)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
                     .defineHttpProbe(httpsProbe)
-                    .withRequestPath("/")
-                    .withPort(443)
-                    .attach()
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(80)
-                    .withProbe(httpProbe)
-                    .withBackend(backendPoolName1)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(80)
+                        .withProbe(httpProbe)
+                        .withBackend(backendPoolName1)
+                        .attach()
                     .defineLoadBalancingRule(httpsLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(443)
-                    .withProbe(httpsProbe)
-                    .withBackend(backendPoolName2)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPort(443)
+                        .withProbe(httpsProbe)
+                        .withBackend(backendPoolName2)
+                        .attach()
+
                     // Add nat pools to enable direct VM connectivity for
                     //  SSH to port 22 and TELNET to port 23
                     .defineInboundNatPool(natPool50XXto22)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPortRange(5000, 5099)
-                    .withBackendPort(22)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPortRange(5000, 5099)
+                        .withBackendPort(22)
+                        .attach()
                     .defineInboundNatPool(natPool60XXto23)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPortRange(6000, 6099)
-                    .withBackendPort(23)
-                    .attach()
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend(frontendName)
+                        .withFrontendPortRange(6000, 6099)
+                        .withBackendPort(23)
+                        .attach()
                     .create();
 
             // Print load balancer details
@@ -201,8 +205,7 @@ public final class ManageVirtualMachineScaleSet {
 
             Date t1 = new Date();
 
-            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
-                    .define(vmssName)
+            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets().define(vmssName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
@@ -221,13 +224,13 @@ public final class ManageVirtualMachineScaleSet {
                     .withCapacity(3)
                     // Use a VM extension to install Apache Web servers
                     .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", fileUris)
-                    .withPublicSetting("commandToExecute", installCommand)
-                    .attach()
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", fileUris)
+                        .withPublicSetting("commandToExecute", installCommand)
+                        .attach()
                     .create();
 
             Date t2 = new Date();
@@ -344,8 +347,7 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println(System.getenv("AZURE_AUTH_LOCATION"));
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

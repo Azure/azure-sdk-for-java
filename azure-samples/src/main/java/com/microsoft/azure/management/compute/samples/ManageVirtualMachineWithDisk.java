@@ -57,8 +57,7 @@ public final class ManageVirtualMachineWithDisk {
             //
             System.out.println("Creating an empty managed disk");
 
-            Disk dataDisk1 = azure.disks()
-                    .define(Utils.createRandomName("dsk-"))
+            Disk dataDisk1 = azure.disks().define(Utils.createRandomName("dsk-"))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -69,8 +68,7 @@ public final class ManageVirtualMachineWithDisk {
 
             // Prepare first creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable1 = azure.disks()
-                    .define(Utils.createRandomName("dsk-"))
+            Creatable<Disk> dataDiskCreatable1 = azure.disks().define(Utils.createRandomName("dsk-"))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -78,8 +76,7 @@ public final class ManageVirtualMachineWithDisk {
 
             // Prepare second creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable2 = azure.disks()
-                    .define(Utils.createRandomName("dsk-"))
+            Creatable<Disk> dataDiskCreatable2 = azure.disks().define(Utils.createRandomName("dsk-"))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -100,12 +97,14 @@ public final class ManageVirtualMachineWithDisk {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
+
                     // Begin: Managed data disks
                     .withNewDataDisk(100)
                     .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                     .withNewDataDisk(dataDiskCreatable1)
                     .withNewDataDisk(dataDiskCreatable2, 2, CachingTypes.READ_ONLY)
                     .withExistingDataDisk(dataDisk1)
+
                     // End: Managed data disks
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
@@ -216,15 +215,14 @@ public final class ManageVirtualMachineWithDisk {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            
+
             runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());

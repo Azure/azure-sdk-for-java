@@ -60,20 +60,19 @@ public final class ManageNetworkInterface {
 
             System.out.println("Creating a virtual network ...");
 
-            Network network = azure.networks()
-                    .define(vnetName)
+            Network network = azure.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .defineSubnet("Mid-tier")
-                    .withAddressPrefix("172.16.2.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.2.0/24")
+                        .attach()
                     .defineSubnet("Back-end")
-                    .withAddressPrefix("172.16.3.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.3.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network: " + network.id());
@@ -219,8 +218,7 @@ public final class ManageNetworkInterface {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

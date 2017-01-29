@@ -93,10 +93,10 @@ public final class ManageBatchAccount {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .defineNewApplication(applicationName)
-                    .defineNewApplicationPackage(applicationPackageName)
-                    .withAllowUpdates(true)
-                    .withDisplayName(applicationDisplayName)
-                    .attach()
+                        .defineNewApplicationPackage(applicationPackageName)
+                        .withAllowUpdates(true)
+                        .withDisplayName(applicationDisplayName)
+                        .attach()
                     .withNewStorageAccount(storageAccountName)
                     .create();
 
@@ -246,8 +246,7 @@ public final class ManageBatchAccount {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
@@ -263,8 +262,5 @@ public final class ManageBatchAccount {
     }
 
     private ManageBatchAccount() {
-
     }
-
-
 }

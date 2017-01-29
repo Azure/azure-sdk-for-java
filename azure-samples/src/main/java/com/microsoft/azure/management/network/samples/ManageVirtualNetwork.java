@@ -61,26 +61,25 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating a network security group for virtual network backend subnet...");
 
-            NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups()
-                    .define(vnet1BackEndSubnetNsgName)
+            NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups().define(vnet1BackEndSubnetNsgName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .defineRule("DenyInternetInComing")
-                    .denyInbound()
-                    .fromAddress("INTERNET")
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toAnyPort()
-                    .withAnyProtocol()
-                    .attach()
+                        .denyInbound()
+                        .fromAddress("INTERNET")
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toAnyPort()
+                        .withAnyProtocol()
+                        .attach()
                     .defineRule("DenyInternetOutGoing")
-                    .denyOutbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAddress("INTERNET")
-                    .toAnyPort()
-                    .withAnyProtocol()
-                    .attach()
+                        .denyOutbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAddress("INTERNET")
+                        .toAnyPort()
+                        .withAnyProtocol()
+                        .attach()
                     .create();
 
             System.out.println("Created network security group");
@@ -92,16 +91,15 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating virtual network #1...");
 
-            Network virtualNetwork1 = azure.networks()
-                    .define(vnetName1)
+            Network virtualNetwork1 = azure.networks().define(vnetName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
                     .withSubnet(vnet1FrontEndSubnetName, "192.168.1.0/24")
                     .defineSubnet(vnet1BackEndSubnetName)
-                    .withAddressPrefix("192.168.2.0/24")
-                    .withExistingNetworkSecurityGroup(backEndSubnetNsg)
-                    .attach()
+                        .withAddressPrefix("192.168.2.0/24")
+                        .withExistingNetworkSecurityGroup(backEndSubnetNsg)
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network");
@@ -116,26 +114,25 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating a network security group for virtual network backend subnet...");
 
-            NetworkSecurityGroup frontEndSubnetNsg = azure.networkSecurityGroups()
-                    .define(vnet1FrontEndSubnetNsgName)
+            NetworkSecurityGroup frontEndSubnetNsg = azure.networkSecurityGroups().define(vnet1FrontEndSubnetNsgName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .defineRule("AllowHttpInComing")
-                    .allowInbound()
-                    .fromAddress("INTERNET")
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPort(80)
-                    .withProtocol(SecurityRuleProtocol.TCP)
-                    .attach()
+                        .allowInbound()
+                        .fromAddress("INTERNET")
+                        .fromAnyPort()
+                        .toAnyAddress()
+                        .toPort(80)
+                        .withProtocol(SecurityRuleProtocol.TCP)
+                        .attach()
                     .defineRule("DenyInternetOutGoing")
-                    .denyOutbound()
-                    .fromAnyAddress()
-                    .fromAnyPort()
-                    .toAddress("INTERNET")
-                    .toAnyPort()
-                    .withAnyProtocol()
-                    .attach()
+                        .denyOutbound()
+                        .fromAnyAddress()
+                        .fromAnyPort()
+                        .toAddress("INTERNET")
+                        .toAnyPort()
+                        .withAnyProtocol()
+                        .attach()
                     .create();
 
             System.out.println("Created network security group");
@@ -148,8 +145,8 @@ public final class ManageVirtualNetwork {
 
             virtualNetwork1.update()
                     .updateSubnet(vnet1FrontEndSubnetName)
-                    .withExistingNetworkSecurityGroup(frontEndSubnetNsg)
-                    .parent()
+                        .withExistingNetworkSecurityGroup(frontEndSubnetNsg)
+                        .parent()
                     .apply();
 
             System.out.println("Network security group rule associated with the frontend subnet");
@@ -217,8 +214,7 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating virtual network #2...");
 
-            Network virtualNetwork2 = azure.networks()
-                    .define(vnetName2)
+            Network virtualNetwork2 = azure.networks().define(vnetName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -271,8 +267,7 @@ public final class ManageVirtualNetwork {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
@@ -290,4 +285,3 @@ public final class ManageVirtualNetwork {
     private ManageVirtualNetwork() {
     }
 }
-
