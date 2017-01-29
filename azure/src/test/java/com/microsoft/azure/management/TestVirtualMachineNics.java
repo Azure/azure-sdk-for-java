@@ -100,6 +100,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     @Override
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
         final String secondaryNicName = "nic" + this.testId;
+        virtualMachine.powerOff();
+        virtualMachine.deallocate();
         virtualMachine = virtualMachine.update()
                 .withoutSecondaryNetworkInterface(secondaryNicName)
                 .apply();

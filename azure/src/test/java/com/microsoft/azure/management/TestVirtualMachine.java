@@ -16,7 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.LogLevel;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
 import rx.Observable;
 import rx.functions.Action1;

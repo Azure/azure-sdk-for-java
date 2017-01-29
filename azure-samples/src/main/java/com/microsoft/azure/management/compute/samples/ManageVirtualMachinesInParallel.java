@@ -39,6 +39,7 @@ public final class ManageVirtualMachinesInParallel {
      */
     public static boolean runSample(Azure azure) {
         final int vmCount = 10;
+        final Region region = Region.US_WEST_CENTRAL;
         final String rgName = SdkContext.randomResourceName("rgCOPP", 24);
         final String networkName = SdkContext.randomResourceName("vnetCOMV", 24);
         final String storageAccountName = SdkContext.randomResourceName("stgCOMV", 20);
@@ -48,20 +49,20 @@ public final class ManageVirtualMachinesInParallel {
             // Create a resource group [Where all resources gets created]
             ResourceGroup resourceGroup = azure.resourceGroups()
                     .define(rgName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .create();
 
             // Prepare Creatable Network definition [Where all the virtual machines get added to]
             Creatable<Network> creatableNetwork = azure.networks()
                     .define(networkName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
                     .withAddressSpace("172.16.0.0/16");
 
             // Prepare Creatable Storage account definition [For storing VMs disk]
             Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
                     .define(storageAccountName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
 
             // Prepare a batch of Creatable Virtual Machines definitions
@@ -70,7 +71,7 @@ public final class ManageVirtualMachinesInParallel {
             for (int i = 0; i < vmCount; i++) {
                 Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
                         .define("VM-" + i)
-                        .withRegion(Region.US_EAST)
+                        .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork(creatableNetwork)
                         .withPrimaryPrivateIpAddressDynamic()

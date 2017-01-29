@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import org.junit.Assert;
 
@@ -50,7 +51,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
  */
 public class TestLoadBalancer {
     static String TEST_ID = "";
-    static Region REGION = Region.US_WEST;
+    static Region REGION = Region.US_NORTH_CENTRAL;
     static String GROUP_NAME = "";
     static String LB_NAME = "";
     static String[] PIP_NAMES = null;
@@ -812,7 +813,8 @@ public class TestLoadBalancer {
 
         Creatable<AvailabilitySet> availabilitySetDefinition = availabilitySets.define("as" + TEST_ID)
                 .withRegion(REGION)
-                .withExistingResourceGroup(GROUP_NAME);
+                .withExistingResourceGroup(GROUP_NAME)
+                .withSku(AvailabilitySetSkuTypes.ALIGNED);
 
         // Create the requested number of VM definitions
         String userName = "testuser" + TEST_ID;

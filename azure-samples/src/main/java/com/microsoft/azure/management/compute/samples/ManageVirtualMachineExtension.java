@@ -30,6 +30,7 @@ public final class ManageVirtualMachineExtension {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        final Region region = Region.US_WEST_CENTRAL;
         final String linuxVmName = SdkContext.randomResourceName("lVM", 10);
         final String windowsVmName = SdkContext.randomResourceName("wVM", 10);
         final String rgName = SdkContext.randomResourceName("rgCOVE", 15);
@@ -100,7 +101,7 @@ public final class ManageVirtualMachineExtension {
             System.out.println("Creating a Linux VM");
 
             VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIpAddressDynamic()
@@ -198,7 +199,7 @@ public final class ManageVirtualMachineExtension {
             System.out.println("Creating a Windows VM");
 
             VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIpAddressDynamic()

@@ -238,7 +238,7 @@ public class VirtualMachineScaleSetSkuTypes {
         if (value == null) {
             return rhs.value == null;
         } else {
-            return value.equals(rhs.value);
+            return value.equalsIgnoreCase(rhs.value.toLowerCase());
         }
     }
 }

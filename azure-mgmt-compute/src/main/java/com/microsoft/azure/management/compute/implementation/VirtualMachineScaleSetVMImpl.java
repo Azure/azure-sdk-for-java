@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.ImageReference;
 import com.microsoft.azure.management.compute.OSProfile;
@@ -10,20 +11,25 @@ import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.StorageProfile;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,18 +118,48 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
-    public boolean isOsBasedOnPlatformImage() {
-        return this.platformImageReference() != null;
+    public boolean isOSBasedOnPlatformImage() {
+        ImageReferenceInner imageReference = this.inner().storageProfile().imageReference();
+        if (imageReference != null
+                && imageReference.publisher() != null
+                && imageReference.sku() != null
+                && imageReference.offer() != null
+                && imageReference.version() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public  boolean isOSBasedOnCustomImage() {
+        ImageReferenceInner imageReference = this.inner().storageProfile().imageReference();
+        if (imageReference != null
+                && imageReference.id() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isOSBasedOnStoredImage() {
+        if (this.inner().storageProfile().osDisk() != null
+                && this.inner().storageProfile().osDisk().image() != null) {
+            return this.inner().storageProfile().osDisk().image().uri() != null;
+        }
+        return false;
     }
 
     @Override
     public ImageReference platformImageReference() {
-        return this.inner().storageProfile().imageReference();
+        if (isOSBasedOnPlatformImage()) {
+            return new ImageReference(this.inner().storageProfile().imageReference());
+        }
+        return null;
     }
-
+    
     @Override
-    public VirtualMachineImage getPlatformImage() {
-        if (this.isOsBasedOnPlatformImage()) {
+    public VirtualMachineImage getOSPlatformImage() {
+        if (this.isOSBasedOnPlatformImage()) {
             ImageReference imageReference = this.platformImageReference();
             return this.computeManager.virtualMachineImages().getImage(this.region(),
                     imageReference.publisher(),
@@ -135,7 +171,16 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
-    public String customImageVhdUri() {
+    public VirtualMachineCustomImage getOSCustomImage() {
+        if (this.isOSBasedOnCustomImage()) {
+            ImageReferenceInner imageReference = this.inner().storageProfile().imageReference();
+            return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
+        }
+        return null;
+    }
+
+    @Override
+    public String storedImageUnmanagedVhdUri() {
         if (this.inner().storageProfile().osDisk().image() != null) {
             return this.inner().storageProfile().osDisk().image().uri();
         }
@@ -148,11 +193,47 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
-    public String osDiskVhdUri() {
+    public String osUnmanagedDiskVhdUri() {
         if (this.inner().storageProfile().osDisk().vhd() != null) {
             return this.inner().storageProfile().osDisk().vhd().uri();
         }
         return null;
+    }
+
+    @Override
+    public String osDiskId() {
+        if (this.storageProfile().osDisk().managedDisk() != null) {
+            return this.storageProfile().osDisk().managedDisk().id();
+        }
+        return null;
+    }
+
+    @Override
+    public Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks() {
+        Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = new HashMap<>();
+        if (!isManagedDiskEnabled()) {
+            List<DataDisk> innerDataDisks = this.inner().storageProfile().dataDisks();
+            if (innerDataDisks != null) {
+                for (DataDisk innerDataDisk : innerDataDisks) {
+                    dataDisks.put(innerDataDisk.lun(), new UnmanagedDataDiskImpl(innerDataDisk, null));
+                }
+            }
+        }
+        return Collections.unmodifiableMap(dataDisks);
+    }
+
+    @Override
+    public Map<Integer, VirtualMachineDataDisk> dataDisks() {
+        Map<Integer, VirtualMachineDataDisk> dataDisks = new HashMap<>();
+        if (isManagedDiskEnabled()) {
+            List<DataDisk> innerDataDisks = this.inner().storageProfile().dataDisks();
+            if (innerDataDisks != null) {
+                for (DataDisk innerDataDisk : innerDataDisks) {
+                    dataDisks.put(innerDataDisk.lun(), new VirtualMachineDataDiskImpl(innerDataDisk));
+                }
+            }
+        }
+        return Collections.unmodifiableMap(dataDisks);
     }
 
     @Override
@@ -324,7 +405,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> reimageAsync() {
         return this.client.reimageAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -336,7 +423,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> deallocateAsync() {
         return this.client.deallocateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -348,7 +441,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> powerOffAsync() {
         return this.client.powerOffAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -360,7 +459,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> startAsync() {
         return this.client.startAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -372,7 +477,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> restartAsync() {
         return this.client.restartAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -384,7 +495,13 @@ class VirtualMachineScaleSetVMImpl
     public Observable<Void> deleteAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId());
+                this.instanceId())
+                .map(new Func1<Object, Void>() {
+                    @Override
+                    public Void call(Object o) {
+                        return null;
+                    }
+                });
     }
 
     @Override
@@ -409,4 +526,22 @@ class VirtualMachineScaleSetVMImpl
     private void clearCachedRelatedResources() {
         this.virtualMachineInstanceView = null;
     }
+
+    @Override
+    public boolean isManagedDiskEnabled() {
+        if (isOSBasedOnCustomImage()) {
+            return true;
+        }
+        if (isOSBasedOnStoredImage()) {
+            return false;
+        }
+        if (isOSBasedOnPlatformImage()) {
+            if (this.inner().storageProfile().osDisk() != null
+                && this.inner().storageProfile().osDisk().vhd() != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -69,8 +69,14 @@ public final class TestUtils {
                 storageProfile.append("\n\t\t\tCreateOption: ").append(disk.createOption());
                 storageProfile.append("\n\t\t\tDiskSizeGB: ").append(disk.diskSizeGB());
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
-                if (disk.vhd().uri() != null) {
-                    storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                if (resource.isManagedDiskEnabled()) {
+                    if (disk.managedDisk() != null) {
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
+                    }
+                } else {
+                    if (disk.vhd().uri() != null) {
+                        storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                    }
                 }
                 if (disk.image() != null) {
                     storageProfile.append("\n\t\t\tImage Uri: ").append(disk.image().uri());
