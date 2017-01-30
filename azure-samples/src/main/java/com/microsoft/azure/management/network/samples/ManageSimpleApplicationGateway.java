@@ -68,16 +68,17 @@ public final class ManageSimpleApplicationGateway {
             ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
+
                     // Request routing rule for HTTP from public 80 to public 8080
                     .defineRequestRoutingRule("HTTP-80-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIpAddress("11.1.1.1")
-                    .toBackendIpAddress("11.1.1.2")
-                    .toBackendIpAddress("11.1.1.3")
-                    .toBackendIpAddress("11.1.1.4")
-                    .attach()
+                        .fromPublicFrontend()
+                        .fromFrontendHttpPort(80)
+                        .toBackendHttpPort(8080)
+                        .toBackendIpAddress("11.1.1.1")
+                        .toBackendIpAddress("11.1.1.2")
+                        .toBackendIpAddress("11.1.1.3")
+                        .toBackendIpAddress("11.1.1.4")
+                        .attach()
                     .withNewPublicIpAddress()
                     .create();
 
@@ -99,18 +100,18 @@ public final class ManageSimpleApplicationGateway {
             applicationGateway.update()
                     .withoutRequestRoutingRule("HTTP-80-to-8080")
                     .defineRequestRoutingRule("HTTPs-1443-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpsPort(1443)
-                    .withSslCertificateFromPfxFile(new File(ManageSimpleApplicationGateway.class.getClassLoader().getResource("myTest.pfx").getPath()))
-                    .withSslCertificatePassword("Abc123")
-                    .toBackendHttpPort(8080)
-                    .toBackendIpAddress("11.1.1.1")
-                    .toBackendIpAddress("11.1.1.2")
-                    .toBackendIpAddress("11.1.1.3")
-                    .toBackendIpAddress("11.1.1.4")
-                    .withHostName("www.contoso.com")
-                    .withCookieBasedAffinity()
-                    .attach()
+                        .fromPublicFrontend()
+                        .fromFrontendHttpsPort(1443)
+                        .withSslCertificateFromPfxFile(new File(ManageSimpleApplicationGateway.class.getClassLoader().getResource("myTest.pfx").getPath()))
+                        .withSslCertificatePassword("Abc123")
+                        .toBackendHttpPort(8080)
+                        .toBackendIpAddress("11.1.1.1")
+                        .toBackendIpAddress("11.1.1.2")
+                        .toBackendIpAddress("11.1.1.3")
+                        .toBackendIpAddress("11.1.1.4")
+                        .withHostName("www.contoso.com")
+                        .withCookieBasedAffinity()
+                        .attach()
                     .apply();
 
             t2 = System.currentTimeMillis();
@@ -150,8 +151,7 @@ public final class ManageSimpleApplicationGateway {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.NONE)
                     .authenticate(credFile)
                     .withDefaultSubscription();

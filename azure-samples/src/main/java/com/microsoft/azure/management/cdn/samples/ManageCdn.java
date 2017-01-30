@@ -92,8 +92,7 @@ public final class ManageCdn {
             // to be able to call create on the entire Cdn profile deployment definition.
             Creatable<CdnProfile> cdnCreatable = null;
             for (String webSite : appNames) {
-                cdnCreatable = profileDefinition
-                        .defineNewEndpoint()
+                cdnCreatable = profileDefinition.defineNewEndpoint()
                         .withOrigin(webSite + SUFFIX)
                         .withHostHeader(webSite + SUFFIX)
                         .withCompressionEnabled(true)
@@ -139,8 +138,7 @@ public final class ManageCdn {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            azure = Azure
-                    .configure()
+            azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     //.withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)

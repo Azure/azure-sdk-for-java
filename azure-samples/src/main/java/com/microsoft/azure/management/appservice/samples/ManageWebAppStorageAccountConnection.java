@@ -71,8 +71,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Creating storage account " + storageName + "...");
 
-            StorageAccount storageAccount = azure.storageAccounts()
-                    .define(storageName)
+            StorageAccount storageAccount = azure.storageAccounts().define(storageName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -100,8 +99,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            WebApp app1 = azure.webApps()
-                    .define(app1Name)
+            WebApp app1 = azure.webApps().define(app1Name)
                     .withExistingResourceGroup(rgName)
                     .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
@@ -164,8 +162,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

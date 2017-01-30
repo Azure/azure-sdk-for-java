@@ -6,7 +6,7 @@
 package com.microsoft.azure.management;
 
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
@@ -14,15 +14,12 @@ import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.LogLevel;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -39,7 +36,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         // Create
         Observable<Indexable> resourceStream = nsgs.define(newName)
                 .withRegion(region)
-                .withNewResourceGroup()
+                .withNewResourceGroup(SdkContext.randomResourceName("rg", 9))
                 .defineRule("rule1")
                     .allowOutbound()
                     .fromAnyAddress()
@@ -77,11 +74,26 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                             nsgFuture.set(networkSecurityGroup);
                        }
                    });
+
         NetworkSecurityGroup nsg = nsgFuture.get();
+
+        NetworkInterface nic = nsgs.manager().networkInterfaces().define(SdkContext.randomResourceName("nic", 12))
+                .withRegion(region)
+                .withExistingResourceGroup(nsg.resourceGroupName())
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withExistingNetworkSecurityGroup(nsg)
+                .create();
+
+        nsg.refresh();
 
         // Verify
         Assert.assertTrue(nsg.region().equals(region));
         Assert.assertTrue(nsg.securityRules().size() == 2);
+
+        // Confirm NIC association
+        Assert.assertEquals(1,  nsg.networkInterfaceIds().size());
+        Assert.assertTrue(nsg.networkInterfaceIds().get(0).equalsIgnoreCase(nic.id()));
 
         return nsg;
     }

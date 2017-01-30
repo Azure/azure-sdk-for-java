@@ -85,9 +85,9 @@ public class ManageDns {
                     .withRegion(Region.US_EAST2)
                     .withPricingTier(AppServicePricingTier.BASIC_B1)
                     .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                    .withBranch("master")
-                    .attach()
+                        .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+                        .withBranch("master")
+                        .attach()
                     .create();
             System.out.println("Created web app " + webAppName);
             Utils.print(webApp);
@@ -115,10 +115,10 @@ public class ManageDns {
             System.out.println("Updating Web app with host name binding...");
             webApp.update()
                     .defineHostnameBinding()
-                    .withThirdPartyDomain(customDomainName)
-                    .withSubDomain("www")
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach()
+                        .withThirdPartyDomain(customDomainName)
+                        .withSubDomain("www")
+                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .attach()
                     .apply();
             System.out.println("Web app updated");
             Utils.print(webApp);
@@ -129,16 +129,16 @@ public class ManageDns {
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine1 = azure.virtualMachines()
                     .define(SdkContext.randomResourceName("employeesvm-", 20))
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("empip-", 20))
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername("testuser")
-                    .withAdminPassword("12NewPA$$w0rd!")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                    .create();
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(resourceGroup)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("empip-", 20))
+                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                        .withAdminUsername("testuser")
+                        .withAdminPassword("12NewPA$$w0rd!")
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                        .create();
             System.out.println("Virtual machine created");
 
             //============================================================
@@ -148,8 +148,8 @@ public class ManageDns {
             System.out.println("Updating root DNS zone " + customDomainName + "...");
             rootDnsZone = rootDnsZone.update()
                     .defineARecordSet("employees")
-                    .withIpv4Address(vm1PublicIpAddress.ipAddress())
-                    .attach()
+                        .withIpv4Address(vm1PublicIpAddress.ipAddress())
+                        .attach()
                     .apply();
             System.out.println("Updated root DNS zone " + rootDnsZone.name());
             Utils.print(rootDnsZone);
@@ -182,8 +182,7 @@ public class ManageDns {
 
             String partnerSubDomainName  = "partners." + customDomainName;
             System.out.println("Creating child DNS zone " + partnerSubDomainName + "...");
-            DnsZone partnersDnsZone = azure.dnsZones()
-                    .define(partnerSubDomainName)
+            DnsZone partnersDnsZone = azure.dnsZones().define(partnerSubDomainName)
                     .withExistingResourceGroup(resourceGroup)
                     .create();
             System.out.println("Created child DNS zone " + partnersDnsZone.name());
@@ -195,8 +194,8 @@ public class ManageDns {
             System.out.println("Updating root DNS zone " + rootDnsZone + "...");
             DnsRecordSet.UpdateDefinitionStages.WithNsRecordNameServerOrAttachable<DnsZone.Update> nsRecordStage = rootDnsZone
                     .update()
-                    .defineNsRecordSet("partners")
-                    .withNameServer(partnersDnsZone.nameServers().get(0));
+                        .defineNsRecordSet("partners")
+                        .withNameServer(partnersDnsZone.nameServers().get(0));
             for (int i = 1; i < partnersDnsZone.nameServers().size(); i++) {
                 nsRecordStage = nsRecordStage.withNameServer(partnersDnsZone.nameServers().get(i));
             }
@@ -212,16 +211,16 @@ public class ManageDns {
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine2 = azure.virtualMachines()
                     .define(SdkContext.randomResourceName("partnersvm-", 20))
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("ptnerpip-", 20))
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername("testuser")
-                    .withAdminPassword("12NewPA$$w0rd!")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                    .create();
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(resourceGroup)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("ptnerpip-", 20))
+                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                        .withAdminUsername("testuser")
+                        .withAdminPassword("12NewPA$$w0rd!")
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                        .create();
             System.out.println("Virtual machine created");
 
             //============================================================
@@ -231,8 +230,8 @@ public class ManageDns {
             System.out.println("Updating child DNS zone " + partnerSubDomainName + "...");
             partnersDnsZone = partnersDnsZone.update()
                     .defineARecordSet("@")
-                    .withIpv4Address(vm2PublicIpAddress.ipAddress())
-                    .attach()
+                        .withIpv4Address(vm2PublicIpAddress.ipAddress())
+                        .attach()
                     .apply();
             System.out.println("Updated child DNS zone " + partnersDnsZone.name());
             Utils.print(partnersDnsZone);
@@ -283,8 +282,7 @@ public class ManageDns {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

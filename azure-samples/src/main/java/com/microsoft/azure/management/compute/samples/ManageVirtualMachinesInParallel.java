@@ -53,15 +53,13 @@ public final class ManageVirtualMachinesInParallel {
                     .create();
 
             // Prepare Creatable Network definition [Where all the virtual machines get added to]
-            Creatable<Network> creatableNetwork = azure.networks()
-                    .define(networkName)
+            Creatable<Network> creatableNetwork = azure.networks().define(networkName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
                     .withAddressSpace("172.16.0.0/16");
 
             // Prepare Creatable Storage account definition [For storing VMs disk]
-            Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
-                    .define(storageAccountName)
+            Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts().define(storageAccountName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
 
@@ -69,8 +67,7 @@ public final class ManageVirtualMachinesInParallel {
             List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
 
             for (int i = 0; i < vmCount; i++) {
-                Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines()
-                        .define("VM-" + i)
+                Creatable<VirtualMachine> creatableVirtualMachine = azure.virtualMachines().define("VM-" + i)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork(creatableNetwork)
@@ -131,8 +128,7 @@ public final class ManageVirtualMachinesInParallel {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

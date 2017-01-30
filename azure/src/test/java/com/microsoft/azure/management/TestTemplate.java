@@ -24,7 +24,7 @@ import java.io.IOException;
  * @param <C> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-    T extends GroupableResource,
+    T extends GroupableResource<?>,
     C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeletingById & SupportsGettingById<T>> {
 
     protected String testId = "";
@@ -138,7 +138,15 @@ public abstract class TestTemplate<
         }
 
         // Verify deletion
-        verifyDeleting();
+        boolean failedDelete = false;
+        try {
+            message = "Delete failed";
+            verifyDeleting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            failedDelete = true;
+        }
         Assert.assertFalse(message, failedUpdate);
+        Assert.assertFalse(message,  failedDelete);
     }
 }

@@ -69,17 +69,17 @@ public final class ManageTrafficManager {
             AppServiceDomain domain = azure.appServices().domains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                        .withFirstName("Jon")
+                        .withLastName("Doe")
+                        .withEmail("jondoe@contoso.com")
+                        .withAddressLine1("123 4th Ave")
+                        .withCity("Redmond")
+                        .withStateOrProvince("WA")
+                        .withCountry(CountryISOCode.UNITED_STATES)
+                        .withPostalCode("98052")
+                        .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                        .withPhoneNumber("4258828080")
+                        .attach()
                     .withDomainPrivacyEnabled(true)
                     .withAutoRenewEnabled(false)
                     .create();
@@ -104,8 +104,7 @@ public final class ManageTrafficManager {
             for (Region region : regions) {
                 String planName = appServicePlanNamePrefix + id;
                 System.out.println("Creating an app service plan " + planName + " in region " + region + "...");
-                AppServicePlan appServicePlan = azure.appServices().appServicePlans()
-                        .define(planName)
+                AppServicePlan appServicePlan = azure.appServices().appServicePlans().define(planName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withPricingTier(AppServicePricingTier.BASIC_B1)
@@ -128,14 +127,14 @@ public final class ManageTrafficManager {
                         .withExistingAppServicePlan(appServicePlan)
                         .withManagedHostnameBindings(domain, webAppName)
                         .defineSslBinding()
-                        .forHostname(webAppName + "." + domain.name())
-                        .withPfxCertificateToUpload(new File(pfxPath), certPassword)
-                        .withSniBasedSsl()
-                        .attach()
+                            .forHostname(webAppName + "." + domain.name())
+                            .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                            .withSniBasedSsl()
+                            .attach()
                         .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                        .withBranch("master")
-                        .attach()
+                            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+                            .withBranch("master")
+                            .attach()
                         .create();
                 System.out.println("Created web app " + webAppName);
                 Utils.print(webApp);
@@ -149,9 +148,9 @@ public final class ManageTrafficManager {
             System.out.println("Creating a traffic manager profile " + tmName + " for the web apps...");
             TrafficManagerProfile.DefinitionStages.WithEndpoint tmDefinition = azure.trafficManagerProfiles()
                     .define(tmName)
-                    .withExistingResourceGroup(rgName)
-                    .withLeafDomainLabel(tmName)
-                    .withPriorityBasedRouting();
+                        .withExistingResourceGroup(rgName)
+                        .withLeafDomainLabel(tmName)
+                        .withPriorityBasedRouting();
             Creatable<TrafficManagerProfile> tmCreatable = null;
             int priority = 1;
             for (WebApp webApp : webApps) {
@@ -171,8 +170,8 @@ public final class ManageTrafficManager {
             System.out.println("Disabling and removing endpoint...");
             trafficManagerProfile = trafficManagerProfile.update()
                     .updateAzureTargetEndpoint("endpoint-1")
-                    .withTrafficDisabled()
-                    .parent()
+                        .withTrafficDisabled()
+                        .parent()
                     .withoutEndpoint("endpoint-2")
                     .apply();
             System.out.println("Endpoints updated");
@@ -183,8 +182,8 @@ public final class ManageTrafficManager {
             System.out.println("Enabling endpoint...");
             trafficManagerProfile = trafficManagerProfile.update()
                     .updateAzureTargetEndpoint("endpoint-1")
-                    .withTrafficEnabled()
-                    .parent()
+                        .withTrafficEnabled()
+                        .parent()
                     .apply();
             System.out.println("Endpoint updated");
             Utils.print(trafficManagerProfile);
@@ -250,8 +249,7 @@ public final class ManageTrafficManager {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();

@@ -71,8 +71,7 @@ public final class ManageSimpleTrafficManager {
                     //=============================================================
                     // Create a virtual machine in its own virtual network
                     String vmName = String.format("%s-%d", linuxVMNamePrefix, i);
-                    Creatable<VirtualMachine> vmDefinition = azure.virtualMachines()
-                            .define(vmName)
+                    Creatable<VirtualMachine> vmDefinition = azure.virtualMachines().define(vmName)
                             .withRegion(region)
                             .withExistingResourceGroup(resourceGroup)
                             .withNewPrimaryNetwork("10.0.0.0/29")
@@ -103,10 +102,11 @@ public final class ManageSimpleTrafficManager {
             // Create 1 traffic manager profile
             //
             String trafficManagerName = SdkContext.randomResourceName("tra", 15);
-            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withLeafDomainLabel(trafficManagerName)
-                    .withPerformanceBasedRouting();
+            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles()
+                    .define(trafficManagerName)
+                        .withExistingResourceGroup(resourceGroup)
+                        .withLeafDomainLabel(trafficManagerName)
+                        .withPerformanceBasedRouting();
 
             TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
             int routingPriority = 1;

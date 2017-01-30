@@ -5,12 +5,18 @@ jdk:
 - oraclejdk8
 - openjdk7
 script:
- - 'if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
-    export AZURE_TEST_MODE=RECORD;
-    mvn install -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
+- |-
+  if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
+   openssl aes-256-cbc -K $encrypted_25450b691aae_key -iv $encrypted_25450b691aae_iv -in my.azureauth.txt.enc -out my.azureauth.txt -d;
+   export AZURE_TEST_MODE=RECORD;
+   export AZURE_AUTH_LOCATION=$TRAVIS_BUILD_DIR/my.azureauth.txt;
+   mvn install -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
   else
-    mvn install -DskipTests=true ;
-    mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
-    mvn checkstyle:check ;
-    mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true ;
-fi'
+   mvn install -DskipTests=true ;
+   mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error ;
+   mvn checkstyle:check ;
+   mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true ;
+  fi
+
+
+

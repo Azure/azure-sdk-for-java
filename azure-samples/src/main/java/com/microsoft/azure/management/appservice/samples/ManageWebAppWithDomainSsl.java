@@ -61,8 +61,7 @@ public final class ManageWebAppWithDomainSsl {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            WebApp app1 = azure.webApps()
-                    .define(app1Name)
+            WebApp app1 = azure.webApps().define(app1Name)
                     .withNewResourceGroup(rgName)
                     .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
@@ -77,8 +76,7 @@ public final class ManageWebAppWithDomainSsl {
 
             System.out.println("Creating another web app " + app2Name + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
-            WebApp app2 = azure.webApps()
-                    .define(app2Name)
+            WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingResourceGroup(rgName)
                     .withExistingAppServicePlan(plan)
                     .create();
@@ -94,17 +92,17 @@ public final class ManageWebAppWithDomainSsl {
             AppServiceDomain domain = azure.appServices().domains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                        .withFirstName("Jon")
+                        .withLastName("Doe")
+                        .withEmail("jondoe@contoso.com")
+                        .withAddressLine1("123 4th Ave")
+                        .withCity("Redmond")
+                        .withStateOrProvince("WA")
+                        .withCountry(CountryISOCode.UNITED_STATES)
+                        .withPostalCode("98052")
+                        .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                        .withPhoneNumber("4258828080")
+                        .attach()
                     .withDomainPrivacyEnabled(true)
                     .withAutoRenewEnabled(false)
                     .create();
@@ -118,10 +116,10 @@ public final class ManageWebAppWithDomainSsl {
 
             app1 = app1.update()
                     .defineHostnameBinding()
-                    .withAzureManagedDomain(domain)
-                    .withSubDomain(app1Name)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach()
+                        .withAzureManagedDomain(domain)
+                        .withSubDomain(app1Name)
+                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .attach()
                     .apply();
 
             System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
@@ -150,10 +148,10 @@ public final class ManageWebAppWithDomainSsl {
             app1 = app1.update()
                     .withManagedHostnameBindings(domain, app1Name)
                     .defineSslBinding()
-                    .forHostname(app1Name + "." + domainName)
-                    .withPfxCertificateToUpload(new File(pfxPath), certPassword)
-                    .withSniBasedSsl()
-                    .attach()
+                        .forHostname(app1Name + "." + domainName)
+                        .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                        .withSniBasedSsl()
+                        .attach()
                     .apply();
 
             System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
@@ -164,10 +162,10 @@ public final class ManageWebAppWithDomainSsl {
             app2 = app2.update()
                     .withManagedHostnameBindings(domain, app2Name)
                     .defineSslBinding()
-                    .forHostname(app2Name + "." + domainName)
-                    .withPfxCertificateToUpload(new File(pfxPath), certPassword)
-                    .withSniBasedSsl()
-                    .attach()
+                        .forHostname(app2Name + "." + domainName)
+                        .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                        .withSniBasedSsl()
+                        .attach()
                     .apply();
 
             System.out.println("Finished binding http://" + app2Name + "." + domainName + " to web app " + app2Name);
@@ -205,8 +203,7 @@ public final class ManageWebAppWithDomainSsl {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();

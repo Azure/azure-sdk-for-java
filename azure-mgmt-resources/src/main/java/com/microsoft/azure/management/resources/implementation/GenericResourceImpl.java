@@ -12,9 +12,9 @@ import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * The implementation for {@link GenericResource} and its nested interfaces.
@@ -179,7 +179,7 @@ final class GenericResourceImpl
                                 name,
                                 api,
                                 inner())
-                                .subscribeOn(Schedulers.io())
+                                .subscribeOn(SdkContext.getRxScheduler())
                                 .map(innerToFluentMap(self));
                     }
                 });

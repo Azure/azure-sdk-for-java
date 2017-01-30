@@ -44,8 +44,7 @@ public final class ManageResource {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azure.resourceGroups()
-                    .define(rgName)
+            azure.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -55,8 +54,7 @@ public final class ManageResource {
 
             System.out.println("Creating a storage account with name: " + resourceName1);
 
-            StorageAccount storageAccount = azure.storageAccounts()
-                    .define(resourceName1)
+            StorageAccount storageAccount = azure.storageAccounts().define(resourceName1)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
                     .create();

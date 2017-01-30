@@ -77,13 +77,13 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .withNewDataDisk(100)
                     .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                     .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", apacheInstallScriptUris)
-                    .withPublicSetting("commandToExecute", apacheInstallCommand)
-                    .attach()
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", apacheInstallScriptUris)
+                        .withPublicSetting("commandToExecute", apacheInstallCommand)
+                        .attach()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
@@ -270,8 +270,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure
-                    .configure()
+            Azure azure = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();

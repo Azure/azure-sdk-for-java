@@ -17,7 +17,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
         final String newName = "as" + this.testId;
         AvailabilitySet aset = availabilitySets.define(newName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withFaultDomainCount(2)
                 .withUpdateDomainCount(4)

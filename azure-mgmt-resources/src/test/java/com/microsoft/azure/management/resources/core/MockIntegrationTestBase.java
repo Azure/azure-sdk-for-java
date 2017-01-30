@@ -25,6 +25,7 @@ import org.apache.http.HttpStatus;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import rx.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class MockIntegrationTestBase {
         }
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(this));
         SdkContext.setDelayProvider(new TestDelayProvider());
+        SdkContext.setRxScheduler(Schedulers.trampoline());
         wireMock = new WireMock(host, wireMockRule.port());
         wireMock.resetMappings();
 

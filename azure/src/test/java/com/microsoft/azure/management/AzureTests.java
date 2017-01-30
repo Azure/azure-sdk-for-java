@@ -237,7 +237,6 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    @Ignore("Running locally fine, fails on CI")
     public void testAvailabilitySets() throws Exception {
         new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
     }
