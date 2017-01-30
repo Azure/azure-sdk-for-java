@@ -1,9 +1,9 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Represents a task that creates or updates a resource when executed.
@@ -48,7 +48,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     public Observable<ResourceT> executeAsync() {
         if (this.resourceCreatorUpdator.isInCreateMode()) {
             return this.resourceCreatorUpdator.createResourceAsync()
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
                         public void call(ResourceT resourceT) {
@@ -57,7 +57,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
                     });
         } else {
             return this.resourceCreatorUpdator.updateResourceAsync()
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
                         public void call(ResourceT resourceT) {

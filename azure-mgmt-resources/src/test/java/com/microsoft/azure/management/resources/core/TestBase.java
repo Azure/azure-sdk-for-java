@@ -7,10 +7,10 @@
 package com.microsoft.azure.management.resources.core;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.rest.RestClient;
-import com.microsoft.rest.LogLevel;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,6 +43,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withNetworkInterceptor(interceptor), true);
 
             defaultSubscription = MOCK_SUBSCRIPTION;
+            System.out.println(MOCK_URI);
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {

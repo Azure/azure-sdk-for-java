@@ -6,12 +6,16 @@
 
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
+
 /**
  * The class to contain the common factory methods required for SDK framework.
  */
 public class SdkContext {
     private static ResourceNamerFactory resourceNamerFactory = new ResourceNamerFactory();
     private static DelayProvider delayProvider = new DelayProvider();
+    private static Scheduler rxScheduler = Schedulers.io();
 
     /**
      * Function to override the ResourceNamerFactory.
@@ -57,5 +61,21 @@ public class SdkContext {
      */
     public static void sleep(int milliseconds) {
         delayProvider.sleep(milliseconds);
+    }
+
+    /**
+     * Gets the current Rx Scheduler for the SDK framework.
+     * @return current rx scheduler.
+     */
+    public static Scheduler getRxScheduler() {
+        return rxScheduler;
+    }
+
+    /**
+     * Sets the Rx Scheduler for SDK framework, by default is Scheduler.io().
+     * @param rxScheduler current Rx Scheduler to be used in SDK framework.
+     */
+    public static void setRxScheduler(Scheduler rxScheduler) {
+        SdkContext.rxScheduler = rxScheduler;
     }
 }
