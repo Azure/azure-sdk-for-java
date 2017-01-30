@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 /**
  * The implementation for {@link VirtualMachineDataDisk} interface.
  */
+@LangDefinition
 class VirtualMachineDataDiskImpl
         extends WrapperImpl<DataDisk>
         implements VirtualMachineDataDisk  {

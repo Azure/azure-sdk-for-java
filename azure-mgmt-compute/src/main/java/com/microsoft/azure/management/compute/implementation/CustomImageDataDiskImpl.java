@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.ImageDataDisk;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  * The implementation for {@link VirtualMachineCustomImage.CustomImageDataDisk}.
  */
+@LangDefinition
 class CustomImageDataDiskImpl
         extends ChildResourceImpl<ImageDataDisk, VirtualMachineCustomImageImpl, VirtualMachineCustomImage>
         implements

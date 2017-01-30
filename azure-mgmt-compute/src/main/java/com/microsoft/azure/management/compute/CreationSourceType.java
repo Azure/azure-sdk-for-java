@@ -6,9 +6,12 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * The source type of managed disk or snapshot.
  */
+@LangDefinition
 public enum CreationSourceType {
     /**
      * Indicates that disk or snapshot is created from Os disk image of a virtual machine

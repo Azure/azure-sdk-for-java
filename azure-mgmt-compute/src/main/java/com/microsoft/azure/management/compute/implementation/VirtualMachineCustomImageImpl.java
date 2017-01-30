@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.ImageDataDisk;
@@ -29,6 +30,7 @@ import java.util.Map;
 /**
  * The implementation for {@link VirtualMachineCustomImage}.
  */
+@LangDefinition
 class VirtualMachineCustomImageImpl
         extends GroupableResourceImpl<
         VirtualMachineCustomImage,

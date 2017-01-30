@@ -9,6 +9,7 @@ package com.microsoft.azure.management.network.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -240,7 +241,8 @@ public final class ManageInternalLoadBalancer {
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
-                    .withUpdateDomainCount(4);
+                    .withUpdateDomainCount(4)
+                    .withSku(AvailabilitySetSkuTypes.ALIGNED);
 
             //=============================================================
             // Create two virtual machines and assign network interfaces

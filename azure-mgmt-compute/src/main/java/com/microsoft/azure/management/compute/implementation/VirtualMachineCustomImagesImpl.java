@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -9,6 +10,7 @@ import rx.Completable;
 /**
  * The implementation for {@link VirtualMachineCustomImages}.
  */
+@LangDefinition
 class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
         VirtualMachineCustomImage,
         VirtualMachineCustomImageImpl,

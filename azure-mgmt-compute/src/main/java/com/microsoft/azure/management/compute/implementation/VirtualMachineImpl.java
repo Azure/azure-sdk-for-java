@@ -1869,13 +1869,15 @@ class VirtualMachineImpl
             existingDisksToAttach.clear();
             implicitDisksToAssociate.clear();
             diskLunsToRemove.clear();
+            newDisksFromImage.clear();
         }
 
         private boolean isPending() {
             return newDisksToAttach.size() > 0
                     || existingDisksToAttach.size() > 0
                     || implicitDisksToAssociate.size() > 0
-                    || diskLunsToRemove.size() > 0;
+                    || diskLunsToRemove.size() > 0
+                    || newDisksFromImage.size() > 0;
         }
 
         private void setAttachableNewDataDisks(Func0<Integer> nextLun) {
@@ -1941,8 +1943,6 @@ class VirtualMachineImpl
             List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
             for (DataDisk dataDisk : this.newDisksFromImage) {
                 dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-                // Don't set default caching type for the disk, either user has to specify it explicitly or let CRP pick
-                // it from the image
                 // Don't set default storage account type for the disk, either user has to specify it explicitly or let
                 // CRP pick it from the image
                 dataDisk.withName(null);
