@@ -145,7 +145,6 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    @Ignore("Order is not deterministic")
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer.InternetWithNatPool(
                 azure.publicIpAddresses(),
@@ -156,7 +155,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests the minimum internet-facing load balancer.
+     * Tests the minimum Internet-facing load balancer.
      * @throws Exception
      */
     @Test
@@ -166,7 +165,7 @@ public class AzureTests extends TestBase {
                 azure.virtualMachines(),
                 azure.networks(),
                 azure.availabilitySets())
-            .runTest(azure.loadBalancers(),  azure.resourceGroups());
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
