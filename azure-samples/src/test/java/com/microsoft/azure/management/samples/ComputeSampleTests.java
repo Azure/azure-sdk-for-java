@@ -104,4 +104,10 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testManageVirtualMachineWithDisk() {
         Assert.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
     }
+
+    @Test
+    public void testMigrateVirtualMachine() {
+        Assert.assertTrue(MigrateVirtualMachine.runSample(azure));
+    }
+
 }
