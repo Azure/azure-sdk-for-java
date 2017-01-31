@@ -11,7 +11,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import rx.functions.Func1;
 
@@ -38,7 +37,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Failing.")
     public void canCreateVirtualMachine() throws Exception {
         // Create
         computeManager.virtualMachines()
@@ -84,7 +82,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Failing.")
     public void canCreateVirtualMachinesAndRelatedResourcesInParallel() throws Exception {
         String vmNamePrefix = "vmz";
         String publicIpNamePrefix = generateRandomResourceName("pip-", 15);
@@ -134,7 +131,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Failing.")
     public void canStreamParallelCreatedVirtualMachinesAndRelatedResources() throws Exception {
         String vmNamePrefix = "vmz";
         String publicIpNamePrefix = generateRandomResourceName("pip-", 15);

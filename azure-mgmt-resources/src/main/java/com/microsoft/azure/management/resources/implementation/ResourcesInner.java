@@ -503,7 +503,12 @@ public final class ResourcesInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
+        Boolean body = checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
+        if (body != null) {
+            return body;
+        } else {
+            return false;
+        }
     }
 
     /**
