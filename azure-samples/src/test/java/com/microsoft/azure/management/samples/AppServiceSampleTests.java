@@ -25,7 +25,6 @@ public class AppServiceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageWebAppSlots() {
         Assert.assertTrue(ManageWebAppSlots.runSample(azure));
     }
