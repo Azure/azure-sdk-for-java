@@ -1997,11 +1997,13 @@ public class VirtualMachineScaleSetImpl
         private void clear() {
             implicitDisksToAssociate.clear();
             diskLunsToRemove.clear();
+            newDisksFromImage.clear();
         }
 
         private boolean isPending() {
             return implicitDisksToAssociate.size() > 0
-                    || diskLunsToRemove.size() > 0;
+                    || diskLunsToRemove.size() > 0
+                    || newDisksFromImage.size() > 0;
         }
 
         private void setImplicitDataDisks(Func0<Integer> nextLun) {
@@ -2037,8 +2039,6 @@ public class VirtualMachineScaleSetImpl
             List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
             for (VirtualMachineScaleSetDataDisk dataDisk : this.newDisksFromImage) {
                 dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-                // Don't set default caching type for the disk, either user has to specify it explicitly or let CRP pick
-                // it from the image
                 // Don't set default storage account type for the disk, either user has to specify it explicitly or let
                 // CRP pick it from the image
                 dataDisk.withName(null);

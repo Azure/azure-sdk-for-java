@@ -40,7 +40,7 @@ class DisksImpl
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
         AccessUriInner accessUriInner = this.innerCollection.grantAccess(resourceGroupName,
-                diskName,grantAccessDataInner);
+                diskName, grantAccessDataInner);
         return accessUriInner.accessSAS();
     }
 

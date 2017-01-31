@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.ImageReferenceInner;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
  * The image reference.
  */
+@LangDefinition
 public class ImageReference extends WrapperImpl<ImageReferenceInner> {
     /**
      * the image resource id
