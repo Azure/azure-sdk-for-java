@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentBase;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -62,7 +62,7 @@ public final class DeployUsingARMTemplateWithTags {
 
             System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
-            Deployment deployment = azure.deployments().define(deploymentName)
+            DeploymentBase deployment = azure.deployments().define(deploymentName)
                     .withExistingResourceGroup(rgName)
                     .withTemplate(templateJson)
                     .withParameters("{}")

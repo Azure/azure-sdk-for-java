@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.ActionProxy;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -41,7 +42,7 @@ final class DeploymentsImpl
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
-                return createFluentModel(deploymentInner);
+                return ActionProxy.newInstance(Deployment.class, createFluentModel(deploymentInner));
             }
         };
     }
@@ -93,7 +94,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public DeploymentImpl define(String name) {
+    public DeploymentBaseImpl define(String name) {
         return createFluentModel(name);
     }
 
@@ -102,16 +103,16 @@ final class DeploymentsImpl
         return client.checkExistence(resourceGroupName, deploymentName);
     }
 
-    protected DeploymentImpl createFluentModel(String name) {
-        return new DeploymentImpl(
+    private DeploymentBaseImpl createFluentModel(String name) {
+        return new DeploymentBaseImpl(
                 new DeploymentExtendedInner().withName(name),
                 client,
                 deploymentOperationsClient,
                 this.resourceManager);
     }
 
-    protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+    private Deployment createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
+        return ActionProxy.newInstance(Deployment.class, new DeploymentBaseImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager));
     }
 
     @Override
