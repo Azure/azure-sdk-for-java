@@ -2,27 +2,34 @@ package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.RestClient;
-import org.junit.*;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 public class GenericResourcesTests extends ResourceManagerTestBase {
     private static ResourceGroups resourceGroups;
     private static GenericResources genericResources;
 
-    private static String resourceName = "rgweb953";
-    private static String rgName = "javacsmrg720";
-    private static String newRgName = "javacsmrg189";
+    private String testId;
+    private String rgName;
+    private String newRgName;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        testId = SdkContext.randomResourceName("", 9);
+        rgName = "rg" + testId;
+        newRgName = "rgB" + testId;
+
         super.initializeClients(restClient, defaultSubscription, domain);
         resourceGroups = resourceClient.resourceGroups();
         genericResources = resourceClient.genericResources();
         resourceGroups.define(rgName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_EAST)
                 .create();
         resourceGroups.define(newRgName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
@@ -31,13 +38,13 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceGroups.beginDeleteByName(newRgName);
-        resourceGroups.beginDeleteByName(rgName);
+        resourceGroups.deleteByName(newRgName);
+        resourceGroups.deleteByName(rgName);
     }
 
     @Test
-    @Ignore("NULL REF in checkExistence")
     public void canCreateUpdateMoveResource() throws Exception {
+        final String resourceName = "rs" + testId;
         // Create
         GenericResource resource = genericResources.define(resourceName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
