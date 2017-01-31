@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL directed column item.
@@ -16,11 +17,13 @@ public class USqlDirectedColumn {
     /**
      * the name of the index in the table.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * the switch indicating if the index is descending or not.
      */
+    @JsonProperty(value = "descending")
     private Boolean descending;
 
     /**

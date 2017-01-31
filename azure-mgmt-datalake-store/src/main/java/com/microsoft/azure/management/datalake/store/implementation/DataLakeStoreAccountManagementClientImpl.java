@@ -14,13 +14,13 @@ import com.microsoft.azure.management.datalake.store.Accounts;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
 import com.microsoft.azure.management.datalake.store.FirewallRules;
 import com.microsoft.azure.management.datalake.store.TrustedIdProviders;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the DataLakeStoreAccountManagementClientImpl class.
  */
-public final class DataLakeStoreAccountManagementClientImpl extends AzureServiceClient implements DataLakeStoreAccountManagementClient {
+public class DataLakeStoreAccountManagementClientImpl extends AzureServiceClient implements DataLakeStoreAccountManagementClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -191,10 +191,8 @@ public final class DataLakeStoreAccountManagementClientImpl extends AzureService
      * @param credentials the management credentials for Azure
      */
     public DataLakeStoreAccountManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

@@ -18,6 +18,7 @@ public class USqlExternalDataSource extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
@@ -29,16 +30,19 @@ public class USqlExternalDataSource extends CatalogItem {
     /**
      * the name of the provider for the external data source.
      */
+    @JsonProperty(value = "provider")
     private String provider;
 
     /**
      * the name of the provider string for the external data source.
      */
+    @JsonProperty(value = "providerString")
     private String providerString;
 
     /**
      * the list of types to push down from the external data source.
      */
+    @JsonProperty(value = "pushdownTypes")
     private List<String> pushdownTypes;
 
     /**

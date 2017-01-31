@@ -19,19 +19,19 @@ public class EncryptionIdentity {
      * The type of encryption being used. Currently the only supported type is
      * 'SystemAssigned'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private String type;
 
     /**
      * The principal identifier associated with the encryption.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /**
      * The tenant identifier associated with the encryption.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /**

@@ -15,13 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Azure Storage account information.
  */
 @JsonFlatten
-public class StorageAccountInfo {
-    /**
-     * the account name associated with the Azure storage account.
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
+public class StorageAccountInfo extends SubResource {
     /**
      * the access key associated with this Azure Storage account that will be
      * used to connect to it.
@@ -34,15 +28,6 @@ public class StorageAccountInfo {
      */
     @JsonProperty(value = "properties.suffix")
     private String suffix;
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
 
     /**
      * Get the accessKey value.

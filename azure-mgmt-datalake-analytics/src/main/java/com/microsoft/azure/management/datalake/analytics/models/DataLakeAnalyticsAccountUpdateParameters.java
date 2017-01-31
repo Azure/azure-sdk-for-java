@@ -21,6 +21,7 @@ public class DataLakeAnalyticsAccountUpdateParameters {
     /**
      * Resource tags.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -40,6 +41,16 @@ public class DataLakeAnalyticsAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.maxJobCount")
     private Integer maxJobCount;
+
+    /**
+     * the commitment tier to use for next month. Possible values include:
+     * 'Consumption', 'Commitment_100AUHours', 'Commitment_500AUHours',
+     * 'Commitment_1000AUHours', 'Commitment_5000AUHours',
+     * 'Commitment_10000AUHours', 'Commitment_50000AUHours',
+     * 'Commitment_100000AUHours', 'Commitment_500000AUHours'.
+     */
+    @JsonProperty(value = "properties.newTier")
+    private TierType newTier;
 
     /**
      * Get the tags value.
@@ -118,6 +129,26 @@ public class DataLakeAnalyticsAccountUpdateParameters {
      */
     public DataLakeAnalyticsAccountUpdateParameters withMaxJobCount(Integer maxJobCount) {
         this.maxJobCount = maxJobCount;
+        return this;
+    }
+
+    /**
+     * Get the newTier value.
+     *
+     * @return the newTier value
+     */
+    public TierType newTier() {
+        return this.newTier;
+    }
+
+    /**
+     * Set the newTier value.
+     *
+     * @param newTier the newTier value to set
+     * @return the DataLakeAnalyticsAccountUpdateParameters object itself.
+     */
+    public DataLakeAnalyticsAccountUpdateParameters withNewTier(TierType newTier) {
+        this.newTier = newTier;
         return this;
     }
 

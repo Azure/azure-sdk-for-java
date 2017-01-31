@@ -15,39 +15,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Data Lake Store account information.
  */
 @JsonFlatten
-public class DataLakeStoreAccountInfo {
-    /**
-     * the account name of the Data Lake Store account to add to the Data Lake
-     * Analytics account being created.
-     */
-    @JsonProperty(required = true)
-    private String name;
-
+public class DataLakeStoreAccountInfo extends SubResource {
     /**
      * the optional suffix for the Data Lake Store account.
      */
     @JsonProperty(value = "properties.suffix")
     private String suffix;
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the DataLakeStoreAccountInfo object itself.
-     */
-    public DataLakeStoreAccountInfo withName(String name) {
-        this.name = name;
-        return this;
-    }
 
     /**
      * Get the suffix value.

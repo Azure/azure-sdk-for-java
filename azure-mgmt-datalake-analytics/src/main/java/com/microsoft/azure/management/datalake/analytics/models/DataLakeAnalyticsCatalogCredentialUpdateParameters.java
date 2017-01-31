@@ -8,34 +8,38 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Data Lake Analytics catalog credential update parameters.
  */
 public class DataLakeAnalyticsCatalogCredentialUpdateParameters {
     /**
-     * the current password for the credential and user with access to the
-     * data source. This is required if the requester is not the account
-     * owner.
+     * the current password for the credential and user with access to the data
+     * source. This is required if the requester is not the account owner.
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /**
      * the new password for the credential and user with access to the data
      * source.
      */
+    @JsonProperty(value = "newPassword")
     private String newPassword;
 
     /**
-     * the URI identifier for the data source this credential can connect to
-     * in the format &lt;hostname&gt;:&lt;port&gt;.
+     * the URI identifier for the data source this credential can connect to in
+     * the format &lt;hostname&gt;:&lt;port&gt;.
      */
+    @JsonProperty(value = "uri")
     private String uri;
 
     /**
      * the object identifier for the user associated with this credential with
      * access to the data source.
      */
+    @JsonProperty(value = "userId")
     private String userId;
 
     /**

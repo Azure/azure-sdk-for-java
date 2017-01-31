@@ -17,6 +17,7 @@ public class USqlAssemblyClr extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
@@ -28,6 +29,7 @@ public class USqlAssemblyClr extends CatalogItem {
     /**
      * the name of the CLR.
      */
+    @JsonProperty(value = "clrName")
     private String clrName;
 
     /**

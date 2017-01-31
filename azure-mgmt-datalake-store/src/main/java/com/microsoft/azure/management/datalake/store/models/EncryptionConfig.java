@@ -16,16 +16,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class EncryptionConfig {
     /**
      * The type of encryption configuration being used. Currently the only
-     * supported types are 'UserManaged' and 'ServiceManaged'. Possible
-     * values include: 'UserManaged', 'ServiceManaged'.
+     * supported types are 'UserManaged' and 'ServiceManaged'. Possible values
+     * include: 'UserManaged', 'ServiceManaged'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private EncryptionConfigType type;
 
     /**
      * The Key vault information for connecting to user managed encryption
      * keys.
      */
+    @JsonProperty(value = "keyVaultMetaInfo")
     private KeyVaultMetaInfo keyVaultMetaInfo;
 
     /**

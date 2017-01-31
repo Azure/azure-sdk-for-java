@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics DDL name item.
@@ -16,21 +17,25 @@ public class DdlName {
     /**
      * the name of the table associated with this database and schema.
      */
+    @JsonProperty(value = "firstPart")
     private String firstPart;
 
     /**
      * the name of the table associated with this database and schema.
      */
+    @JsonProperty(value = "secondPart")
     private String secondPart;
 
     /**
      * the name of the table associated with this database and schema.
      */
+    @JsonProperty(value = "thirdPart")
     private String thirdPart;
 
     /**
      * the name of the table associated with this database and schema.
      */
+    @JsonProperty(value = "server")
     private String server;
 
     /**

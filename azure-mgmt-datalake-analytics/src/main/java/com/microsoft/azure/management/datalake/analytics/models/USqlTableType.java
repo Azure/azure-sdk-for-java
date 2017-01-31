@@ -18,7 +18,7 @@ public class USqlTableType extends USqlType {
     /**
      * the type field information associated with this table type.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "columns", access = JsonProperty.Access.WRITE_ONLY)
     private List<TypeFieldInfo> columns;
 
     /**

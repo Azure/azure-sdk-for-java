@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog item list.
@@ -16,6 +17,7 @@ public class CatalogItemList {
     /**
      * the link to the next page of results.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**

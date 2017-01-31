@@ -17,7 +17,7 @@ public class SasTokenInfo {
     /**
      * the access token for the associated Azure Storage Container.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "accessToken", access = JsonProperty.Access.WRITE_ONLY)
     private String accessToken;
 
     /**
