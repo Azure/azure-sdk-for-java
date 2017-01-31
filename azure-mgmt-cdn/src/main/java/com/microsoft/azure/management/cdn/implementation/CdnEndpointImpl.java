@@ -286,7 +286,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     @Override
     public int httpPort() {
         if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            return this.inner().origins().get(0).httpPort();
+            Integer httpPort = this.inner().origins().get(0).httpPort();
+            return (httpPort != null) ? httpPort : 0;
         }
         return 0;
     }
@@ -294,7 +295,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     @Override
     public int httpsPort() {
         if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            return this.inner().origins().get(0).httpsPort();
+            Integer httpsPort = this.inner().origins().get(0).httpsPort();
+            return (httpsPort != null) ? httpsPort : 0;
         }
         return 0;
     }
