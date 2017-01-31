@@ -128,7 +128,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @Ignore("Test failing with number of LoadBalancer is not matching.")
     public void canCreateVirtualMachineScaleSet() throws Exception {
         final String vmss_name = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
