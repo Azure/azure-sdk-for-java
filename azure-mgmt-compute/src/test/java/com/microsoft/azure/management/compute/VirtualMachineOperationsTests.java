@@ -83,7 +83,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Failing.")
     public void canCreateVirtualMachinesAndRelatedResourcesInParallel() throws Exception {
         String vmNamePrefix = "vmz";
         String publicIpNamePrefix = generateRandomResourceName("pip-", 15);
