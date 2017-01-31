@@ -1,10 +1,9 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ResourceGroupsTests extends ResourceManagerTestBase {
@@ -17,10 +16,9 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
     }
 
     @Test
-    @Ignore("NULL REF in checkExistence")
     public void canCreateResourceGroup() throws Exception {
-        String rgName = "javacsmrg2";
-        String location = "southcentralus";
+        final String rgName = SdkContext.randomResourceName("rg", 9);
+        Region region = Region.US_SOUTH_CENTRAL;
         // Create
         resourceGroups.define(rgName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
@@ -38,7 +36,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertNotNull(groupResult);
         Assert.assertEquals("finance", groupResult.tags().get("department"));
         Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
-        Assert.assertEquals(location, groupResult.regionName());
+        Assert.assertTrue(region.name().equalsIgnoreCase(groupResult.regionName()));
         // Get
         ResourceGroup getGroup = resourceGroups.getByName(rgName);
         Assert.assertNotNull(getGroup);
@@ -48,7 +46,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
                 .withTag("tag1", "value1")
                 .apply();
         Assert.assertEquals("value1", updatedGroup.tags().get("tag1"));
-        Assert.assertEquals(location, getGroup.regionName());
+        Assert.assertTrue(region.name().equalsIgnoreCase(getGroup.regionName()));
         // Delete
         resourceGroups.deleteByName(rgName);
         Assert.assertFalse(resourceGroups.checkExistence(rgName));
