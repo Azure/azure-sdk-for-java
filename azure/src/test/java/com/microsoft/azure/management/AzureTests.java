@@ -442,7 +442,6 @@ public class AzureTests extends TestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testCdnManager() throws Exception {
         new TestCdn()
                 .runTest(azure.cdnProfiles(), azure.resourceGroups());
