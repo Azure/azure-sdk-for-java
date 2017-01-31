@@ -38,7 +38,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Failing.")
     public void canCreateVirtualMachine() throws Exception {
         // Create
         computeManager.virtualMachines()
