@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static final String LOCATION = "eastasia";
+    private static final Region REGION = Region.US_EAST;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
@@ -32,7 +31,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
 
     @Test
-    @Ignore("Playback fails with error TestBase::Assert.assertEquals(testRecord.networkCallRecords.size(), 0), so skipping")
     public void canCreateVirtualMachineScaleSetWithCustomScriptExtension() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
@@ -44,22 +42,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
                 .define(RG_NAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .create();
 
         Network network = this.networkManager
                 .networks()
                 .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(LOCATION), resourceGroup, "1");
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(LOCATION)
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(REGION, resourceGroup, "1");
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().define(vmssName)
+                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -89,12 +86,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         String fqdn = publicIpAddress.fqdn();
         // Assert public load balancing connection
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("http://" + fqdn)
-                .build();
-        Response response = client.newCall(request).execute();
-        Assert.assertEquals(response.code(), 200);
+        if (!IS_MOCKED) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("http://" + fqdn)
+                    .build();
+            Response response = client.newCall(request).execute();
+            Assert.assertEquals(response.code(), 200);
+        }
 
         // Check SSH to VM instances via Nat rule
         //
@@ -103,14 +102,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertEquals(networkInterfaces.size(), 1);
             VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
             VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = null;
-            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs = networkInterface.ipConfigurations();
-            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry : ipConfigs.entrySet()) {
-                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
-                if (ipConfig.isPrimary()) {
-                    primaryIpConfig = ipConfig;
-                    break;
-                }
-            }
+            primaryIpConfig = networkInterface.primaryIpConfiguration();
             Assert.assertNotNull(primaryIpConfig);
             Integer sshFrontendPort = null;
             List<LoadBalancerInboundNatRule> natRules = primaryIpConfig.listAssociatedLoadBalancerInboundNatRules();
@@ -132,19 +124,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmss_name = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
                 .define(RG_NAME)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .create();
 
         Network network = this.networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(Region.fromName(LOCATION),
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
                 resourceGroup,
                 "1");
         List<String> backends = new ArrayList<>();
@@ -155,7 +147,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
                 .define(vmss_name)
-                .withRegion(LOCATION)
+                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -247,7 +239,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             break;
         }
 
-        LoadBalancer internalLoadBalancer = createInternalLoadBalancer(Region.fromName(LOCATION),
+        LoadBalancer internalLoadBalancer = createInternalLoadBalancer(REGION,
                 resourceGroup,
                 primaryNetwork,
                 "1");
