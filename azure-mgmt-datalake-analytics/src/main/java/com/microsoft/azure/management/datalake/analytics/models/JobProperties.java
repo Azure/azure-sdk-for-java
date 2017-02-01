@@ -27,12 +27,13 @@ public class JobProperties {
      * the runtime version of the Data Lake Analytics engine to use for the
      * specific type of job being run.
      */
+    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /**
      * the script to run.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "script", required = true)
     private String script;
 
     /**

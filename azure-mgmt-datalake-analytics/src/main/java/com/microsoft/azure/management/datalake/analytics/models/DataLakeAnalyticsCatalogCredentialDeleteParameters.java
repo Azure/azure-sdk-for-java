@@ -8,16 +8,17 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Data Lake Analytics catalog credential deletion parameters.
  */
 public class DataLakeAnalyticsCatalogCredentialDeleteParameters {
     /**
-     * the current password for the credential and user with access to the
-     * data source. This is required if the requester is not the account
-     * owner.
+     * the current password for the credential and user with access to the data
+     * source. This is required if the requester is not the account owner.
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /**

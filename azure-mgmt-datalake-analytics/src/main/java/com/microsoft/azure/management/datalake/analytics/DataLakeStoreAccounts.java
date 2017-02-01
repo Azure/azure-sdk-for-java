@@ -111,6 +111,45 @@ public interface DataLakeStoreAccounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     */
+    void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> addWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
      * @param parameters The details of the Data Lake Store account.
      */
     void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters);

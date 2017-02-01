@@ -107,6 +107,27 @@ public class DataLakeAnalyticsAccount extends Resource {
     private String endpoint;
 
     /**
+     * the commitment tier for the next month. Possible values include:
+     * 'Consumption', 'Commitment_100AUHours', 'Commitment_500AUHours',
+     * 'Commitment_1000AUHours', 'Commitment_5000AUHours',
+     * 'Commitment_10000AUHours', 'Commitment_50000AUHours',
+     * 'Commitment_100000AUHours', 'Commitment_500000AUHours'.
+     */
+    @JsonProperty(value = "properties.newTier")
+    private TierType newTier;
+
+    /**
+     * the commitment tier in use for the current month. Possible values
+     * include: 'Consumption', 'Commitment_100AUHours',
+     * 'Commitment_500AUHours', 'Commitment_1000AUHours',
+     * 'Commitment_5000AUHours', 'Commitment_10000AUHours',
+     * 'Commitment_50000AUHours', 'Commitment_100000AUHours',
+     * 'Commitment_500000AUHours'.
+     */
+    @JsonProperty(value = "properties.currentTier", access = JsonProperty.Access.WRITE_ONLY)
+    private TierType currentTier;
+
+    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
@@ -287,6 +308,35 @@ public class DataLakeAnalyticsAccount extends Resource {
      */
     public String endpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Get the newTier value.
+     *
+     * @return the newTier value
+     */
+    public TierType newTier() {
+        return this.newTier;
+    }
+
+    /**
+     * Set the newTier value.
+     *
+     * @param newTier the newTier value to set
+     * @return the DataLakeAnalyticsAccount object itself.
+     */
+    public DataLakeAnalyticsAccount withNewTier(TierType newTier) {
+        this.newTier = newTier;
+        return this;
+    }
+
+    /**
+     * Get the currentTier value.
+     *
+     * @return the currentTier value
+     */
+    public TierType currentTier() {
+        return this.currentTier;
     }
 
 }

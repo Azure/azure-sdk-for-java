@@ -18,6 +18,7 @@ public class USqlSecret extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
@@ -27,20 +28,23 @@ public class USqlSecret extends CatalogItem {
     private String name;
 
     /**
-     * the creation time of the credential object. This is the only
-     * information returned about a secret from a GET.
+     * the creation time of the credential object. This is the only information
+     * returned about a secret from a GET.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
      * the URI identifier for the secret in the format
      * &lt;hostname&gt;:&lt;port&gt;.
      */
+    @JsonProperty(value = "uri")
     private String uri;
 
     /**
      * the password for the secret to pass in.
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /**

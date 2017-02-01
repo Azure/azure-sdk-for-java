@@ -14,13 +14,13 @@ import com.microsoft.azure.management.datalake.analytics.Accounts;
 import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsAccountManagementClient;
 import com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts;
 import com.microsoft.azure.management.datalake.analytics.StorageAccounts;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the DataLakeAnalyticsAccountManagementClientImpl class.
  */
-public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureServiceClient implements DataLakeAnalyticsAccountManagementClient {
+public class DataLakeAnalyticsAccountManagementClientImpl extends AzureServiceClient implements DataLakeAnalyticsAccountManagementClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -191,10 +191,8 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
      * @param credentials the management credentials for Azure
      */
     public DataLakeAnalyticsAccountManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

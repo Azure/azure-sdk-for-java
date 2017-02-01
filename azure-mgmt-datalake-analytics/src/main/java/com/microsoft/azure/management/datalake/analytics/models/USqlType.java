@@ -17,11 +17,13 @@ public class USqlType extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this table and database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
@@ -33,61 +35,73 @@ public class USqlType extends CatalogItem {
     /**
      * the type family for this type.
      */
+    @JsonProperty(value = "typeFamily")
     private String typeFamily;
 
     /**
      * the C# name for this type.
      */
+    @JsonProperty(value = "cSharpName")
     private String cSharpName;
 
     /**
      * the fully qualified C# name for this type.
      */
+    @JsonProperty(value = "fullCSharpName")
     private String fullCSharpName;
 
     /**
      * the system type ID for this type.
      */
+    @JsonProperty(value = "systemTypeId")
     private Integer systemTypeId;
 
     /**
      * the user type ID for this type.
      */
+    @JsonProperty(value = "userTypeId")
     private Integer userTypeId;
 
     /**
      * the schema ID for this type.
      */
+    @JsonProperty(value = "schemaId")
     private Integer schemaId;
 
     /**
      * the principal ID for this type.
      */
+    @JsonProperty(value = "principalId")
     private Integer principalId;
 
     /**
      * the the switch indicating if this type is nullable.
      */
+    @JsonProperty(value = "isNullable")
     private Boolean isNullable;
 
     /**
      * the the switch indicating if this type is user defined.
      */
+    @JsonProperty(value = "isUserDefined")
     private Boolean isUserDefined;
 
     /**
      * the the switch indicating if this type is an assembly type.
      */
+    @JsonProperty(value = "isAssemblyType")
     private Boolean isAssemblyType;
 
     /**
      * the the switch indicating if this type is a table type.
      */
+    @JsonProperty(value = "isTableType")
     private Boolean isTableType;
 
     /**
      * the the switch indicating if this type is a complex type.
      */
+    @JsonProperty(value = "isComplexType")
     private Boolean isComplexType;
 
     /**

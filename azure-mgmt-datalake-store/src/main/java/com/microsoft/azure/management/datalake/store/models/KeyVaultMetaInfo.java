@@ -18,19 +18,19 @@ public class KeyVaultMetaInfo {
      * The resource identifier for the user managed Key Vault being used to
      * encrypt.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyVaultResourceId", required = true)
     private String keyVaultResourceId;
 
     /**
      * The name of the user managed encryption key.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "encryptionKeyName", required = true)
     private String encryptionKeyName;
 
     /**
      * The version of the user managed encryption key.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "encryptionKeyVersion", required = true)
     private String encryptionKeyVersion;
 
     /**

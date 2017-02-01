@@ -20,63 +20,65 @@ public class JobInformation {
     /**
      * the job's unique identifier (a GUID).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /**
      * the friendly name of the job.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * the job type of the current job (Hive or USql). Possible values
-     * include: 'USql', 'Hive'.
+     * the job type of the current job (Hive or USql). Possible values include:
+     * 'USql', 'Hive'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private JobType type;
 
     /**
      * the user or account that submitted the job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "submitter", access = JsonProperty.Access.WRITE_ONLY)
     private String submitter;
 
     /**
      * the error message details for the job, if the job failed.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobErrorDetails> errorMessage;
 
     /**
      * the degree of parallelism used for this job. This must be greater than
      * 0.
      */
+    @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
     /**
      * the priority value for the current job. Lower numbers have a higher
-     * priority. By default, a job has a priority of 1000. This must be
-     * greater than 0.
+     * priority. By default, a job has a priority of 1000. This must be greater
+     * than 0.
      */
+    @JsonProperty(value = "priority")
     private Integer priority;
 
     /**
      * the time the job was submitted to the service.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "submitTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime submitTime;
 
     /**
      * the start time of the job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
      * the completion time of the job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
@@ -85,21 +87,21 @@ public class JobInformation {
      * 'Compiling', 'Ended', 'New', 'Queued', 'Running', 'Scheduling',
      * 'Starting', 'Paused', 'WaitingForCapacity'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private JobState state;
 
     /**
      * the result of job execution or the current result of the running job.
      * Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "result", access = JsonProperty.Access.WRITE_ONLY)
     private JobResult result;
 
     /**
      * the log folder path to use in the following format:
      * adl://&lt;accountName&gt;.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "logFolder", access = JsonProperty.Access.WRITE_ONLY)
     private String logFolder;
 
     /**
@@ -107,19 +109,20 @@ public class JobInformation {
      * only matching character allowed. Example format: jobExecution*.log or
      * *mylog*.txt.
      */
+    @JsonProperty(value = "logFilePatterns")
     private List<String> logFilePatterns;
 
     /**
      * the job state audit records, indicating when various operations have
      * been performed on this job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "stateAuditRecords", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobStateAuditRecord> stateAuditRecords;
 
     /**
      * the job specific properties.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "properties", required = true)
     private JobProperties properties;
 
     /**
