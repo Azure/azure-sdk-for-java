@@ -21,7 +21,7 @@ import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtens
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
-import com.microsoft.azure.management.compute.samples.MigrateVirtualMachine;
+import com.microsoft.azure.management.compute.samples.MigrateVirtualMachineToManagedDisks;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -105,8 +105,8 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testMigrateVirtualMachine() {
-        Assert.assertTrue(MigrateVirtualMachine.runSample(azure));
+    public void testMigrateVirtualMachineToManagedDisks() {
+        Assert.assertTrue(MigrateVirtualMachineToManagedDisks.runSample(azure));
     }
 
 }
