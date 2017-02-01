@@ -9,12 +9,10 @@ package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.management.cdn.samples.ManageCdn;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CdnSampleTests extends SamplesTestBase {
     @Test
-    @Ignore("Failing")
     public void testManageCdn() {
         Assert.assertTrue(ManageCdn.runSample(azure));
     }
