@@ -34,13 +34,13 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
+    @Ignore("Failing: requires interactive SSH")
     public void testCreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
         Assert.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing on playback assertion error Expected :61 Actual   :0")
+    @Ignore("Failing on playback assertion error Expected :65 Actual   :0")
     public void testCreateVirtualMachineUsingCustomImageFromVHD() {
         Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azure));
     }
@@ -77,7 +77,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualMachine() {
         Assert.assertTrue(ManageVirtualMachine.runSample(azure));
     }
