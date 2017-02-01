@@ -36,8 +36,6 @@ import java.util.concurrent.TimeUnit;
 public final class ManageWebAppSlots {
 
     private static OkHttpClient httpClient;
-    private static Azure azure;
-    private static final String RG_NAME = SdkContext.randomResourceName("rg1NEMV_", 24);
     private static final String SUFFIX = ".azurewebsites.net";
 
     /**
@@ -47,6 +45,7 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(Azure azure) {
         // New resources
+        final String resourceGroupName     = SdkContext.randomResourceName("rg", 24);
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
         final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
@@ -54,16 +53,16 @@ public final class ManageWebAppSlots {
 
         try {
 
-            azure.resourceGroups().define(RG_NAME)
-                    .withRegion(Region.US_WEST)
+            azure.resourceGroups().define(resourceGroupName)
+                    .withRegion(Region.US_EAST)
                     .create();
 
             //============================================================
             // Create 3 web apps with 3 new app service plans in different regions
 
-            WebApp app1 = createWebApp(app1Name, Region.US_WEST);
-            WebApp app2 = createWebApp(app2Name, Region.EUROPE_WEST);
-            WebApp app3 = createWebApp(app3Name, Region.ASIA_EAST);
+            WebApp app1 = createWebApp(azure, app1Name, Region.US_EAST, resourceGroupName);
+            WebApp app2 = createWebApp(azure, app2Name, Region.EUROPE_WEST, resourceGroupName);
+            WebApp app3 = createWebApp(azure, app3Name, Region.ASIA_EAST, resourceGroupName);
 
 
             //============================================================
@@ -91,9 +90,9 @@ public final class ManageWebAppSlots {
             e.printStackTrace();
         } finally {
             try {
-                System.out.println("Deleting Resource Group: " + RG_NAME);
-                azure.resourceGroups().beginDeleteByName(RG_NAME);
-                System.out.println("Deleted Resource Group: " + RG_NAME);
+                System.out.println("Deleting Resource Group: " + resourceGroupName);
+                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                System.out.println("Deleted Resource Group: " + resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -108,7 +107,6 @@ public final class ManageWebAppSlots {
      */
     public static void main(String[] args) {
 
-
         try {
 
             //=============================================================
@@ -116,7 +114,7 @@ public final class ManageWebAppSlots {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            azure = Azure
+            Azure azure = Azure
                     .configure()
                     .withLogLevel(LogLevel.BASIC)
                     .authenticate(credFile)
@@ -133,7 +131,7 @@ public final class ManageWebAppSlots {
         }
     }
 
-    private static WebApp createWebApp(String appName, Region region) {
+    private static WebApp createWebApp(Azure azure, String appName, Region region, String resourceGroupName) {
         final String planName = SdkContext.randomResourceName("jplan_", 15);
         final String appUrl = appName + SUFFIX;
 
@@ -141,7 +139,7 @@ public final class ManageWebAppSlots {
 
         WebApp app = azure.webApps()
                 .define(appName)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(resourceGroupName)
                 .withNewAppServicePlan(planName)
                 .withRegion(region)
                 .withPricingTier(AppServicePricingTier.STANDARD_S1)

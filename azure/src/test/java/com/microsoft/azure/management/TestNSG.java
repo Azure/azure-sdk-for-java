@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 import java.util.List;
@@ -31,12 +30,14 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;
-        Region region = Region.US_WEST;
+        final String resourceGroupName = "rg" + this.testId;
+        final String nicName = "nic" + this.testId;
+        final Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
         // Create
         Observable<Indexable> resourceStream = nsgs.define(newName)
                 .withRegion(region)
-                .withNewResourceGroup(SdkContext.randomResourceName("rg", 9))
+                .withNewResourceGroup(resourceGroupName)
                 .defineRule("rule1")
                     .allowOutbound()
                     .fromAnyAddress()
@@ -77,9 +78,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
 
         NetworkSecurityGroup nsg = nsgFuture.get();
 
-        NetworkInterface nic = nsgs.manager().networkInterfaces().define(SdkContext.randomResourceName("nic", 12))
+        NetworkInterface nic = nsgs.manager().networkInterfaces().define(nicName)
                 .withRegion(region)
-                .withExistingResourceGroup(nsg.resourceGroupName())
+                .withExistingResourceGroup(resourceGroupName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withExistingNetworkSecurityGroup(nsg)

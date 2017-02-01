@@ -29,7 +29,6 @@ import org.junit.Test;
 public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
-    @Ignore("Record-Play back bug")
     public void testCreateVirtualMachinesInParallel() {
         Assert.assertTrue(CreateVirtualMachinesInParallel.runSample(azure));
     }

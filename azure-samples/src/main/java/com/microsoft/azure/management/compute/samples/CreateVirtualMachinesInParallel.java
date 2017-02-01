@@ -68,6 +68,7 @@ public final class CreateVirtualMachinesInParallel {
         // virtualMachinesByLocation.put(Region.JAPAN_WEST, 5);
 
         try {
+
             //=============================================================
             // Create a resource group (Where all resources gets created)
             //
@@ -85,6 +86,7 @@ public final class CreateVirtualMachinesInParallel {
             for (Map.Entry<Region, Integer> entry : virtualMachinesByLocation.entrySet()) {
                 Region region = entry.getKey();
                 Integer vmCount = entry.getValue();
+
                 //=============================================================
                 // Create 1 network creatable per region
                 // Prepare Creatable Network definition (Where all the virtual machines get added to)
@@ -94,7 +96,6 @@ public final class CreateVirtualMachinesInParallel {
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withAddressSpace("172.16.0.0/16");
-
 
                 //=============================================================
                 // Create 1 storage creatable per region (For storing VMs disk)
@@ -106,6 +107,7 @@ public final class CreateVirtualMachinesInParallel {
 
                 String linuxVMNamePrefix = SdkContext.randomResourceName("vm-", 15);
                 for (int i = 1; i <= vmCount; i++) {
+
                     //=============================================================
                     // Create 1 public IP address creatable
                     //
@@ -222,6 +224,7 @@ public final class CreateVirtualMachinesInParallel {
      */
     public static void main(String[] args) {
         try {
+
             //=============================================================
             // Authenticate
             //

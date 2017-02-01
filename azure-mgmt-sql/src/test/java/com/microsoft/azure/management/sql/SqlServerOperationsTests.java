@@ -394,7 +394,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlServerNotFound(sqlServer1);
     }
 
-    @Ignore("Failing right now, retry later, issue seems to be with service.")
     @Test
     public void canDoOperationsOnDataWarehouse() throws Exception {
         // Create
