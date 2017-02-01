@@ -54,7 +54,7 @@ public class AppServiceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
+    @Ignore("Failing - needs a subscription with Microsoft.DomainRegistration permissions")
     public void testManageWebAppWithTrafficManager() {
         Assert.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
     }

@@ -63,6 +63,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
