@@ -31,7 +31,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageIPAddress() {
         Assert.assertTrue(ManageIPAddress.runSample(azure));
     }

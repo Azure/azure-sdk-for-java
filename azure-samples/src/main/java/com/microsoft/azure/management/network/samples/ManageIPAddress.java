@@ -62,6 +62,7 @@ public final class ManageIPAddress {
                     .create();
 
             System.out.println("Created a public IP address");
+
             // Print public IP address details
             Utils.print(publicIpAddress);
 
