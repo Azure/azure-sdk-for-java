@@ -13,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessageReceiver;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
@@ -398,7 +399,7 @@ class BrokeredMessageReceiver extends InitializableEntity implements IMessageRec
 		for(IBrokeredMessage message : messages)
 		{
 			UUID lockToken = message.getLockToken();
-			if(lockToken.equals(MessageConverter.ZEROLOCKTOKEN))
+			if(lockToken.equals(ClientConstants.ZEROLOCKTOKEN))
 			{
 				throw new UnsupportedOperationException("Lock of a message received in ReceiveAndDelete mode cannot be renewed.");
 			}

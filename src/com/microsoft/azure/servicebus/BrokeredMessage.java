@@ -82,7 +82,7 @@ final public class BrokeredMessage implements Serializable, IBrokeredMessage {
 	public BrokeredMessage(String content, String contentType)
 	{
 		this(content.getBytes(DEFAULT_CHAR_SET), contentType);
-	}	
+	}
 	
 	public BrokeredMessage(byte[] content, String contentType)
 	{

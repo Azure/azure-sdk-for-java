@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -135,4 +136,27 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 		return this.entityPath;
 	}
 
+	@Override
+	public CompletableFuture<Long> scheduleMessageAsync(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc) {
+		message.setScheduledEnqueuedTimeUtc(scheduledEnqueueTimeUtc);
+		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message);
+		return this.internalSender.scheduleMessageAsync(new Message[] {amqpMessage}, this.messagingFactory.getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
+	}
+
+	@Override
+	public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
+		return this.internalSender.cancelScheduledMessageAsync(new Long[]{sequenceNumber}, this.messagingFactory.getOperationTimeout());
+	}
+
+	@Override
+	public long scheduleMessage(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc) throws InterruptedException, ServiceBusException
+	{
+		return Utils.completeFuture(this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc));
+	}
+
+	@Override
+	public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException
+	{
+		Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber));
+	}
 }

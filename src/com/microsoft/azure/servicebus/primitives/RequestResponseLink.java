@@ -610,7 +610,7 @@ public class RequestResponseLink extends ClientEntity{
 				{
 					this.pendingFreshSends.add(requestMessage);
 				}				
-			}						
+			}
 							
 			if(!this.isSendLoopRunning.get())
 			{
@@ -667,11 +667,8 @@ public class RequestResponseLink extends ClientEntity{
 		
 		private void runSendLoop()
 		{
-			if(this.isSendLoopRunning.get())
-				return;
-			else
-			{
-				this.isSendLoopRunning.set(true);;
+			if(this.isSendLoopRunning.compareAndSet(false, true))	
+			{		
 				try
 				{
 					while(this.availableCredit.get() > 0)
@@ -694,24 +691,20 @@ public class RequestResponseLink extends ClientEntity{
 						Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes());
 						delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 						
-						int payloadSize = Util.getDataSerializedSize(requestToBeSent);
-						int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
-
-						byte[] bytes = new byte[allocationSize];
-						int encodedSize = 0;							
+						Pair<byte[], Integer> encodedPair = null;
 						try
 						{
-							encodedSize = requestToBeSent.encode(bytes, 0, allocationSize);
+							encodedPair = Util.encodeMessageToOptimalSizeArray(requestToBeSent);						
 						}
-						catch(BufferOverflowException exception)
+						catch(PayloadSizeExceededException exception)
 						{
 							this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception), false);
 						}
 						
 						try
 						{
-							int sentMsgSize = this.sendLink.send(bytes, 0, encodedSize);
-							assert sentMsgSize == encodedSize : "Contract of the ProtonJ library for Sender.Send API changed";
+							int sentMsgSize = this.sendLink.send(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem());
+							assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
 							delivery.settle();
 							this.availableCredit.decrementAndGet();
 						}
