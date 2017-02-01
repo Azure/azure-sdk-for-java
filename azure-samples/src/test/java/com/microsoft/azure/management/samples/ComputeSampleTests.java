@@ -20,6 +20,7 @@ import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.MigrateVirtualMachineToManagedDisks;
 import org.junit.Assert;
@@ -78,6 +79,11 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     @Ignore("Failing")
+    public void testManageVirtualMachineWithUnmanagedDisks() {
+        Assert.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azure));
+    }
+
+    @Test
     public void testManageVirtualMachine() {
         Assert.assertTrue(ManageVirtualMachine.runSample(azure));
     }
