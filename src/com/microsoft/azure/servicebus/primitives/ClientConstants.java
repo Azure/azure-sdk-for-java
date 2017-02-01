@@ -5,6 +5,8 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.time.*;
+import java.util.UUID;
+
 import org.apache.qpid.proton.amqp.*;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
@@ -12,6 +14,16 @@ import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 public final class ClientConstants
 {
 	private ClientConstants() { }
+	
+	public static final int LOCKTOKENSIZE = 16;
+	public static final String ENQUEUEDTIMEUTCNAME = "x-opt-enqueued-time";
+	public static final String SCHEDULEDENQUEUETIMENAME = "x-opt-scheduled-enqueue-time";
+	public static final String SEQUENCENUBMERNAME = "x-opt-sequence-number";
+	//public static final String LOCKTOKENNAME = "x-opt-lock-token";
+	public static final String LOCKEDUNTILNAME = "x-opt-locked-until";
+	public static final String PARTITIONKEYNAME = "x-opt-partition-key";
+	public static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
+	public static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);	
 
 	public final static int AMQPS_PORT = 5671;
 	public final static int MAX_PARTITION_KEY_LENGTH = 128;
@@ -26,6 +38,11 @@ public final class ClientConstants
 	public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
 	public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
 	public static final Symbol DEADLETTERNAME = Symbol.valueOf(AmqpConstants.VENDOR + ":dead-letter");
+    public static final Symbol MESSAGE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-lock-lost");
+    public static final Symbol SESSION_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-lock-lost");
+    public static final Symbol SESSIONS_CANNOT_BE_LOCKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-cannot-be-locked");
+    public static final Symbol MESSAGE_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-not-found");
+    public static final Symbol SESSION_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-not-found");
 	
 	public static final String DEADLETTER_REASON_HEADER = "DeadLetterReason";
     public static final String DEADLETTER_ERROR_DESCRIPTION_HEADER = "DeadLetterErrorDescription";
@@ -50,4 +67,27 @@ public final class ClientConstants
 
 	public final static String NO_RETRY = "NoRetry";
 	public final static String DEFAULT_RETRY = "Default";
+	
+	public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
+	public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
+	public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+	public static final String SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
+    public static final String CANCEL_CHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":cancel-scheduled-message";
+	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
+	public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
+	public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
+	public static final String REQUEST_RESPONSE_SEQUENCE_NUMBERS = "sequence-numbers";
+	public static final String REQUEST_RESPONSE_MESSAGES = "messages";
+	public static final String REQUEST_RESPONSE_MESSAGE = "message";
+	public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
+	public static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
+	public static final String REQUEST_RESPONSE_PARTITION_KEY = "partition-key";
+	public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
+    public static final String REQUEST_RESPONSE_STATUS_DESCRIPTION = "statusDescription";
+    public static final String REQUEST_RESPONSE_ERROR_CONDITION = "errorCondition";
+    
+    public static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+    public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+    
+	
 }

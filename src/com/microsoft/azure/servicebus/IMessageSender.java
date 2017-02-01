@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -13,4 +14,12 @@ public interface IMessageSender extends IMessageEntity{
     CompletableFuture<Void> sendAsync(IBrokeredMessage message);
 
     CompletableFuture<Void> sendBatchAsync(Collection<? extends IBrokeredMessage> message);
+    
+    CompletableFuture<Long> scheduleMessageAsync(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc);
+    
+    CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber);
+    
+    long scheduleMessage(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc) throws InterruptedException, ServiceBusException;
+    
+    void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException;
 }

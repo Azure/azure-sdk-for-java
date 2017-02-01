@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -73,6 +74,14 @@ public interface IMessageReceiver extends IMessageEntity{
     CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(int maxMessageCount, Duration serverWaitTime);
 
     CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers);
+    
+    CompletableFuture<Instant> renewMessageLockAsync(IBrokeredMessage message);
+    
+    //CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IBrokeredMessage> messages);
+    
+    Instant renewMessageLock(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
+    
+    //Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException;    
     
     int getPrefetchCount();
     

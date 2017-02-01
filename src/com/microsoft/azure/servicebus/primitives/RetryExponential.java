@@ -36,12 +36,7 @@ public final class RetryExponential extends RetryPolicy
 		if (currentRetryCount >= this.maximumRetryCount)
 		{
 			return null;
-		}
-
-		if (!RetryPolicy.isRetryableException(lastException))
-		{
-			return null;
-		}
+		}	
 
 		double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
 		long nextRetryIntervalSeconds = (long) nextRetryInterval ;

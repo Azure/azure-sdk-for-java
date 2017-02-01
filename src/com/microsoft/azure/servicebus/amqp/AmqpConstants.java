@@ -19,4 +19,6 @@ public final class AmqpConstants
 	public static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
 	public static final int MAX_FRAME_SIZE = 65536;
+	
+	public static final String MANAGEMENT_ADDRESS_SEGMENT = "/$management";
 }

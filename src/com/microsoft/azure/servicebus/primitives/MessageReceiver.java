@@ -8,19 +8,24 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -41,6 +46,7 @@ import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
@@ -55,7 +61,7 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-
+	
 	private final List<ReceiveWorkItem> pendingReceives;
 	private final ConcurrentHashMap<String, UpdateStateWorkItem> pendingUpdateStateRequests;
 	private final ConcurrentHashMap<String, Delivery> tagsToDeliveriesMap;
@@ -70,6 +76,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
 	private Receiver receiveLink;
+	private RequestResponseLink requestResponseLink;
 	private WorkItem<MessageReceiver> linkOpen;
 	private Duration factoryRceiveTimeout;
 
@@ -168,8 +175,13 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			this.linkOpen.getWork().completeExceptionally(new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
 		}
+		
+		// Create request-response link too
+		String requestResponseLinkPath = this.receivePath + AmqpConstants.MANAGEMENT_ADDRESS_SEGMENT;
+		CompletableFuture<Void> crateAndAssignRequestResponseLink = 
+				RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {MessageReceiver.this.requestResponseLink = rrlink;});
 
-		return this.linkOpen.getWork();
+		return crateAndAssignRequestResponseLink.thenCompose((v) -> this.linkOpen.getWork());
 	}
 	
 	private void createReceiveLink()
@@ -402,7 +414,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			int msgSize = delivery.pending();
 			byte[] buffer = new byte[msgSize];
 			
-			int read = receiveLink.recv(buffer, 0, msgSize);;			
+			int read = receiveLink.recv(buffer, 0, msgSize);
 			
 			message = Proton.message();
 			message.decode(buffer, 0, read);
@@ -533,7 +545,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		if (this.getIsClosingOrClosed())
 		{
 			this.linkClose.complete(null);			
-			this.clearAllPendingWorkItems(exception);		
+			this.clearAllPendingWorkItems(exception);
 		}
 		else
 		{
@@ -707,15 +719,17 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
 			{
 				this.receiveLink.close();
+				this.underlyingFactory.deregisterForConnectionError(this.receiveLink);
 				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
 			}
-			else if (this.receiveLink == null || this.receiveLink.getRemoteState() == EndpointState.CLOSED)
+			else
 			{
 				this.linkClose.complete(null);
 			}
 		}
 
-		return this.linkClose;
+		return this.linkClose.thenCompose((v) -> {
+			return MessageReceiver.this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : MessageReceiver.this.requestResponseLink.closeAsync();});
 	}
 	
 	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag)
@@ -870,5 +884,30 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private static ServiceBusException generateDispatacherSchedulingFailedException(String operation, Exception cause)
 	{
 		return new ServiceBusException(false, operation + " failed while dispatching to Reactor, see cause for more details.", cause);
-	}	
+	}
+	
+	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens, Duration timeout)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
+		// When Session support is added
+		//requestMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, "");
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				Date[] expirations = (Date[])RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATIONS);
+				returningFuture.complete(Arrays.stream(expirations).map((d) -> d.toInstant()).collect(Collectors.toList()));
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});				
+	}
 }

@@ -15,22 +15,13 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
 
 class MessageConverter
 {	
-	private static final int LOCKTOKENSIZE = 16;
-    private static final String ENQUEUEDTIMEUTCNAME = "x-opt-enqueued-time";
-    private static final String SCHEDULEDENQUEUETIMENAME = "x-opt-scheduled-enqueue-time";
-    private static final String SEQUENCENUBMERNAME = "x-opt-sequence-number";
-    //private static final String LOCKTOKENNAME = "x-opt-lock-token";
-    private static final String LOCKEDUNTILNAME = "x-opt-locked-until";
-    private static final String PARTITIONKEYNAME = "x-opt-partition-key";
-    private static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
-    private static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);
-
 	public static Message convertBrokeredMessageToAmqpMessage(BrokeredMessage brokeredMessage)	
 	{
 		Message amqpMessage = Proton.message();
@@ -61,13 +52,15 @@ class MessageConverter
 		Map<Symbol, Object> messageAnnotationsMap = new HashMap<Symbol, Object>();
 		if(brokeredMessage.getScheduledEnqueuedTimeUtc() != null)
 		{
-			messageAnnotationsMap.put(Symbol.valueOf(SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueuedTimeUtc()));
+			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueuedTimeUtc()));
 		}
 		
-		if(StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey()))
+		if(!StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey()))
 		{
-			messageAnnotationsMap.put(Symbol.valueOf(PARTITIONKEYNAME), brokeredMessage.getPartitionKey());
+			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.PARTITIONKEYNAME), brokeredMessage.getPartitionKey());
 		}
+		
+		amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 		
 		return amqpMessage;
 	}	
@@ -134,25 +127,25 @@ class MessageConverter
 					String entryName = entry.getKey().toString();
 					switch(entryName)
 					{
-						case ENQUEUEDTIMEUTCNAME:
+						case ClientConstants.ENQUEUEDTIMEUTCNAME:
 							//brokeredMessage.setEnqueuedTimeUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
 							brokeredMessage.setEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
 							break;
-						case SCHEDULEDENQUEUETIMENAME:
+						case ClientConstants.SCHEDULEDENQUEUETIMENAME:
 	                        //brokeredMessage.setScheduledEnqueuedTimeUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
 	                        brokeredMessage.setScheduledEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
 	                        break;
-	                    case SEQUENCENUBMERNAME:
+	                    case ClientConstants.SEQUENCENUBMERNAME:
 	                        brokeredMessage.setSequenceNumber((long)entry.getValue());
 	                        break;                    
-	                    case LOCKEDUNTILNAME:
+	                    case ClientConstants.LOCKEDUNTILNAME:
 	                        //brokeredMessage.setLockedUntilUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
 	                        brokeredMessage.setLockedUntilUtc(((Date)entry.getValue()).toInstant());
 	                        break;                    
-	                    case PARTITIONKEYNAME:
+	                    case ClientConstants.PARTITIONKEYNAME:
 	                        brokeredMessage.setPartitionKey((String)entry.getValue());
 	                        break;                    
-	                    case DEADLETTERSOURCENAME:
+	                    case ClientConstants.DEADLETTERSOURCENAME:
 	                        brokeredMessage.setDeadLetterSource((String)entry.getValue());
 	                        break;
 					}				
@@ -160,14 +153,14 @@ class MessageConverter
 			}
 		}
 		
-		if(deliveryTag != null && deliveryTag.length == LOCKTOKENSIZE)
+		if(deliveryTag != null && deliveryTag.length == ClientConstants.LOCKTOKENSIZE)
 		{
 			UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);
 			brokeredMessage.setLockToken(lockToken);
 		}
 		else
 		{
-			brokeredMessage.setLockToken(ZEROLOCKTOKEN);
+			brokeredMessage.setLockToken(ClientConstants.ZEROLOCKTOKEN);
 		}
 		
 		brokeredMessage.setDeliveryTag(deliveryTag);

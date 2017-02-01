@@ -9,7 +9,11 @@ import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -21,6 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -45,6 +52,7 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.IBrokeredMessage;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
@@ -71,6 +79,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private final DispatchHandler sendWork;
 
 	private Sender sendLink;
+	private RequestResponseLink requestResponseLink;
 	private CompletableFuture<MessageSender> linkFirstOpen; 
 	private int linkCredit;
 	private TimeoutTracker openLinkTracker;
@@ -101,8 +110,13 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			msgSender.linkFirstOpen.completeExceptionally(new ServiceBusException(false, "Failed to create Sender, see cause for more details.", ioException));
 		}
-
-		return msgSender.linkFirstOpen;
+		
+		// Create request-response link too
+		String requestResponseLinkPath = senderPath + AmqpConstants.MANAGEMENT_ADDRESS_SEGMENT;
+		CompletableFuture<Void> crateAndAssignRequestResponseLink =
+						RequestResponseLink.createAsync(factory, msgSender.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {msgSender.requestResponseLink = rrlink;});
+		
+		return crateAndAssignRequestResponseLink.thenCompose((v) -> msgSender.linkFirstOpen);
 	}
 
 	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)
@@ -218,73 +232,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return onSendFuture;
 	}	
 
-	private int getPayloadSize(Message msg)
-	{
-		if (msg == null || msg.getBody() == null)
-		{
-			return 0;
-		}
-
-		Data payloadSection = (Data) msg.getBody();
-		if (payloadSection == null)
-		{
-			return 0;
-		}
-
-		Binary payloadBytes = payloadSection.getValue();
-		if (payloadBytes == null)
-		{
-			return 0;
-		}
-
-		return payloadBytes.getLength();
-	}
-
-	private int getDataSerializedSize(Message amqpMessage)
-	{
-		if (amqpMessage == null)
-		{
-			return 0;
-		}
-
-		int payloadSize = this.getPayloadSize(amqpMessage);
-
-		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
-		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-		
-		int annotationsSize = 0;
-		int applicationPropertiesSize = 0;
-
-		if (messageAnnotations != null)
-		{
-			for(Symbol value: messageAnnotations.getValue().keySet())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-			
-			for(Object value: messageAnnotations.getValue().values())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-		}
-		
-		if (applicationProperties != null)
-		{
-			for(Object value: applicationProperties.getValue().keySet())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-			
-			for(Object value: applicationProperties.getValue().values())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-		}
-		
-		return annotationsSize + applicationPropertiesSize + payloadSize;
-	}
-
 	public CompletableFuture<Void> sendAsync(final Iterable<Message> messages)
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))
@@ -303,33 +250,29 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		Message batchMessage = Proton.message();
 		batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
 
-		byte[] bytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
-		int encodedSize = batchMessage.encode(bytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
-		int byteArrayOffset = encodedSize;
-
-		for(Message amqpMessage: messages)
+		byte[] bytes = null;
+		int byteArrayOffset = 0;
+		try
 		{
-			Message messageWrappedByData = Proton.message();
-
-			int payloadSize = this.getDataSerializedSize(amqpMessage);
-			int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
-
-			byte[] messageBytes = new byte[allocationSize];
-			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, allocationSize);
-			messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
-
-			try
+			Pair<byte[], Integer> encodedPair = Util.encodeMessageToMaxSizeArray(batchMessage);
+			bytes = encodedPair.getFirstItem();
+			byteArrayOffset = encodedPair.getSecondItem();
+			
+			for(Message amqpMessage: messages)
 			{
-				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, ClientConstants.MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
-			}
-			catch(BufferOverflowException exception)
-			{
-				final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
-				sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
-				return sendTask;
-			}
+				Message messageWrappedByData = Proton.message();	
+				encodedPair = Util.encodeMessageToOptimalSizeArray(amqpMessage);
+				messageWrappedByData.setBody(new Data(new Binary(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem())));
 
-			byteArrayOffset = byteArrayOffset + encodedSize;
+				int encodedSize = Util.encodeMessageToCustomArray(messageWrappedByData, bytes, byteArrayOffset, ClientConstants.MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
+				byteArrayOffset = byteArrayOffset + encodedSize;
+			}
+		}
+		catch(PayloadSizeExceededException ex)
+		{
+			final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
+			sendTask.completeExceptionally(ex);
+			return sendTask;
 		}
 
 		return this.sendAsync(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
@@ -337,23 +280,17 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 	public CompletableFuture<Void> sendAsync(Message msg)
 	{
-		int payloadSize = this.getDataSerializedSize(msg);
-		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
-
-		byte[] bytes = new byte[allocationSize];
-		int encodedSize = 0;
 		try
 		{
-			encodedSize = msg.encode(bytes, 0, allocationSize);
+			Pair<byte[], Integer> encodedPair = Util.encodeMessageToOptimalSizeArray(msg);
+			return this.sendAsync(encodedPair.getFirstItem(), encodedPair.getSecondItem(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 		}
-		catch(BufferOverflowException exception)
+		catch(PayloadSizeExceededException exception)
 		{
 			final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
-			sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
+			sendTask.completeExceptionally(exception);
 			return sendTask;
 		}
-
-		return this.sendAsync(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 
 	@Override
@@ -412,7 +349,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	{
 		Exception completionException = condition != null ? ExceptionUtil.toException(condition) 
 				: new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT,
-						"The entity has been close due to transient failures (underlying link closed), please retry the operation.");
+						"The entity has been closed due to transient failures (underlying link closed), please retry the operation.");
 		this.onError(completionException);
 	}
 
@@ -635,7 +572,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			this.underlyingFactory.deregisterForConnectionError(oldSender);
 		}
 		
-		MessageSender.this.sendLink = sender;	
+		this.sendLink = sender;
 	}
 
 	// TODO: consolidate common-code written for timeouts in Sender/Receiver
@@ -852,7 +789,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 					{
 						if (!linkClose.isDone())
 						{
-							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageSender.this.sendLink.getName(), ZonedDateTime.now()));
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Send Link(%s) timed out at %s", "Close", MessageSender.this.sendLink.getName(), ZonedDateTime.now()));
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
@@ -875,6 +812,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
 			{
+				this.underlyingFactory.deregisterForConnectionError(sendLink);
 				this.sendLink.close();
 				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
 			}
@@ -883,8 +821,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				this.linkClose.complete(null);
 			}
 		}
-
-		return this.linkClose;
+		
+		return this.linkClose.thenCompose((v) -> {
+			return MessageSender.this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : MessageSender.this.requestResponseLink.closeAsync();});
 	}
 	
 	private static class WeightedDeliveryTag
@@ -916,5 +855,85 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			return deliveryTag1.getPriority() - deliveryTag0.getPriority();
 		}	
+	}
+	
+	public CompletableFuture<long[]> scheduleMessageAsync(Message[] messages, Duration timeout)
+	{
+		HashMap requestBodyMap = new HashMap();
+		Collection<HashMap> messageList = new LinkedList<HashMap>();
+		for(Message message : messages)
+		{
+			HashMap messageEntry = new HashMap();
+			
+			Pair<byte[], Integer> encodedPair = null;
+			try
+			{
+				encodedPair = Util.encodeMessageToOptimalSizeArray(message);
+			}
+			catch(PayloadSizeExceededException exception)
+			{
+				final CompletableFuture<long[]> scheduleMessagesTask = new CompletableFuture<long[]>();
+				scheduleMessagesTask.completeExceptionally(exception);
+				return scheduleMessagesTask;
+			}
+			
+			messageEntry.put(ClientConstants.REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem()));
+			messageEntry.put(ClientConstants.REQUEST_RESPONSE_MESSAGE_ID, message.getMessageId());
+			
+			String sessionId = message.getGroupId();
+			if(!StringUtil.isNullOrEmpty(sessionId))
+			{
+				messageEntry.put(ClientConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
+			}
+			
+			Object partitionKey = message.getMessageAnnotations().getValue().get(Symbol.valueOf(ClientConstants.PARTITIONKEYNAME));
+			if(partitionKey != null && !((String)partitionKey).isEmpty())
+			{
+				messageEntry.put(ClientConstants.REQUEST_RESPONSE_PARTITION_KEY, (String)partitionKey);
+			}
+			
+			messageList.add(messageEntry);
+		}
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGES, messageList);
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.SCHEDULE_MESSAGE_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<long[]> returningFuture = new CompletableFuture<long[]>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				long[] sequenceNumbers = (long[])RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS);
+				returningFuture.complete(sequenceNumbers);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	public CompletableFuture<Void> cancelScheduledMessageAsync(Long[] sequenceNumbers, Duration timeout)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.CANCEL_CHEDULE_MESSAGE_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				returningFuture.complete(null);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
 	}
 }

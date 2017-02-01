@@ -15,7 +15,7 @@ import java.util.UUID;
  * 
  * 
  */
-final class BrokeredMessage implements Serializable, IBrokeredMessage {
+final public class BrokeredMessage implements Serializable, IBrokeredMessage {
 	private static final long serialVersionUID = 7849508139219590863L;
 	
 	private static final Charset DEFAULT_CHAR_SET = Charset.forName("UTF-8");
@@ -82,7 +82,7 @@ final class BrokeredMessage implements Serializable, IBrokeredMessage {
 	public BrokeredMessage(String content, String contentType)
 	{
 		this(content.getBytes(DEFAULT_CHAR_SET), contentType);
-	}	
+	}
 	
 	public BrokeredMessage(byte[] content, String contentType)
 	{
@@ -150,7 +150,7 @@ final class BrokeredMessage implements Serializable, IBrokeredMessage {
 		return this.lockedUntilUtc;
 	}
 	
-	void setLockedUntilUtc(Instant lockedUntilUtc) {
+	public void setLockedUntilUtc(Instant lockedUntilUtc) {
 		this.lockedUntilUtc = lockedUntilUtc;
 	}
 

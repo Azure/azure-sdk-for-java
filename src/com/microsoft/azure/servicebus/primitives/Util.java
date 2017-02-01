@@ -5,12 +5,26 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
+import java.lang.reflect.Array;
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.message.Message;
 
 public class Util
 {
@@ -23,6 +37,11 @@ public class Util
 
 	static int sizeof(Object obj)
 	{
+		if(obj == null)
+		{
+			return 0;
+		}
+		
 		if (obj instanceof String)
 		{
 			return obj.toString().length() << 1;
@@ -38,7 +57,7 @@ public class Util
 			return Integer.BYTES;
 		}
 		
-		if (obj instanceof Long)
+		if (obj instanceof Long || obj instanceof Date)
 		{
 			return Long.BYTES;
 		}
@@ -63,73 +82,205 @@ public class Util
 			return Double.BYTES;
 		}
 		
+		if (obj instanceof Binary)
+		{
+			return ((Binary)obj).getLength();
+		}
+		
+		if (obj instanceof Map)
+		{
+			int size = 0;
+			Map map = (Map) obj;
+			for(Object value: map.keySet())
+			{
+				size += Util.sizeof(value);
+			}
+			
+			for(Object value: map.values())
+			{
+				size += Util.sizeof(value);
+			}
+			
+			return size;
+		}
+		
+		if (obj instanceof Iterable)
+		{
+			int size = 0;
+			for(Object innerObject : (Iterable)obj)
+			{
+				size += Util.sizeof(innerObject);
+			}
+			
+			return size;
+		}
+		
+		if(obj.getClass().isArray())
+		{
+			int size = 0;
+			int length = Array.getLength(obj);
+			for(int i=0; i<length; i++)
+			{
+				size += Util.sizeof(Array.get(obj, i));
+			}
+			
+			return size;
+		}
+		
 		throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
 	}
 	
 	// Unused now.. ServiceBus service serializes DateTime types as java time as per AMQP spec 
 		// .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
-		public static Instant convertDotNetTicksToInstant(long dotNetTicks)
+	public static Instant convertDotNetTicksToInstant(long dotNetTicks)
+	{
+		long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
+		long millisecondsFromEpoch = ticksFromEpoch/10000;
+		long fractionTicks = ticksFromEpoch%10000;
+		return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks*100);
+	}
+	
+	public static long convertInstantToDotNetTicks(Instant instant)
+	{
+		return (instant.getEpochSecond()* 10000000) + (instant.getNano()/100) + EPOCHINDOTNETTICKS ;
+	}
+			
+	//.Net GUID bytes are ordered in a different way.
+	// First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order, 7th and 8th bytes are also in reverse order
+	public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes)
+	{
+		if(dotNetBytes == null || dotNetBytes.length != GUIDSIZE)
 		{
-			long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
-			long millisecondsFromEpoch = ticksFromEpoch/10000;
-			long fractionTicks = ticksFromEpoch%10000;
-			return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks*100);
+			return new UUID(0l, 0l);
 		}
 		
-		public static long convertInstantToDotNetTicks(Instant instant)
+		byte[] reOrderedBytes = new byte[GUIDSIZE];
+		for(int i=0; i<GUIDSIZE; i++)
 		{
-			return (instant.getEpochSecond()* 10000000) + (instant.getNano()/100) + EPOCHINDOTNETTICKS ;
-		}
-			
-		//.Net GUID bytes are ordered in a different way.
-		// First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order, 7th and 8th bytes are also in reverse order
-		public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes)
-		{
-			if(dotNetBytes == null || dotNetBytes.length != GUIDSIZE)
+			int indexInReorderedBytes;
+			switch(i)
 			{
-				return new UUID(0l, 0l);
+				case 0:
+					indexInReorderedBytes = 3;
+					break;
+				case 1:
+					indexInReorderedBytes = 2;
+					break;
+				case 2:
+					indexInReorderedBytes = 1;
+					break;
+				case 3:
+					indexInReorderedBytes = 0;
+					break;
+				case 4:
+					indexInReorderedBytes = 5;
+					break;
+				case 5:
+					indexInReorderedBytes = 4;
+					break;
+				case 6:
+					indexInReorderedBytes = 7;
+					break;
+				case 7:
+					indexInReorderedBytes = 6;
+					break;
+				default:
+					indexInReorderedBytes = i;
 			}
 			
-			byte[] reOrderedBytes = new byte[GUIDSIZE];
-			for(int i=0; i<GUIDSIZE; i++)
-			{
-				int indexInReorderedBytes;
-				switch(i)
-				{
-					case 0:
-						indexInReorderedBytes = 3;
-						break;
-					case 1:
-						indexInReorderedBytes = 2;
-						break;
-					case 2:
-						indexInReorderedBytes = 1;
-						break;
-					case 3:
-						indexInReorderedBytes = 0;
-						break;
-					case 4:
-						indexInReorderedBytes = 5;
-						break;
-					case 5:
-						indexInReorderedBytes = 4;
-						break;
-					case 6:
-						indexInReorderedBytes = 7;
-						break;
-					case 7:
-						indexInReorderedBytes = 6;
-						break;
-					default:
-						indexInReorderedBytes = i;
-				}
-				
-				reOrderedBytes[indexInReorderedBytes] = dotNetBytes[i];
-			}
-			
-			ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
-			long mostSignificantBits = buffer.getLong();
-			long leastSignificantBits = buffer.getLong();
-			return new UUID(mostSignificantBits, leastSignificantBits);
+			reOrderedBytes[indexInReorderedBytes] = dotNetBytes[i];
 		}
+		
+		ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
+		long mostSignificantBits = buffer.getLong();
+		long leastSignificantBits = buffer.getLong();
+		return new UUID(mostSignificantBits, leastSignificantBits);
+	}
+	
+	private static int getPayloadSize(Message msg)
+	{
+		if (msg == null || msg.getBody() == null)
+		{
+			return 0;
+		}
+
+		Section bodySection = msg.getBody();
+		if(bodySection instanceof AmqpValue)
+		{
+			return Util.sizeof(((AmqpValue)bodySection).getValue());
+		}
+		else if(bodySection instanceof AmqpSequence)
+		{
+			return Util.sizeof(((AmqpSequence)bodySection).getValue());
+		}
+		else if (bodySection instanceof Data)
+		{
+			Data payloadSection = (Data) bodySection;
+			Binary payloadBytes = payloadSection.getValue();
+			return Util.sizeof(payloadBytes);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	// Remove this.. Too many cases, too many types...
+	public static int getDataSerializedSize(Message amqpMessage)
+	{
+		if (amqpMessage == null)
+		{
+			return 0;
+		}
+
+		int payloadSize = getPayloadSize(amqpMessage);
+
+		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
+		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
+		
+		int annotationsSize = 0;
+		int applicationPropertiesSize = 0;
+
+		if (messageAnnotations != null)
+		{
+			annotationsSize += Util.sizeof(messageAnnotations.getValue());
+		}
+		
+		if (applicationProperties != null)
+		{
+			applicationPropertiesSize += Util.sizeof(applicationProperties.getValue());	
+		}
+		
+		return annotationsSize + applicationPropertiesSize + payloadSize;
+	}
+	
+	static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message) throws PayloadSizeExceededException
+	{
+		int payloadSize = Util.getDataSerializedSize(message);
+		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+		byte[] encodedBytes = new byte[allocationSize];
+		int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, allocationSize);
+		return new Pair<byte[], Integer>(encodedBytes, encodedSize);
+	}
+	
+	static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message) throws PayloadSizeExceededException
+	{
+		// May be we should reduce memory allocations. Use a pool of byte arrays or something
+		byte[] encodedBytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
+		int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+		return new Pair<byte[], Integer>(encodedBytes, encodedSize);
+	}
+	
+	static int encodeMessageToCustomArray(Message message, byte[] encodedBytes, int offset, int length) throws PayloadSizeExceededException
+	{
+		try
+		{
+			return message.encode(encodedBytes, offset, length);
+		}
+		catch(BufferOverflowException exception)
+		{
+			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception);		
+		}
+	}
 }

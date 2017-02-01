@@ -2,8 +2,11 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -162,6 +165,70 @@ public class QueueSendReceiveTests {
 	}
 	
 	@Test
+	public void testBasicQueueReceiveAndRenewLock() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	{		
+		String messageId = UUID.randomUUID().toString();
+		BrokeredMessage message = new BrokeredMessage("AMQP message");
+		message.setMessageId(messageId);
+		this.sender.send(message);
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		Assert.assertNotNull("Message not received", receivedMessage);
+		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+		Instant oldLockedUntilTime = receivedMessage.getLockedUntilUtc();
+		Thread.sleep(1000);
+		Instant newLockedUntilUtc = this.receiver.renewMessageLock(receivedMessage);
+		Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockedUntilTime.toString() + ", newLockedUntilUtc:" + newLockedUntilUtc, newLockedUntilUtc.isAfter(oldLockedUntilTime));
+		Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockedUntilUtc, receivedMessage.getLockedUntilUtc());
+		this.receiver.complete(receivedMessage);
+	}
+	
+	@Test
+	public void testBasicQueueReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	{		
+		int numMessages = 10;
+		List<BrokeredMessage> messages = new ArrayList<BrokeredMessage>();
+		for(int i=0; i<numMessages; i++)
+		{
+			messages.add(new BrokeredMessage("AMQP message"));
+		}
+		this.sender.sendBatch(messages);
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, builder.getEntityPath(), ReceiveMode.PeekLock);
+		ArrayList<IBrokeredMessage> totalReceivedMessages = new ArrayList<>();		
+		
+		Collection<IBrokeredMessage> receivedMessages = this.receiver.receiveBatch(numMessages);
+		totalReceivedMessages.addAll(receivedMessages);		
+		while(receivedMessages != null && receivedMessages.size() > 0 && totalReceivedMessages.size() < numMessages)
+		{						
+			receivedMessages = this.receiver.receiveBatch(numMessages);
+			totalReceivedMessages.addAll(receivedMessages);	
+		}
+		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());	
+		
+		ArrayList<Instant> oldLockTimes = new ArrayList<Instant>();
+		for(IBrokeredMessage message : totalReceivedMessages)
+		{
+			oldLockTimes.add(message.getLockedUntilUtc());
+		}
+		
+		Thread.sleep(1000);
+		Collection<Instant> newLockTimes = ((BrokeredMessageReceiver)this.receiver).renewMessageLockBatch(totalReceivedMessages);
+		Assert.assertEquals("RenewLock didn't return one instant per message in the collection", totalReceivedMessages.size(), newLockTimes.size());
+		Iterator<Instant> newLockTimeIterator = newLockTimes.iterator();
+		Iterator<Instant> oldLockTimeIterator = oldLockTimes.iterator();
+		for(IBrokeredMessage message : totalReceivedMessages)
+		{	
+			Instant oldLockTime = oldLockTimeIterator.next();
+			Instant newLockTime = newLockTimeIterator.next();
+			Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockTime.toString() + ", newLockedUntilUtc:" + newLockTime.toString(), newLockTime.isAfter(oldLockTime));
+			Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockTime, message.getLockedUntilUtc());
+			this.receiver.complete(message);			
+		}		
+	}
+	
+	@Test
 	public void testBasicQueueReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, IOException, ExecutionException
 	{
 		int numMessages = 10;		
@@ -191,6 +258,71 @@ public class QueueSendReceiveTests {
 		Assert.assertNull("Messages received again", receivedMessages);
 	}
 	
+	@Test
+	public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException, IOException
+	{
+		int secondsToWaitBeforeScheduling = 10;
+		String msgId1 = UUID.randomUUID().toString();
+		String msgId2 = UUID.randomUUID().toString();
+		BrokeredMessage message1 = new BrokeredMessage("AMQP Scheduled message");
+		message1.setMessageId(msgId1);
+		BrokeredMessage message2 = new BrokeredMessage("AMQP Scheduled message2");
+		message2.setMessageId(msgId2);
+		
+		this.sender.scheduleMessage(message1, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
+		this.sender.scheduleMessage(message2, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
+		Thread.sleep(secondsToWaitBeforeScheduling * 1000);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		Collection<IBrokeredMessage> allReceivedMessages = new LinkedList<IBrokeredMessage>();
+		Collection<IBrokeredMessage> receivedMessages = this.receiver.receiveBatch(10);
+				
+		while(receivedMessages != null && receivedMessages.size() > 0)
+		{
+			allReceivedMessages.addAll(receivedMessages);
+			receivedMessages = this.receiver.receiveBatch(10);
+		}
+		
+		boolean firstMessageReceived = false;
+		boolean secondMessageReceived = false;
+		for(IBrokeredMessage message : allReceivedMessages)
+		{
+			if(message.getMessageId().equals(msgId1))
+				firstMessageReceived = true;
+			else if(message.getMessageId().equals(msgId2))
+				secondMessageReceived = true;
+		}
+		
+		Assert.assertTrue("Scheduled messages not received", firstMessageReceived && secondMessageReceived);
+	}
+	
+	@Test
+	public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException, IOException
+	{
+		int secondsToWaitBeforeScheduling = 10;
+		String msgId1 = UUID.randomUUID().toString();
+		String msgId2 = UUID.randomUUID().toString();
+		BrokeredMessage message1 = new BrokeredMessage("AMQP Scheduled message");
+		BrokeredMessage message2 = new BrokeredMessage("AMQP Scheduled message2");
+		message1.setMessageId(msgId1);
+		message2.setMessageId(msgId2);
+		
+		this.sender.scheduleMessage(message1, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
+		long sequnceNumberMsg2 = this.sender.scheduleMessage(message2, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
+		this.sender.cancelScheduledMessage(sequnceNumberMsg2);
+		Thread.sleep(secondsToWaitBeforeScheduling * 1000);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		Collection<IBrokeredMessage> allReceivedMessages = new LinkedList<IBrokeredMessage>();
+		Collection<IBrokeredMessage> receivedMessages = this.receiver.receiveBatch(10);
+		while(receivedMessages != null && receivedMessages.size() > 0)
+		{
+			allReceivedMessages.addAll(receivedMessages);
+			receivedMessages = this.receiver.receiveBatch(10);
+		}
+		
+		Assert.assertTrue("Scheduled messages not received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId1)));
+		Assert.assertFalse("Cancelled scheduled messages also received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)));
+	}
+	
 	private void drainAllMessages(ConnectionStringBuilder builder) throws IOException, InterruptedException, ExecutionException, ServiceBusException
 	{
 		Duration waitTime = Duration.ofSeconds(5);
@@ -203,7 +335,7 @@ public class QueueSendReceiveTests {
 		}
 		
 		receiver.close();
-	}	
+	}
 	
 	
 	// Test send batch
