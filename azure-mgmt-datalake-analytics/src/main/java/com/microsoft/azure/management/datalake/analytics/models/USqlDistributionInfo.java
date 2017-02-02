@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL distribution information object.
@@ -17,21 +18,25 @@ public class USqlDistributionInfo {
     /**
      * the type of this distribution.
      */
+    @JsonProperty(value = "type")
     private Integer type;
 
     /**
      * the list of directed columns in the distribution.
      */
+    @JsonProperty(value = "keys")
     private List<USqlDirectedColumn> keys;
 
     /**
      * the count of indices using this distribution.
      */
+    @JsonProperty(value = "count")
     private Integer count;
 
     /**
      * the dynamic count of indices using this distribution.
      */
+    @JsonProperty(value = "dynamicCount")
     private Integer dynamicCount;
 
     /**

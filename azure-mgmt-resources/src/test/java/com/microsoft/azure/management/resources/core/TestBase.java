@@ -77,7 +77,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     NetworkCallRecord record = testRecord.networkCallRecords.get(index);
                     System.out.println(record.Method + " - " + record.Uri);
                 }
-                Assert.assertEquals(testRecord.networkCallRecords.size(), 0);
+                Assert.assertEquals(0, testRecord.networkCallRecords.size());
             }
             System.setOut(out);
         }

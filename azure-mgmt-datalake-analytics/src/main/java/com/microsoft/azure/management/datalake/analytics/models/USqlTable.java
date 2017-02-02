@@ -18,11 +18,13 @@ public class USqlTable extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this table and database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
@@ -34,26 +36,31 @@ public class USqlTable extends CatalogItem {
     /**
      * the list of columns in this table.
      */
+    @JsonProperty(value = "columnList")
     private List<USqlTableColumn> columnList;
 
     /**
      * the list of indices in this table.
      */
+    @JsonProperty(value = "indexList")
     private List<USqlIndex> indexList;
 
     /**
      * the list of partition keys in the table.
      */
+    @JsonProperty(value = "partitionKeyList")
     private List<String> partitionKeyList;
 
     /**
      * the external table associated with the table.
      */
+    @JsonProperty(value = "externalTable")
     private ExternalTable externalTable;
 
     /**
      * the distributions info of the table.
      */
+    @JsonProperty(value = "distributionInfo")
     private USqlDistributionInfo distributionInfo;
 
     /**

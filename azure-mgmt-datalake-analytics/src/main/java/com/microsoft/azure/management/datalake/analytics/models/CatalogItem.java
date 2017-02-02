@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog item.
@@ -17,11 +18,13 @@ public class CatalogItem {
     /**
      * the name of the Data Lake Analytics account.
      */
+    @JsonProperty(value = "computeAccountName")
     private String computeAccountName;
 
     /**
      * the version of the catalog item.
      */
+    @JsonProperty(value = "version")
     private UUID version;
 
     /**

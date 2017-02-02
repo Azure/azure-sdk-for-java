@@ -17,38 +17,38 @@ public class Diagnostics {
     /**
      * the column where the error occured.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "columnNumber", access = JsonProperty.Access.WRITE_ONLY)
     private Integer columnNumber;
 
     /**
      * the ending index of the error.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "end", access = JsonProperty.Access.WRITE_ONLY)
     private Integer end;
 
     /**
      * the line number the error occured on.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lineNumber", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lineNumber;
 
     /**
      * the error message.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * the severity of the error. Possible values include: 'Warning', 'Error',
-     * 'Info'.
+     * 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private SeverityTypes severity;
 
     /**
      * the starting index of the error.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "start", access = JsonProperty.Access.WRITE_ONLY)
     private Integer start;
 
     /**

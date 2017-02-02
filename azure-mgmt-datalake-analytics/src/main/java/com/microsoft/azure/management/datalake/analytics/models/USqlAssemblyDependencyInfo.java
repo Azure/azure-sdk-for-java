@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL dependency information item.
@@ -16,6 +17,7 @@ public class USqlAssemblyDependencyInfo {
     /**
      * the EntityId of the dependency.
      */
+    @JsonProperty(value = "entityId")
     private EntityId entityId;
 
     /**

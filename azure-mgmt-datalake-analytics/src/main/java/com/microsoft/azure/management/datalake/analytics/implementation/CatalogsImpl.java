@@ -13,7 +13,6 @@ import com.microsoft.azure.management.datalake.analytics.Catalogs;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsCatalogCredentialCreateParameters;
@@ -55,6 +54,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -63,7 +63,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Catalogs.
  */
-public final class CatalogsImpl implements Catalogs {
+public class CatalogsImpl implements Catalogs {
     /** The Retrofit service to perform REST calls. */
     private CatalogsService service;
     /** The service client containing this operation class. */
@@ -85,189 +85,189 @@ public final class CatalogsImpl implements Catalogs {
      * used by Retrofit to perform actually REST calls.
      */
     interface CatalogsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs createSecret" })
         @PUT("catalog/usql/databases/{databaseName}/secrets/{secretName}")
         Observable<Response<ResponseBody>> createSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs updateSecret" })
         @PATCH("catalog/usql/databases/{databaseName}/secrets/{secretName}")
         Observable<Response<ResponseBody>> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getSecret" })
         @GET("catalog/usql/databases/{databaseName}/secrets/{secretName}")
         Observable<Response<ResponseBody>> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteSecret" })
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets/{secretName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteAllSecrets" })
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteAllSecrets(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs createCredential" })
         @PUT("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
         Observable<Response<ResponseBody>> createCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs updateCredential" })
         @PATCH("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
         Observable<Response<ResponseBody>> updateCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getCredential" })
         @GET("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
         Observable<Response<ResponseBody>> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteCredential" })
         @POST("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
-        Observable<Response<ResponseBody>> deleteCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, @Query("cascade") Boolean cascade, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listCredentials" })
         @GET("catalog/usql/databases/{databaseName}/credentials")
         Observable<Response<ResponseBody>> listCredentials(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getExternalDataSource" })
         @GET("catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}")
         Observable<Response<ResponseBody>> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listExternalDataSources" })
         @GET("catalog/usql/databases/{databaseName}/externaldatasources")
         Observable<Response<ResponseBody>> listExternalDataSources(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getProcedure" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}")
         Observable<Response<ResponseBody>> getProcedure(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("procedureName") String procedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listProcedures" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures")
         Observable<Response<ResponseBody>> listProcedures(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getTable" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}")
         Observable<Response<ResponseBody>> getTable(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTables" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables")
         Observable<Response<ResponseBody>> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getTableType" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes/{tableTypeName}")
         Observable<Response<ResponseBody>> getTableType(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableTypeName") String tableTypeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableTypes" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes")
         Observable<Response<ResponseBody>> listTableTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getView" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}")
         Observable<Response<ResponseBody>> getView(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("viewName") String viewName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listViews" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views")
         Observable<Response<ResponseBody>> listViews(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getTableStatistic" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}")
         Observable<Response<ResponseBody>> getTableStatistic(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("statisticsName") String statisticsName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableStatistics" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics")
         Observable<Response<ResponseBody>> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getTablePartition" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions/{partitionName}")
         Observable<Response<ResponseBody>> getTablePartition(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("partitionName") String partitionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTablePartitions" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions")
         Observable<Response<ResponseBody>> listTablePartitions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTypes" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/types")
         Observable<Response<ResponseBody>> listTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getTableValuedFunction" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}")
         Observable<Response<ResponseBody>> getTableValuedFunction(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableValuedFunctionName") String tableValuedFunctionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableValuedFunctions" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions")
         Observable<Response<ResponseBody>> listTableValuedFunctions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getAssembly" })
         @GET("catalog/usql/databases/{databaseName}/assemblies/{assemblyName}")
         Observable<Response<ResponseBody>> getAssembly(@Path("databaseName") String databaseName, @Path("assemblyName") String assemblyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listAssemblies" })
         @GET("catalog/usql/databases/{databaseName}/assemblies")
         Observable<Response<ResponseBody>> listAssemblies(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getSchema" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}")
         Observable<Response<ResponseBody>> getSchema(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listSchemas" })
         @GET("catalog/usql/databases/{databaseName}/schemas")
         Observable<Response<ResponseBody>> listSchemas(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getDatabase" })
         @GET("catalog/usql/databases/{databaseName}")
         Observable<Response<ResponseBody>> getDatabase(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listDatabases" })
         @GET("catalog/usql/databases")
         Observable<Response<ResponseBody>> listDatabases(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listCredentialsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listCredentialsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listCredentialsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listExternalDataSourcesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listExternalDataSourcesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listExternalDataSourcesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listProceduresNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listProceduresNext" })
+        @GET
+        Observable<Response<ResponseBody>> listProceduresNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTablesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTablesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTablesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTableTypesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableTypesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTableTypesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listViewsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listViewsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listViewsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTableStatisticsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableStatisticsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTableStatisticsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTablePartitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTablePartitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTablePartitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTypesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTypesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTypesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listTableValuedFunctionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableValuedFunctionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTableValuedFunctionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAssembliesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listAssembliesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAssembliesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listSchemasNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listSchemasNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSchemasNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listDatabasesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listDatabasesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listDatabasesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -278,10 +278,9 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    public USqlSecret createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
-        return createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).toBlocking().single().getBody();
+    public void createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+        createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -294,8 +293,8 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) {
-        return ServiceCall.create(createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
+    public ServiceCall<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.fromResponse(createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
     }
 
     /**
@@ -305,13 +304,13 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
-        return createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).map(new Func1<ServiceResponse<USqlSecret>, USqlSecret>() {
+    public Observable<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+        return createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public USqlSecret call(ServiceResponse<USqlSecret> response) {
-                return response.getBody();
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
             }
         });
     }
@@ -323,9 +322,9 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<USqlSecret>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+    public Observable<ServiceResponse<Void>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
@@ -347,11 +346,11 @@ public final class CatalogsImpl implements Catalogs {
         Validator.validate(parameters);
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         return service.createSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<USqlSecret>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<USqlSecret>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<USqlSecret> clientResponse = createSecretDelegate(response);
+                        ServiceResponse<Void> clientResponse = createSecretDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -360,10 +359,9 @@ public final class CatalogsImpl implements Catalogs {
             });
     }
 
-    private ServiceResponse<USqlSecret> createSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<USqlSecret>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> createSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -374,10 +372,9 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    public USqlSecret updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
-        return updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).toBlocking().single().getBody();
+    public void updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+        updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -390,8 +387,8 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) {
-        return ServiceCall.create(updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
+    public ServiceCall<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.fromResponse(updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
     }
 
     /**
@@ -401,13 +398,13 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
-        return updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).map(new Func1<ServiceResponse<USqlSecret>, USqlSecret>() {
+    public Observable<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+        return updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public USqlSecret call(ServiceResponse<USqlSecret> response) {
-                return response.getBody();
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
             }
         });
     }
@@ -419,9 +416,9 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<USqlSecret>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
+    public Observable<ServiceResponse<Void>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
@@ -443,11 +440,11 @@ public final class CatalogsImpl implements Catalogs {
         Validator.validate(parameters);
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         return service.updateSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<USqlSecret>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<USqlSecret>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<USqlSecret> clientResponse = updateSecretDelegate(response);
+                        ServiceResponse<Void> clientResponse = updateSecretDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -456,10 +453,9 @@ public final class CatalogsImpl implements Catalogs {
             });
     }
 
-    private ServiceResponse<USqlSecret> updateSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<USqlSecret>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> updateSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -472,7 +468,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlSecret object if successful.
      */
     public USqlSecret getSecret(String accountName, String databaseName, String secretName) {
-        return getSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().getBody();
+        return getSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().body();
     }
 
     /**
@@ -485,7 +481,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) {
-        return ServiceCall.create(getSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
+        return ServiceCall.fromResponse(getSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
     }
 
     /**
@@ -500,7 +496,7 @@ public final class CatalogsImpl implements Catalogs {
         return getSecretWithServiceResponseAsync(accountName, databaseName, secretName).map(new Func1<ServiceResponse<USqlSecret>, USqlSecret>() {
             @Override
             public USqlSecret call(ServiceResponse<USqlSecret> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -545,7 +541,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSecret> getSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlSecret, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlSecret>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -559,7 +555,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param secretName The name of the secret to delete
      */
     public void deleteSecret(String accountName, String databaseName, String secretName) {
-        deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().getBody();
+        deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().body();
     }
 
     /**
@@ -572,7 +568,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
+        return ServiceCall.fromResponse(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
     }
 
     /**
@@ -587,7 +583,7 @@ public final class CatalogsImpl implements Catalogs {
         return deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -632,7 +628,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> deleteSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -644,7 +640,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      */
     public void deleteAllSecrets(String accountName, String databaseName) {
-        deleteAllSecretsWithServiceResponseAsync(accountName, databaseName).toBlocking().single().getBody();
+        deleteAllSecretsWithServiceResponseAsync(accountName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -656,7 +652,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAllSecretsWithServiceResponseAsync(accountName, databaseName), serviceCallback);
+        return ServiceCall.fromResponse(deleteAllSecretsWithServiceResponseAsync(accountName, databaseName), serviceCallback);
     }
 
     /**
@@ -670,7 +666,7 @@ public final class CatalogsImpl implements Catalogs {
         return deleteAllSecretsWithServiceResponseAsync(accountName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -711,7 +707,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> deleteAllSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -725,7 +721,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param parameters The parameters required to create the credential (name and password)
      */
     public void createCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters) {
-        createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).toBlocking().single().getBody();
+        createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -739,7 +735,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> createCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
     }
 
     /**
@@ -755,7 +751,7 @@ public final class CatalogsImpl implements Catalogs {
         return createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -805,7 +801,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> createCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -819,7 +815,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param parameters The parameters required to modify the credential (name and password)
      */
     public void updateCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters) {
-        updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).toBlocking().single().getBody();
+        updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -833,7 +829,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> updateCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
+        return ServiceCall.fromResponse(updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
     }
 
     /**
@@ -849,7 +845,7 @@ public final class CatalogsImpl implements Catalogs {
         return updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -899,7 +895,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> updateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -913,7 +909,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlCredential object if successful.
      */
     public USqlCredential getCredential(String accountName, String databaseName, String credentialName) {
-        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().getBody();
+        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().body();
     }
 
     /**
@@ -926,7 +922,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) {
-        return ServiceCall.create(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
+        return ServiceCall.fromResponse(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
     }
 
     /**
@@ -941,7 +937,7 @@ public final class CatalogsImpl implements Catalogs {
         return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).map(new Func1<ServiceResponse<USqlCredential>, USqlCredential>() {
             @Override
             public USqlCredential call(ServiceResponse<USqlCredential> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -986,7 +982,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlCredential> getCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlCredential, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlCredential, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlCredential>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1000,7 +996,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param credentialName The name of the credential to delete
      */
     public void deleteCredential(String accountName, String databaseName, String credentialName) {
-        deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().getBody();
+        deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().body();
     }
 
     /**
@@ -1013,7 +1009,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
+        return ServiceCall.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
     }
 
     /**
@@ -1028,7 +1024,7 @@ public final class CatalogsImpl implements Catalogs {
         return deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1058,8 +1054,9 @@ public final class CatalogsImpl implements Catalogs {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final DataLakeAnalyticsCatalogCredentialDeleteParameters parameters = null;
+        final Boolean cascade = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.deleteCredential(databaseName, credentialName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deleteCredential(databaseName, credentialName, parameters, cascade, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1080,9 +1077,10 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      */
-    public void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters) {
-        deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).toBlocking().single().getBody();
+    public void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade) {
+        deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters, cascade).toBlocking().single().body();
     }
 
     /**
@@ -1092,11 +1090,12 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
+    public ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters, cascade), serviceCallback);
     }
 
     /**
@@ -1106,13 +1105,14 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters) {
-        return deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade) {
+        return deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters, cascade).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1124,9 +1124,10 @@ public final class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters) {
+    public Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade) {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
@@ -1144,7 +1145,7 @@ public final class CatalogsImpl implements Catalogs {
         }
         Validator.validate(parameters);
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.deleteCredential(databaseName, credentialName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deleteCredential(databaseName, credentialName, parameters, cascade, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1159,7 +1160,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> deleteCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1173,10 +1174,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlCredential> listCredentials(final String accountName, final String databaseName) {
         ServiceResponse<Page<USqlCredential>> response = listCredentialsSinglePageAsync(accountName, databaseName).toBlocking().single();
-        return new PagedList<USqlCredential>(response.getBody()) {
+        return new PagedList<USqlCredential>(response.body()) {
             @Override
             public Page<USqlCredential> nextPage(String nextPageLink) {
-                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1190,7 +1191,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listCredentialsSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -1213,7 +1214,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlCredential>>, Page<USqlCredential>>() {
                 @Override
                 public Page<USqlCredential> call(ServiceResponse<Page<USqlCredential>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1230,7 +1231,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlCredential>>, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(ServiceResponse<Page<USqlCredential>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1272,7 +1273,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlCredential>> result = listCredentialsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1295,10 +1296,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlCredential> listCredentials(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlCredential>> response = listCredentialsSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlCredential>(response.getBody()) {
+        return new PagedList<USqlCredential>(response.body()) {
             @Override
             public Page<USqlCredential> nextPage(String nextPageLink) {
-                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1318,7 +1319,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listCredentialsSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -1347,7 +1348,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlCredential>>, Page<USqlCredential>>() {
                 @Override
                 public Page<USqlCredential> call(ServiceResponse<Page<USqlCredential>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1370,7 +1371,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlCredential>>, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(ServiceResponse<Page<USqlCredential>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1412,7 +1413,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlCredential>> result = listCredentialsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1421,7 +1422,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlCredential>> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlCredential>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlCredential>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1436,7 +1437,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlExternalDataSource object if successful.
      */
     public USqlExternalDataSource getExternalDataSource(String accountName, String databaseName, String externalDataSourceName) {
-        return getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName).toBlocking().single().getBody();
+        return getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName).toBlocking().single().body();
     }
 
     /**
@@ -1449,7 +1450,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) {
-        return ServiceCall.create(getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName), serviceCallback);
+        return ServiceCall.fromResponse(getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName), serviceCallback);
     }
 
     /**
@@ -1464,7 +1465,7 @@ public final class CatalogsImpl implements Catalogs {
         return getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName).map(new Func1<ServiceResponse<USqlExternalDataSource>, USqlExternalDataSource>() {
             @Override
             public USqlExternalDataSource call(ServiceResponse<USqlExternalDataSource> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1509,7 +1510,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlExternalDataSource> getExternalDataSourceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlExternalDataSource, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlExternalDataSource, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlExternalDataSource>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1524,10 +1525,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlExternalDataSource> listExternalDataSources(final String accountName, final String databaseName) {
         ServiceResponse<Page<USqlExternalDataSource>> response = listExternalDataSourcesSinglePageAsync(accountName, databaseName).toBlocking().single();
-        return new PagedList<USqlExternalDataSource>(response.getBody()) {
+        return new PagedList<USqlExternalDataSource>(response.body()) {
             @Override
             public Page<USqlExternalDataSource> nextPage(String nextPageLink) {
-                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1541,7 +1542,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -1564,7 +1565,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Page<USqlExternalDataSource>>() {
                 @Override
                 public Page<USqlExternalDataSource> call(ServiceResponse<Page<USqlExternalDataSource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1581,7 +1582,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(ServiceResponse<Page<USqlExternalDataSource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1623,7 +1624,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlExternalDataSource>> result = listExternalDataSourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1646,10 +1647,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlExternalDataSource> listExternalDataSources(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlExternalDataSource>> response = listExternalDataSourcesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlExternalDataSource>(response.getBody()) {
+        return new PagedList<USqlExternalDataSource>(response.body()) {
             @Override
             public Page<USqlExternalDataSource> nextPage(String nextPageLink) {
-                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1669,7 +1670,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -1698,7 +1699,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Page<USqlExternalDataSource>>() {
                 @Override
                 public Page<USqlExternalDataSource> call(ServiceResponse<Page<USqlExternalDataSource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1721,7 +1722,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(ServiceResponse<Page<USqlExternalDataSource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1763,7 +1764,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlExternalDataSource>> result = listExternalDataSourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1772,7 +1773,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlExternalDataSource>> listExternalDataSourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlExternalDataSource>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlExternalDataSource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1788,7 +1789,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlProcedure object if successful.
      */
     public USqlProcedure getProcedure(String accountName, String databaseName, String schemaName, String procedureName) {
-        return getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName).toBlocking().single().getBody();
+        return getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName).toBlocking().single().body();
     }
 
     /**
@@ -1802,7 +1803,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) {
-        return ServiceCall.create(getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName), serviceCallback);
+        return ServiceCall.fromResponse(getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName), serviceCallback);
     }
 
     /**
@@ -1818,7 +1819,7 @@ public final class CatalogsImpl implements Catalogs {
         return getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName).map(new Func1<ServiceResponse<USqlProcedure>, USqlProcedure>() {
             @Override
             public USqlProcedure call(ServiceResponse<USqlProcedure> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1867,7 +1868,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlProcedure> getProcedureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlProcedure, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlProcedure, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlProcedure>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1883,10 +1884,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlProcedure> listProcedures(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlProcedure>> response = listProceduresSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlProcedure>(response.getBody()) {
+        return new PagedList<USqlProcedure>(response.body()) {
             @Override
             public Page<USqlProcedure> nextPage(String nextPageLink) {
-                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1901,7 +1902,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -1925,7 +1926,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlProcedure>>, Page<USqlProcedure>>() {
                 @Override
                 public Page<USqlProcedure> call(ServiceResponse<Page<USqlProcedure>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1943,7 +1944,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlProcedure>>, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(ServiceResponse<Page<USqlProcedure>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1989,7 +1990,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlProcedure>> result = listProceduresDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2013,10 +2014,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlProcedure> listProcedures(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlProcedure>> response = listProceduresSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlProcedure>(response.getBody()) {
+        return new PagedList<USqlProcedure>(response.body()) {
             @Override
             public Page<USqlProcedure> nextPage(String nextPageLink) {
-                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2037,7 +2038,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -2067,7 +2068,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlProcedure>>, Page<USqlProcedure>>() {
                 @Override
                 public Page<USqlProcedure> call(ServiceResponse<Page<USqlProcedure>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2091,7 +2092,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlProcedure>>, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(ServiceResponse<Page<USqlProcedure>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2137,7 +2138,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlProcedure>> result = listProceduresDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2146,7 +2147,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlProcedure>> listProceduresDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlProcedure>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlProcedure>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2162,7 +2163,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlTable object if successful.
      */
     public USqlTable getTable(String accountName, String databaseName, String schemaName, String tableName) {
-        return getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName).toBlocking().single().getBody();
+        return getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName).toBlocking().single().body();
     }
 
     /**
@@ -2176,7 +2177,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) {
-        return ServiceCall.create(getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName), serviceCallback);
+        return ServiceCall.fromResponse(getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName), serviceCallback);
     }
 
     /**
@@ -2192,7 +2193,7 @@ public final class CatalogsImpl implements Catalogs {
         return getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName).map(new Func1<ServiceResponse<USqlTable>, USqlTable>() {
             @Override
             public USqlTable call(ServiceResponse<USqlTable> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2241,7 +2242,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTable> getTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTable, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlTable, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlTable>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2257,10 +2258,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTable> listTables(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlTable>> response = listTablesSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlTable>(response.getBody()) {
+        return new PagedList<USqlTable>(response.body()) {
             @Override
             public Page<USqlTable> nextPage(String nextPageLink) {
-                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2275,7 +2276,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -2299,7 +2300,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTable>>, Page<USqlTable>>() {
                 @Override
                 public Page<USqlTable> call(ServiceResponse<Page<USqlTable>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2317,7 +2318,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTable>>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(ServiceResponse<Page<USqlTable>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2363,7 +2364,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTable>> result = listTablesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2387,10 +2388,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTable> listTables(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlTable>> response = listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlTable>(response.getBody()) {
+        return new PagedList<USqlTable>(response.body()) {
             @Override
             public Page<USqlTable> nextPage(String nextPageLink) {
-                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2411,7 +2412,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -2441,7 +2442,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTable>>, Page<USqlTable>>() {
                 @Override
                 public Page<USqlTable> call(ServiceResponse<Page<USqlTable>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2465,7 +2466,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTable>>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(ServiceResponse<Page<USqlTable>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2511,7 +2512,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTable>> result = listTablesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2520,7 +2521,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTable>> listTablesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTable>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2536,7 +2537,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlTableType object if successful.
      */
     public USqlTableType getTableType(String accountName, String databaseName, String schemaName, String tableTypeName) {
-        return getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName).toBlocking().single().getBody();
+        return getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName).toBlocking().single().body();
     }
 
     /**
@@ -2550,7 +2551,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) {
-        return ServiceCall.create(getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName), serviceCallback);
+        return ServiceCall.fromResponse(getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName), serviceCallback);
     }
 
     /**
@@ -2566,7 +2567,7 @@ public final class CatalogsImpl implements Catalogs {
         return getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName).map(new Func1<ServiceResponse<USqlTableType>, USqlTableType>() {
             @Override
             public USqlTableType call(ServiceResponse<USqlTableType> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2615,7 +2616,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTableType> getTableTypeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTableType, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlTableType, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlTableType>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2631,10 +2632,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableType> listTableTypes(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlTableType>> response = listTableTypesSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlTableType>(response.getBody()) {
+        return new PagedList<USqlTableType>(response.body()) {
             @Override
             public Page<USqlTableType> nextPage(String nextPageLink) {
-                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2649,7 +2650,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -2673,7 +2674,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableType>>, Page<USqlTableType>>() {
                 @Override
                 public Page<USqlTableType> call(ServiceResponse<Page<USqlTableType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2691,7 +2692,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableType>>, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(ServiceResponse<Page<USqlTableType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2737,7 +2738,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2761,10 +2762,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableType> listTableTypes(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlTableType>> response = listTableTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlTableType>(response.getBody()) {
+        return new PagedList<USqlTableType>(response.body()) {
             @Override
             public Page<USqlTableType> nextPage(String nextPageLink) {
-                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2785,7 +2786,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -2815,7 +2816,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableType>>, Page<USqlTableType>>() {
                 @Override
                 public Page<USqlTableType> call(ServiceResponse<Page<USqlTableType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2839,7 +2840,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableType>>, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(ServiceResponse<Page<USqlTableType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2885,7 +2886,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2894,7 +2895,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableType>> listTableTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableType>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableType>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2910,7 +2911,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlView object if successful.
      */
     public USqlView getView(String accountName, String databaseName, String schemaName, String viewName) {
-        return getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName).toBlocking().single().getBody();
+        return getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName).toBlocking().single().body();
     }
 
     /**
@@ -2924,7 +2925,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) {
-        return ServiceCall.create(getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName), serviceCallback);
+        return ServiceCall.fromResponse(getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName), serviceCallback);
     }
 
     /**
@@ -2940,7 +2941,7 @@ public final class CatalogsImpl implements Catalogs {
         return getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName).map(new Func1<ServiceResponse<USqlView>, USqlView>() {
             @Override
             public USqlView call(ServiceResponse<USqlView> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2989,7 +2990,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlView> getViewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlView, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlView, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlView>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3005,10 +3006,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlView> listViews(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlView>> response = listViewsSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlView>(response.getBody()) {
+        return new PagedList<USqlView>(response.body()) {
             @Override
             public Page<USqlView> nextPage(String nextPageLink) {
-                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3023,7 +3024,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listViewsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -3047,7 +3048,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlView>>, Page<USqlView>>() {
                 @Override
                 public Page<USqlView> call(ServiceResponse<Page<USqlView>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3065,7 +3066,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlView>>, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlView>>> call(ServiceResponse<Page<USqlView>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3111,7 +3112,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlView>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlView>> result = listViewsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3135,10 +3136,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlView> listViews(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlView>> response = listViewsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlView>(response.getBody()) {
+        return new PagedList<USqlView>(response.body()) {
             @Override
             public Page<USqlView> nextPage(String nextPageLink) {
-                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3159,7 +3160,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listViewsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -3189,7 +3190,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlView>>, Page<USqlView>>() {
                 @Override
                 public Page<USqlView> call(ServiceResponse<Page<USqlView>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3213,7 +3214,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlView>>, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlView>>> call(ServiceResponse<Page<USqlView>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3259,7 +3260,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlView>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlView>> result = listViewsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3268,7 +3269,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlView>> listViewsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlView>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlView>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3285,7 +3286,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlTableStatistics object if successful.
      */
     public USqlTableStatistics getTableStatistic(String accountName, String databaseName, String schemaName, String tableName, String statisticsName) {
-        return getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName).toBlocking().single().getBody();
+        return getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName).toBlocking().single().body();
     }
 
     /**
@@ -3300,7 +3301,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) {
-        return ServiceCall.create(getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName), serviceCallback);
+        return ServiceCall.fromResponse(getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName), serviceCallback);
     }
 
     /**
@@ -3317,7 +3318,7 @@ public final class CatalogsImpl implements Catalogs {
         return getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName).map(new Func1<ServiceResponse<USqlTableStatistics>, USqlTableStatistics>() {
             @Override
             public USqlTableStatistics call(ServiceResponse<USqlTableStatistics> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3370,7 +3371,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTableStatistics> getTableStatisticDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTableStatistics, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlTableStatistics, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlTableStatistics>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3387,10 +3388,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableStatistics> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName) {
         ServiceResponse<Page<USqlTableStatistics>> response = listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName).toBlocking().single();
-        return new PagedList<USqlTableStatistics>(response.getBody()) {
+        return new PagedList<USqlTableStatistics>(response.body()) {
             @Override
             public Page<USqlTableStatistics> nextPage(String nextPageLink) {
-                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3406,7 +3407,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -3431,7 +3432,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Page<USqlTableStatistics>>() {
                 @Override
                 public Page<USqlTableStatistics> call(ServiceResponse<Page<USqlTableStatistics>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3450,7 +3451,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(ServiceResponse<Page<USqlTableStatistics>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3500,7 +3501,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableStatistics>> result = listTableStatisticsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3525,10 +3526,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableStatistics> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlTableStatistics>> response = listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlTableStatistics>(response.getBody()) {
+        return new PagedList<USqlTableStatistics>(response.body()) {
             @Override
             public Page<USqlTableStatistics> nextPage(String nextPageLink) {
-                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3550,7 +3551,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -3581,7 +3582,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Page<USqlTableStatistics>>() {
                 @Override
                 public Page<USqlTableStatistics> call(ServiceResponse<Page<USqlTableStatistics>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3606,7 +3607,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(ServiceResponse<Page<USqlTableStatistics>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3656,7 +3657,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableStatistics>> result = listTableStatisticsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3665,7 +3666,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableStatistics>> listTableStatisticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableStatistics>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatistics>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3682,7 +3683,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlTablePartition object if successful.
      */
     public USqlTablePartition getTablePartition(String accountName, String databaseName, String schemaName, String tableName, String partitionName) {
-        return getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName).toBlocking().single().getBody();
+        return getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName).toBlocking().single().body();
     }
 
     /**
@@ -3697,7 +3698,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) {
-        return ServiceCall.create(getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName), serviceCallback);
+        return ServiceCall.fromResponse(getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName), serviceCallback);
     }
 
     /**
@@ -3714,7 +3715,7 @@ public final class CatalogsImpl implements Catalogs {
         return getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName).map(new Func1<ServiceResponse<USqlTablePartition>, USqlTablePartition>() {
             @Override
             public USqlTablePartition call(ServiceResponse<USqlTablePartition> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3767,7 +3768,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTablePartition> getTablePartitionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTablePartition, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlTablePartition, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlTablePartition>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3784,10 +3785,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTablePartition> listTablePartitions(final String accountName, final String databaseName, final String schemaName, final String tableName) {
         ServiceResponse<Page<USqlTablePartition>> response = listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName).toBlocking().single();
-        return new PagedList<USqlTablePartition>(response.getBody()) {
+        return new PagedList<USqlTablePartition>(response.body()) {
             @Override
             public Page<USqlTablePartition> nextPage(String nextPageLink) {
-                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3803,7 +3804,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -3828,7 +3829,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTablePartition>>, Page<USqlTablePartition>>() {
                 @Override
                 public Page<USqlTablePartition> call(ServiceResponse<Page<USqlTablePartition>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3847,7 +3848,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTablePartition>>, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(ServiceResponse<Page<USqlTablePartition>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3897,7 +3898,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTablePartition>> result = listTablePartitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3922,10 +3923,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTablePartition> listTablePartitions(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlTablePartition>> response = listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlTablePartition>(response.getBody()) {
+        return new PagedList<USqlTablePartition>(response.body()) {
             @Override
             public Page<USqlTablePartition> nextPage(String nextPageLink) {
-                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3947,7 +3948,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -3978,7 +3979,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTablePartition>>, Page<USqlTablePartition>>() {
                 @Override
                 public Page<USqlTablePartition> call(ServiceResponse<Page<USqlTablePartition>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4003,7 +4004,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTablePartition>>, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(ServiceResponse<Page<USqlTablePartition>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4053,7 +4054,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTablePartition>> result = listTablePartitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4062,7 +4063,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTablePartition>> listTablePartitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTablePartition>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTablePartition>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4078,10 +4079,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlType> listTypes(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlType>> response = listTypesSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlType>(response.getBody()) {
+        return new PagedList<USqlType>(response.body()) {
             @Override
             public Page<USqlType> nextPage(String nextPageLink) {
-                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4096,7 +4097,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -4120,7 +4121,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlType>>, Page<USqlType>>() {
                 @Override
                 public Page<USqlType> call(ServiceResponse<Page<USqlType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4138,7 +4139,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlType>>, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlType>>> call(ServiceResponse<Page<USqlType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4184,7 +4185,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlType>> result = listTypesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4208,10 +4209,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlType> listTypes(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlType>> response = listTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlType>(response.getBody()) {
+        return new PagedList<USqlType>(response.body()) {
             @Override
             public Page<USqlType> nextPage(String nextPageLink) {
-                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4232,7 +4233,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -4262,7 +4263,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlType>>, Page<USqlType>>() {
                 @Override
                 public Page<USqlType> call(ServiceResponse<Page<USqlType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4286,7 +4287,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlType>>, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlType>>> call(ServiceResponse<Page<USqlType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4332,7 +4333,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlType>> result = listTypesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4341,7 +4342,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlType>> listTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlType>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4357,7 +4358,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlTableValuedFunction object if successful.
      */
     public USqlTableValuedFunction getTableValuedFunction(String accountName, String databaseName, String schemaName, String tableValuedFunctionName) {
-        return getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName).toBlocking().single().getBody();
+        return getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName).toBlocking().single().body();
     }
 
     /**
@@ -4371,7 +4372,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) {
-        return ServiceCall.create(getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName), serviceCallback);
+        return ServiceCall.fromResponse(getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName), serviceCallback);
     }
 
     /**
@@ -4387,7 +4388,7 @@ public final class CatalogsImpl implements Catalogs {
         return getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName).map(new Func1<ServiceResponse<USqlTableValuedFunction>, USqlTableValuedFunction>() {
             @Override
             public USqlTableValuedFunction call(ServiceResponse<USqlTableValuedFunction> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4436,7 +4437,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTableValuedFunction> getTableValuedFunctionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTableValuedFunction, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlTableValuedFunction, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlTableValuedFunction>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4452,10 +4453,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableValuedFunction> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName) {
         ServiceResponse<Page<USqlTableValuedFunction>> response = listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName).toBlocking().single();
-        return new PagedList<USqlTableValuedFunction>(response.getBody()) {
+        return new PagedList<USqlTableValuedFunction>(response.body()) {
             @Override
             public Page<USqlTableValuedFunction> nextPage(String nextPageLink) {
-                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4470,7 +4471,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -4494,7 +4495,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Page<USqlTableValuedFunction>>() {
                 @Override
                 public Page<USqlTableValuedFunction> call(ServiceResponse<Page<USqlTableValuedFunction>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4512,7 +4513,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(ServiceResponse<Page<USqlTableValuedFunction>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4558,7 +4559,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableValuedFunction>> result = listTableValuedFunctionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4582,10 +4583,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableValuedFunction> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlTableValuedFunction>> response = listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlTableValuedFunction>(response.getBody()) {
+        return new PagedList<USqlTableValuedFunction>(response.body()) {
             @Override
             public Page<USqlTableValuedFunction> nextPage(String nextPageLink) {
-                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4606,7 +4607,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -4636,7 +4637,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Page<USqlTableValuedFunction>>() {
                 @Override
                 public Page<USqlTableValuedFunction> call(ServiceResponse<Page<USqlTableValuedFunction>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4660,7 +4661,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(ServiceResponse<Page<USqlTableValuedFunction>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4706,7 +4707,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableValuedFunction>> result = listTableValuedFunctionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4715,7 +4716,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableValuedFunction>> listTableValuedFunctionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableValuedFunction>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableValuedFunction>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4730,7 +4731,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlAssembly object if successful.
      */
     public USqlAssembly getAssembly(String accountName, String databaseName, String assemblyName) {
-        return getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName).toBlocking().single().getBody();
+        return getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName).toBlocking().single().body();
     }
 
     /**
@@ -4743,7 +4744,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) {
-        return ServiceCall.create(getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName), serviceCallback);
+        return ServiceCall.fromResponse(getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName), serviceCallback);
     }
 
     /**
@@ -4758,7 +4759,7 @@ public final class CatalogsImpl implements Catalogs {
         return getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName).map(new Func1<ServiceResponse<USqlAssembly>, USqlAssembly>() {
             @Override
             public USqlAssembly call(ServiceResponse<USqlAssembly> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -4803,7 +4804,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlAssembly> getAssemblyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlAssembly, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlAssembly, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlAssembly>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4818,10 +4819,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlAssemblyClr> listAssemblies(final String accountName, final String databaseName) {
         ServiceResponse<Page<USqlAssemblyClr>> response = listAssembliesSinglePageAsync(accountName, databaseName).toBlocking().single();
-        return new PagedList<USqlAssemblyClr>(response.getBody()) {
+        return new PagedList<USqlAssemblyClr>(response.body()) {
             @Override
             public Page<USqlAssemblyClr> nextPage(String nextPageLink) {
-                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4835,7 +4836,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAssembliesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -4858,7 +4859,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Page<USqlAssemblyClr>>() {
                 @Override
                 public Page<USqlAssemblyClr> call(ServiceResponse<Page<USqlAssemblyClr>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4875,7 +4876,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(ServiceResponse<Page<USqlAssemblyClr>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4917,7 +4918,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlAssemblyClr>> result = listAssembliesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4940,10 +4941,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlAssemblyClr> listAssemblies(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlAssemblyClr>> response = listAssembliesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlAssemblyClr>(response.getBody()) {
+        return new PagedList<USqlAssemblyClr>(response.body()) {
             @Override
             public Page<USqlAssemblyClr> nextPage(String nextPageLink) {
-                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4963,7 +4964,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAssembliesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -4992,7 +4993,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Page<USqlAssemblyClr>>() {
                 @Override
                 public Page<USqlAssemblyClr> call(ServiceResponse<Page<USqlAssemblyClr>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5015,7 +5016,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(ServiceResponse<Page<USqlAssemblyClr>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5057,7 +5058,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlAssemblyClr>> result = listAssembliesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5066,7 +5067,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlAssemblyClr>> listAssembliesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlAssemblyClr>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlAssemblyClr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5081,7 +5082,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlSchema object if successful.
      */
     public USqlSchema getSchema(String accountName, String databaseName, String schemaName) {
-        return getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName).toBlocking().single().getBody();
+        return getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName).toBlocking().single().body();
     }
 
     /**
@@ -5094,7 +5095,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) {
-        return ServiceCall.create(getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName), serviceCallback);
+        return ServiceCall.fromResponse(getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName), serviceCallback);
     }
 
     /**
@@ -5109,7 +5110,7 @@ public final class CatalogsImpl implements Catalogs {
         return getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName).map(new Func1<ServiceResponse<USqlSchema>, USqlSchema>() {
             @Override
             public USqlSchema call(ServiceResponse<USqlSchema> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5154,7 +5155,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSchema> getSchemaDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSchema, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlSchema, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlSchema>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5169,10 +5170,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlSchema> listSchemas(final String accountName, final String databaseName) {
         ServiceResponse<Page<USqlSchema>> response = listSchemasSinglePageAsync(accountName, databaseName).toBlocking().single();
-        return new PagedList<USqlSchema>(response.getBody()) {
+        return new PagedList<USqlSchema>(response.body()) {
             @Override
             public Page<USqlSchema> nextPage(String nextPageLink) {
-                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5186,7 +5187,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSchemasSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -5209,7 +5210,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlSchema>>, Page<USqlSchema>>() {
                 @Override
                 public Page<USqlSchema> call(ServiceResponse<Page<USqlSchema>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5226,7 +5227,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlSchema>>, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(ServiceResponse<Page<USqlSchema>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5268,7 +5269,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlSchema>> result = listSchemasDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5291,10 +5292,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlSchema> listSchemas(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlSchema>> response = listSchemasSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlSchema>(response.getBody()) {
+        return new PagedList<USqlSchema>(response.body()) {
             @Override
             public Page<USqlSchema> nextPage(String nextPageLink) {
-                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5314,7 +5315,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSchemasSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -5343,7 +5344,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlSchema>>, Page<USqlSchema>>() {
                 @Override
                 public Page<USqlSchema> call(ServiceResponse<Page<USqlSchema>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5366,7 +5367,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlSchema>>, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(ServiceResponse<Page<USqlSchema>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5408,7 +5409,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlSchema>> result = listSchemasDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5417,7 +5418,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlSchema>> listSchemasDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlSchema>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlSchema>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5431,7 +5432,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the USqlDatabase object if successful.
      */
     public USqlDatabase getDatabase(String accountName, String databaseName) {
-        return getDatabaseWithServiceResponseAsync(accountName, databaseName).toBlocking().single().getBody();
+        return getDatabaseWithServiceResponseAsync(accountName, databaseName).toBlocking().single().body();
     }
 
     /**
@@ -5443,7 +5444,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) {
-        return ServiceCall.create(getDatabaseWithServiceResponseAsync(accountName, databaseName), serviceCallback);
+        return ServiceCall.fromResponse(getDatabaseWithServiceResponseAsync(accountName, databaseName), serviceCallback);
     }
 
     /**
@@ -5457,7 +5458,7 @@ public final class CatalogsImpl implements Catalogs {
         return getDatabaseWithServiceResponseAsync(accountName, databaseName).map(new Func1<ServiceResponse<USqlDatabase>, USqlDatabase>() {
             @Override
             public USqlDatabase call(ServiceResponse<USqlDatabase> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -5498,7 +5499,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlDatabase> getDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlDatabase, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<USqlDatabase, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<USqlDatabase>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5512,10 +5513,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlDatabase> listDatabases(final String accountName) {
         ServiceResponse<Page<USqlDatabase>> response = listDatabasesSinglePageAsync(accountName).toBlocking().single();
-        return new PagedList<USqlDatabase>(response.getBody()) {
+        return new PagedList<USqlDatabase>(response.body()) {
             @Override
             public Page<USqlDatabase> nextPage(String nextPageLink) {
-                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5528,7 +5529,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDatabasesSinglePageAsync(accountName),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
@@ -5550,7 +5551,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlDatabase>>, Page<USqlDatabase>>() {
                 @Override
                 public Page<USqlDatabase> call(ServiceResponse<Page<USqlDatabase>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5566,7 +5567,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlDatabase>>, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(ServiceResponse<Page<USqlDatabase>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5604,7 +5605,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlDatabase>> result = listDatabasesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5626,10 +5627,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlDatabase> listDatabases(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         ServiceResponse<Page<USqlDatabase>> response = listDatabasesSinglePageAsync(accountName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<USqlDatabase>(response.getBody()) {
+        return new PagedList<USqlDatabase>(response.body()) {
             @Override
             public Page<USqlDatabase> nextPage(String nextPageLink) {
-                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5648,7 +5649,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDatabasesSinglePageAsync(accountName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
@@ -5676,7 +5677,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlDatabase>>, Page<USqlDatabase>>() {
                 @Override
                 public Page<USqlDatabase> call(ServiceResponse<Page<USqlDatabase>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5698,7 +5699,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlDatabase>>, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(ServiceResponse<Page<USqlDatabase>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5736,7 +5737,7 @@ public final class CatalogsImpl implements Catalogs {
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlDatabase>> result = listDatabasesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5745,7 +5746,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlDatabase>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlDatabase>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlDatabase>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5759,10 +5760,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlCredential> listCredentialsNext(final String nextPageLink) {
         ServiceResponse<Page<USqlCredential>> response = listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlCredential>(response.getBody()) {
+        return new PagedList<USqlCredential>(response.body()) {
             @Override
             public Page<USqlCredential> nextPage(String nextPageLink) {
-                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5776,7 +5777,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listCredentialsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -5798,7 +5799,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlCredential>>, Page<USqlCredential>>() {
                 @Override
                 public Page<USqlCredential> call(ServiceResponse<Page<USqlCredential>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5814,7 +5815,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlCredential>>, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(ServiceResponse<Page<USqlCredential>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5833,13 +5834,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listCredentialsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listCredentialsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlCredential>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlCredential>> result = listCredentialsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlCredential>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5848,7 +5850,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlCredential>> listCredentialsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlCredential>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlCredential>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5862,10 +5864,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlExternalDataSource> listExternalDataSourcesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlExternalDataSource>> response = listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlExternalDataSource>(response.getBody()) {
+        return new PagedList<USqlExternalDataSource>(response.body()) {
             @Override
             public Page<USqlExternalDataSource> nextPage(String nextPageLink) {
-                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5879,7 +5881,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listExternalDataSourcesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -5901,7 +5903,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Page<USqlExternalDataSource>>() {
                 @Override
                 public Page<USqlExternalDataSource> call(ServiceResponse<Page<USqlExternalDataSource>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5917,7 +5919,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlExternalDataSource>>, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(ServiceResponse<Page<USqlExternalDataSource>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5936,13 +5938,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listExternalDataSourcesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listExternalDataSourcesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlExternalDataSource>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlExternalDataSource>> result = listExternalDataSourcesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlExternalDataSource>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5951,7 +5954,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlExternalDataSource>> listExternalDataSourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlExternalDataSource>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlExternalDataSource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5965,10 +5968,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlProcedure> listProceduresNext(final String nextPageLink) {
         ServiceResponse<Page<USqlProcedure>> response = listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlProcedure>(response.getBody()) {
+        return new PagedList<USqlProcedure>(response.body()) {
             @Override
             public Page<USqlProcedure> nextPage(String nextPageLink) {
-                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5982,7 +5985,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listProceduresNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -6004,7 +6007,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlProcedure>>, Page<USqlProcedure>>() {
                 @Override
                 public Page<USqlProcedure> call(ServiceResponse<Page<USqlProcedure>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6020,7 +6023,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlProcedure>>, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(ServiceResponse<Page<USqlProcedure>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6039,13 +6042,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listProceduresNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listProceduresNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlProcedure>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlProcedure>> result = listProceduresNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlProcedure>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6054,7 +6058,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlProcedure>> listProceduresNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlProcedure>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlProcedure>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6068,10 +6072,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTable> listTablesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlTable>> response = listTablesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlTable>(response.getBody()) {
+        return new PagedList<USqlTable>(response.body()) {
             @Override
             public Page<USqlTable> nextPage(String nextPageLink) {
-                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6085,7 +6089,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -6107,7 +6111,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTable>>, Page<USqlTable>>() {
                 @Override
                 public Page<USqlTable> call(ServiceResponse<Page<USqlTable>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6123,7 +6127,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTable>>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(ServiceResponse<Page<USqlTable>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6142,13 +6146,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTablesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTablesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTable>> result = listTablesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTable>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6157,7 +6162,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTable>> listTablesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTable>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6171,10 +6176,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableType> listTableTypesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlTableType>> response = listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlTableType>(response.getBody()) {
+        return new PagedList<USqlTableType>(response.body()) {
             @Override
             public Page<USqlTableType> nextPage(String nextPageLink) {
-                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6188,7 +6193,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -6210,7 +6215,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableType>>, Page<USqlTableType>>() {
                 @Override
                 public Page<USqlTableType> call(ServiceResponse<Page<USqlTableType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6226,7 +6231,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableType>>, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(ServiceResponse<Page<USqlTableType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6245,13 +6250,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTableTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTableTypesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6260,7 +6266,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableType>> listTableTypesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableType>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableType>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6274,10 +6280,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlView> listViewsNext(final String nextPageLink) {
         ServiceResponse<Page<USqlView>> response = listViewsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlView>(response.getBody()) {
+        return new PagedList<USqlView>(response.body()) {
             @Override
             public Page<USqlView> nextPage(String nextPageLink) {
-                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6291,7 +6297,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listViewsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -6313,7 +6319,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlView>>, Page<USqlView>>() {
                 @Override
                 public Page<USqlView> call(ServiceResponse<Page<USqlView>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6329,7 +6335,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlView>>, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlView>>> call(ServiceResponse<Page<USqlView>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6348,13 +6354,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listViewsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listViewsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlView>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlView>> result = listViewsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlView>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6363,7 +6370,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlView>> listViewsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlView>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlView>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6377,10 +6384,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableStatistics> listTableStatisticsNext(final String nextPageLink) {
         ServiceResponse<Page<USqlTableStatistics>> response = listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlTableStatistics>(response.getBody()) {
+        return new PagedList<USqlTableStatistics>(response.body()) {
             @Override
             public Page<USqlTableStatistics> nextPage(String nextPageLink) {
-                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6394,7 +6401,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableStatisticsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -6416,7 +6423,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Page<USqlTableStatistics>>() {
                 @Override
                 public Page<USqlTableStatistics> call(ServiceResponse<Page<USqlTableStatistics>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6432,7 +6439,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableStatistics>>, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(ServiceResponse<Page<USqlTableStatistics>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6451,13 +6458,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTableStatisticsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTableStatisticsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableStatistics>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableStatistics>> result = listTableStatisticsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableStatistics>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6466,7 +6474,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableStatistics>> listTableStatisticsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableStatistics>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatistics>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6480,10 +6488,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTablePartition> listTablePartitionsNext(final String nextPageLink) {
         ServiceResponse<Page<USqlTablePartition>> response = listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlTablePartition>(response.getBody()) {
+        return new PagedList<USqlTablePartition>(response.body()) {
             @Override
             public Page<USqlTablePartition> nextPage(String nextPageLink) {
-                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6497,7 +6505,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTablePartitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -6519,7 +6527,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTablePartition>>, Page<USqlTablePartition>>() {
                 @Override
                 public Page<USqlTablePartition> call(ServiceResponse<Page<USqlTablePartition>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6535,7 +6543,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTablePartition>>, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(ServiceResponse<Page<USqlTablePartition>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6554,13 +6562,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTablePartitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTablePartitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTablePartition>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTablePartition>> result = listTablePartitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTablePartition>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6569,7 +6578,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTablePartition>> listTablePartitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTablePartition>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTablePartition>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6583,10 +6592,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlType> listTypesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlType>> response = listTypesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlType>(response.getBody()) {
+        return new PagedList<USqlType>(response.body()) {
             @Override
             public Page<USqlType> nextPage(String nextPageLink) {
-                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6600,7 +6609,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -6622,7 +6631,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlType>>, Page<USqlType>>() {
                 @Override
                 public Page<USqlType> call(ServiceResponse<Page<USqlType>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6638,7 +6647,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlType>>, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlType>>> call(ServiceResponse<Page<USqlType>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6657,13 +6666,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTypesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlType>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlType>> result = listTypesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlType>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6672,7 +6682,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlType>> listTypesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlType>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6686,10 +6696,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlTableValuedFunction> listTableValuedFunctionsNext(final String nextPageLink) {
         ServiceResponse<Page<USqlTableValuedFunction>> response = listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlTableValuedFunction>(response.getBody()) {
+        return new PagedList<USqlTableValuedFunction>(response.body()) {
             @Override
             public Page<USqlTableValuedFunction> nextPage(String nextPageLink) {
-                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6703,7 +6713,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listTableValuedFunctionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -6725,7 +6735,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Page<USqlTableValuedFunction>>() {
                 @Override
                 public Page<USqlTableValuedFunction> call(ServiceResponse<Page<USqlTableValuedFunction>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6741,7 +6751,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlTableValuedFunction>>, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(ServiceResponse<Page<USqlTableValuedFunction>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6760,13 +6770,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTableValuedFunctionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTableValuedFunctionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlTableValuedFunction>> result = listTableValuedFunctionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlTableValuedFunction>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6775,7 +6786,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableValuedFunction>> listTableValuedFunctionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlTableValuedFunction>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableValuedFunction>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6789,10 +6800,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlAssemblyClr> listAssembliesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlAssemblyClr>> response = listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlAssemblyClr>(response.getBody()) {
+        return new PagedList<USqlAssemblyClr>(response.body()) {
             @Override
             public Page<USqlAssemblyClr> nextPage(String nextPageLink) {
-                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6806,7 +6817,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listAssembliesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -6828,7 +6839,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Page<USqlAssemblyClr>>() {
                 @Override
                 public Page<USqlAssemblyClr> call(ServiceResponse<Page<USqlAssemblyClr>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6844,7 +6855,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlAssemblyClr>>, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(ServiceResponse<Page<USqlAssemblyClr>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6863,13 +6874,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAssembliesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAssembliesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlAssemblyClr>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlAssemblyClr>> result = listAssembliesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlAssemblyClr>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6878,7 +6890,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlAssemblyClr>> listAssembliesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlAssemblyClr>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlAssemblyClr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6892,10 +6904,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlSchema> listSchemasNext(final String nextPageLink) {
         ServiceResponse<Page<USqlSchema>> response = listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlSchema>(response.getBody()) {
+        return new PagedList<USqlSchema>(response.body()) {
             @Override
             public Page<USqlSchema> nextPage(String nextPageLink) {
-                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6909,7 +6921,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listSchemasNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -6931,7 +6943,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlSchema>>, Page<USqlSchema>>() {
                 @Override
                 public Page<USqlSchema> call(ServiceResponse<Page<USqlSchema>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6947,7 +6959,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlSchema>>, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(ServiceResponse<Page<USqlSchema>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6966,13 +6978,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listSchemasNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSchemasNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlSchema>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlSchema>> result = listSchemasNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlSchema>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6981,7 +6994,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlSchema>> listSchemasNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlSchema>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlSchema>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6995,10 +7008,10 @@ public final class CatalogsImpl implements Catalogs {
      */
     public PagedList<USqlDatabase> listDatabasesNext(final String nextPageLink) {
         ServiceResponse<Page<USqlDatabase>> response = listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<USqlDatabase>(response.getBody()) {
+        return new PagedList<USqlDatabase>(response.body()) {
             @Override
             public Page<USqlDatabase> nextPage(String nextPageLink) {
-                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7012,7 +7025,7 @@ public final class CatalogsImpl implements Catalogs {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.create(
+        return AzureServiceCall.fromPageResponse(
             listDatabasesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
@@ -7034,7 +7047,7 @@ public final class CatalogsImpl implements Catalogs {
             .map(new Func1<ServiceResponse<Page<USqlDatabase>>, Page<USqlDatabase>>() {
                 @Override
                 public Page<USqlDatabase> call(ServiceResponse<Page<USqlDatabase>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7050,7 +7063,7 @@ public final class CatalogsImpl implements Catalogs {
             .concatMap(new Func1<ServiceResponse<Page<USqlDatabase>>, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(ServiceResponse<Page<USqlDatabase>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7069,13 +7082,14 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listDatabasesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listDatabasesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlDatabase>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<USqlDatabase>> result = listDatabasesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<USqlDatabase>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7084,7 +7098,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlDatabase>> listDatabasesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<USqlDatabase>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<USqlDatabase>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

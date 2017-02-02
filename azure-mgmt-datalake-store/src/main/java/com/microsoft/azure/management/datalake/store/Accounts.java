@@ -192,110 +192,110 @@ public interface Accounts {
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      */
-    void delete(String resourceGroupName, String accountName);
+    void delete(String resourceGroupName, String name);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteAsync(String resourceGroupName, String accountName);
+    Observable<Void> deleteAsync(String resourceGroupName, String name);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName);
+    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      */
-    void beginDelete(String resourceGroupName, String accountName);
+    void beginDelete(String resourceGroupName, String name);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> beginDeleteAsync(String resourceGroupName, String accountName);
+    Observable<Void> beginDeleteAsync(String resourceGroupName, String name);
 
     /**
      * Deletes the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to delete.
+     * @param name The name of the Data Lake Store account to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName);
+    Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String name);
 
     /**
      * Gets the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to retrieve.
+     * @param name The name of the Data Lake Store account to retrieve.
      * @return the DataLakeStoreAccount object if successful.
      */
-    DataLakeStoreAccount get(String resourceGroupName, String accountName);
+    DataLakeStoreAccount get(String resourceGroupName, String name);
 
     /**
      * Gets the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to retrieve.
+     * @param name The name of the Data Lake Store account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeStoreAccount> getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<DataLakeStoreAccount> getAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Gets the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to retrieve.
+     * @param name The name of the Data Lake Store account to retrieve.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<DataLakeStoreAccount> getAsync(String resourceGroupName, String accountName);
+    Observable<DataLakeStoreAccount> getAsync(String resourceGroupName, String name);
 
     /**
      * Gets the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to retrieve.
+     * @param name The name of the Data Lake Store account to retrieve.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<ServiceResponse<DataLakeStoreAccount>> getWithServiceResponseAsync(String resourceGroupName, String accountName);
+    Observable<ServiceResponse<DataLakeStoreAccount>> getWithServiceResponseAsync(String resourceGroupName, String name);
 
     /**
      * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.

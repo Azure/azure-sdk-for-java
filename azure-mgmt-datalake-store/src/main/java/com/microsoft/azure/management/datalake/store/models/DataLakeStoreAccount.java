@@ -22,6 +22,7 @@ public class DataLakeStoreAccount extends Resource {
     /**
      * The Key vault encryption identity, if any.
      */
+    @JsonProperty(value = "identity")
     private EncryptionIdentity identity;
 
     /**
@@ -79,9 +80,8 @@ public class DataLakeStoreAccount extends Resource {
     private List<FirewallRule> firewallRules;
 
     /**
-     * The current state of the trusted identity provider feature for this
-     * Data Lake store account. Possible values include: 'Enabled',
-     * 'Disabled'.
+     * The current state of the trusted identity provider feature for this Data
+     * Lake store account. Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.trustedIdProviderState")
     private TrustedIdProviderState trustedIdProviderState;
@@ -111,6 +111,23 @@ public class DataLakeStoreAccount extends Resource {
      */
     @JsonProperty(value = "properties.defaultGroup")
     private String defaultGroup;
+
+    /**
+     * the commitment tier to use for next month. Possible values include:
+     * 'Consumption', 'Commitment_1TB', 'Commitment_10TB', 'Commitment_100TB',
+     * 'Commitment_500TB', 'Commitment_1PB', 'Commitment_5PB'.
+     */
+    @JsonProperty(value = "properties.newTier")
+    private TierType newTier;
+
+    /**
+     * the commitment tier in use for the current month. Possible values
+     * include: 'Consumption', 'Commitment_1TB', 'Commitment_10TB',
+     * 'Commitment_100TB', 'Commitment_500TB', 'Commitment_1PB',
+     * 'Commitment_5PB'.
+     */
+    @JsonProperty(value = "properties.currentTier", access = JsonProperty.Access.WRITE_ONLY)
+    private TierType currentTier;
 
     /**
      * Get the identity value.
@@ -324,6 +341,35 @@ public class DataLakeStoreAccount extends Resource {
     public DataLakeStoreAccount withDefaultGroup(String defaultGroup) {
         this.defaultGroup = defaultGroup;
         return this;
+    }
+
+    /**
+     * Get the newTier value.
+     *
+     * @return the newTier value
+     */
+    public TierType newTier() {
+        return this.newTier;
+    }
+
+    /**
+     * Set the newTier value.
+     *
+     * @param newTier the newTier value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withNewTier(TierType newTier) {
+        this.newTier = newTier;
+        return this;
+    }
+
+    /**
+     * Get the currentTier value.
+     *
+     * @return the currentTier value
+     */
+    public TierType currentTier() {
+        return this.currentTier;
     }
 
 }

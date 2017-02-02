@@ -48,9 +48,8 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    USqlSecret createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    void createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -62,7 +61,7 @@ public interface Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+    ServiceCall<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -71,9 +70,9 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -82,9 +81,9 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<USqlSecret>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<ServiceResponse<Void>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -93,9 +92,8 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    USqlSecret updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    void updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -107,7 +105,7 @@ public interface Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+    ServiceCall<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -116,9 +114,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -127,9 +125,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<USqlSecret>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<ServiceResponse<Void>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Gets the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use GetCredential instead.
@@ -423,8 +421,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      */
-    void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -433,10 +432,11 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -445,9 +445,10 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -456,9 +457,10 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
