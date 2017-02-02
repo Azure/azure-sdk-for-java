@@ -41,13 +41,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing on playback assertion error Expected :61 Actual   :0")
     public void testCreateVirtualMachineUsingCustomImageFromVHD() {
         Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing on playback assertion error Expected :56 Actual   :0")
     public void testCreateVirtualMachineUsingCustomImageFromVM() {
         Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azure));
     }
@@ -78,7 +76,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing - Expected :1 Actual :0")
     public void testManageVirtualMachineWithUnmanagedDisks() {
         Assert.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azure));
     }
