@@ -1275,7 +1275,7 @@ public class VirtualMachineScaleSetImpl
             // If storage account(s) are not explicitly asked to create then create one implicitly
             //
             return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24))
+                    .define(this.namer.randomName("stg", 24).replace("-", ""))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync())

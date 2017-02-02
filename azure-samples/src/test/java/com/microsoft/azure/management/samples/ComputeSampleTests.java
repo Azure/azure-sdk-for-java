@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.samples.CreateVirtualMachinesUsing
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineExtensionImages;
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineImages;
 import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
+import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
@@ -116,4 +117,8 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assert.assertTrue(MigrateVirtualMachineToManagedDisks.runSample(azure));
     }
 
+    @Test
+    public void testManageManagedDisks() {
+      Assert.assertTrue(ManageManagedDisks.runSample(azure));
+    }
 }

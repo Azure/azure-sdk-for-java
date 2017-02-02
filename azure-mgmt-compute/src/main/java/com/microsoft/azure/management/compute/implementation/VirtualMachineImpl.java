@@ -1517,7 +1517,7 @@ class VirtualMachineImpl
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24))
+                    .define(this.namer.randomName("stg", 24).replace("-", ""))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync())
