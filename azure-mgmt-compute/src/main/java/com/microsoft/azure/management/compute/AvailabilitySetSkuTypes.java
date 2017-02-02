@@ -11,10 +11,10 @@ package com.microsoft.azure.management.compute;
  */
 public final class AvailabilitySetSkuTypes {
     /** Static value Aligned for AvailabilitySetSkuTypes. */
-    public static final AvailabilitySetSkuTypes ALIGNED = new AvailabilitySetSkuTypes("Aligned");
+    public static final AvailabilitySetSkuTypes MANAGED = new AvailabilitySetSkuTypes("Aligned");
 
     /** Static value Classic for AvailabilitySetSkuTypes. */
-    public static final AvailabilitySetSkuTypes CLASSIC = new AvailabilitySetSkuTypes("Classic");
+    public static final AvailabilitySetSkuTypes UNMANAGED = new AvailabilitySetSkuTypes("Classic");
 
 
     /** The actual serialized value for a AvailabilitySetSkuTypes instance. */

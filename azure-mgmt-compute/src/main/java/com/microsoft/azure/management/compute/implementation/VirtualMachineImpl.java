@@ -995,9 +995,9 @@ class VirtualMachineImpl
         }
         Creatable<AvailabilitySet> creatable;
         if (isManagedDiskEnabled()) {
-            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.ALIGNED);
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.MANAGED);
         } else {
-            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.CLASSIC);
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.UNMANAGED);
         }
         return withNewAvailabilitySet(creatable);
     }

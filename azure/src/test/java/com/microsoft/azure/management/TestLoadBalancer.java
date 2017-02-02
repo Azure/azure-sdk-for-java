@@ -814,7 +814,7 @@ public class TestLoadBalancer {
         Creatable<AvailabilitySet> availabilitySetDefinition = availabilitySets.define("as" + TEST_ID)
                 .withRegion(REGION)
                 .withExistingResourceGroup(GROUP_NAME)
-                .withSku(AvailabilitySetSkuTypes.ALIGNED);
+                .withSku(AvailabilitySetSkuTypes.MANAGED);
 
         // Create the requested number of VM definitions
         String userName = "testuser" + TEST_ID;

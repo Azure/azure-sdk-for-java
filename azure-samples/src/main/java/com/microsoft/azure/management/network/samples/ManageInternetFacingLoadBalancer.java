@@ -287,7 +287,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
                     .withUpdateDomainCount(4)
-                    .withSku(AvailabilitySetSkuTypes.ALIGNED);
+                    .withSku(AvailabilitySetSkuTypes.MANAGED);
 
 
             //=============================================================
