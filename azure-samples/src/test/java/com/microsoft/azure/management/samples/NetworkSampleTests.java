@@ -56,7 +56,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualNetwork() {
         Assert.assertTrue(ManageVirtualNetwork.runSample(azure));
     }
