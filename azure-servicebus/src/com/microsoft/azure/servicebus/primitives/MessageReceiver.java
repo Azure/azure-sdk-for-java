@@ -408,7 +408,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		String deliveryTagAsString  = StringUtil.convertBytesToString(delivery.getTag());
 		if(deliveryTag == null || deliveryTag.length == 0 || !this.tagsToDeliveriesMap.containsKey(deliveryTagAsString))
 		{			
-			System.out.println("new-" + Util.convertDotNetBytesToUUID(delivery.getTag()));
 			Message message = null;
 			
 			int msgSize = delivery.pending();
@@ -450,7 +449,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		else
 		{
-			System.out.println("old-" + Util.convertDotNetBytesToUUID(delivery.getTag()));
 			DeliveryState remoteState = delivery.getRemoteState();
 			if(remoteState instanceof Outcome)
 			{

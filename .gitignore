@@ -1,52 +1,53 @@
-### Eclipse ###
+*.class
 
+#External libs
+extlib/
+
+# Auth files
+*.auth
+*.azureauth
+
+# Local checkstyle
+*.checkstyle
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Azure Tooling #
+node_modules
+packages
+
+# Eclipse #
+*.pydevproject
+.project
 .metadata
-bin/
-tmp/
+bin/**
+tmp/**
+tmp/**/*
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
+.classpath
 .settings/
 .loadpath
-.recommenders
 
-# Eclipse Core
-.project
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
-
-# JDT-specific (Eclipse Java Development Tools)
+# Other Tooling #
 .classpath
+.project
+target
+.idea
+*.iml
 
-# Java annotation processor (APT)
-.factorypath
+# Mac OS #
+.DS_Store
+.DS_Store?
 
-# PDT-specific (PHP Development Tools)
-.buildpath
-
-# sbteclipse plugin
-.target
-
-# Tern plugin
-.tern-project
-
-# TeXlipse plugin
-.texlipse
-
-# STS (Spring Tool Suite)
-.springBeans
-
-# Code Recommenders
-.recommenders/
+# Windows #
+Thumbs.db
