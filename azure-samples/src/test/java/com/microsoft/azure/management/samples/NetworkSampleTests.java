@@ -21,19 +21,16 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Parallel creation cannot be handled by mock tests reliably yet")
     public void testManageInternalLoadBalancer() {
         Assert.assertTrue(ManageInternalLoadBalancer.runSample(azure));
     }
 
     @Test
-    @Ignore("Parallel creation cannot be handled by mock tests reliably yet")
     public void testManageInternetFacingLoadBalancer() {
         Assert.assertTrue(ManageInternetFacingLoadBalancer.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageIPAddress() {
         Assert.assertTrue(ManageIPAddress.runSample(azure));
     }
@@ -44,7 +41,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageNetworkSecurityGroup() {
         Assert.assertTrue(ManageNetworkSecurityGroup.runSample(azure));
     }
@@ -55,13 +51,11 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualMachinesInParallelWithNetwork() {
         Assert.assertTrue(ManageVirtualMachinesInParallelWithNetwork.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualNetwork() {
         Assert.assertTrue(ManageVirtualNetwork.runSample(azure));
     }
