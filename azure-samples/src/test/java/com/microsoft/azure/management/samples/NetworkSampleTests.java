@@ -51,7 +51,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualMachinesInParallelWithNetwork() {
         Assert.assertTrue(ManageVirtualMachinesInParallelWithNetwork.runSample(azure));
     }
