@@ -9,13 +9,11 @@ package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.management.network.samples.*;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class NetworkSampleTests extends SamplesTestBase {
 
     @Test
-    @Ignore("Only one region available for MD, sample require 2")
     public void testManageApplicationGateway() {
         Assert.assertTrue(ManageApplicationGateway.runSample(azure));
     }
