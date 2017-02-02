@@ -3,12 +3,14 @@ package com.microsoft.azure.management.compute.samples;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
+import com.jcraft.jsch.JSchException;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.samples.SSHShell;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
@@ -63,6 +65,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
@@ -77,10 +80,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             System.out.println("Created a Linux VM: " + linuxVM.id());
             Utils.print(linuxVM);
 
-            System.out.println("SSH into the VM [" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
-            System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
-            System.out.println("after that press 'Enter' to continue.");
-            System.in.read();
+            // De-provision the virtual machine
+            deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
 
             //=============================================================
             // Deallocate the virtual machine
@@ -242,5 +243,35 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             throw new IllegalArgumentException("Could not locate image uri under expected section in the capture result -" + capturedResultJson);
         }
         return imageUri;
+    }
+
+    /**
+     * De-provision an Azure linux virtual machine.
+     *
+     * @param host the public host name
+     * @param port the ssh port
+     * @param userName the ssh user name
+     * @param password the ssh user password
+     */
+    protected static void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
+        SSHShell shell = null;
+        try {
+            System.out.println("Trying to de-provision: " + host);
+            shell = SSHShell.open(host, port, userName, password);
+            List<String> deprovisionCommand = new ArrayList<>();
+            deprovisionCommand.add("sudo waagent -deprovision+user --force");
+            String output = shell.runCommands(deprovisionCommand);
+            System.out.println(output);
+        } catch (JSchException jSchException) {
+            System.out.println(jSchException.getMessage());
+        } catch (IOException ioException) {
+            System.out.println(ioException.getMessage());
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        } finally {
+            if (shell != null) {
+                shell.close();
+            }
+        }
     }
 }

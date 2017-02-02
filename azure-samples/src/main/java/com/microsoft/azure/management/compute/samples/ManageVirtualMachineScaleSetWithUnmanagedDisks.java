@@ -9,8 +9,6 @@ package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.Network;
@@ -44,7 +42,7 @@ import java.util.List;
  *    - Double the no. of virtual machines
  *  - Restart a virtual machine scale set
  */
-public final class ManageVirtualMachineScaleSet {
+public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
 
     /**
      * Main function which runs the actual sample.
@@ -67,7 +65,11 @@ public final class ManageVirtualMachineScaleSet {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
+
         final String vmssName =  SdkContext.randomResourceName("vmss", 24);
+        final String storageAccountName1 = SdkContext.randomResourceName("stg1", 24);
+        final String storageAccountName2 = SdkContext.randomResourceName("stg2", 24);
+        final String storageAccountName3 = SdkContext.randomResourceName("stg3", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -87,8 +89,8 @@ public final class ManageVirtualMachineScaleSet {
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network");
@@ -140,11 +142,13 @@ public final class ManageVirtualMachineScaleSet {
                     .definePublicFrontend(frontendName)
                         .withExistingPublicIpAddress(publicIpAddress)
                         .attach()
+
                     // Add two backend one per rule
                     .defineBackend(backendPoolName1)
                         .attach()
                     .defineBackend(backendPoolName2)
                         .attach()
+
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
                         .withRequestPath("/")
@@ -213,9 +217,10 @@ public final class ManageVirtualMachineScaleSet {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
-                    .withNewDataDisk(100)
-                    .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                    .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
+                    .withUnmanagedDisks()
+                    .withNewStorageAccount(storageAccountName1)
+                    .withNewStorageAccount(storageAccountName2)
+                    .withNewStorageAccount(storageAccountName3)
                     .withCapacity(3)
                     // Use a VM extension to install Apache Web servers
                     .defineNewExtension("CustomScriptForLinux")
@@ -277,23 +282,6 @@ public final class ManageVirtualMachineScaleSet {
             virtualMachineScaleSet.powerOff();
             System.out.println("Stopped virtual machine scale set");
 
-
-            //=============================================================
-            // Deallocate the virtual machine scale set
-
-            System.out.println("De-allocating virtual machine scale set ...");
-            virtualMachineScaleSet.deallocate();
-            System.out.println("De-allocated virtual machine scale set");
-
-            //=============================================================
-            // Update the virtual machine scale set by removing and adding disk
-
-            System.out.println("Updating virtual machine scale set managed data disks...");
-            virtualMachineScaleSet.update()
-                    .withoutDataDisk(0)
-                    .withoutDataDisk(200)
-                    .apply();
-            System.out.println("Updated virtual machine scale set");
 
             //=============================================================
             // Start the virtual machine scale set
@@ -375,6 +363,7 @@ public final class ManageVirtualMachineScaleSet {
         }
     }
 
-    private ManageVirtualMachineScaleSet() {
+    private ManageVirtualMachineScaleSetWithUnmanagedDisks() {
+
     }
 }

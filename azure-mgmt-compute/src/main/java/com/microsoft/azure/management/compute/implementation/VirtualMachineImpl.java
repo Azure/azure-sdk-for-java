@@ -1419,6 +1419,9 @@ class VirtualMachineImpl
                 osDisk.withVhd(null);
             } else {
                 osDisk.withManagedDisk(null);
+                if (osDisk.name() == null) {
+                    withOsDiskName(this.vmName + "-os-disk");
+                }
             }
         }
         if (osDisk.caching() == null) {

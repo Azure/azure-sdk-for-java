@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSetWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
@@ -35,7 +36,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testCreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
         Assert.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azure));
     }
@@ -78,7 +78,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
+    @Ignore("Failing - Expected :1 Actual :0")
     public void testManageVirtualMachineWithUnmanagedDisks() {
         Assert.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azure));
     }
@@ -94,9 +94,13 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualMachineScaleSet() {
         Assert.assertTrue(ManageVirtualMachineScaleSet.runSample(azure));
+    }
+
+    @Test
+    public void testManageVirtualMachineScaleSetWithUnmanagedDisks() {
+        Assert.assertTrue(ManageVirtualMachineScaleSetWithUnmanagedDisks.runSample(azure));
     }
 
     @Test
@@ -105,7 +109,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Server bug: disk size cannot be resized down")
+    @Ignore("Server bug: disk size cannot be resized down [This sample will not be published]")
     public void testManageVirtualMachineWithDisk() {
         Assert.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
     }
