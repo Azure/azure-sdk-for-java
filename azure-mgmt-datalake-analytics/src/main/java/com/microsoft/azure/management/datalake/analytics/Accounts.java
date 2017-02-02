@@ -307,237 +307,237 @@ public interface Accounts {
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the DataLakeAnalyticsAccount object if successful.
      */
-    DataLakeAnalyticsAccount create(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    DataLakeAnalyticsAccount create(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    Observable<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> createWithServiceResponseAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> createWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the DataLakeAnalyticsAccount object if successful.
      */
-    DataLakeAnalyticsAccount beginCreate(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    DataLakeAnalyticsAccount beginCreate(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    Observable<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
-     * @param name The name of the Data Lake Analytics account to create.
+     * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginCreateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @return the DataLakeAnalyticsAccount object if successful.
      */
-    DataLakeAnalyticsAccount update(String resourceGroupName, String name);
+    DataLakeAnalyticsAccount update(String resourceGroupName, String accountName);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String name);
+    Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String name);
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String accountName);
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @return the DataLakeAnalyticsAccount object if successful.
      */
-    DataLakeAnalyticsAccount update(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
+    DataLakeAnalyticsAccount update(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
-     * @return the observable to the DataLakeAnalyticsAccount object
-     */
-    Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
-     * @return the observable to the DataLakeAnalyticsAccount object
-     */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @return the DataLakeAnalyticsAccount object if successful.
-     */
-    DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String name);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @return the observable to the DataLakeAnalyticsAccount object
-     */
-    Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String name);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @return the observable to the DataLakeAnalyticsAccount object
-     */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name);
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
-     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
-     * @return the DataLakeAnalyticsAccount object if successful.
-     */
-    DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
-
-    /**
-     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
+    Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param name The name of the Data Lake Analytics account to update.
+     * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @return the observable to the DataLakeAnalyticsAccount object
      */
-    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeAnalyticsAccountUpdateParameters parameters);
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @return the DataLakeAnalyticsAccount object if successful.
+     */
+    DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String accountName);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String accountName);
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @return the DataLakeAnalyticsAccount object if successful.
+     */
+    DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.

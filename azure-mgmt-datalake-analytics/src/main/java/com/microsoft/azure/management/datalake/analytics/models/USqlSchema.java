@@ -17,6 +17,7 @@ public class USqlSchema extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**

@@ -9,20 +9,23 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog entity identifier object.
  */
 public class EntityId {
     /**
-     * the name of the external table associated with this database, schema
-     * and table.
+     * the name of the external table associated with this database, schema and
+     * table.
      */
+    @JsonProperty(value = "name")
     private DdlName name;
 
     /**
      * the version of the external data source.
      */
+    @JsonProperty(value = "version")
     private UUID version;
 
     /**

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.List;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL table index item.
@@ -18,52 +19,62 @@ public class USqlIndex {
     /**
      * the name of the index in the table.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * the list of directed columns in the index.
      */
+    @JsonProperty(value = "indexKeys")
     private List<USqlDirectedColumn> indexKeys;
 
     /**
      * the list of columns in the index.
      */
+    @JsonProperty(value = "columns")
     private List<String> columns;
 
     /**
      * the distributions info of the index.
      */
+    @JsonProperty(value = "distributionInfo")
     private USqlDistributionInfo distributionInfo;
 
     /**
      * partition function ID for the index.
      */
+    @JsonProperty(value = "partitionFunction")
     private UUID partitionFunction;
 
     /**
      * the list of partion keys in the index.
      */
+    @JsonProperty(value = "partitionKeyList")
     private List<String> partitionKeyList;
 
     /**
      * the list of full paths to the streams that contain this index in the
      * DataLake account.
      */
+    @JsonProperty(value = "streamNames")
     private List<String> streamNames;
 
     /**
      * the switch indicating if this index is a columnstore index.
      */
+    @JsonProperty(value = "isColumnstore")
     private Boolean isColumnstore;
 
     /**
      * the ID of this index within the table.
      */
+    @JsonProperty(value = "indexId")
     private Integer indexId;
 
     /**
      * the switch indicating if this index is a unique index.
      */
+    @JsonProperty(value = "isUnique")
     private Boolean isUnique;
 
     /**

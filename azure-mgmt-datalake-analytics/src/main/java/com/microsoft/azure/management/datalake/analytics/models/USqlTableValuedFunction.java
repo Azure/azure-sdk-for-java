@@ -17,11 +17,13 @@ public class USqlTableValuedFunction extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
@@ -33,6 +35,7 @@ public class USqlTableValuedFunction extends CatalogItem {
     /**
      * the definition of the table valued function.
      */
+    @JsonProperty(value = "definition")
     private String definition;
 
     /**

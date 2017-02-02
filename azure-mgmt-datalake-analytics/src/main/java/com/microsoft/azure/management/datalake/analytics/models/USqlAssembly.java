@@ -18,6 +18,7 @@ public class USqlAssembly extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
@@ -29,26 +30,31 @@ public class USqlAssembly extends CatalogItem {
     /**
      * the name of the CLR.
      */
+    @JsonProperty(value = "clrName")
     private String clrName;
 
     /**
      * the switch indicating if this assembly is visible or not.
      */
+    @JsonProperty(value = "isVisible")
     private Boolean isVisible;
 
     /**
      * the switch indicating if this assembly is user defined or not.
      */
+    @JsonProperty(value = "isUserDefined")
     private Boolean isUserDefined;
 
     /**
      * the list of files associated with the assembly.
      */
+    @JsonProperty(value = "files")
     private List<USqlAssemblyFileInfo> files;
 
     /**
      * the list of dependencies associated with the assembly.
      */
+    @JsonProperty(value = "dependencies")
     private List<USqlAssemblyDependencyInfo> dependencies;
 
     /**

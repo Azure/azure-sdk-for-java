@@ -17,21 +17,21 @@ public class DataLakeAnalyticsCatalogCredentialCreateParameters {
     /**
      * the password for the credential and user with access to the data source.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "password", required = true)
     private String password;
 
     /**
-     * the URI identifier for the data source this credential can connect to
-     * in the format &lt;hostname&gt;:&lt;port&gt;.
+     * the URI identifier for the data source this credential can connect to in
+     * the format &lt;hostname&gt;:&lt;port&gt;.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /**
      * the object identifier for the user associated with this credential with
      * access to the data source.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "userId", required = true)
     private String userId;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog external table item.
@@ -16,11 +17,13 @@ public class ExternalTable {
     /**
      * the name of the table associated with this database and schema.
      */
+    @JsonProperty(value = "tableName")
     private String tableName;
 
     /**
      * the data source associated with this external table.
      */
+    @JsonProperty(value = "dataSource")
     private EntityId dataSource;
 
     /**

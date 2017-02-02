@@ -19,19 +19,19 @@ public class JobDataPath {
     /**
      * the id of the job this data is for.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /**
      * the command that this job data relates to.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "command", access = JsonProperty.Access.WRITE_ONLY)
     private String command;
 
     /**
      * the list of paths to all of the job data.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "paths", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> paths;
 
     /**

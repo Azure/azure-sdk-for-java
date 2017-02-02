@@ -19,16 +19,19 @@ public class USqlTableStatistics extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this table and database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
      * the name of the table.
      */
+    @JsonProperty(value = "tableName")
     private String tableName;
 
     /**
@@ -40,46 +43,55 @@ public class USqlTableStatistics extends CatalogItem {
     /**
      * the name of the user statistics.
      */
+    @JsonProperty(value = "userStatName")
     private String userStatName;
 
     /**
      * the path to the statistics data.
      */
+    @JsonProperty(value = "statDataPath")
     private String statDataPath;
 
     /**
      * the creation time of the statistics.
      */
+    @JsonProperty(value = "createTime")
     private DateTime createTime;
 
     /**
      * the last time the statistics were updated.
      */
+    @JsonProperty(value = "updateTime")
     private DateTime updateTime;
 
     /**
      * the switch indicating if these statistics are user created.
      */
+    @JsonProperty(value = "isUserCreated")
     private Boolean isUserCreated;
 
     /**
      * the switch indicating if these statistics are automatically created.
      */
+    @JsonProperty(value = "isAutoCreated")
     private Boolean isAutoCreated;
 
     /**
      * the switch indicating if these statistics have a filter.
      */
+    @JsonProperty(value = "hasFilter")
     private Boolean hasFilter;
 
     /**
      * the filter definition for the statistics.
      */
+    @JsonProperty(value = "filterDefinition")
     private String filterDefinition;
 
     /**
      * the list of column names associated with these statistics.
      */
+    @JsonProperty(value = "colNames")
     private List<String> colNames;
 
     /**

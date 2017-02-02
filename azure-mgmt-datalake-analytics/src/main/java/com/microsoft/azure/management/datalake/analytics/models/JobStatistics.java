@@ -19,19 +19,19 @@ public class JobStatistics {
     /**
      * the last update time for the statistics.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastUpdateTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastUpdateTimeUtc;
 
     /**
      * the job finalizing start time.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "finalizingTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime finalizingTimeUtc;
 
     /**
      * the list of stages for the job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "stages", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobStatisticsVertexStage> stages;
 
     /**

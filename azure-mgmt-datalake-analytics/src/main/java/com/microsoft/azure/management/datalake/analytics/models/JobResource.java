@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The Data Lake Analytics job resources.
@@ -16,11 +17,13 @@ public class JobResource {
     /**
      * the name of the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * the path to the resource.
      */
+    @JsonProperty(value = "resourcePath")
     private String resourcePath;
 
     /**
@@ -29,6 +32,7 @@ public class JobResource {
      * 'VertexResourceInUserFolder', 'JobManagerResourceInUserFolder',
      * 'StatisticsResourceInUserFolder'.
      */
+    @JsonProperty(value = "type")
     private JobResourceType type;
 
     /**

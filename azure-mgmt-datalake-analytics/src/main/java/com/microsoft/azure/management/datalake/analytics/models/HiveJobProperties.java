@@ -21,26 +21,26 @@ public class HiveJobProperties extends JobProperties {
     /**
      * the Hive logs location.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "logsLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String logsLocation;
 
     /**
      * the location of Hive job output files (both execution output and
      * results).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "outputLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String outputLocation;
 
     /**
      * the number of statements that will be run based on the script.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statementCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer statementCount;
 
     /**
      * the number of statements that have been run based on the script.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "executedStatementCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer executedStatementCount;
 
     /**
