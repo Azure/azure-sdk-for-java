@@ -995,9 +995,9 @@ class VirtualMachineImpl
         }
         Creatable<AvailabilitySet> creatable;
         if (isManagedDiskEnabled()) {
-            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.ALIGNED);
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.MANAGED);
         } else {
-            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.CLASSIC);
+            creatable = definitionWithSku.withSku(AvailabilitySetSkuTypes.UNMANAGED);
         }
         return withNewAvailabilitySet(creatable);
     }
@@ -1419,6 +1419,9 @@ class VirtualMachineImpl
                 osDisk.withVhd(null);
             } else {
                 osDisk.withManagedDisk(null);
+                if (osDisk.name() == null) {
+                    withOsDiskName(this.vmName + "-os-disk");
+                }
             }
         }
         if (osDisk.caching() == null) {

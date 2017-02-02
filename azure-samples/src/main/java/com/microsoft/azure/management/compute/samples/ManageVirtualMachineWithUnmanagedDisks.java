@@ -9,40 +9,34 @@ package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Azure Compute sample for managing virtual machines -
- *  - Create a virtual machine with managed OS Disk
+ *  - Create a virtual machine with unmanaged OS Disk
  *  - Start a virtual machine
  *  - Stop a virtual machine
  *  - Restart a virtual machine
  *  - Update a virtual machine
  *    - Expand the OS drive
  *    - Tag a virtual machine (there are many possible variations here)
- *    - Attach data disks
- *    - Detach data disks
+ *    - Attach un-managed data disks
+ *    - Detach un-managed data disks
  *  - List virtual machines
  *  - Delete a virtual machine.
  */
-public final class ManageVirtualMachine {
+public final class ManageVirtualMachineWithUnmanagedDisks {
 
     /**
      * Main function which runs the actual sample.
@@ -56,28 +50,12 @@ public final class ManageVirtualMachine {
         final String rgName = Utils.createRandomName("rgCOMV");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
+        final String dataDiskName = "disk2";
 
         try {
 
             //=============================================================
             // Create a Windows virtual machine
-
-            // Prepare a creatable data disk for VM
-            //
-            Creatable<Disk> dataDiskCreatable = azure.disks().define(Utils.createRandomName("dsk-"))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(100);
-
-            // Create a data disk to attach to VM
-            //
-            Disk dataDisk = azure.disks().define(Utils.createRandomName("dsk-"))
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(50)
-                    .create();
 
             System.out.println("Creating a Windows VM");
 
@@ -92,9 +70,7 @@ public final class ManageVirtualMachine {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
-                    .withNewDataDisk(10)
-                    .withNewDataDisk(dataDiskCreatable)
-                    .withExistingDataDisk(dataDisk)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
@@ -116,25 +92,29 @@ public final class ManageVirtualMachine {
 
 
             //=============================================================
-            // Update - Add data disk
+            // Update - Attach data disks
 
-                windowsVM.update()
-                        .withNewDataDisk(10)
-                        .apply();
+            windowsVM.update()
+                    .withNewUnmanagedDataDisk(10)
+                    .defineUnmanagedDataDisk(dataDiskName)
+                    .withNewVhd(20)
+                    .withCaching(CachingTypes.READ_WRITE)
+                    .attach()
+                    .apply();
 
 
-            System.out.println("Added a data disk to VM" + windowsVM.id());
+            System.out.println("Attached a new data disk" + dataDiskName + " to VM" + windowsVM.id());
             Utils.print(windowsVM);
 
 
             //=============================================================
             // Update - detach data disk
 
-                windowsVM.update()
-                        .withoutDataDisk(0)
-                        .apply();
+            windowsVM.update()
+                    .withoutUnmanagedDataDisk(dataDiskName)
+                    .apply();
 
-            System.out.println("Detached data disk at lun 0 from VM " + windowsVM.id());
+            System.out.println("Detached data disk " + dataDiskName + " from VM " + windowsVM.id());
 
 
             //=============================================================
@@ -147,19 +127,36 @@ public final class ManageVirtualMachine {
 
             System.out.println("De-allocated VM: " + windowsVM.id());
 
-            //=============================================================
-            // Update - Expand the OS and data disks
-
-            System.out.println("Resize OS and data disks");
+            VirtualMachineUnmanagedDataDisk dataDisk = windowsVM.unmanagedDataDisks().get(0);
 
             windowsVM.update()
-                    .withOSDiskSizeInGB(200)
-                    .withDataDiskUpdated(1, 200)
-                    .withDataDiskUpdated(2, 200)
+                    .updateUnmanagedDataDisk(dataDisk.name())
+                    .withSizeInGB(30)
+                    .parent()
                     .apply();
 
-            System.out.println("Expanded VM " + windowsVM.id() + "'s OS and data disks");
+            System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");
 
+
+            //=============================================================
+            // Update - Expand the OS drive size by 10 GB
+
+            int osDiskSizeInGb = windowsVM.osDiskSize();
+            if (osDiskSizeInGb == 0) {
+                // Server is not returning the OS Disk size, possible bug in server
+                System.out.println("Server is not returning the OS disk size, possible bug in the server?");
+                System.out.println("Assuming that the OS disk size is 256 GB");
+                osDiskSizeInGb = 256;
+            }
+
+            windowsVM.update()
+                    .withOSDiskSizeInGB(osDiskSizeInGb + 10)
+                    .apply();
+
+            System.out.println("Expanded VM " + windowsVM.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
+
+
+            //=============================================================
             // Start the virtual machine
 
             System.out.println("Starting VM " + windowsVM.id());
@@ -207,6 +204,7 @@ public final class ManageVirtualMachine {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
+                    .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
@@ -279,7 +277,6 @@ public final class ManageVirtualMachine {
         }
     }
 
-    private ManageVirtualMachine() {
-
+    private ManageVirtualMachineWithUnmanagedDisks() {
     }
 }

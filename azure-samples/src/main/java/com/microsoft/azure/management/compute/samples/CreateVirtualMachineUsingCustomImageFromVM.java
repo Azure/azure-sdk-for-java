@@ -272,11 +272,11 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
             String output = shell.runCommands(deprovisionCommand);
             System.out.println(output);
         } catch (JSchException jSchException) {
-            throw new  RuntimeException(jSchException);
+            System.out.println(jSchException.getMessage());
         } catch (IOException ioException) {
-            throw new  RuntimeException(ioException);
+            System.out.println(ioException.getMessage());
         } catch (Exception exception) {
-            throw new  RuntimeException(exception);
+            System.out.println(exception.getMessage());
         } finally {
             if (shell != null) {
                 shell.close();

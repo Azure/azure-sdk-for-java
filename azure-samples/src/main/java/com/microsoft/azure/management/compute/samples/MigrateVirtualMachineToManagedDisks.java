@@ -22,7 +22,7 @@ import java.io.File;
  *   - Deallocate the virtual machine
  *   - Migrate the virtual machine to use managed disk.
  */
-public final class MigrateVirtualMachine {
+public final class MigrateVirtualMachineToManagedDisks {
 
     /**
      * Main function which runs the actual sample.
@@ -130,6 +130,6 @@ public final class MigrateVirtualMachine {
         }
     }
 
-    private MigrateVirtualMachine() {
+    private MigrateVirtualMachineToManagedDisks() {
     }
 }

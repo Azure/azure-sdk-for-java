@@ -242,7 +242,7 @@ public final class ManageInternalLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
                     .withUpdateDomainCount(4)
-                    .withSku(AvailabilitySetSkuTypes.ALIGNED);
+                    .withSku(AvailabilitySetSkuTypes.MANAGED);
 
             //=============================================================
             // Create two virtual machines and assign network interfaces
