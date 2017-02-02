@@ -1055,23 +1055,6 @@ public interface VirtualMachineScaleSet extends
          * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
          */
         interface WithUnmanagedDataDisk {
-            /**
-             * Specifies that a new blank unmanaged data disk needs to be attached to virtual machine scale set.
-             *
-             * @param sizeInGB the disk size in GB
-             * @return the stage representing creatable VM definition
-             */
-            WithUnmanagedCreate withNewUnmanagedDataDisk(Integer sizeInGB);
-
-            /**
-             * Begins definition of a unmanaged data disk to be attached to the virtual machine scale set.
-             *
-             * @param name the name for the data disk
-             * @return the stage representing configuration for the unmanaged data disk
-             */
-            VirtualMachineScaleSetUnmanagedDataDisk
-                    .DefinitionStages
-                    .Blank<WithUnmanagedCreate> defineUnmanagedDataDisk(String name);
         }
 
         /**
@@ -1498,47 +1481,6 @@ public interface VirtualMachineScaleSet extends
          * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
          */
         interface WithUnmanagedDataDisk {
-            /**
-             * Specifies that a new blank unmanaged data disk needs to be attached to virtual machine scale set.
-             *
-             * @param sizeInGB the disk size in GB
-             * @return the next stage of virtual machine scale set update
-             */
-            WithApply withNewUnmanagedDataDisk(Integer sizeInGB);
-
-            /**
-             * Begins definition of a unmanaged data disk to be attached to the virtual machine scale set.
-             *
-             * @param name the name for the data disk
-             * @return the next stage of virtual machine scale set update
-             */
-            VirtualMachineScaleSetUnmanagedDataDisk
-                    .UpdateDefinitionStages
-                    .Blank<WithApply> defineUnmanagedDataDisk(String name);
-
-            /**
-             * Begins the description of an update of an existing unmanaged data disk of this virtual machine.
-             *
-             * @param name the name of the disk
-             * @return the stage representing updating configuration for  data disk
-             */
-            VirtualMachineScaleSetUnmanagedDataDisk.Update updateUnmanagedDataDisk(String name);
-
-            /**
-             * Detaches a unmanaged data disk with the given name from the virtual machine scale set.
-             *
-             * @param name the name of the data disk to remove
-             * @return the next stage of virtual machine scale set update
-             */
-            WithApply withoutUnmanagedDataDisk(String name);
-
-            /**
-             * Detaches a unmanaged data disk with the given logical unit number from the virtual machine scale set.
-             *
-             * @param lun the logical unit number of the data disk to remove
-             * @return the next stage of virtual machine scale set update
-             */
-            WithApply withoutUnmanagedDataDisk(int lun);
         }
 
         /**

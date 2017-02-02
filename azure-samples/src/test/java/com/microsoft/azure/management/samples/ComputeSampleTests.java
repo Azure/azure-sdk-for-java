@@ -19,9 +19,11 @@ import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSetWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
-import com.microsoft.azure.management.compute.samples.MigrateVirtualMachine;
+import com.microsoft.azure.management.compute.samples.MigrateVirtualMachineToManagedDisks;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,19 +36,16 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing: requires interactive SSH")
     public void testCreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
         Assert.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing on playback assertion error Expected :65 Actual   :0")
     public void testCreateVirtualMachineUsingCustomImageFromVHD() {
         Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azure));
     }
 
     @Test
-    @Ignore("Failing on playback assertion error Expected :56 Actual   :0")
     public void testCreateVirtualMachineUsingCustomImageFromVM() {
         Assert.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azure));
     }
@@ -77,6 +76,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    public void testManageVirtualMachineWithUnmanagedDisks() {
+        Assert.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azure));
+    }
+
+    @Test
     public void testManageVirtualMachine() {
         Assert.assertTrue(ManageVirtualMachine.runSample(azure));
     }
@@ -87,9 +91,13 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageVirtualMachineScaleSet() {
         Assert.assertTrue(ManageVirtualMachineScaleSet.runSample(azure));
+    }
+
+    @Test
+    public void testManageVirtualMachineScaleSetWithUnmanagedDisks() {
+        Assert.assertTrue(ManageVirtualMachineScaleSetWithUnmanagedDisks.runSample(azure));
     }
 
     @Test
@@ -98,14 +106,14 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Server bug: disk size cannot be resized down")
+    @Ignore("Server bug: disk size cannot be resized down [This sample will not be published]")
     public void testManageVirtualMachineWithDisk() {
         Assert.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
     }
 
     @Test
-    public void testMigrateVirtualMachine() {
-        Assert.assertTrue(MigrateVirtualMachine.runSample(azure));
+    public void testMigrateVirtualMachineToManagedDisks() {
+        Assert.assertTrue(MigrateVirtualMachineToManagedDisks.runSample(azure));
     }
 
 }
