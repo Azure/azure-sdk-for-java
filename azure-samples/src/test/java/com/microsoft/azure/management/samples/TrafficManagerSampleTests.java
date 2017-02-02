@@ -15,7 +15,6 @@ import org.junit.Test;
 
 public class TrafficManagerSampleTests extends SamplesTestBase {
     @Test
-    @Ignore("Failing -  Sample requires 2 region, MD available only in one'")
     public void testManageSimpleTrafficManager() {
         Assert.assertTrue(ManageSimpleTrafficManager.runSample(azure));
     }
