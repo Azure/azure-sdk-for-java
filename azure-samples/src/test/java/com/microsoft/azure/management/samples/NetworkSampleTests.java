@@ -41,7 +41,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing")
     public void testManageNetworkSecurityGroup() {
         Assert.assertTrue(ManageNetworkSecurityGroup.runSample(azure));
     }
