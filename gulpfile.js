@@ -7,9 +7,10 @@ var fs = require('fs');
 var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
-        'source': 'arm-compute/2016-03-30/swagger/compute.json',
+        'source': 'arm-compute/compositeComputeClient.json',
         'package': 'com.microsoft.azure.management.compute',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
