@@ -200,7 +200,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public void migrateToManaged() {
+    public void convertToManaged() {
         this.client.convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }

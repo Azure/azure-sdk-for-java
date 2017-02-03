@@ -329,7 +329,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Migrating VM");
 
-            linuxVM7.migrateToManaged();
+            linuxVM7.convertToManaged();
 
             System.out.println("Migrated VM");
 

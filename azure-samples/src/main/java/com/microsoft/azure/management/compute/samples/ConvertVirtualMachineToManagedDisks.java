@@ -22,7 +22,7 @@ import java.io.File;
  *   - Deallocate the virtual machine
  *   - Migrate the virtual machine to use managed disk.
  */
-public final class MigrateVirtualMachineToManagedDisks {
+public final class ConvertVirtualMachineToManagedDisks {
 
     /**
      * Main function which runs the actual sample.
@@ -79,7 +79,7 @@ public final class MigrateVirtualMachineToManagedDisks {
             // Migrate the virtual machine
             System.out.println("Migrate VM: " + linuxVM.id());
 
-            linuxVM.migrateToManaged();
+            linuxVM.convertToManaged();
 
             System.out.println("Migrated VM: " + linuxVM.id());
 
@@ -130,6 +130,6 @@ public final class MigrateVirtualMachineToManagedDisks {
         }
     }
 
-    private MigrateVirtualMachineToManagedDisks() {
+    private ConvertVirtualMachineToManagedDisks() {
     }
 }
