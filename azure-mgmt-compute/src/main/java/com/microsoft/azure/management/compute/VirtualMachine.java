@@ -72,9 +72,9 @@ public interface VirtualMachine extends
     void redeploy();
 
     /**
-     * Migrate the virtual machine with un-managed disks to use managed disk.
+     * Convert (migrate) the virtual machine with un-managed disks to use managed disk.
      */
-    void migrateToManaged();
+    void convertToManaged();
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
