@@ -1,20 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-	<description>Java library for Azure Service Bus</description>
-	
-	<modelVersion>4.0.0</modelVersion>
-	
-	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-servicebus</artifactId>
+	<name>azure-servicebus</name>
+	<description>Java library for Azure Service Bus</description>	
+	<modelVersion>4.0.0</modelVersion>		
+	<artifactId>azure-servicebus</artifactId>	
 	<version>${client-current-version}</version>
-	
 	<url>https://github.com/Azure/azure-service-bus-java</url>
 	
-	<properties>
-		<proton-j-version>0.13.1</proton-j-version>
-	  	<junit-version>4.12</junit-version>
-		<client-current-version>0.1.0-SNAPSHOT</client-current-version>
-	</properties>
+	<parent>
+		<groupId>com.microsoft.azure</groupId>
+		<artifactId>azure-servicebus-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
 	
 	<build>
 		<plugins>
@@ -50,6 +46,5 @@
 	 	    <version>${junit-version}</version>
 	 	    <scope>test</scope>
 		</dependency>
-	</dependencies>
-	 <name>azure-servicebus</name>
+	</dependencies>	 
 </project>

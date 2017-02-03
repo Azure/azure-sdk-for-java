@@ -137,13 +137,14 @@ public class QueueSendReceiveTests {
 		
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, builder.getEntityPath(), ReceiveMode.PeekLock);
 		IBrokeredMessage receivedMessage = this.receiver.receive();
-		long deliveryCount = receivedMessage.getDeliveryCount();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+		long deliveryCount = receivedMessage.getDeliveryCount();		
 		this.receiver.abandon(receivedMessage);
 		receivedMessage = this.receiver.receive();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("DeliveryCount not incremented", deliveryCount+1, receivedMessage.getDeliveryCount());
+		this.receiver.complete(receivedMessage);
 	}
 	
 	@Test
@@ -261,7 +262,7 @@ public class QueueSendReceiveTests {
 	@Test
 	public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException, IOException
 	{
-		int secondsToWaitBeforeScheduling = 10;
+		int secondsToWaitBeforeScheduling = 30;
 		String msgId1 = UUID.randomUUID().toString();
 		String msgId2 = UUID.randomUUID().toString();
 		BrokeredMessage message1 = new BrokeredMessage("AMQP Scheduled message");
@@ -298,7 +299,7 @@ public class QueueSendReceiveTests {
 	@Test
 	public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException, IOException
 	{
-		int secondsToWaitBeforeScheduling = 10;
+		int secondsToWaitBeforeScheduling = 30;
 		String msgId1 = UUID.randomUUID().toString();
 		String msgId2 = UUID.randomUUID().toString();
 		BrokeredMessage message1 = new BrokeredMessage("AMQP Scheduled message");

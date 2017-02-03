@@ -1,31 +1,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>azure-servicebus-samples</groupId>
+  <modelVersion>4.0.0</modelVersion> 
+  <name>azure-servicebus-samples</name>
   <artifactId>azure-servicebus-samples</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
+  <version>${client-current-version}</version>
+  <parent>
+		<groupId>com.microsoft.azure</groupId>
+		<artifactId>azure-servicebus-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+  </parent>
+  <build>   
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
-          <source/>
-          <target/>
-        </configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+			<optimize>true</optimize>
+			<showDeprecation>true</showDeprecation>
+			<showWarnings>true</showWarnings>
+		</configuration>
       </plugin>
     </plugins>
   </build>
 	 <dependencies>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-servicebus</artifactId>
+			<version>${client-current-version}</version>
+		</dependency>
 	 	<dependency>
 	 	    <groupId>org.apache.qpid</groupId>
 	 	    <artifactId>proton-j</artifactId>
 	 	    <version>0.13.1</version>
-	 	</dependency>
-	 	<dependency>
-	 		<groupId>org.bouncycastle</groupId>
-	 		<artifactId>bcpkix-jdk15on</artifactId>
-	 		<version>1.49</version>
-	 	</dependency>
+	 	</dependency>	 	
 	 </dependencies>
 </project>

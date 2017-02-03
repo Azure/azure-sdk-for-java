@@ -82,6 +82,12 @@ public class Util
 			return Double.BYTES;
 		}
 		
+		if (obj instanceof UUID)
+		{
+			// UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe.. treat it as a string of 36 chars = 72 bytes.
+			return 72;
+		}
+		
 		if (obj instanceof Binary)
 		{
 			return ((Binary)obj).getLength();

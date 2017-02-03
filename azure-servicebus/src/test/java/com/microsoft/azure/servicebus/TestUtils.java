@@ -8,7 +8,7 @@ import java.util.Properties;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 
 public class TestUtils {
-	private static final String TEST_DIR_NAME = "test";
+	private static final String TEST_DIR_NAME = "resources";
 	private static final String ACCESS_PROPERTIES_FILE_NAME = "access.properties";
 	private static final String NAMESPACENAME_PROPERTY = "namespacename";
 	private static final String ENTITYPATH_PROPERTY = "entitypath";
