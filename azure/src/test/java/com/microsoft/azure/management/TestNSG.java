@@ -94,7 +94,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
 
         // Confirm NIC association
         Assert.assertEquals(1,  nsg.networkInterfaceIds().size());
-        Assert.assertTrue(nsg.networkInterfaceIds().get(0).equalsIgnoreCase(nic.id()));
+        Assert.assertTrue(nsg.networkInterfaceIds().contains(nic.id()));
 
         return nsg;
     }

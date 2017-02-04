@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -45,9 +46,9 @@ public interface NetworkSecurityGroup extends
     Map<String, NetworkSecurityRule> defaultSecurityRules();
 
     /**
-     * @return list of the ids of the network interfaces associated with this network security group
+     * @return the IDs of the network interfaces associated with this network security group
      */
-    List<String> networkInterfaceIds();
+    Set<String> networkInterfaceIds();
 
     // Fluent interfaces for creating NSGs
 

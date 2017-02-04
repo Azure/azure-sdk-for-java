@@ -12,11 +12,13 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
@@ -119,14 +121,14 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public List<String> networkInterfaceIds() {
-        List<String> ids = new ArrayList<>();
+    public Set<String> networkInterfaceIds() {
+        Set<String> ids = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         if (this.inner().networkInterfaces() != null) {
             for (NetworkInterfaceInner inner : this.inner().networkInterfaces()) {
                 ids.add(inner.id());
             }
         }
-        return Collections.unmodifiableList(ids);
+        return Collections.unmodifiableSet(ids);
     }
 
     @Override

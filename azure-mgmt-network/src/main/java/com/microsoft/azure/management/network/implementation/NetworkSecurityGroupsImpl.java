@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.List;
+import java.util.Set;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -54,7 +54,7 @@ class NetworkSecurityGroupsImpl
         // Clear NIC references if any
         NetworkSecurityGroupImpl nsg = getByGroup(groupName, name);
         if (nsg != null) {
-            List<String> nicIds = nsg.networkInterfaceIds();
+            Set<String> nicIds = nsg.networkInterfaceIds();
             if (nicIds != null) {
                 for (String nicRef : nsg.networkInterfaceIds()) {
                     NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
