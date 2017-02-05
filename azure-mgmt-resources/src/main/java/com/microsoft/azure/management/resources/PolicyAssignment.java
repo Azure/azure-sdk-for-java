@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.PolicyAssignmentInner;
 
 /**
@@ -24,7 +24,7 @@ public interface PolicyAssignment extends
         HasId,
         Indexable,
         Refreshable<PolicyAssignment>,
-        Wrapper<PolicyAssignmentInner> {
+        HasInner<PolicyAssignmentInner> {
 
     /**
      * @return the policy assignment display name

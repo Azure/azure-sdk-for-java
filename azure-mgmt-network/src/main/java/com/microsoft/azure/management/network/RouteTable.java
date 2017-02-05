@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import java.util.Map;
 public interface RouteTable extends
         GroupableResource<NetworkManager>,
         Refreshable<RouteTable>,
-        Wrapper<RouteTableInner>,
+        HasInner<RouteTableInner>,
         Updatable<RouteTable.Update>,
         HasAssociatedSubnets {
 

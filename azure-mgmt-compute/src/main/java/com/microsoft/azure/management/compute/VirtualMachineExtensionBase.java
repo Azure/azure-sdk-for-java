@@ -8,7 +8,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineExtensionBase extends
-        Wrapper<VirtualMachineExtensionInner> {
+        HasInner<VirtualMachineExtensionInner> {
     /**
      * @return the publisher name of the virtual machine extension image this extension is created from
      */

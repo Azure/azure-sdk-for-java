@@ -10,7 +10,7 @@ import com.microsoft.azure.management.dns.implementation.RecordSetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 @Fluent
 public interface DnsRecordSet extends
     ExternalChildResource<DnsRecordSet, DnsZone>,
-    Wrapper<RecordSetInner> {
+    HasInner<RecordSetInner> {
 
     /**
      * @return the type of records in this record set

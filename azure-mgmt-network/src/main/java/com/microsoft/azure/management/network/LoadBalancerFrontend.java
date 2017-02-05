@@ -11,14 +11,14 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.FrontendIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a load balancer frontend.
  */
 @Fluent()
 public interface LoadBalancerFrontend extends
-    Wrapper<FrontendIPConfigurationInner>,
+    HasInner<FrontendIPConfigurationInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules {
 

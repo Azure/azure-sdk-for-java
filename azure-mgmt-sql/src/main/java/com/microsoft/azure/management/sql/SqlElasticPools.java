@@ -14,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.sql.implementation.ElasticPoolsInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
@@ -28,7 +30,8 @@ public interface SqlElasticPools extends
         SupportsGettingById<SqlElasticPool>,
         SupportsBatchCreation<SqlElasticPool>,
         SupportsDeletingByParent,
-        HasManager<SqlServerManager> {
+        HasManager<SqlServerManager>,
+        HasInner<ElasticPoolsInner> {
 
     /**
      * Gets the SQLElasticPool based on the resource group name, SQLServer name and SQLElasticPool name.

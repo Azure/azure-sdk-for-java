@@ -10,7 +10,7 @@ import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPC
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An IP configuration in a network interface associated with a virtual machine
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @Fluent
 public interface VirtualMachineScaleSetNicIpConfiguration extends
         NicIpConfigurationBase,
-        Wrapper<NetworkInterfaceIPConfigurationInner>,
+        HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<VirtualMachineScaleSetNetworkInterface>,
         HasPrivateIpAddress,
         HasSubnet {

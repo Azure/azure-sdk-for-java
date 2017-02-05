@@ -10,14 +10,14 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A native data disk of a virtual machine.
  */
 @Fluent
 public interface VirtualMachineUnmanagedDataDisk extends
-        Wrapper<DataDisk>,
+        HasInner<DataDisk>,
         ChildResource<VirtualMachine> {
     /**
      * @return the size of this data disk in GB

@@ -9,7 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An IP configuration in a network interface.
@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @Fluent()
 public interface NicIpConfiguration extends
         NicIpConfigurationBase,
-        Wrapper<NetworkInterfaceIPConfigurationInner>,
+        HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
         HasPrivateIpAddress,
         HasPublicIpAddress,

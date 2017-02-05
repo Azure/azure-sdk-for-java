@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.storage.implementation.StorageAccountsInner;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 /**
@@ -31,7 +33,8 @@ public interface StorageAccounts extends
         SupportsGettingById<StorageAccount>,
         SupportsDeletingByGroup,
         SupportsBatchCreation<StorageAccount>,
-        HasManager<StorageManager> {
+        HasManager<StorageManager>,
+        HasInner<StorageAccountsInner> {
     /**
      * Checks that account name is valid and is not in use.
      *

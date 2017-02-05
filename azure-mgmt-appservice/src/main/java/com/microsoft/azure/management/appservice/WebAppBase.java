@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -29,7 +29,7 @@ import java.util.Set;
 public interface WebAppBase extends
         HasName,
         GroupableResource<AppServiceManager>,
-        Wrapper<SiteInner> {
+        HasInner<SiteInner> {
 
     /**
      * @return state of the web app

@@ -10,14 +10,14 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Describes definition and update stages of unmanaged data disk of a scale set.
  */
 @Fluent
 public interface VirtualMachineScaleSetUnmanagedDataDisk extends
-        Wrapper<VirtualMachineScaleSetDataDisk>,
+        HasInner<VirtualMachineScaleSetDataDisk>,
         ChildResource<VirtualMachineScaleSet> {
 
     /**

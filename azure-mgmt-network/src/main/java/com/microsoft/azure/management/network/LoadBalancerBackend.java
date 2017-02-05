@@ -14,14 +14,14 @@ import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a load balancer backend address pool.
  */
 @Fluent()
 public interface LoadBalancerBackend extends
-    Wrapper<BackendAddressPoolInner>,
+    HasInner<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
     HasBackendNics {

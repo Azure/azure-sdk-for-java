@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import org.joda.time.DateTime;
 
@@ -33,7 +33,7 @@ public interface Deployment extends
         Indexable,
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
-        Wrapper<DeploymentExtendedInner>,
+        HasInner<DeploymentExtendedInner>,
         HasName {
 
     /**

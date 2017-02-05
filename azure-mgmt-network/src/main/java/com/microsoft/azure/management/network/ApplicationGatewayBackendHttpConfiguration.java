@@ -13,14 +13,14 @@ import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway's backend HTTP configuration.
  */
 @Fluent()
 public interface ApplicationGatewayBackendHttpConfiguration extends
-    Wrapper<ApplicationGatewayBackendHttpSettingsInner>,
+    HasInner<ApplicationGatewayBackendHttpSettingsInner>,
     ChildResource<ApplicationGateway>,
     HasProtocol<ApplicationGatewayProtocol>,
     HasPort {

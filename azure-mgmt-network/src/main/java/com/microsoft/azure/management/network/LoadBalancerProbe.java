@@ -11,14 +11,14 @@ import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.network.model.HasPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a load balancing probe.
  */
 @Fluent()
 public interface LoadBalancerProbe extends
-    Wrapper<ProbeInner>,
+    HasInner<ProbeInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
     HasProtocol<ProbeProtocol>,

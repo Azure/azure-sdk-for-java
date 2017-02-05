@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.DomainInner;
 import org.joda.time.DateTime;
@@ -36,7 +36,7 @@ public interface AppServiceDomain extends
         HasName,
         Refreshable<AppServiceDomain>,
         Updatable<AppServiceDomain.Update>,
-        Wrapper<DomainInner> {
+        HasInner<DomainInner> {
 
     /**
      * @return admin contact information

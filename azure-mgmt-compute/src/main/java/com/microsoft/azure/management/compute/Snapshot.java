@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an Azure managed snapshot.
@@ -24,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface Snapshot extends
         GroupableResource<ComputeManager>,
         Refreshable<Snapshot>,
-        Wrapper<SnapshotInner>,
+        HasInner<SnapshotInner>,
         Updatable<Snapshot.Update> {
     /**
      * @return the snapshot sku type

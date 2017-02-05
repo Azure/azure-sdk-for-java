@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import java.util.Map;
 public interface VirtualMachineCustomImage extends
         GroupableResource<ComputeManager>,
         Refreshable<VirtualMachineCustomImage>,
-        Wrapper<ImageInner> {
+        HasInner<ImageInner> {
     /**
      * @return true if this image is created by capturing a virtual machine
      */
@@ -286,7 +286,7 @@ public interface VirtualMachineCustomImage extends
      */
     @Fluent
     interface CustomImageDataDisk
-            extends Wrapper<ImageDataDisk>, ChildResource<VirtualMachineCustomImage> {
+            extends HasInner<ImageDataDisk>, ChildResource<VirtualMachineCustomImage> {
         /**
          * Grouping of data disk image definition stages.
          */

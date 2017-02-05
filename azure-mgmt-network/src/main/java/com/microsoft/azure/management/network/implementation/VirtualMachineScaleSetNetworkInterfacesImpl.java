@@ -37,6 +37,11 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     }
 
     @Override
+    public NetworkInterfacesInner inner() {
+        return this.client;
+    }
+
+    @Override
     protected VirtualMachineScaleSetNetworkInterfaceImpl wrapModel(NetworkInterfaceInner inner) {
         return new VirtualMachineScaleSetNetworkInterfaceImpl(inner.name(),
                 this.scaleSetName,

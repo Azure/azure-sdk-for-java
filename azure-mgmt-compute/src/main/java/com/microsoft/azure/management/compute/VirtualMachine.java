@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.Map;
@@ -33,7 +33,7 @@ import java.util.Map;
 public interface VirtualMachine extends
         GroupableResource<ComputeManager>,
         Refreshable<VirtualMachine>,
-        Wrapper<VirtualMachineInner>,
+        HasInner<VirtualMachineInner>,
         Updatable<VirtualMachine.Update>,
         HasNetworkInterfaces {
     // Actions

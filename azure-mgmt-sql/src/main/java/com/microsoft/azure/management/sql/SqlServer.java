@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import rx.Completable;
@@ -31,7 +31,7 @@ public interface SqlServer extends
         Refreshable<SqlServer>,
         Updatable<SqlServer.Update>,
         HasManager<SqlServerManager>,
-        Wrapper<ServerInner> {
+        HasInner<ServerInner> {
 
     /**
      * @return fully qualified name of the SQL Server

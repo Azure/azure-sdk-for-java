@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
@@ -27,7 +28,7 @@ import rx.Completable;
  * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class GroupableResourcesImpl<
-        T extends GroupableResource,
+        T extends GroupableResource<ManagerT>,
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT,
@@ -37,7 +38,8 @@ public abstract class GroupableResourcesImpl<
         SupportsGettingById<T>,
         SupportsGettingByGroup<T>,
         SupportsDeletingByGroup,
-        HasManager<ManagerT> {
+        HasManager<ManagerT>,
+        HasInner<InnerCollectionT> {
 
     protected final InnerCollectionT innerCollection;
     protected final ManagerT myManager;
@@ -46,6 +48,11 @@ public abstract class GroupableResourcesImpl<
             ManagerT manager) {
         this.innerCollection = innerCollection;
         this.myManager = manager;
+    }
+
+    @Override
+    public InnerCollectionT inner() {
+        return this.innerCollection;
     }
 
     @Override

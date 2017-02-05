@@ -10,14 +10,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A domain contact definition.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DomainContact extends
-    Wrapper<Contact>,
+    HasInner<Contact>,
     ChildResource<AppServiceDomain> {
 
     /**

@@ -18,7 +18,7 @@ import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import rx.Observable;
 import rx.functions.Func1;
@@ -235,7 +235,7 @@ class WebAppImpl
                 .withPricingTier(pricingTier);
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
-            ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
+            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
@@ -252,7 +252,7 @@ class WebAppImpl
     public WebAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
         if (super.creatableGroup != null && isInCreateMode()) {
-            ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
+            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
         }
         this.withRegion(appServicePlan.regionName());
         return this;

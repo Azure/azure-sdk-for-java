@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Network security group.
@@ -29,7 +28,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface NetworkSecurityGroup extends
         GroupableResource<NetworkManager>,
         Refreshable<NetworkSecurityGroup>,
-        Wrapper<NetworkSecurityGroupInner>,
+        HasInner<NetworkSecurityGroupInner>,
         Updatable<NetworkSecurityGroup.Update>,
         HasAssociatedSubnets {
 

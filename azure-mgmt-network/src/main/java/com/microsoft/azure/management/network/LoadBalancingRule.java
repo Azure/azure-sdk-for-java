@@ -15,14 +15,14 @@ import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an HTTP load balancing rule.
  */
 @Fluent()
 public interface LoadBalancingRule extends
-    Wrapper<LoadBalancingRuleInner>,
+    HasInner<LoadBalancingRuleInner>,
     ChildResource<LoadBalancer>,
     HasBackendPort,
     HasFrontend,

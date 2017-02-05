@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.implementation.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 
 /**
@@ -28,8 +30,9 @@ public interface Networks extends
     SupportsListingByGroup<Network>,
     SupportsGettingByGroup<Network>,
     SupportsGettingById<Network>,
-        SupportsDeletingById,
+    SupportsDeletingById,
     SupportsDeletingByGroup,
     SupportsBatchCreation<Network>,
-    HasManager<NetworkManager> {
+    HasManager<NetworkManager>,
+    HasInner<VirtualNetworksInner> {
 }

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
@@ -25,7 +25,7 @@ public interface GenericResource extends
         GroupableResource<ResourceManager>,
         Refreshable<GenericResource>,
         Updatable<GenericResource.Update>,
-        Wrapper<GenericResourceInner> {
+        HasInner<GenericResourceInner> {
     /**
      * @return the namespace of the resource provider
      */

@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.trafficmanager.implementation.EndpointInner;
 
 /**
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.trafficmanager.implementation.EndpointInne
 @Fluent
 public interface TrafficManagerEndpoint extends
         ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>,
-        Wrapper<EndpointInner> {
+        HasInner<EndpointInner> {
     /**
      * @return the endpoint type
      */

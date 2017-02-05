@@ -13,14 +13,14 @@ import com.microsoft.azure.management.network.model.HasBackendNics;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway backend.
  */
 @Fluent()
 public interface ApplicationGatewayBackend extends
-    Wrapper<ApplicationGatewayBackendAddressPoolInner>,
+    HasInner<ApplicationGatewayBackendAddressPoolInner>,
     ChildResource<ApplicationGateway>,
     HasBackendNics {
 

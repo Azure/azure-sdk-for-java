@@ -9,14 +9,14 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A managed data disk of a virtual machine.
  */
 @Fluent
 public interface VirtualMachineDataDisk extends
-        Wrapper<DataDisk>,
+        HasInner<DataDisk>,
         HasName,
         HasId {
     /**

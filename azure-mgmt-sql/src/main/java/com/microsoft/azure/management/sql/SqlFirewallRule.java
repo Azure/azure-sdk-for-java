@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ServerFirewallRuleInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
@@ -24,7 +24,7 @@ public interface SqlFirewallRule extends
         IndependentChild<SqlServerManager>,
         Refreshable<SqlFirewallRule>,
         Updatable<SqlFirewallRule.Update>,
-        Wrapper<ServerFirewallRuleInner> {
+        HasInner<ServerFirewallRuleInner> {
 
     /**
      * @return name of the SQL Server to which this firewall rule belongs

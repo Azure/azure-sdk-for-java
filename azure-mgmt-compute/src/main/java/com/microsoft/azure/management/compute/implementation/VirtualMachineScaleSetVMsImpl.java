@@ -37,4 +37,9 @@ class VirtualMachineScaleSetVMsImpl
     public PagedList<VirtualMachineScaleSetVM> list() {
         return super.wrapList(this.client.list(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
     }
+
+    @Override
+    public VirtualMachineScaleSetVMsInner inner() {
+        return this.client;
+    }
 }

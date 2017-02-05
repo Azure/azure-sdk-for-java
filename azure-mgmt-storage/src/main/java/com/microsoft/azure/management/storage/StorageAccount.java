@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -30,7 +30,7 @@ public interface StorageAccount extends
         GroupableResource<StorageManager>,
         Refreshable<StorageAccount>,
         Updatable<StorageAccount.Update>,
-        Wrapper<StorageAccountInner> {
+        HasInner<StorageAccountInner> {
 
     /**
      * @return the status indicating whether the primary and secondary location of

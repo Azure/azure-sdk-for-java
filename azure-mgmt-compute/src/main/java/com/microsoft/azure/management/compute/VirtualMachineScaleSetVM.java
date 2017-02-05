@@ -14,7 +14,7 @@ import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInter
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface VirtualMachineScaleSetVM extends
         Resource,
         ChildResource<VirtualMachineScaleSet>,
         Refreshable<VirtualMachineScaleSetVM>,
-        Wrapper<VirtualMachineScaleSetVMInner> {
+        HasInner<VirtualMachineScaleSetVMInner> {
     /**
      * @return the instance id assigned to this virtual machine instance
      */

@@ -8,7 +8,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineImage extends
-        Wrapper<VirtualMachineImageInner> {
+        HasInner<VirtualMachineImageInner> {
     /**
      * @return the resource id of this image
      */

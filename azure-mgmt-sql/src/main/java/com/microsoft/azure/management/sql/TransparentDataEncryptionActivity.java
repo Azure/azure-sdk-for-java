@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.TransparentDataEncryptionActivityInner;
 
 
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.sql.implementation.TransparentDataEncrypti
  */
 @Fluent
 public interface TransparentDataEncryptionActivity extends
-        Wrapper<TransparentDataEncryptionActivityInner>,
+        HasInner<TransparentDataEncryptionActivityInner>,
         HasResourceGroup,
         HasName,
         HasId {

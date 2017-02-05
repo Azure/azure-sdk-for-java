@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.DeploymentOperationInner;
 import org.joda.time.DateTime;
 
@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
 public interface DeploymentOperation extends
         Indexable,
         Refreshable<DeploymentOperation>,
-        Wrapper<DeploymentOperationInner> {
+        HasInner<DeploymentOperationInner> {
 
     /**
      * @return the deployment operation id

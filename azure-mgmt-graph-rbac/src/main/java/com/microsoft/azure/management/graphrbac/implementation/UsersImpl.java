@@ -12,6 +12,7 @@ import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -28,7 +29,8 @@ class UsersImpl
                     UserInner>
         implements
             Users,
-            HasManager<GraphRbacManager> {
+            HasManager<GraphRbacManager>,
+            HasInner<UsersInner> {
     private UsersInner innerCollection;
     private GraphRbacManager manager;
 
@@ -81,5 +83,10 @@ class UsersImpl
     @Override
     public GraphRbacManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public UsersInner inner() {
+        return this.innerCollection;
     }
 }

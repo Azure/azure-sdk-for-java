@@ -18,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
@@ -47,13 +48,19 @@ public abstract class IndependentChildrenImpl<
         SupportsListingByParent<T, ParentT, ManagerT>,
         SupportsDeletingById,
         SupportsDeletingByParent,
-        HasManager<ManagerT> {
+        HasManager<ManagerT>,
+        HasInner<InnerCollectionT> {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 
     protected IndependentChildrenImpl(InnerCollectionT innerCollection, ManagerT manager) {
         this.innerCollection = innerCollection;
         this.manager = manager;
+    }
+
+    @Override
+    public InnerCollectionT inner() {
+        return this.innerCollection;
     }
 
     @Override

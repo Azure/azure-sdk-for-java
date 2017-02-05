@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ public interface BatchAccount extends
         GroupableResource<BatchManager>,
         Refreshable<BatchAccount>,
         Updatable<BatchAccount.Update>,
-        Wrapper<BatchAccountInner> {
+        HasInner<BatchAccountInner> {
 
     /**
      * @return the provisioned state of the resource. Possible values include:

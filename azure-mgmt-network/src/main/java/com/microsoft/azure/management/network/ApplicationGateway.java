@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point for application gateway management API in Azure.
@@ -29,7 +29,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface ApplicationGateway extends
         GroupableResource<NetworkManager>,
         Refreshable<ApplicationGateway>,
-        Wrapper<ApplicationGatewayInner>,
+        HasInner<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
         HasPrivateIpAddress {

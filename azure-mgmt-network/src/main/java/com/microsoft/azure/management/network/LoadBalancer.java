@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point for load balancer management API in Azure.
@@ -29,7 +29,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface LoadBalancer extends
         GroupableResource<NetworkManager>,
         Refreshable<LoadBalancer>,
-        Wrapper<LoadBalancerInner>,
+        HasInner<LoadBalancerInner>,
         Updatable<LoadBalancer.Update>,
         HasLoadBalancingRules {
 

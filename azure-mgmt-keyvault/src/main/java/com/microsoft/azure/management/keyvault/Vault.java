@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface Vault extends
         GroupableResource<KeyVaultManager>,
         Refreshable<Vault>,
         Updatable<Vault.Update>,
-        Wrapper<VaultInner> {
+        HasInner<VaultInner> {
     /**
      * @return the URI of the vault for performing operations on keys and secrets.
      */

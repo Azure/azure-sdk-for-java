@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Public IP address.
@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface PublicIpAddress extends
         GroupableResource<NetworkManager>,
         Refreshable<PublicIpAddress>,
-        Wrapper<PublicIPAddressInner>,
+        HasInner<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {
 
     // Getters

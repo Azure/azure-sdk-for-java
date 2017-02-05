@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ProviderInner;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public interface Provider extends
         Indexable,
-        Wrapper<ProviderInner> {
+        HasInner<ProviderInner> {
 
     /**
      * @return the namespace of the provider

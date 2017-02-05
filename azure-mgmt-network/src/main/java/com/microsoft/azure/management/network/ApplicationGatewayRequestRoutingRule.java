@@ -20,14 +20,14 @@ import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway request routing rule.
  */
 @Fluent()
 public interface ApplicationGatewayRequestRoutingRule extends
-    Wrapper<ApplicationGatewayRequestRoutingRuleInner>,
+    HasInner<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,
     HasPublicIpAddress,
     HasSslCertificate<ApplicationGatewaySslCertificate>,

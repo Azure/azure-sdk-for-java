@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.RecommendedElasticPoolMetricInner;
 import org.joda.time.DateTime;
 
@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  */
 @Fluent
 public interface RecommendedElasticPoolMetric extends
-        Wrapper<RecommendedElasticPoolMetricInner> {
+        HasInner<RecommendedElasticPoolMetricInner> {
     /**
      * @return the time of metric (ISO8601 format).
      */

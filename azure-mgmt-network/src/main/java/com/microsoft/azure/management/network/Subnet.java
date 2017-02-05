@@ -10,14 +10,14 @@ import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a subnet of a virtual network.
  */
 @Fluent()
 public interface Subnet extends
-    Wrapper<SubnetInner>,
+    HasInner<SubnetInner>,
     ChildResource<Network> {
 
     /**

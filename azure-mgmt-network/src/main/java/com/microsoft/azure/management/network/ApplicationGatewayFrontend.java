@@ -13,14 +13,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResou
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway frontend.
  */
 @Fluent()
 public interface ApplicationGatewayFrontend extends
-    Wrapper<ApplicationGatewayFrontendIPConfigurationInner>,
+    HasInner<ApplicationGatewayFrontendIPConfigurationInner>,
     ChildResource<ApplicationGateway>,
     HasPrivateIpAddress,
     HasSubnet,

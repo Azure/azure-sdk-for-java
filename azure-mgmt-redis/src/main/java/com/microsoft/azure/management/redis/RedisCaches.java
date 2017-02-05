@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.redis.implementation.RedisInner;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point for Redis Caches management API.
@@ -31,5 +33,6 @@ public interface RedisCaches extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<RedisCache>,
-        HasManager<RedisManager> {
+        HasManager<RedisManager>,
+        HasInner<RedisInner>{
 }

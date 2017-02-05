@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an Azure managed disk.
@@ -24,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface Disk extends
         GroupableResource<ComputeManager>,
         Refreshable<Disk>,
-        Wrapper<DiskInner>,
+        HasInner<DiskInner>,
         Updatable<Disk.Update> {
     /**
      * @return the disk sku
