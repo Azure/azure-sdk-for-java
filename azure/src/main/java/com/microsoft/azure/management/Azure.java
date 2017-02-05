@@ -35,7 +35,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.redis.RedisCaches;
@@ -482,8 +482,8 @@ public final class Azure {
     /**
      * @return entry point to managing public IP addresses
      */
-    public PublicIpAddresses publicIpAddresses() {
-        return this.networkManager.publicIpAddresses();
+    public PublicIPAddresses publicIPAddresses() {
+        return this.networkManager.publicIPAddresses();
     }
 
     /**
@@ -536,7 +536,7 @@ public final class Azure {
     }
 
     /**
-     * @return entry point to managing Dns zones.
+     * @return entry point to managing DNS zones.
      */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();

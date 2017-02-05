@@ -1,7 +1,7 @@
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
 
-    private final PublicIpAddresses publicIpAddresses;
+    private final PublicIPAddresses publicIPAddresses;
     private final ResourceGroups resourceGroups;
 
     private final String externalEndpointName21 = "external-ep-1";
@@ -36,9 +36,9 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     private final String azureEndpointName = "azure-ep-1";
     private final String nestedProfileEndpointName = "nested-profile-ep-1";
 
-    public TestTrafficManager(ResourceGroups resourceGroups, PublicIpAddresses publicIpAddresses) {
+    public TestTrafficManager(ResourceGroups resourceGroups, PublicIPAddresses publicIPAddresses) {
         this.resourceGroups = resourceGroups;
-        this.publicIpAddresses = publicIpAddresses;
+        this.publicIPAddresses = publicIPAddresses;
     }
 
     @Override
@@ -84,13 +84,13 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
 
         // Creates a public ip to be used as an Azure endpoint
         //
-        PublicIpAddress publicIpAddress = this.publicIpAddresses.define(pipName)
+        PublicIPAddress publicIPAddress = this.publicIPAddresses.define(pipName)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
                 .withLeafDomainLabel(pipDnsLabel)
                 .create();
 
-        Assert.assertNotNull(publicIpAddress.fqdn());
+        Assert.assertNotNull(publicIPAddress.fqdn());
         // Creates a TM profile
         //
 
@@ -112,7 +112,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .withTrafficDisabled()
                     .attach()
                 .defineAzureTargetEndpoint(azureEndpointName)
-                    .toResourceId(publicIpAddress.id())
+                    .toResourceId(publicIPAddress.id())
                     .withRoutingPriority(3)
                     .attach()
                 .defineNestedTargetEndpoint(nestedProfileEndpointName)
@@ -164,7 +164,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             if (endpoint.name().equalsIgnoreCase(azureEndpointName)) {
                 Assert.assertEquals(endpoint.routingPriority(), 3);
                 Assert.assertNotNull(endpoint.monitorStatus());
-                Assert.assertEquals(endpoint.targetAzureResourceId(), publicIpAddress.id());
+                Assert.assertEquals(endpoint.targetAzureResourceId(), publicIPAddress.id());
                 Assert.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
                 c++;
             }

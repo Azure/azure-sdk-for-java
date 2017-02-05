@@ -11,16 +11,16 @@ import com.jcraft.jsch.Session;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
 public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualMachines> {
-    final PublicIpAddresses pips;
-    public TestVirtualMachineSsh(PublicIpAddresses pips) {
+    final PublicIPAddresses pips;
+    public TestVirtualMachineSsh(PublicIPAddresses pips) {
         this.pips = pips;
     }
 
@@ -29,7 +29,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
         final String vmName = "vm" + this.testId;
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";        
         final String publicIpDnsLabel = vmName;
-        PublicIpAddress pip = pips.define(publicIpDnsLabel)
+        PublicIPAddress pip = pips.define(publicIpDnsLabel)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup()
             .withLeafDomainLabel(publicIpDnsLabel)
@@ -39,8 +39,8 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 .withRegion(pip.regionName())
                 .withExistingResourceGroup(pip.resourceGroupName())
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withExistingPrimaryPublicIpAddress(pip)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingPrimaryPublicIPAddress(pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")

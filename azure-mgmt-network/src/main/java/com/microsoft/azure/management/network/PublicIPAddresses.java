@@ -24,15 +24,15 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Entry point to public IP address management.
  */
 @Fluent()
-public interface PublicIpAddresses extends
-    SupportsListing<PublicIpAddress>,
-    SupportsCreating<PublicIpAddress.DefinitionStages.Blank>,
+public interface PublicIPAddresses extends
+    SupportsListing<PublicIPAddress>,
+    SupportsCreating<PublicIPAddress.DefinitionStages.Blank>,
         SupportsDeletingById,
-    SupportsListingByGroup<PublicIpAddress>,
-    SupportsGettingByGroup<PublicIpAddress>,
-    SupportsGettingById<PublicIpAddress>,
+    SupportsListingByGroup<PublicIPAddress>,
+    SupportsGettingByGroup<PublicIPAddress>,
+    SupportsGettingById<PublicIPAddress>,
     SupportsDeletingByGroup,
-    SupportsBatchCreation<PublicIpAddress>,
+    SupportsBatchCreation<PublicIPAddress>,
     HasManager<NetworkManager>,
     HasInner<PublicIPAddressesInner> {
 }

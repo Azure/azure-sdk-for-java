@@ -206,7 +206,7 @@ public interface VirtualMachineScaleSet extends
      * of the scale set
      * @throws IOException the IO exception
      */
-    List<String> primaryPublicIpAddressIds() throws IOException;
+    List<String> primaryPublicIPAddressIds() throws IOException;
 
     /**
      * @return the URL to storage containers that store the VHDs of the virtual machines in the scale set

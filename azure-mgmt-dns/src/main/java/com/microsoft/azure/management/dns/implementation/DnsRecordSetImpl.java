@@ -85,7 +85,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     // Setters
 
     @Override
-    public DnsRecordSetImpl withIpv4Address(String ipv4Address) {
+    public DnsRecordSetImpl withIPv4Address(String ipv4Address) {
         this.inner()
                 .aRecords()
                 .add(new ARecord().withIpv4Address(ipv4Address));
@@ -93,7 +93,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withoutIpv4Address(String ipv4Address) {
+    public DnsRecordSetImpl withoutIPv4Address(String ipv4Address) {
         this.recordSetRemoveInfo
                 .aRecords()
                 .add(new ARecord().withIpv4Address(ipv4Address));
@@ -101,7 +101,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withIpv6Address(String ipv6Address) {
+    public DnsRecordSetImpl withIPv6Address(String ipv6Address) {
         this.inner()
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
@@ -109,7 +109,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withoutIpv6Address(String ipv6Address) {
+    public DnsRecordSetImpl withoutIPv6Address(String ipv6Address) {
         this.recordSetRemoveInfo
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));

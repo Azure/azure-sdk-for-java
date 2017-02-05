@@ -42,9 +42,9 @@ public final class ManageSqlDatabase {
         final String rgName = Utils.createRandomName("rgRSDSI");
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = "myS3cureP@ssword";
-        final String firewallRuleIpAddress = "10.0.0.1";
-        final String firewallRuleStartIpAddress = "10.2.0.1";
-        final String firewallRuleEndIpAddress = "10.2.0.10";
+        final String firewallRuleIPAddress = "10.0.0.1";
+        final String firewallRuleStartIPAddress = "10.2.0.1";
+        final String firewallRuleEndIPAddress = "10.2.0.10";
         final String databaseName = "mydatabase";
         try {
 
@@ -55,8 +55,8 @@ public final class ManageSqlDatabase {
                     .withNewResourceGroup(rgName)
                     .withAdministratorLogin(administratorLogin)
                     .withAdministratorPassword(administratorPassword)
-                    .withNewFirewallRule(firewallRuleIpAddress)
-                    .withNewFirewallRule(firewallRuleStartIpAddress, firewallRuleEndIpAddress)
+                    .withNewFirewallRule(firewallRuleIPAddress)
+                    .withNewFirewallRule(firewallRuleStartIPAddress, firewallRuleEndIPAddress)
                     .create();
 
             Utils.print(sqlServer);
@@ -97,7 +97,7 @@ public final class ManageSqlDatabase {
             // Add new firewall rules.
             System.out.println("Creating a firewall rule for SQL Server");
             SqlFirewallRule firewallRule = sqlServer.firewallRules().define("myFirewallRule")
-                    .withIpAddress("10.10.10.10")
+                    .withIPAddress("10.10.10.10")
                     .create();
 
             Utils.print(firewallRule);

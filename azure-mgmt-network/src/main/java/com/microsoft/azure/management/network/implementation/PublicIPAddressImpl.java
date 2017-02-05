@@ -10,33 +10,33 @@ import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
+ *  Implementation for {@link PublicIPAddress} and its create and update interfaces.
  */
 @LangDefinition
-class PublicIpAddressImpl
+class PublicIPAddressImpl
     extends GroupableResourceImpl<
-        PublicIpAddress,
+        PublicIPAddress,
         PublicIPAddressInner,
-        PublicIpAddressImpl,
+        PublicIPAddressImpl,
         NetworkManager>
     implements
-        PublicIpAddress,
-        PublicIpAddress.Definition,
-        PublicIpAddress.Update {
+        PublicIPAddress,
+        PublicIPAddress.Definition,
+        PublicIPAddress.Update {
 
     private final PublicIPAddressesInner client;
 
-    PublicIpAddressImpl(String name,
+    PublicIPAddressImpl(String name,
             PublicIPAddressInner innerModel,
             final PublicIPAddressesInner client,
             final NetworkManager networkManager) {
@@ -47,7 +47,7 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddress refresh() {
+    public PublicIPAddress refresh() {
         PublicIPAddressInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         return this;
@@ -56,42 +56,42 @@ class PublicIpAddressImpl
     // Setters (fluent)
 
     @Override
-    public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
+    public PublicIPAddressImpl withIdleTimeoutInMinutes(int minutes) {
         this.inner().withIdleTimeoutInMinutes(minutes);
         return this;
     }
 
     @Override
-    public PublicIpAddressImpl withStaticIp() {
+    public PublicIPAddressImpl withStaticIP() {
         this.inner().withPublicIPAllocationMethod(IPAllocationMethod.STATIC);
         return this;
     }
 
     @Override
-    public PublicIpAddressImpl withDynamicIp() {
+    public PublicIPAddressImpl withDynamicIP() {
         this.inner().withPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         return this;
     }
 
     @Override
-    public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
+    public PublicIPAddressImpl withLeafDomainLabel(String dnsName) {
         this.inner().dnsSettings().withDomainNameLabel(dnsName.toLowerCase());
         return this;
     }
 
     @Override
-    public PublicIpAddressImpl withoutLeafDomainLabel() {
+    public PublicIPAddressImpl withoutLeafDomainLabel() {
         return this.withLeafDomainLabel(null);
     }
 
     @Override
-    public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
+    public PublicIPAddressImpl withReverseFqdn(String reverseFqdn) {
         this.inner().dnsSettings().withReverseFqdn(reverseFqdn.toLowerCase());
         return this;
     }
 
     @Override
-    public PublicIpAddressImpl withoutReverseFqdn() {
+    public PublicIPAddressImpl withoutReverseFqdn() {
         return this.withReverseFqdn(null);
     }
 
@@ -147,7 +147,7 @@ class PublicIpAddressImpl
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
-    public Observable<PublicIpAddress> createResourceAsync() {
+    public Observable<PublicIPAddress> createResourceAsync() {
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -197,7 +197,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration() {
+    public NicIPConfiguration getAssignedNetworkInterfaceIPConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
             final String refId = this.inner().ipConfiguration().id();
             final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);

@@ -75,11 +75,11 @@ public interface NetworkInterfaceBase {
      *
      * @return the private IP addresses
      */
-    String primaryPrivateIp();
+    String primaryPrivateIP();
 
     /**
      * @return the private IP allocation method (Dynamic, Static) of this network interface's
      * primary IP configuration.
      */
-    IPAllocationMethod primaryPrivateIpAllocationMethod();
+    IPAllocationMethod primaryPrivateIPAllocationMethod();
 }

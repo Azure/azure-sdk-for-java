@@ -9,10 +9,10 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.dns.ARecordSet;
-import com.microsoft.azure.management.dns.CnameRecordSet;
+import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.DnsRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -100,7 +100,7 @@ public class ManageDns {
 
             System.out.println("Updating DNS zone by adding a CName record...");
             rootDnsZone = rootDnsZone.update()
-                    .withCnameRecordSet("www", webApp.defaultHostName())
+                    .withCNameRecordSet("www", webApp.defaultHostName())
                     .apply();
             System.out.println("DNS zone updated");
             Utils.print(rootDnsZone);
@@ -132,8 +132,8 @@ public class ManageDns {
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("empip-", 20))
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(SdkContext.randomResourceName("empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -144,11 +144,11 @@ public class ManageDns {
             //============================================================
             // Update DNS zone by adding a A record in root DNS zone pointing to virtual machine IPv4 address
 
-            PublicIpAddress vm1PublicIpAddress = virtualMachine1.getPrimaryPublicIpAddress();
+            PublicIPAddress vm1PublicIPAddress = virtualMachine1.getPrimaryPublicIPAddress();
             System.out.println("Updating root DNS zone " + customDomainName + "...");
             rootDnsZone = rootDnsZone.update()
                     .defineARecordSet("employees")
-                        .withIpv4Address(vm1PublicIpAddress.ipAddress())
+                        .withIPv4Address(vm1PublicIPAddress.ipAddress())
                         .attach()
                     .apply();
             System.out.println("Updated root DNS zone " + rootDnsZone.name());
@@ -157,11 +157,11 @@ public class ManageDns {
             // Prints the CName and A Records in the root DNS zone
             //
             System.out.println("Getting CName record set in the root DNS zone " + customDomainName + "...");
-            PagedList<CnameRecordSet> cnameRecordSets = rootDnsZone
-                    .cnameRecordSets()
+            PagedList<CNameRecordSet> cnameRecordSets = rootDnsZone
+                    .cNameRecordSets()
                     .list();
 
-            for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+            for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
                 System.out.println("Name: " + cnameRecordSet.name() + " Canonical Name: " + cnameRecordSet.canonicalName());
             }
 
@@ -192,9 +192,9 @@ public class ManageDns {
             // Adds NS records in the root dns zone to delegate partners.[customDomainName] to child dns zone
 
             System.out.println("Updating root DNS zone " + rootDnsZone + "...");
-            DnsRecordSet.UpdateDefinitionStages.WithNsRecordNameServerOrAttachable<DnsZone.Update> nsRecordStage = rootDnsZone
+            DnsRecordSet.UpdateDefinitionStages.WithNSRecordNameServerOrAttachable<DnsZone.Update> nsRecordStage = rootDnsZone
                     .update()
-                        .defineNsRecordSet("partners")
+                        .defineNSRecordSet("partners")
                         .withNameServer(partnersDnsZone.nameServers().get(0));
             for (int i = 1; i < partnersDnsZone.nameServers().size(); i++) {
                 nsRecordStage = nsRecordStage.withNameServer(partnersDnsZone.nameServers().get(i));
@@ -214,8 +214,8 @@ public class ManageDns {
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(SdkContext.randomResourceName("ptnerpip-", 20))
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(SdkContext.randomResourceName("ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -224,13 +224,13 @@ public class ManageDns {
             System.out.println("Virtual machine created");
 
             //============================================================
-            // Update child Dns zone by adding a A record pointing to virtual machine IPv4 address
+            // Update child DNS zone by adding a A record pointing to virtual machine IPv4 address
 
-            PublicIpAddress vm2PublicIpAddress = virtualMachine2.getPrimaryPublicIpAddress();
+            PublicIPAddress vm2PublicIPAddress = virtualMachine2.getPrimaryPublicIPAddress();
             System.out.println("Updating child DNS zone " + partnerSubDomainName + "...");
             partnersDnsZone = partnersDnsZone.update()
                     .defineARecordSet("@")
-                        .withIpv4Address(vm2PublicIpAddress.ipAddress())
+                        .withIPv4Address(vm2PublicIPAddress.ipAddress())
                         .attach()
                     .apply();
             System.out.println("Updated child DNS zone " + partnersDnsZone.name());
@@ -247,7 +247,7 @@ public class ManageDns {
             Utils.print(rootDnsZone);
 
             //============================================================
-            // Deletes the Dns zone
+            // Deletes the DNS zone
 
             System.out.println("Deleting child DNS zone " + partnersDnsZone.name() + "...");
             azure.dnsZones().deleteById(partnersDnsZone.id());

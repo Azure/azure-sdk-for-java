@@ -13,8 +13,8 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
-import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.NicIPConfiguration;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -60,11 +60,11 @@ class NetworkInterfaceImpl
     /**
      * reference to the primary ip configuration.
      */
-    private NicIpConfigurationImpl nicPrimaryIpConfiguration;
+    private NicIPConfigurationImpl nicPrimaryIpConfiguration;
     /**
      * references to all ip configuration.
      */
-    private Map<String, NicIpConfiguration> nicIpConfigurations;
+    private Map<String, NicIPConfiguration> nicIpConfigurations;
     /**
      * unique key of a creatable network security group to be associated with the network interface.
      */
@@ -104,61 +104,61 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
-        this.primaryIpConfiguration().withNewNetwork(creatable);
+        this.primaryIPConfiguration().withNewNetwork(creatable);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryNetwork(String name, String addressSpaceCidr) {
-        this.primaryIpConfiguration().withNewNetwork(name, addressSpaceCidr);
+        this.primaryIPConfiguration().withNewNetwork(name, addressSpaceCidr);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryNetwork(String addressSpaceCidr) {
-        this.primaryIpConfiguration().withNewNetwork(addressSpaceCidr);
+        this.primaryIPConfiguration().withNewNetwork(addressSpaceCidr);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withExistingPrimaryNetwork(Network network) {
-        this.primaryIpConfiguration().withExistingNetwork(network);
+        this.primaryIPConfiguration().withExistingNetwork(network);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
-        this.primaryIpConfiguration().withNewPublicIpAddress(creatable);
+    public NetworkInterfaceImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+        this.primaryIPConfiguration().withNewPublicIPAddress(creatable);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress() {
-        this.primaryIpConfiguration().withNewPublicIpAddress();
+    public NetworkInterfaceImpl withNewPrimaryPublicIPAddress() {
+        this.primaryIPConfiguration().withNewPublicIPAddress();
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
-        this.primaryIpConfiguration().withNewPublicIpAddress(leafDnsLabel);
+    public NetworkInterfaceImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
+        this.primaryIPConfiguration().withNewPublicIPAddress(leafDnsLabel);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
-        this.primaryIpConfiguration().withExistingLoadBalancerBackend(loadBalancer, backendName);
+        this.primaryIPConfiguration().withExistingLoadBalancerBackend(loadBalancer, backendName);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
-        this.primaryIpConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
+        this.primaryIPConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
         return this;
     }
 
     @Override
     public Update withoutLoadBalancerBackends() {
-        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+        for (NicIPConfiguration ipConfig : this.ipConfigurations().values()) {
             this.updateIpConfiguration(ipConfig.name())
                 .withoutLoadBalancerBackends();
         }
@@ -167,7 +167,7 @@ class NetworkInterfaceImpl
 
     @Override
     public Update withoutLoadBalancerInboundNatRules() {
-        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+        for (NicIPConfiguration ipConfig : this.ipConfigurations().values()) {
             this.updateIpConfiguration(ipConfig.name())
                 .withoutLoadBalancerInboundNatRules();
         }
@@ -175,26 +175,26 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withoutPrimaryPublicIpAddress() {
-        this.primaryIpConfiguration().withoutPublicIpAddress();
+    public NetworkInterfaceImpl withoutPrimaryPublicIPAddress() {
+        this.primaryIPConfiguration().withoutPublicIPAddress();
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
-        this.primaryIpConfiguration().withExistingPublicIpAddress(publicIpAddress);
+    public NetworkInterfaceImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
+        this.primaryIPConfiguration().withExistingPublicIPAddress(publicIPAddress);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withPrimaryPrivateIpAddressDynamic() {
-        this.primaryIpConfiguration().withPrivateIpAddressDynamic();
+    public NetworkInterfaceImpl withPrimaryPrivateIPAddressDynamic() {
+        this.primaryIPConfiguration().withPrivateIPAddressDynamic();
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.primaryIpConfiguration().withPrivateIpAddressStatic(staticPrivateIpAddress);
+    public NetworkInterfaceImpl withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress) {
+        this.primaryIPConfiguration().withPrivateIPAddressStatic(staticPrivateIPAddress);
         return this;
     }
 
@@ -220,13 +220,13 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NicIpConfigurationImpl defineSecondaryIpConfiguration(String name) {
+    public NicIPConfigurationImpl defineSecondaryIpConfiguration(String name) {
         return prepareNewNicIpConfiguration(name);
     }
 
     @Override
-    public NicIpConfigurationImpl updateIpConfiguration(String name) {
-        return (NicIpConfigurationImpl) this.nicIpConfigurations.get(name);
+    public NicIPConfigurationImpl updateIpConfiguration(String name) {
+        return (NicIPConfigurationImpl) this.nicIpConfigurations.get(name);
     }
 
     @Override
@@ -267,7 +267,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withSubnet(String name) {
-        this.primaryIpConfiguration().withSubnet(name);
+        this.primaryIPConfiguration().withSubnet(name);
         return this;
     }
 
@@ -331,17 +331,17 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public String primaryPrivateIp() {
-        return this.primaryIpConfiguration().privateIpAddress();
+    public String primaryPrivateIP() {
+        return this.primaryIPConfiguration().privateIPAddress();
     }
 
     @Override
-    public IPAllocationMethod primaryPrivateIpAllocationMethod() {
-        return this.primaryIpConfiguration().privateIpAllocationMethod();
+    public IPAllocationMethod primaryPrivateIPAllocationMethod() {
+        return this.primaryIPConfiguration().privateIPAllocationMethod();
     }
 
     @Override
-    public Map<String, NicIpConfiguration> ipConfigurations() {
+    public Map<String, NicIPConfiguration> ipConfigurations() {
         return Collections.unmodifiableMap(this.nicIpConfigurations);
     }
 
@@ -365,7 +365,7 @@ class NetworkInterfaceImpl
     /**
      * @return the primary IP configuration of the network interface
      */
-    public NicIpConfigurationImpl primaryIpConfiguration() {
+    public NicIPConfigurationImpl primaryIPConfiguration() {
         if (this.nicPrimaryIpConfiguration != null) {
             return this.nicPrimaryIpConfiguration;
         }
@@ -379,7 +379,7 @@ class NetworkInterfaceImpl
             // when Azure support multiple IP configurations then there will be a flag in
             // the IPConfiguration or a property in the network interface to identify the
             // primary so below logic will be changed.
-            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) new ArrayList<NicIpConfiguration>(
+            this.nicPrimaryIpConfiguration = (NicIPConfigurationImpl) new ArrayList<NicIPConfiguration>(
                     this.nicIpConfigurations.values()).get(0);
         }
         return this.nicPrimaryIpConfiguration;
@@ -405,20 +405,20 @@ class NetworkInterfaceImpl
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIPConfigurationInner inner : inners) {
-                NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(inner, this, super.myManager, false);
+                NicIPConfigurationImpl  nicIpConfiguration = new NicIPConfigurationImpl(inner, this, super.myManager, false);
                 this.nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
             }
         }
     }
 
     /**
-     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfigurationInner}.
+     * Gets a new IP configuration child resource {@link NicIPConfiguration} wrapping {@link NetworkInterfaceIPConfigurationInner}.
      *
      * @param name the name for the new ip configuration
-     * @return {@link NicIpConfiguration}
+     * @return {@link NicIPConfiguration}
      */
-    private NicIpConfigurationImpl prepareNewNicIpConfiguration(String name) {
-        NicIpConfigurationImpl nicIpConfiguration = NicIpConfigurationImpl.prepareNicIpConfiguration(
+    private NicIPConfigurationImpl prepareNewNicIpConfiguration(String name) {
+        NicIPConfigurationImpl nicIpConfiguration = NicIPConfigurationImpl.prepareNicIpConfiguration(
                 name,
                 this,
                 super.myManager
@@ -431,7 +431,7 @@ class NetworkInterfaceImpl
         this.nicPrimaryIpConfiguration = null;
     }
 
-    NetworkInterfaceImpl withIpConfiguration(NicIpConfigurationImpl nicIpConfiguration) {
+    NetworkInterfaceImpl withIpConfiguration(NicIPConfigurationImpl nicIpConfiguration) {
         this.nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
         return this;
     }
@@ -472,7 +472,7 @@ class NetworkInterfaceImpl
             this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         }
 
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
+        NicIPConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
 
         // Reset and update IP configs
         this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));

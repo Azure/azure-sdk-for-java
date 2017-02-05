@@ -9,24 +9,24 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Tests public IPs.
  */
-public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
+public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPAddresses> {
 
     @Override
-    public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
+    public PublicIPAddress createResource(PublicIPAddresses pips) throws Exception {
         final String newPipName = "pip" + this.testId;
-        PublicIpAddress pip = pips.define(newPipName)
+        PublicIPAddress pip = pips.define(newPipName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
-                .withDynamicIp()
+                .withDynamicIP()
                 .withLeafDomainLabel(newPipName)
                 .withIdleTimeoutInMinutes(10)
                 .create();
@@ -34,11 +34,11 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
     }
 
     @Override
-    public PublicIpAddress updateResource(PublicIpAddress resource) throws Exception {
+    public PublicIPAddress updateResource(PublicIPAddress resource) throws Exception {
         final String updatedDnsName = resource.leafDomainLabel() + "xx";
         final int updatedIdleTimeout = 15;
         resource =  resource.update()
-                .withStaticIp()
+                .withStaticIP()
                 .withLeafDomainLabel(updatedDnsName)
                 .withReverseFqdn(resource.leafDomainLabel() + "." + resource.region() + ".cloudapp.azure.com")
                 .withIdleTimeoutInMinutes(updatedIdleTimeout)
@@ -51,11 +51,11 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
     }
 
     @Override
-    public void print(PublicIpAddress pip) {
-        TestPublicIpAddress.printPIP(pip);
+    public void print(PublicIPAddress pip) {
+        TestPublicIPAddress.printPIP(pip);
     }
 
-    public static void printPIP(PublicIpAddress resource) {
+    public static void printPIP(PublicIPAddress resource) {
         StringBuilder info = new StringBuilder().append("Public IP Address: ").append(resource.id())
                 .append("\n\tName: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -83,7 +83,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
         // Show the associated NIC if any
         info.append("\n\tNetwork interface association: ");
         if (resource.hasAssignedNetworkInterface()) {
-            final NicIpConfiguration nicIp = resource.getAssignedNetworkInterfaceIpConfiguration();
+            final NicIPConfiguration nicIp = resource.getAssignedNetworkInterfaceIPConfiguration();
             final NetworkInterface nic = nicIp.parent();
             info.append("\n\t\tNetwork interface ID: ").append(nic.id())
                 .append("\n\t\tIP config name: ").append(nicIp.name());

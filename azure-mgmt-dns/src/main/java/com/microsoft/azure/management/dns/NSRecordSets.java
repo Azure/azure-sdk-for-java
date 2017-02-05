@@ -10,10 +10,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- *  Entry point to Mx record sets in a Dns zone.
+ * Entry point to NS record sets in an Azure DNS zone.
  */
 @Fluent
-public interface MxRecordSets extends
-        SupportsListing<MxRecordSet>,
-        SupportsGettingByName<MxRecordSet> {
+public interface NSRecordSets extends
+        SupportsListing<NSRecordSet>,
+        SupportsGettingByName<NSRecordSet> {
 }

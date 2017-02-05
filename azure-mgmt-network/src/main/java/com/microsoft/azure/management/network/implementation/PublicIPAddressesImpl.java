@@ -8,42 +8,42 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
 
 /**
- *  Implementation for {@link PublicIpAddresses}.
+ *  Implementation for {@link PublicIPAddresses}.
  */
 @LangDefinition
-class PublicIpAddressesImpl
+class PublicIPAddressesImpl
         extends GroupableResourcesImpl<
-            PublicIpAddress,
-            PublicIpAddressImpl,
+            PublicIPAddress,
+            PublicIPAddressImpl,
             PublicIPAddressInner,
             PublicIPAddressesInner,
             NetworkManager>
-        implements PublicIpAddresses {
+        implements PublicIPAddresses {
 
-    PublicIpAddressesImpl(
+    PublicIPAddressesImpl(
             final PublicIPAddressesInner client,
             final NetworkManager networkManager) {
         super(client, networkManager);
     }
 
     @Override
-    public PagedList<PublicIpAddress> list() {
+    public PagedList<PublicIPAddress> list() {
         return wrapList(this.innerCollection.listAll());
     }
 
     @Override
-    public PagedList<PublicIpAddress> listByGroup(String groupName) {
+    public PagedList<PublicIPAddress> listByGroup(String groupName) {
         return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
-    public PublicIpAddressImpl getByGroup(String groupName, String name) {
+    public PublicIPAddressImpl getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
@@ -53,21 +53,21 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddressImpl define(String name) {
+    public PublicIPAddressImpl define(String name) {
         return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected PublicIpAddressImpl wrapModel(String name) {
+    protected PublicIPAddressImpl wrapModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if (null == inner.dnsSettings()) {
             inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
-        return new PublicIpAddressImpl(
+        return new PublicIPAddressImpl(
                 name,
                 inner,
                 this.innerCollection,
@@ -75,11 +75,11 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
+    protected PublicIPAddressImpl wrapModel(PublicIPAddressInner inner) {
         if (inner == null) {
             return null;
         }
-        return new PublicIpAddressImpl(
+        return new PublicIPAddressImpl(
                 inner.id(),
                 inner,
                 this.innerCollection,

@@ -133,7 +133,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer.InternetWithNatRule(
-                azure.publicIpAddresses(),
+                azure.publicIPAddresses(),
                 azure.virtualMachines(),
                 azure.networks(),
                 azure.availabilitySets())
@@ -147,7 +147,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer.InternetWithNatPool(
-                azure.publicIpAddresses(),
+                azure.publicIPAddresses(),
                 azure.virtualMachines(),
                 azure.networks(),
                 azure.availabilitySets())
@@ -161,7 +161,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer.InternetMinimal(
-                azure.publicIpAddresses(),
+                azure.publicIPAddresses(),
                 azure.virtualMachines(),
                 azure.networks(),
                 azure.availabilitySets())
@@ -187,7 +187,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway.PrivateComplex(azure.networks(), azure.publicIpAddresses())
+        new TestApplicationGateway.PrivateComplex(azure.networks(), azure.publicIPAddresses())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -218,7 +218,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
         new TestApplicationGateway.PublicComplex(
-                azure.publicIpAddresses())
+                azure.publicIPAddresses())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -227,8 +227,8 @@ public class AzureTests extends TestBase {
      * @throws Exception
      */
     @Test
-    public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
+    public void testPublicIPAddresses() throws Exception {
+        new TestPublicIPAddress().runTest(azure.publicIPAddresses(), azure.resourceGroups());
     }
 
     /**
@@ -333,7 +333,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh(azure.publicIpAddresses())
+        new TestVirtualMachineSsh(azure.publicIPAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -349,7 +349,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testVirtualMachineCustomData() throws Exception {
-        new TestVirtualMachineCustomData(azure.publicIpAddresses())
+        new TestVirtualMachineCustomData(azure.publicIPAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -431,7 +431,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testTrafficManager() throws Exception {
-        new TestTrafficManager(azure.resourceGroups(), azure.publicIpAddresses())
+        new TestTrafficManager(azure.resourceGroups(), azure.publicIPAddresses())
                 .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
 

@@ -78,7 +78,7 @@ abstract class WebAppBaseImpl<
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
     private Set<String> trafficManagerHostNamesSet;
-    private Set<String> outboundIpAddressesSet;
+    private Set<String> outboundIPAddressesSet;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
     private List<String> hostNameBindingsToDelete;
@@ -124,7 +124,7 @@ abstract class WebAppBaseImpl<
             this.trafficManagerHostNamesSet = Sets.newHashSet(inner().trafficManagerHostNames());
         }
         if (inner().outboundIpAddresses() != null) {
-            this.outboundIpAddressesSet = Sets.newHashSet(inner().outboundIpAddresses().split(",[ ]*"));
+            this.outboundIPAddressesSet = Sets.newHashSet(inner().outboundIpAddresses().split(",[ ]*"));
         }
         this.hostNameSslStateMap = new HashMap<>();
         if (inner().hostNameSslStates() != null) {
@@ -238,8 +238,8 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public Set<String> outboundIpAddresses() {
-        return Collections.unmodifiableSet(outboundIpAddressesSet);
+    public Set<String> outboundIPAddresses() {
+        return Collections.unmodifiableSet(outboundIPAddressesSet);
     }
 
     @Override

@@ -22,7 +22,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -36,7 +36,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
 
     // Collections
-    private PublicIpAddresses publicIpAddresses;
+    private PublicIPAddresses publicIPAddresses;
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
@@ -152,13 +152,13 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to public IP address management
      */
-    public PublicIpAddresses publicIpAddresses() {
-        if (this.publicIpAddresses == null) {
-            this.publicIpAddresses = new PublicIpAddressesImpl(
+    public PublicIPAddresses publicIPAddresses() {
+        if (this.publicIPAddresses == null) {
+            this.publicIPAddresses = new PublicIPAddressesImpl(
                     super.innerManagementClient.publicIPAddresses(),
                     this);
         }
-        return this.publicIpAddresses;
+        return this.publicIPAddresses;
     }
 
     /**

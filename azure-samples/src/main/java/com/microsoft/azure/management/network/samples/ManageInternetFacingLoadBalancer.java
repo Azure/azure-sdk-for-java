@@ -16,7 +16,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -130,7 +130,7 @@ public final class ManageInternetFacingLoadBalancer {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName1)
+            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName1)
@@ -139,7 +139,7 @@ public final class ManageInternetFacingLoadBalancer {
             System.out.println("Created a public IP address");
 
             // Print the virtual network details
-            Utils.print(publicIpAddress);
+            Utils.print(publicIPAddress);
 
             //=============================================================
             // Create an Internet facing load balancer
@@ -170,7 +170,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                        .withExistingPublicIpAddress(publicIpAddress)
+                        .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
                     // Add two backend one per rule
@@ -257,7 +257,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .withExistingLoadBalancerBackend(loadBalancer1, backendPoolName1)
                     .withExistingLoadBalancerBackend(loadBalancer1, backendPoolName2)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer1, natRule5000to22forVM1)
@@ -270,7 +270,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .withExistingLoadBalancerBackend(loadBalancer1, backendPoolName1)
                     .withExistingLoadBalancerBackend(loadBalancer1, backendPoolName2)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer1, natRule5002to22forVM2)
@@ -347,7 +347,7 @@ public final class ManageInternetFacingLoadBalancer {
             // Create another public IP address
             System.out.println("Creating another public IP address...");
 
-            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIpName2)
+            PublicIPAddress publicIPAddress2 = azure.publicIPAddresses().define(publicIpName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName2)
@@ -355,7 +355,7 @@ public final class ManageInternetFacingLoadBalancer {
 
             System.out.println("Created another public IP address");
             // Print the virtual network details
-            Utils.print(publicIpAddress2);
+            Utils.print(publicIPAddress2);
 
 
             //=============================================================
@@ -387,7 +387,7 @@ public final class ManageInternetFacingLoadBalancer {
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                        .withExistingPublicIpAddress(publicIpAddress2)
+                        .withExistingPublicIPAddress(publicIPAddress2)
                         .attach()
 
                     // Add two backend one per rule

@@ -24,10 +24,10 @@ public interface VirtualMachineScaleSetNetworkInterface extends
     /**
      * @return the IP configurations of this network interface, indexed by their names
      */
-    Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations();
+    Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigurations();
 
     /**
      * @return the primary IP configuration of this network interface
      */
-    VirtualMachineScaleSetNicIpConfiguration primaryIpConfiguration();
+    VirtualMachineScaleSetNicIPConfiguration primaryIPConfiguration();
 }

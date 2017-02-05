@@ -33,7 +33,7 @@ public interface Route extends
     /**
      * @return the IP address of the next hop
      */
-    String nextHopIpAddress();
+    String nextHopIPAddress();
 
     // Grouping of route definition stages
 

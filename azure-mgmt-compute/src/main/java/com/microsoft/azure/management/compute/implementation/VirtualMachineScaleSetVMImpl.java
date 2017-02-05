@@ -270,7 +270,7 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
-    public boolean isWindowsVmAgentProvisioned() {
+    public boolean isWindowsVMAgentProvisioned() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
             return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().provisionVMAgent());
         }

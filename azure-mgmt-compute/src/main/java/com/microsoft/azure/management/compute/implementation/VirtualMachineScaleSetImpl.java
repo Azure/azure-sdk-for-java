@@ -299,10 +299,10 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public List<String> primaryPublicIpAddressIds() throws IOException {
+    public List<String> primaryPublicIPAddressIds() throws IOException {
         LoadBalancer loadBalancer = this.getPrimaryInternetFacingLoadBalancer();
         if (loadBalancer != null) {
-            return loadBalancer.publicIpAddressIds();
+            return loadBalancer.publicIPAddressIds();
         }
         return new ArrayList<>();
     }
@@ -376,7 +376,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
-        if (loadBalancer.publicIpAddressIds().isEmpty()) {
+        if (loadBalancer.publicIPAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
         }
 
@@ -421,7 +421,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
-        if (!loadBalancer.publicIpAddressIds().isEmpty()) {
+        if (!loadBalancer.publicIPAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
@@ -1479,7 +1479,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer1 = this.networkManager
                 .loadBalancers()
                 .getById(firstLoadBalancerId);
-        if (loadBalancer1.publicIpAddressIds() != null && loadBalancer1.publicIpAddressIds().size() > 0) {
+        if (loadBalancer1.publicIPAddressIds() != null && loadBalancer1.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer1;
         } else {
             this.primaryInternalLoadBalancer = loadBalancer1;
@@ -1511,7 +1511,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer2 = this.networkManager
             .loadBalancers()
             .getById(secondLoadBalancerId);
-        if (loadBalancer2.publicIpAddressIds() != null && loadBalancer2.publicIpAddressIds().size() > 0) {
+        if (loadBalancer2.publicIPAddressIds() != null && loadBalancer2.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer2;
          } else {
             this.primaryInternalLoadBalancer = loadBalancer2;

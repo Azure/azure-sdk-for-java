@@ -291,16 +291,16 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServerImpl withNewFirewallRule(String startIpAddress, String endIpAddress) {
-        return this.withNewFirewallRule(startIpAddress, endIpAddress, SdkContext.randomResourceName("firewall_", 15));
+    public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
+        return this.withNewFirewallRule(startIPAddress, endIPAddress, SdkContext.randomResourceName("firewall_", 15));
     }
 
     @Override
-    public SqlServerImpl withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName) {
+    public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName) {
         this.firewallRuleCreatableMap.remove(firewallRuleName);
 
         this.firewallRuleCreatableMap.put(firewallRuleName,
-                this.firewallRules().define(firewallRuleName).withIpAddressRange(startIpAddress, endIpAddress));
+                this.firewallRules().define(firewallRuleName).withIPAddressRange(startIPAddress, endIPAddress));
         return this;
     }
 

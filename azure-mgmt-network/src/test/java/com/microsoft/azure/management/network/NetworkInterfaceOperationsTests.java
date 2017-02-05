@@ -38,7 +38,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.5");
+                .withPrimaryPrivateIPAddressStatic("10.0.0.5");
 
         final String nic2Name = "nic2";
         Creatable<NetworkInterface> networkInterface2Creatable = networkInterfaces
@@ -46,7 +46,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.6");
+                .withPrimaryPrivateIPAddressStatic("10.0.0.6");
 
         final String nic3Name = "nic3";
         Creatable<NetworkInterface> networkInterface3Creatable = networkInterfaces
@@ -54,7 +54,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.7");
+                .withPrimaryPrivateIPAddressStatic("10.0.0.7");
 
         final String nic4Name = "nic4";
         Creatable<NetworkInterface> networkInterface4Creatable = networkInterfaces
@@ -62,7 +62,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.8");
+                .withPrimaryPrivateIPAddressStatic("10.0.0.8");
 
         @SuppressWarnings("unchecked")
         Collection<NetworkInterface> batchNics = networkInterfaces.create(networkInterface1Creatable,

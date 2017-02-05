@@ -22,7 +22,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -100,15 +100,15 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public String publicIpAddressId() {
+    public String publicIPAddressId() {
         final ApplicationGatewayListener listener = this.listener();
-        return (listener != null) ? listener.publicIpAddressId() : null;
+        return (listener != null) ? listener.publicIPAddressId() : null;
     }
 
     @Override
-    public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
-        return (pipId != null) ? this.parent().manager().publicIpAddresses().getById(pipId) : null;
+    public PublicIPAddress getPublicIPAddress() {
+        final String pipId = this.publicIPAddressId();
+        return (pipId != null) ? this.parent().manager().publicIPAddresses().getById(pipId) : null;
     }
 
     @Override
@@ -270,7 +270,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             // Determine frontend
             if (Boolean.TRUE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPublicFrontend();
-                this.parent().withNewPublicIpAddress();
+                this.parent().withNewPublicIPAddress();
             } else if (Boolean.FALSE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPrivateFrontend();
             }
@@ -354,8 +354,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl toBackendIpAddress(String ipAddress) {
-        this.parent().updateBackend(ensureBackend().name()).withIpAddress(ipAddress);
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendIPAddress(String ipAddress) {
+        this.parent().updateBackend(ensureBackend().name()).withIPAddress(ipAddress);
         return this;
     }
 

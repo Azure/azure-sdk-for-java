@@ -20,11 +20,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Public IP address.
  */
 @Fluent()
-public interface PublicIpAddress extends
+public interface PublicIPAddress extends
         GroupableResource<NetworkManager>,
-        Refreshable<PublicIpAddress>,
+        Refreshable<PublicIPAddress>,
         HasInner<PublicIPAddressInner>,
-        Updatable<PublicIpAddress.Update> {
+        Updatable<PublicIPAddress.Update> {
 
     // Getters
 
@@ -76,7 +76,7 @@ public interface PublicIpAddress extends
     /**
      * @return the network interface IP configuration that this public IP address is assigned to
      */
-    NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration();
+    NicIPConfiguration getAssignedNetworkInterfaceIPConfiguration();
 
     /**
      * @return true if this public IP address is assigned to a network interface
@@ -113,23 +113,23 @@ public interface PublicIpAddress extends
         /**
          * A public IP address definition allowing to set the IP allocation method (static or dynamic).
          */
-        interface WithIpAddress {
+        interface WithIPAddress {
             /**
              * Enables static IP address allocation.
              * <p>
-             * Use {@link PublicIpAddress#ipAddress()} after the public IP address is created to obtain the
+             * Use {@link PublicIPAddress#ipAddress()} after the public IP address is created to obtain the
              * actual IP address allocated for this resource by Azure
              *
              * @return the next stage of the public IP address definition
              */
-            WithCreate withStaticIp();
+            WithCreate withStaticIP();
 
             /**
              * Enables dynamic IP address allocation.
              *
              * @return the next stage of the public IP address definition
              */
-            WithCreate withDynamicIp();
+            WithCreate withDynamicIP();
         }
 
         /**
@@ -194,9 +194,9 @@ public interface PublicIpAddress extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-            Creatable<PublicIpAddress>,
+            Creatable<PublicIPAddress>,
             DefinitionStages.WithLeafDomainLabel,
-            DefinitionStages.WithIpAddress,
+            DefinitionStages.WithIPAddress,
             DefinitionStages.WithReverseFQDN,
             DefinitionStages.WithIdleTimeout,
             Resource.DefinitionWithTags<WithCreate> {
@@ -209,8 +209,8 @@ public interface PublicIpAddress extends
      * Use {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-        Appliable<PublicIpAddress>,
-        UpdateStages.WithIpAddress,
+        Appliable<PublicIPAddress>,
+        UpdateStages.WithIPAddress,
         UpdateStages.WithLeafDomainLabel,
         UpdateStages.WithReverseFQDN,
         UpdateStages.WithIdleTimout,
@@ -224,23 +224,23 @@ public interface PublicIpAddress extends
         /**
          * A public IP address update allowing to change the IP allocation method (static or dynamic).
          */
-        interface WithIpAddress {
+        interface WithIPAddress {
             /**
              * Enables static IP address allocation.
              * <p>
-             * Use {@link PublicIpAddress#ipAddress()} after the public IP address is updated to
+             * Use {@link PublicIPAddress#ipAddress()} after the public IP address is updated to
              * obtain the actual IP address allocated for this resource by Azure
              *
              * @return the next stage of the resource update
              */
-            Update withStaticIp();
+            Update withStaticIP();
 
             /**
              * Enables dynamic IP address allocation.
              *
              * @return the next stage of the resource update
              */
-            Update withDynamicIp();
+            Update withDynamicIP();
         }
 
         /**

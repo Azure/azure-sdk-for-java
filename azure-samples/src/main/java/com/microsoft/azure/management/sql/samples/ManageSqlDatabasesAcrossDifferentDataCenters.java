@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.samples.Utils;
@@ -147,7 +147,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             for (Network network: networks) {
                 String vmName = Utils.createRandomName(virtualMachineNamePrefix);
-                Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses().define(vmName)
+                Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses().define(vmName)
                         .withRegion(network.region())
                         .withExistingResourceGroup(rgName)
                         .withLeafDomainLabel(vmName);
@@ -156,8 +156,8 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet(network.subnets().values().iterator().next().name())
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername(administratorLogin)
                         .withAdminPassword(administratorPassword)
@@ -166,7 +166,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             HashMap<String, String> ipAddresses = new HashMap<>();
             for (VirtualMachine virtualMachine: azure.virtualMachines().create(creatableVirtualMachines).values()) {
-                ipAddresses.put(virtualMachine.name(), virtualMachine.getPrimaryPublicIpAddress().ipAddress());
+                ipAddresses.put(virtualMachine.name(), virtualMachine.getPrimaryPublicIPAddress().ipAddress());
             }
 
             System.out.println("Adding firewall rule for each of virtual network network");
@@ -178,7 +178,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             for (SqlServer sqlServer: sqlServers) {
                 for (Map.Entry<String, String> ipAddress: ipAddresses.entrySet()) {
-                    sqlServer.firewallRules().define(ipAddress.getKey()).withIpAddress(ipAddress.getValue()).create();
+                    sqlServer.firewallRules().define(ipAddress.getKey()).withIPAddress(ipAddress.getValue()).create();
                 }
             }
 

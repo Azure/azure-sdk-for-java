@@ -31,7 +31,7 @@ import java.util.Map;
  * @param <ParentT> parent interface
  */
 @LangDefinition
-abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT>
+abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT>
         extends
         ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT> {
     /**
@@ -39,7 +39,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT>
      */
     private final NetworkManager networkManager;
 
-    protected NicIpConfigurationBaseImpl(NetworkInterfaceIPConfigurationInner inner,
+    protected NicIPConfigurationBaseImpl(NetworkInterfaceIPConfigurationInner inner,
                                          ParentImplT parent,
                                          NetworkManager networkManager) {
         super(inner, parent);
@@ -54,15 +54,15 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT>
         return Utils.toPrimitiveBoolean(this.inner().primary());
     }
 
-    public String privateIpAddress() {
+    public String privateIPAddress() {
         return this.inner().privateIPAddress();
     }
 
-    public IPAllocationMethod privateIpAllocationMethod() {
+    public IPAllocationMethod privateIPAllocationMethod() {
         return this.inner().privateIPAllocationMethod();
     }
 
-    public IPVersion privateIpAddressVersion() {
+    public IPVersion privateIPAddressVersion() {
         return this.inner().privateIPAddressVersion();
     }
 

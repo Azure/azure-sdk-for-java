@@ -7,7 +7,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.MxRecord;
-import com.microsoft.azure.management.dns.MxRecordSet;
+import com.microsoft.azure.management.dns.MXRecordSet;
 import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
@@ -15,18 +15,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link MxRecordSet}.
+ * Implementation of {@link MXRecordSet}.
  */
 @LangDefinition
-class MxRecordSetImpl
+class MXRecordSetImpl
         extends DnsRecordSetImpl
-        implements MxRecordSet {
-    MxRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        implements MXRecordSet {
+    MXRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parent, innerModel, client);
     }
 
-    static MxRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
-        return new MxRecordSetImpl(parent,
+    static MXRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new MXRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.MX.toString())

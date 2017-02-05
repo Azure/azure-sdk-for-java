@@ -15,7 +15,7 @@ import java.util.List;
  * network interface.
  */
 @Fluent
-public interface NicIpConfigurationBase {
+public interface NicIPConfigurationBase {
     /**
      * @return true if this is the primary ip configuration
      */
@@ -29,7 +29,7 @@ public interface NicIpConfigurationBase {
     /**
      * @return private IP address version
      */
-    IPVersion privateIpAddressVersion();
+    IPVersion privateIPAddressVersion();
 
     /**
      * @return the load balancer backends associated with this network interface IP configuration

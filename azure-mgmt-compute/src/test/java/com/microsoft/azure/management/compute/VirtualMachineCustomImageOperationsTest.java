@@ -89,8 +89,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
                 .withRootPassword("12NewPA$$w0rd!")
@@ -152,8 +152,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -271,8 +271,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -290,7 +290,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-         deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIpAddress().fqdn(), 22, uname, password);
+         deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
          virtualMachine.deallocate();
          virtualMachine.generalize();
         return virtualMachine;

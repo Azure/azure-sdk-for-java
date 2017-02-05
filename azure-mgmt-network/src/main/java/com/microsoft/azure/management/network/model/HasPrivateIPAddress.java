@@ -12,16 +12,16 @@ import com.microsoft.azure.management.network.IPAllocationMethod;
  * An interface representing a model's ability to reference a private IP address.
  */
 @Fluent()
-public interface HasPrivateIpAddress  {
+public interface HasPrivateIPAddress  {
     /**
      * @return the private IP address associated with this resource
      */
-    String privateIpAddress();
+    String privateIPAddress();
 
     /**
      * @return the private IP address allocation method within the associated subnet
      */
-    IPAllocationMethod privateIpAllocationMethod();
+    IPAllocationMethod privateIPAllocationMethod();
 
     /**
      * Grouping of definition stages involving specifying the private IP address.
@@ -31,19 +31,19 @@ public interface HasPrivateIpAddress  {
          * The stage of a definition allowing to specify the private IP address.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPrivateIpAddress<ReturnT> {
+        interface WithPrivateIPAddress<ReturnT> {
             /**
              * Enables dynamic private IP address allocation within the associated subnet.
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIpAddressDynamic();
+            ReturnT withPrivateIPAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIpAddressStatic(String ipAddress);
+            ReturnT withPrivateIPAddressStatic(String ipAddress);
         }
     }
 
@@ -55,19 +55,19 @@ public interface HasPrivateIpAddress  {
          * The stage of an update allowing to modify the private IP address.
          * @param <ReturnT> the next stage of the update
          */
-        interface WithPrivateIpAddress<ReturnT> {
+        interface WithPrivateIPAddress<ReturnT> {
             /**
              * Enables dynamic private IP address allocation within the associated subnet.
              * @return the next stage of the update
              */
-            ReturnT withPrivateIpAddressDynamic();
+            ReturnT withPrivateIPAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the update
              */
-            ReturnT withPrivateIpAddressStatic(String ipAddress);
+            ReturnT withPrivateIPAddressStatic(String ipAddress);
         }
     }
 
@@ -79,19 +79,19 @@ public interface HasPrivateIpAddress  {
          * The stage of a definition allowing to specify the private IP address.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPrivateIpAddress<ReturnT> {
+        interface WithPrivateIPAddress<ReturnT> {
             /**
              * Enables dynamic private IP address allocation within the associated subnet.
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIpAddressDynamic();
+            ReturnT withPrivateIPAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIpAddressStatic(String ipAddress);
+            ReturnT withPrivateIPAddressStatic(String ipAddress);
         }
     }
 }

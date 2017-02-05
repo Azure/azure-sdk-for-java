@@ -7,43 +7,43 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.dns.MxRecordSet;
-import com.microsoft.azure.management.dns.MxRecordSets;
+import com.microsoft.azure.management.dns.NSRecordSet;
+import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link MxRecordSets}.
+ * Implementation of {@link NSRecordSets}.
  */
 @LangDefinition
-class MxRecordSetsImpl
-        extends ReadableWrappersImpl<MxRecordSet, MxRecordSetImpl, RecordSetInner>
-        implements MxRecordSets {
+class NSRecordSetsImpl
+        extends ReadableWrappersImpl<NSRecordSet, NSRecordSetImpl, RecordSetInner>
+        implements NSRecordSets {
 
     private final DnsZoneImpl dnsZone;
     private final RecordSetsInner client;
 
-    MxRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    NSRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
         this.dnsZone = dnsZone;
         this.client = client;
     }
 
     @Override
-    public MxRecordSetImpl getByName(String name) {
+    public NSRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 name,
-                RecordType.MX);
-        return new MxRecordSetImpl(this.dnsZone, inner, this.client);
+                RecordType.NS);
+        return new NSRecordSetImpl(this.dnsZone, inner, this.client);
     }
 
     @Override
-    public PagedList<MxRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.MX));
+    public PagedList<NSRecordSet> list() {
+        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.NS));
     }
 
     @Override
-    protected MxRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new MxRecordSetImpl(this.dnsZone, inner, this.client);
+    protected NSRecordSetImpl wrapModel(RecordSetInner inner) {
+        return new NSRecordSetImpl(this.dnsZone, inner, this.client);
     }
 }

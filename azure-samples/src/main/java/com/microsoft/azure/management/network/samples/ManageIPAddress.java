@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -37,10 +37,10 @@ public final class ManageIPAddress {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String publicIpAddressName1 = SdkContext.randomResourceName("pip1", 20);
-        final String publicIpAddressName2 = SdkContext.randomResourceName("pip2", 20);
-        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 20);
-        final String publicIpAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 20);
+        final String publicIPAddressName1 = SdkContext.randomResourceName("pip1", 20);
+        final String publicIPAddressName2 = SdkContext.randomResourceName("pip2", 20);
+        final String publicIPAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 20);
+        final String publicIPAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 20);
         final String vmName = SdkContext.randomResourceName("vm", 8);
         final String rgName = SdkContext.randomResourceName("rgNEMP", 24);
         final String userName = "tirekicker";
@@ -55,16 +55,16 @@ public final class ManageIPAddress {
 
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpAddressName1)
+            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIPAddressName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIpAddressLeafDNS1)
+                    .withLeafDomainLabel(publicIPAddressLeafDNS1)
                     .create();
 
             System.out.println("Created a public IP address");
 
             // Print public IP address details
-            Utils.print(publicIpAddress);
+            Utils.print(publicIPAddress);
 
             // Use the pre-created public IP for the new VM
 
@@ -76,8 +76,8 @@ public final class ManageIPAddress {
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withExistingPrimaryPublicIpAddress(publicIpAddress)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withExistingPrimaryPublicIPAddress(publicIPAddress)
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
@@ -96,7 +96,7 @@ public final class ManageIPAddress {
 
             System.out.println("Public IP address associated with the VM's primary NIC [After create]");
             // Print the public IP address details
-            Utils.print(vm.getPrimaryPublicIpAddress());
+            Utils.print(vm.getPrimaryPublicIPAddress());
 
 
             //============================================================
@@ -104,10 +104,10 @@ public final class ManageIPAddress {
 
             // Define a new public IP address
 
-            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIpAddressName2)
+            PublicIPAddress publicIPAddress2 = azure.publicIPAddresses().define(publicIPAddressName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIpAddressLeafDNS2)
+                    .withLeafDomainLabel(publicIPAddressLeafDNS2)
                     .create();
 
             // Update VM's primary NIC to use the new public IP address
@@ -116,7 +116,7 @@ public final class ManageIPAddress {
 
             NetworkInterface primaryNetworkInterface = vm.getPrimaryNetworkInterface();
             primaryNetworkInterface.update()
-                .withExistingPrimaryPublicIpAddress(publicIpAddress2)
+                .withExistingPrimaryPublicIPAddress(publicIPAddress2)
                 .apply();
 
 
@@ -126,7 +126,7 @@ public final class ManageIPAddress {
             // Get the associated public IP address for a virtual machine
             System.out.println("Public IP address associated with the VM's primary NIC [After Update]");
             vm.refresh();
-            Utils.print(vm.getPrimaryPublicIpAddress());
+            Utils.print(vm.getPrimaryPublicIPAddress());
 
 
             //============================================================
@@ -135,9 +135,9 @@ public final class ManageIPAddress {
             System.out.println("Removing public IP address associated with the VM");
             vm.refresh();
             primaryNetworkInterface = vm.getPrimaryNetworkInterface();
-            publicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
+            publicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIPAddress();
             primaryNetworkInterface.update()
-                .withoutPrimaryPublicIpAddress()
+                .withoutPrimaryPublicIPAddress()
                 .apply();
 
             System.out.println("Removed public IP address associated with the VM");
@@ -146,7 +146,7 @@ public final class ManageIPAddress {
             //============================================================
             // Delete the public ip
             System.out.println("Deleting the public IP address");
-            azure.publicIpAddresses().deleteById(publicIpAddress.id());
+            azure.publicIPAddresses().deleteById(publicIPAddress.id());
             System.out.println("Deleted the public IP address");
             return true;
         } catch (Exception e) {

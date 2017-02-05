@@ -82,7 +82,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
+                .withPrimaryPrivateIPAddressDynamic()
                 .withExistingNetworkSecurityGroup(nsg)
                 .create();
 

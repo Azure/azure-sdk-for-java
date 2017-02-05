@@ -73,8 +73,8 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
@@ -106,7 +106,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
             Utils.print(linuxVM);
 
             // De-provision the virtual machine
-            deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+            deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
 
             //=============================================================
             // Deallocate the virtual machine
@@ -162,8 +162,8 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
@@ -181,8 +181,8 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)

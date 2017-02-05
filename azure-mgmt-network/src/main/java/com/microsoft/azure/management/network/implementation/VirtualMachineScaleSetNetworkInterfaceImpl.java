@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -113,30 +113,30 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
-    public String primaryPrivateIp() {
-        VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = this.primaryIpConfiguration();
+    public String primaryPrivateIP() {
+        VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = this.primaryIPConfiguration();
         if (primaryIpConfig == null) {
             return null;
         }
-        return primaryIpConfig.privateIpAddress();
+        return primaryIpConfig.privateIPAddress();
     }
 
     @Override
-    public IPAllocationMethod primaryPrivateIpAllocationMethod() {
-        VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = this.primaryIpConfiguration();
+    public IPAllocationMethod primaryPrivateIPAllocationMethod() {
+        VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = this.primaryIPConfiguration();
         if (primaryIpConfig == null) {
             return null;
         }
-        return primaryIpConfig.privateIpAllocationMethod();
+        return primaryIpConfig.privateIPAllocationMethod();
     }
 
     @Override
-    public Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations() {
+    public Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigurations() {
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners == null || inners.size() == 0) {
-            return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIpConfiguration>());
+            return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIPConfiguration>());
         }
-        Map<String, VirtualMachineScaleSetNicIpConfiguration> nicIpConfigurations = new TreeMap<>();
+        Map<String, VirtualMachineScaleSetNicIPConfiguration> nicIpConfigurations = new TreeMap<>();
         for (NetworkInterfaceIPConfigurationInner inner : inners) {
             VirtualMachineScaleSetNicIpConfigurationImpl nicIpConfiguration = new VirtualMachineScaleSetNicIpConfigurationImpl(inner, this, this.networkManager);
             nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
@@ -145,8 +145,8 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
-    public VirtualMachineScaleSetNicIpConfiguration primaryIpConfiguration() {
-        for (VirtualMachineScaleSetNicIpConfiguration ipConfiguration : this.ipConfigurations().values()) {
+    public VirtualMachineScaleSetNicIPConfiguration primaryIPConfiguration() {
+        for (VirtualMachineScaleSetNicIPConfiguration ipConfiguration : this.ipConfigurations().values()) {
             if (ipConfiguration.isPrimary()) {
                 return ipConfiguration;
             }

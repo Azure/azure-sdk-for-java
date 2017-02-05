@@ -7,13 +7,15 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 
+import java.util.List;
+
 /**
- * An immutable client-side representation of a CName (canonical name) record set in Azure Dns Zone.
+ * An immutable client-side representation of an NS (name server) record set in Azure DNS Zone.
  */
 @Fluent
-public interface CnameRecordSet extends DnsRecordSet {
+public interface NSRecordSet extends DnsRecordSet {
     /**
-     * @return the canonical name (without a terminating dot) of CName record in this record set
+     * @return the name server names of NS (name server) records in this record set
      */
-    String canonicalName();
+    List<String> nameServers();
 }

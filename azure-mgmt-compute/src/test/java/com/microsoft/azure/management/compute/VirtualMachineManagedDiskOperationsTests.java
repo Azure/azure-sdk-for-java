@@ -35,8 +35,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -60,7 +60,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         Assert.assertEquals(osDisk.osType(), OperatingSystemTypes.LINUX);
         // Check the auto created public ip
         //
-        String publicIpId = virtualMachine.getPrimaryPublicIpAddressId();
+        String publicIpId = virtualMachine.getPrimaryPublicIPAddressId();
         Assert.assertNotNull(publicIpId);
         // Validates the options which are valid only for native disks
         //
@@ -112,8 +112,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -267,8 +267,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -284,7 +284,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .create();
         System.out.println("Waiting for some time before de-provision");
         sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
-        deprovisionAgentInLinuxVM(virtualMachine1.getPrimaryPublicIpAddress().fqdn(),
+        deprovisionAgentInLinuxVM(virtualMachine1.getPrimaryPublicIPAddress().fqdn(),
                 22,
                 uname,
                 password);
@@ -321,8 +321,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -352,8 +352,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
                 .withRootPassword(password);
@@ -425,8 +425,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -468,8 +468,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
                 .withRootPassword(password)
@@ -499,8 +499,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -522,8 +522,8 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRegion(region)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
                 .withRootPassword(password)

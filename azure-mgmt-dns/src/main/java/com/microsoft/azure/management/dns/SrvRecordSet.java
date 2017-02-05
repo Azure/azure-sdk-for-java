@@ -10,12 +10,12 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Srv (service) record set in Azure Dns Zone.
+ * An immutable client-side representation of an SVR (service) record set in Azure DNS Zone.
  */
 @Fluent
 public interface SrvRecordSet extends DnsRecordSet {
     /**
-     * @return the Srv records in this record set
+     * @return the SRV records in this record set
      */
     List<SrvRecord> records();
 }

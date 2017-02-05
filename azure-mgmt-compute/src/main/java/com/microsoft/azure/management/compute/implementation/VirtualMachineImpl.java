@@ -43,7 +43,7 @@ import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -280,50 +280,50 @@ class VirtualMachineImpl
     // Fluent methods for defining private IP association for the new primary network interface
     //
     @Override
-    public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
+    public VirtualMachineImpl withPrimaryPrivateIPAddressDynamic() {
         this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
-                .withPrimaryPrivateIpAddressDynamic();
+                .withPrimaryPrivateIPAddressDynamic();
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
+    public VirtualMachineImpl withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress) {
         this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
-                .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
+                .withPrimaryPrivateIPAddressStatic(staticPrivateIPAddress);
         return this;
     }
 
     // Fluent methods for defining public IP association for the new primary network interface
     //
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIpAddress(creatable);
+                .withNewPrimaryPublicIPAddress(creatable);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIpAddress(leafDnsLabel);
+                .withNewPrimaryPublicIPAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
+    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withExistingPrimaryPublicIpAddress(publicIpAddress);
+                .withExistingPrimaryPublicIPAddress(publicIPAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
+    public VirtualMachineImpl withoutPrimaryPublicIPAddress() {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate;
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -341,7 +341,7 @@ class VirtualMachineImpl
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
         Creatable<NetworkInterface> definitionCreatable = prepareNetworkInterface(name)
-                .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
+                .withNewPrimaryPublicIPAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
 
@@ -1192,13 +1192,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress getPrimaryPublicIpAddress() {
-        return this.getPrimaryNetworkInterface().primaryIpConfiguration().getPublicIpAddress();
+    public PublicIPAddress getPrimaryPublicIPAddress() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIPAddress();
     }
 
     @Override
-    public String getPrimaryPublicIpAddressId() {
-        return this.getPrimaryNetworkInterface().primaryIpConfiguration().publicIpAddressId();
+    public String getPrimaryPublicIPAddressId() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIPAddressId();
     }
 
     @Override
@@ -1713,7 +1713,7 @@ class VirtualMachineImpl
         return "{storage-base-url}" + containerName + "/" + blobName;
     }
 
-    private NetworkInterface.DefinitionStages.WithPrimaryPublicIpAddress prepareNetworkInterface(String name) {
+    private NetworkInterface.DefinitionStages.WithPrimaryPublicIPAddress prepareNetworkInterface(String name) {
         NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
@@ -1726,7 +1726,7 @@ class VirtualMachineImpl
         }
         return definitionWithNetwork
                 .withNewPrimaryNetwork("vnet" + name)
-                .withPrimaryPrivateIpAddressDynamic();
+                .withPrimaryPrivateIPAddressDynamic();
     }
 
     private void initializeDataDisks() {

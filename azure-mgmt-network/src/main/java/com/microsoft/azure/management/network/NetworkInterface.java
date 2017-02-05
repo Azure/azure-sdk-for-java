@@ -31,12 +31,12 @@ public interface NetworkInterface extends
     /**
      * @return the IP configurations of this network interface, indexed by their names
      */
-    Map<String, NicIpConfiguration> ipConfigurations();
+    Map<String, NicIPConfiguration> ipConfigurations();
 
     /**
      * @return the primary IP configuration of this network interface
      */
-    NicIpConfiguration primaryIpConfiguration();
+    NicIPConfiguration primaryIPConfiguration();
 
     /**
      * The entirety of the network interface definition.
@@ -161,24 +161,24 @@ public interface NetworkInterface extends
              *
              * @return the next stage of network interface definition
              */
-            WithCreate withPrimaryPrivateIpAddressDynamic();
+            WithCreate withPrimaryPrivateIPAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the specified existing virtual network
              * subnet to the network interface's primary IP configuration.
              *
-             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             * @param staticPrivateIPAddress the static IP address within the specified subnet to assign to
              *                               the network interface
              * @return the next stage of network interface definition
              */
-            WithCreate withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+            WithCreate withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress);
         }
 
         /**
          * The stage of the network interface definition allowing to associate public IP address with it's primary
          * IP configuration.
          */
-        interface WithPrimaryPublicIpAddress {
+        interface WithPrimaryPublicIPAddress {
             /**
              * Create a new public IP address to associate with network interface's primary IP configuration, based on
              * the provided definition.
@@ -186,7 +186,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
+            WithCreate withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -196,7 +196,7 @@ public interface NetworkInterface extends
              *
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewPrimaryPublicIpAddress();
+            WithCreate withNewPrimaryPublicIPAddress();
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -207,15 +207,15 @@ public interface NetworkInterface extends
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewPrimaryPublicIpAddress(String leafDnsLabel);
+            WithCreate withNewPrimaryPublicIPAddress(String leafDnsLabel);
 
             /**
              * Associates an existing public IP address with the network interface's primary IP configuration.
              *
-             * @param publicIpAddress an existing public IP address
+             * @param publicIPAddress an existing public IP address
              * @return the next stage of the network interface definition
              */
-            WithCreate withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+            WithCreate withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
         }
 
         /**
@@ -249,7 +249,7 @@ public interface NetworkInterface extends
              * @param name name for the IP configuration
              * @return the first stage of a secondary IP configuration definition
              */
-            NicIpConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIpConfiguration(String name);
+            NicIPConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIpConfiguration(String name);
         }
 
         /**
@@ -260,7 +260,7 @@ public interface NetworkInterface extends
         interface WithCreate extends
                 Creatable<NetworkInterface>,
                 Resource.DefinitionWithTags<WithCreate>,
-                WithPrimaryPublicIpAddress,
+                WithPrimaryPublicIPAddress,
                 WithNetworkSecurityGroup,
                 WithSecondaryIpConfiguration,
                 WithLoadBalancer {
@@ -320,24 +320,24 @@ public interface NetworkInterface extends
              *
              * @return the next stage of network interface update
              */
-            Update withPrimaryPrivateIpAddressDynamic();
+            Update withPrimaryPrivateIPAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the specified existing virtual network
              * subnet to the network interface's primary IP configuration.
              *
-             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             * @param staticPrivateIPAddress the static IP address within the specified subnet to assign to
              *                               the primary IP configuration
              * @return the next stage of network interface update
              */
-            Update withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+            Update withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress);
         }
 
         /**
          * The stage of the network interface update allowing to associate public IP address with it's primary
          * IP configuration.
          */
-        interface WithPrimaryPublicIpAddress {
+        interface WithPrimaryPublicIPAddress {
             /**
              * Create a new public IP address to associate the network interface's primary IP configuration,
              * based on the provided definition.
@@ -348,7 +348,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
+            Update withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -359,7 +359,7 @@ public interface NetworkInterface extends
              *
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIpAddress();
+            Update withNewPrimaryPublicIPAddress();
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -371,23 +371,23 @@ public interface NetworkInterface extends
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIpAddress(String leafDnsLabel);
+            Update withNewPrimaryPublicIPAddress(String leafDnsLabel);
 
             /**
              * Specifies that remove any public IP associated with the network interface's primary IP configuration.
              *
              * @return the next stage of the network interface update
              */
-            Update withoutPrimaryPublicIpAddress();
+            Update withoutPrimaryPublicIPAddress();
 
             /**
              * Associates an existing public IP address with the network interface's primary IP configuration.
              * if there is an existing public IP association then that will be removed in favour of this
              *
-             * @param publicIpAddress an existing public IP address
+             * @param publicIPAddress an existing public IP address
              * @return the next stage of the network interface update
              */
-            Update withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+            Update withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
         }
 
         /**
@@ -480,7 +480,7 @@ public interface NetworkInterface extends
              * @param name name for the IP configuration
              * @return the first stage of a secondary IP configuration definition
              */
-            NicIpConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
+            NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
 
             /**
              * Starts update of an IP configuration.
@@ -488,7 +488,7 @@ public interface NetworkInterface extends
              * @param name name of the IP configuration
              * @return the first stage of an IP configuration update
              */
-            NicIpConfiguration.Update updateIpConfiguration(String name);
+            NicIPConfiguration.Update updateIpConfiguration(String name);
         }
 
         /**
@@ -536,7 +536,7 @@ public interface NetworkInterface extends
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithPrimaryNetworkSubnet,
             UpdateStages.WithPrimaryPrivateIp,
-            UpdateStages.WithPrimaryPublicIpAddress,
+            UpdateStages.WithPrimaryPublicIPAddress,
             UpdateStages.WithNetworkSecurityGroup,
             UpdateStages.WithIpForwarding,
             UpdateStages.WithDnsServer,

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /**
- * Represents an record set collection associated with a Dns zone.
+ * Represents an record set collection associated with a DNS zone.
  */
 @LangDefinition
 class DnsRecordSetsImpl extends
@@ -30,7 +30,7 @@ class DnsRecordSetsImpl extends
      * Creates new DnsRecordSetsImpl.
      *
      * @param client the client to perform REST calls on record sets
-     * @param parent the parent Dns zone of the record set
+     * @param parent the parent DNS zone of the record set
      */
     DnsRecordSetsImpl(RecordSetsInner client, DnsZoneImpl parent) {
         super(parent, "RecordSet");
@@ -45,18 +45,18 @@ class DnsRecordSetsImpl extends
         return setDefaults(prepareDefine(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
-    void withCnameRecordSet(String name, String alias) {
-        CnameRecordSetImpl recordSet = CnameRecordSetImpl.newRecordSet(name, this.parent(), this.client);
+    void withCNameRecordSet(String name, String alias) {
+        CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.parent(), this.client);
         recordSet.inner().cnameRecord().withCname(alias);
         setDefaults(prepareDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
     }
 
-    DnsRecordSetImpl defineMxRecordSet(String name) {
-        return setDefaults(prepareDefine(MxRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+    DnsRecordSetImpl defineMXRecordSet(String name) {
+        return setDefaults(prepareDefine(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
-    DnsRecordSetImpl defineNsRecordSet(String name) {
-        return setDefaults(prepareDefine(NsRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+    DnsRecordSetImpl defineNSRecordSet(String name) {
+        return setDefaults(prepareDefine(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl definePtrRecordSet(String name) {
@@ -79,12 +79,12 @@ class DnsRecordSetsImpl extends
         return prepareUpdate(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
-    DnsRecordSetImpl updateMxRecordSet(String name) {
-        return prepareUpdate(MxRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    DnsRecordSetImpl updateMXRecordSet(String name) {
+        return prepareUpdate(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
-    DnsRecordSetImpl updateNsRecordSet(String name) {
-        return prepareUpdate(NsRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    DnsRecordSetImpl updateNSRecordSet(String name) {
+        return prepareUpdate(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
     DnsRecordSetImpl updatePtrRecordSet(String name) {
@@ -111,16 +111,16 @@ class DnsRecordSetsImpl extends
         prepareRemove(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
-    void withoutCnameRecordSet(String name) {
-        prepareRemove(CnameRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    void withoutCNameRecordSet(String name) {
+        prepareRemove(CNameRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
-    void withoutMxRecordSet(String name) {
-        prepareRemove(MxRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    void withoutMXRecordSet(String name) {
+        prepareRemove(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
-    void withoutNsRecordSet(String name) {
-        prepareRemove(NsRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    void withoutNSRecordSet(String name) {
+        prepareRemove(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client));
     }
 
     void withoutPtrRecordSet(String name) {

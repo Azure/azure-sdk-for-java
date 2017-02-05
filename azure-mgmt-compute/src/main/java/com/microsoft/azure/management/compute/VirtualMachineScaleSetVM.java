@@ -147,7 +147,7 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * @return true if this is a Windows virtual machine and Vm agent is provisioned, false otherwise
      */
-    boolean isWindowsVmAgentProvisioned();
+    boolean isWindowsVMAgentProvisioned();
 
     /**
      * @return true if this is a Windows virtual machine and automatic update is turned on, false otherwise

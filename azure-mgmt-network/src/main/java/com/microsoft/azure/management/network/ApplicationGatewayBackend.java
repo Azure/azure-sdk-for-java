@@ -34,7 +34,7 @@ public interface ApplicationGatewayBackend extends
      * @param ipAddress an IP address
      * @return true if the specified IP address is referenced by this backend, else false
      */
-    boolean containsIpAddress(String ipAddress);
+    boolean containsIPAddress(String ipAddress);
 
     /**
      * Checks whether the specified FQDN is referenced by this backend address pool.
@@ -66,7 +66,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
@@ -111,7 +111,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withIpAddress(String ipAddress);
+            Update withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
@@ -125,7 +125,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withoutIpAddress(String ipAddress);
+            Update withoutIPAddress(String ipAddress);
 
             /**
              * Ensure the specified address is not associated with this backend.
@@ -172,7 +172,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.

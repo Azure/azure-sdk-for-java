@@ -136,7 +136,7 @@ public interface WebAppBase extends
      * outbound connections. Those can be used when configuring firewall
      * rules for databases accessed by this web app.
      */
-    Set<String> outboundIpAddresses();
+    Set<String> outboundIPAddresses();
 
     /**
      * @return size of a function container

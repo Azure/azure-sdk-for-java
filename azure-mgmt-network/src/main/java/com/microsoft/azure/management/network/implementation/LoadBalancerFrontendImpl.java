@@ -20,7 +20,7 @@ import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -69,12 +69,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public String privateIpAddress() {
+    public String privateIPAddress() {
         return this.inner().privateIPAddress();
     }
 
     @Override
-    public IPAllocationMethod privateIpAllocationMethod() {
+    public IPAllocationMethod privateIPAllocationMethod() {
         return this.inner().privateIPAllocationMethod();
     }
 
@@ -84,7 +84,7 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public String publicIpAddressId() {
+    public String publicIPAddressId() {
         return this.inner().publicIPAddress().id();
     }
 
@@ -159,12 +159,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl withExistingPublicIpAddress(PublicIpAddress pip) {
-        return this.withExistingPublicIpAddress(pip.id());
+    public LoadBalancerFrontendImpl withExistingPublicIPAddress(PublicIPAddress pip) {
+        return this.withExistingPublicIPAddress(pip.id());
     }
 
     @Override
-    public LoadBalancerFrontendImpl withExistingPublicIpAddress(String resourceId) {
+    public LoadBalancerFrontendImpl withExistingPublicIPAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
         this.inner()
             .withPublicIPAddress(pipRef)
@@ -177,13 +177,13 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl withoutPublicIpAddress() {
+    public LoadBalancerFrontendImpl withoutPublicIPAddress() {
         this.inner().withPublicIPAddress(null);
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withPrivateIpAddressDynamic() {
+    public LoadBalancerFrontendImpl withPrivateIPAddressDynamic() {
         this.inner()
             .withPrivateIPAddress(null)
             .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
@@ -194,7 +194,7 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
+    public LoadBalancerFrontendImpl withPrivateIPAddressStatic(String ipAddress) {
         this.inner()
             .withPrivateIPAddress(ipAddress)
             .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
@@ -212,12 +212,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
+    public PublicIPAddress getPublicIPAddress() {
+        final String pipId = this.publicIPAddressId();
         if (pipId == null) {
             return null;
         } else {
-            return this.parent().manager().publicIpAddresses().getById(pipId);
+            return this.parent().manager().publicIPAddresses().getById(pipId);
         }
     }
 

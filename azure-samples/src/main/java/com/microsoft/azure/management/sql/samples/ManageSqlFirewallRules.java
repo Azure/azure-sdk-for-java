@@ -41,13 +41,13 @@ public final class ManageSqlFirewallRules {
         final String rgName = Utils.createRandomName("rgRSSDFW");
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = "myS3cureP@ssword";
-        final String firewallRuleIpAddress = "10.0.0.1";
-        final String firewallRuleStartIpAddress = "10.2.0.1";
-        final String firewallRuleEndIpAddress = "10.2.0.10";
+        final String firewallRuleIPAddress = "10.0.0.1";
+        final String firewallRuleStartIPAddress = "10.2.0.1";
+        final String firewallRuleEndIPAddress = "10.2.0.10";
         final String myFirewallName = "myFirewallRule";
-        final String myFirewallRuleIpAddress = "10.10.10.10";
-        final String otherFirewallRuleStartIpAddress = "121.12.12.1";
-        final String otherFirewallRuleEndIpAddress = "121.12.12.10";
+        final String myFirewallRuleIPAddress = "10.10.10.10";
+        final String otherFirewallRuleStartIPAddress = "121.12.12.1";
+        final String otherFirewallRuleEndIPAddress = "121.12.12.10";
         try {
 
             // ============================================================
@@ -59,8 +59,8 @@ public final class ManageSqlFirewallRules {
                     .withNewResourceGroup(rgName)
                     .withAdministratorLogin(administratorLogin)
                     .withAdministratorPassword(administratorPassword)
-                    .withNewFirewallRule(firewallRuleIpAddress)
-                    .withNewFirewallRule(firewallRuleStartIpAddress, firewallRuleEndIpAddress)
+                    .withNewFirewallRule(firewallRuleIPAddress)
+                    .withNewFirewallRule(firewallRuleStartIPAddress, firewallRuleEndIPAddress)
                     .create();
 
             Utils.print(sqlServer);
@@ -83,7 +83,7 @@ public final class ManageSqlFirewallRules {
             // Add new firewall rules.
             System.out.println("Creating a firewall rule in existing SQL Server");
             SqlFirewallRule firewallRule = sqlServer.firewallRules().define(myFirewallName)
-                    .withIpAddress(myFirewallRuleIpAddress)
+                    .withIPAddress(myFirewallRuleIPAddress)
                     .create();
 
             Utils.print(firewallRule);
@@ -96,12 +96,12 @@ public final class ManageSqlFirewallRules {
             System.out.println("Deleting and adding new firewall rules as part of SQL Server update.");
             sqlServer.update()
                     .withoutFirewallRule(myFirewallName)
-                    .withNewFirewallRule(otherFirewallRuleStartIpAddress, otherFirewallRuleEndIpAddress)
+                    .withNewFirewallRule(otherFirewallRuleStartIPAddress, otherFirewallRuleEndIPAddress)
                     .apply();
 
             for (SqlFirewallRule sqlFirewallRule: sqlServer.firewallRules().list()) {
                 // Print information of the firewall rule.
-                Utils.print(firewallRule);
+                Utils.print(sqlFirewallRule);
             }
 
             // Delete the SQL Server.

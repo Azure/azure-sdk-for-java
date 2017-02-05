@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
-import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
@@ -17,10 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * scale set.
  */
 @Fluent
-public interface VirtualMachineScaleSetNicIpConfiguration extends
-        NicIpConfigurationBase,
+public interface VirtualMachineScaleSetNicIPConfiguration extends
+        NicIPConfigurationBase,
         HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<VirtualMachineScaleSetNetworkInterface>,
-        HasPrivateIpAddress,
+        HasPrivateIPAddress,
         HasSubnet {
 }

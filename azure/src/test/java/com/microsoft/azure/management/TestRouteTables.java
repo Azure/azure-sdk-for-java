@@ -65,13 +65,13 @@ public class TestRouteTables {
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE1_NAME));
             Route route1 = routeTable.routes().get(ROUTE1_NAME);
             Assert.assertTrue(route1.destinationAddressPrefix().equalsIgnoreCase(route1AddressPrefix));
-            Assert.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(VIRTUAL_APPLIANCE_IP));
+            Assert.assertTrue(route1.nextHopIPAddress().equalsIgnoreCase(VIRTUAL_APPLIANCE_IP));
             Assert.assertTrue(route1.nextHopType().equals(RouteNextHopType.VIRTUAL_APPLIANCE));
 
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
             Route route2 = routeTable.routes().get(ROUTE2_NAME);
             Assert.assertTrue(route2.destinationAddressPrefix().equalsIgnoreCase(route2AddressPrefix));
-            Assert.assertTrue(route2.nextHopIpAddress() == null);
+            Assert.assertTrue(route2.nextHopIPAddress() == null);
             Assert.assertTrue(route2.nextHopType().equals(hopType));
 
             // Create a subnet that references the route table
@@ -151,7 +151,7 @@ public class TestRouteTables {
             info.append("\n\t\tName: ").append(route.name())
                 .append("\n\t\t\tDestination address prefix: ").append(route.destinationAddressPrefix())
                 .append("\n\t\t\tNext hop type: ").append(route.nextHopType().toString())
-                .append("\n\t\t\tNext hop IP address: ").append(route.nextHopIpAddress());
+                .append("\n\t\t\tNext hop IP address: ").append(route.nextHopIPAddress());
         }
 
         // Output associated subnets

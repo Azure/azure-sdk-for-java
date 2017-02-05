@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point to Dns zone management API in Azure.
+ * Entry point to DNS zone management API in Azure.
  */
 @Fluent
 public interface DnsZones extends

@@ -80,11 +80,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         checkVMInstances(virtualMachineScaleSet);
 
-        List<String> publicIpAddressIds = virtualMachineScaleSet.primaryPublicIpAddressIds();
-        PublicIpAddress publicIpAddress = this.networkManager.publicIpAddresses()
-                .getById(publicIpAddressIds.get(0));
+        List<String> publicIPAddressIds = virtualMachineScaleSet.primaryPublicIPAddressIds();
+        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses()
+                .getById(publicIPAddressIds.get(0));
 
-        String fqdn = publicIpAddress.fqdn();
+        String fqdn = publicIPAddress.fqdn();
         // Assert public load balancing connection
         if (!IS_MOCKED) {
             OkHttpClient client = new OkHttpClient();
@@ -101,8 +101,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = vm.listNetworkInterfaces();
             Assert.assertEquals(networkInterfaces.size(), 1);
             VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
-            VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = null;
-            primaryIpConfig = networkInterface.primaryIpConfiguration();
+            VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = null;
+            primaryIpConfig = networkInterface.primaryIPConfiguration();
             Assert.assertNotNull(primaryIpConfig);
             Integer sshFrontendPort = null;
             List<LoadBalancerInboundNatRule> natRules = primaryIpConfig.listAssociatedLoadBalancerInboundNatRules();
@@ -184,17 +184,17 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertNotNull(nic.macAddress());
             Assert.assertNotNull(nic.dnsServers());
             Assert.assertNotNull(nic.appliedDnsServers());
-            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  nic.ipConfigurations();
+            Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigs =  nic.ipConfigurations();
             Assert.assertEquals(ipConfigs.size(), 1);
-            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
-                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIPConfiguration> entry :ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIPConfiguration ipConfig = entry.getValue();
                 Assert.assertNotNull(ipConfig);
                 Assert.assertTrue(ipConfig.isPrimary());
                 Assert.assertNotNull(ipConfig.subnetName());
                 Assert.assertTrue(primaryNetwork.id().toLowerCase().equalsIgnoreCase(ipConfig.networkId()));
-                Assert.assertNotNull(ipConfig.privateIpAddress());
-                Assert.assertNotNull(ipConfig.privateIpAddressVersion());
-                Assert.assertNotNull(ipConfig.privateIpAllocationMethod());
+                Assert.assertNotNull(ipConfig.privateIPAddress());
+                Assert.assertNotNull(ipConfig.privateIPAddressVersion());
+                Assert.assertNotNull(ipConfig.privateIPAllocationMethod());
                 List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
                 // VMSS is created with a internet facing LB with two Backend pools so there will be two
                 // backends in ip-config as well
@@ -270,10 +270,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         nicCount = 0;
         for (VirtualMachineScaleSetNetworkInterface nic : nics) {
             nicCount++;
-            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  nic.ipConfigurations();
+            Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigs =  nic.ipConfigurations();
             Assert.assertEquals(ipConfigs.size(), 1);
-            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
-                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIPConfiguration> entry :ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIPConfiguration ipConfig = entry.getValue();
                 Assert.assertNotNull(ipConfig);
                 List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
                 Assert.assertNotNull(lbBackends);
@@ -333,7 +333,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertNotNull(vm.osUnmanagedDiskVhdUri());   // VMSS is un-managed, so osVhd should not be null
             Assert.assertNull(vm.storedImageUnmanagedVhdUri());
             Assert.assertFalse(vm.isWindowsAutoUpdateEnabled());
-            Assert.assertFalse(vm.isWindowsVmAgentProvisioned());
+            Assert.assertFalse(vm.isWindowsVMAgentProvisioned());
             Assert.assertTrue(vm.administratorUserName().equalsIgnoreCase("jvuser"));
             VirtualMachineImage vmImage = vm.getOSPlatformImage();
             Assert.assertNotNull(vmImage);

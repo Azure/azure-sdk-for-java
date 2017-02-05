@@ -7,22 +7,22 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.CnameRecord;
-import com.microsoft.azure.management.dns.CnameRecordSet;
+import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.RecordType;
 
 /**
- * Implementation of {@link CnameRecordSet}.
+ * Implementation of {@link CNameRecordSet}.
  */
 @LangDefinition
-class CnameRecordSetImpl
+class CNameRecordSetImpl
         extends DnsRecordSetImpl
-        implements CnameRecordSet {
-    CnameRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        implements CNameRecordSet {
+    CNameRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parent, innerModel, client);
     }
 
-    static CnameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
-        return new CnameRecordSetImpl(parent,
+    static CNameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new CNameRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.CNAME.toString())

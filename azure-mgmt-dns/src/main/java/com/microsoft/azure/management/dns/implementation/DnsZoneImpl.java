@@ -8,10 +8,10 @@ package com.microsoft.azure.management.dns.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
-import com.microsoft.azure.management.dns.CnameRecordSets;
+import com.microsoft.azure.management.dns.CNameRecordSets;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.dns.MxRecordSets;
-import com.microsoft.azure.management.dns.NsRecordSets;
+import com.microsoft.azure.management.dns.MXRecordSets;
+import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.PtrRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecordSet;
@@ -42,9 +42,9 @@ public class DnsZoneImpl
 
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
-    private CnameRecordSets cnameRecordSets;
-    private MxRecordSets mxRecordSets;
-    private NsRecordSets nsRecordSets;
+    private CNameRecordSets cnameRecordSets;
+    private MXRecordSets mxRecordSets;
+    private NSRecordSets nsRecordSets;
     private PtrRecordSets ptrRecordSets;
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
@@ -88,17 +88,17 @@ public class DnsZoneImpl
     }
 
     @Override
-    public CnameRecordSets cnameRecordSets() {
+    public CNameRecordSets cNameRecordSets() {
         return this.cnameRecordSets;
     }
 
     @Override
-    public MxRecordSets mxRecordSets() {
+    public MXRecordSets mxRecordSets() {
         return this.mxRecordSets;
     }
 
     @Override
-    public NsRecordSets nsRecordSets() {
+    public NSRecordSets nsRecordSets() {
         return this.nsRecordSets;
     }
 
@@ -136,19 +136,19 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZoneImpl withCnameRecordSet(String name, String alias) {
-        recordSetsImpl.withCnameRecordSet(name, alias);
+    public DnsZoneImpl withCNameRecordSet(String name, String alias) {
+        recordSetsImpl.withCNameRecordSet(name, alias);
         return this;
     }
 
     @Override
-    public DnsRecordSetImpl defineMxRecordSet(String name) {
-        return recordSetsImpl.defineMxRecordSet(name);
+    public DnsRecordSetImpl defineMXRecordSet(String name) {
+        return recordSetsImpl.defineMXRecordSet(name);
     }
 
     @Override
-    public DnsRecordSetImpl defineNsRecordSet(String name) {
-        return recordSetsImpl.defineNsRecordSet(name);
+    public DnsRecordSetImpl defineNSRecordSet(String name) {
+        return recordSetsImpl.defineNSRecordSet(name);
     }
 
     @Override
@@ -177,13 +177,13 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsRecordSetImpl updateMxRecordSet(String name) {
-        return recordSetsImpl.updateMxRecordSet(name);
+    public DnsRecordSetImpl updateMXRecordSet(String name) {
+        return recordSetsImpl.updateMXRecordSet(name);
     }
 
     @Override
-    public DnsRecordSetImpl updateNsRecordSet(String name) {
-        return recordSetsImpl.updateNsRecordSet(name);
+    public DnsRecordSetImpl updateNSRecordSet(String name) {
+        return recordSetsImpl.updateNSRecordSet(name);
     }
 
     @Override
@@ -219,20 +219,20 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZoneImpl withoutCnameRecordSet(String name) {
-        recordSetsImpl.withoutCnameRecordSet(name);
+    public DnsZoneImpl withoutCNameRecordSet(String name) {
+        recordSetsImpl.withoutCNameRecordSet(name);
         return this;
     }
 
     @Override
-    public DnsZoneImpl withoutMxRecordSet(String name) {
-        recordSetsImpl.withoutMxRecordSet(name);
+    public DnsZoneImpl withoutMXRecordSet(String name) {
+        recordSetsImpl.withoutMXRecordSet(name);
         return this;
     }
 
     @Override
-    public DnsZoneImpl withoutNsRecordSet(String name) {
-        recordSetsImpl.withoutNsRecordSet(name);
+    public DnsZoneImpl withoutNSRecordSet(String name) {
+        recordSetsImpl.withoutNSRecordSet(name);
         return this;
     }
 
@@ -284,9 +284,9 @@ public class DnsZoneImpl
     private void initRecordSets() {
         this.aRecordSets = new ARecordSetsImpl(this, this.recordSetsClient);
         this.aaaaRecordSets = new AaaaRecordSetsImpl(this, this.recordSetsClient);
-        this.cnameRecordSets = new CnameRecordSetsImpl(this, this.recordSetsClient);
-        this.mxRecordSets = new MxRecordSetsImpl(this, this.recordSetsClient);
-        this.nsRecordSets = new NsRecordSetsImpl(this, this.recordSetsClient);
+        this.cnameRecordSets = new CNameRecordSetsImpl(this, this.recordSetsClient);
+        this.mxRecordSets = new MXRecordSetsImpl(this, this.recordSetsClient);
+        this.nsRecordSets = new NSRecordSetsImpl(this, this.recordSetsClient);
         this.ptrRecordSets = new PtrRecordSetsImpl(this, this.recordSetsClient);
         this.srvRecordSets = new SrvRecordSetsImpl(this, this.recordSetsClient);
         this.txtRecordSets = new TxtRecordSetsImpl(this, this.recordSetsClient);
