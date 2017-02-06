@@ -270,8 +270,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             try {
                 keyVaultClient.getKey(keyId.baseIdentifier());
             } catch (KeyVaultErrorException e) {
-                Assert.assertNotNull(e.getBody().error());
-                Assert.assertEquals("KeyNotFound", e.getBody().error().code());
+                Assert.assertNotNull(e.body().error());
+                Assert.assertEquals("KeyNotFound", e.body().error().code());
             }
         }
 
@@ -323,7 +323,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
                         Thread.sleep(failureCount * 1500);
                         continue;
@@ -334,7 +334,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         PagedList<KeyItem> listResult = keyVaultClient.listKeys(getVaultUri(), PAGELIST_MAX_KEYS);
-        Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
+        Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().items().size());
 
         HashSet<String> toDelete = new HashSet<String>();
 
@@ -354,7 +354,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
             catch(KeyVaultErrorException e){
                 // Ignore forbidden exception for certificate keys that cannot be deleted
-                if(!e.getBody().error().code().equals("Forbidden"))
+                if(!e.body().error().code().equals("Forbidden"))
                     throw e;
             }
         }
@@ -373,7 +373,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
                         Thread.sleep(failureCount * 1500);
                         continue;

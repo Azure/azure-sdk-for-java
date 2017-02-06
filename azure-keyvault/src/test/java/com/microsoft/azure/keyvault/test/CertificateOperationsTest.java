@@ -187,8 +187,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
 
@@ -240,8 +240,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
 
@@ -337,8 +337,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
 
@@ -418,8 +418,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         }
         catch(KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
 
@@ -473,8 +473,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
     
@@ -577,8 +577,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
     }
     
@@ -661,7 +661,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
                         Thread.sleep(failureCount * 1500);
                         continue;
@@ -672,7 +672,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         }
 
         PagedList<CertificateItem> listResult = keyVaultClient.listCertificates(getVaultUri(), PAGELIST_MAX_CERTS);
-        Assert.assertTrue(PAGELIST_MAX_CERTS >= listResult.currentPage().getItems().size());
+        Assert.assertTrue(PAGELIST_MAX_CERTS >= listResult.currentPage().items().size());
 
         HashSet<String> toDelete = new HashSet<String>();
 
@@ -722,7 +722,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
                         Thread.sleep(failureCount * 1500);
                         continue;
@@ -733,7 +733,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         }
 
         PagedList<CertificateItem> listResult = keyVaultClient.listCertificateVersions(getVaultUri(), certificateName, PAGELIST_MAX_CERTS);
-        Assert.assertTrue(PAGELIST_MAX_CERTS >= listResult.currentPage().getItems().size());
+        Assert.assertTrue(PAGELIST_MAX_CERTS >= listResult.currentPage().items().size());
 
         listResult = keyVaultClient.listCertificateVersions(getVaultUri(), certificateName);
 
@@ -816,8 +816,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificateIssuer(getVaultUri(), certificateIssuerName);
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("CertificateIssuerNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("CertificateIssuerNotFound", e.body().error().code());
         }
     }
 
@@ -872,8 +872,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         try {
             keyVaultClient.getCertificateContacts(getVaultUri());
         } catch (KeyVaultErrorException e) {
-            Assert.assertNotNull(e.getBody().error());
-            Assert.assertEquals("ContactsNotFound", e.getBody().error().code());
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("ContactsNotFound", e.body().error().code());
         }
     }
 

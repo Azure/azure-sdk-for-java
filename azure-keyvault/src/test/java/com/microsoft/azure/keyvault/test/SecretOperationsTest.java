@@ -24,7 +24,6 @@ import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.SecretItem;
 import com.microsoft.azure.keyvault.requests.SetSecretRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
@@ -68,9 +67,8 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void deserializeWithExtraFieldTest() throws Exception {
-        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
-        ObjectMapper mapper = mapperAdapter.getObjectMapper();
-        KeyVaultError error = mapper.readValue("{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}", KeyVaultError.class);
+    	String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}";
+        KeyVaultError error = keyVaultClient.serializerAdapter().deserialize(content, KeyVaultError.class);
         Assert.assertEquals(error.error().message(), "Secret not found: javaSecret");
         Assert.assertEquals(error.error().code(), "SecretNotFound");
     }
@@ -90,10 +88,10 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             Assert.fail("Should throw exception for disabled secret.");
         }
         catch (KeyVaultErrorException e) {
-            Assert.assertEquals(e.getBody().error().code(), "Forbidden");
-            Assert.assertNotNull(e.getBody().error().message());
-            Assert.assertNotNull(e.getBody().error().innerError());
-            Assert.assertEquals(e.getBody().error().innerError().code(), "SecretDisabled");
+            Assert.assertEquals(e.body().error().code(), "Forbidden");
+            Assert.assertNotNull(e.body().error().message());
+            Assert.assertNotNull(e.body().error().innerError());
+            Assert.assertEquals(e.body().error().innerError().code(), "SecretDisabled");
         }
         catch (Exception e) {
             Assert.fail("Should throw KeyVaultErrorException for disabled secret.");
@@ -204,8 +202,8 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             try {
                 keyVaultClient.getSecret(secretId.baseIdentifier());
             } catch (KeyVaultErrorException e) {
-                Assert.assertNotNull(e.getBody().error().code());
-                Assert.assertEquals("SecretNotFound", e.getBody().error().code());
+                Assert.assertNotNull(e.body().error().code());
+                Assert.assertEquals("SecretNotFound", e.body().error().code());
             }
         }
 
@@ -225,7 +223,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
                         Thread.sleep(failureCount * 1500);
                         continue;
@@ -236,7 +234,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
-        Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
+        Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().items().size());
 
         HashSet<String> toDelete = new HashSet<String>();
 
@@ -256,7 +254,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
             catch(KeyVaultErrorException e){
                 // Ignore forbidden exception for certificate secrets that cannot be deleted
-                if(!e.getBody().error().code().equals("Forbidden"))
+                if(!e.body().error().code().equals("Forbidden"))
                     throw e;
             }
         }
@@ -276,7 +274,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                     break;
                 } catch (KeyVaultErrorException e) {
                     ++failureCount;
-                    if (e.getBody().error().code().equals("Throttled")) {
+                    if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Throttled!");
                         Thread.sleep(failureCount * 1500);
                         continue;
@@ -287,7 +285,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         PagedList<SecretItem> listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME, PAGELIST_MAX_SECRETS);
-        Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
+        Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().items().size());
 
         listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME);
         for (SecretItem item : listResult) {
