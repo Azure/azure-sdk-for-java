@@ -117,7 +117,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public WebApps webApps() {
         if (webApps == null) {
-            webApps = new WebAppsImpl(innerManagementClient.webApps(), this, innerManagementClient);
+            webApps = new WebAppsImpl(this);
         }
         return webApps;
     }
@@ -127,7 +127,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServicePlans appServicePlans() {
         if (appServicePlans == null) {
-            appServicePlans = new AppServicePlansImpl(innerManagementClient.appServicePlans(), this);
+            appServicePlans = new AppServicePlansImpl(this);
         }
         return appServicePlans;
     }
@@ -137,7 +137,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceCertificateOrders certificateOrders() {
         if (appServiceCertificateOrders == null) {
-            appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(innerManagementClient.appServiceCertificateOrders(), this);
+            appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(this);
         }
         return appServiceCertificateOrders;
     }
@@ -147,7 +147,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceCertificates certificates() {
         if (appServiceCertificates == null) {
-            appServiceCertificates = new AppServiceCertificatesImpl(innerManagementClient.certificates(), this);
+            appServiceCertificates = new AppServiceCertificatesImpl(this);
         }
         return appServiceCertificates;
     }
@@ -157,7 +157,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceDomains domains() {
         if (appServiceDomains == null) {
-            appServiceDomains = new AppServiceDomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
+            appServiceDomains = new AppServiceDomainsImpl(this);
         }
         return appServiceDomains;
     }

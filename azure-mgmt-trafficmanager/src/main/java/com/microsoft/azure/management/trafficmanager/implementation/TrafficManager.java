@@ -92,9 +92,7 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
      */
     public TrafficManagerProfiles profiles() {
         if (this.profiles == null) {
-            this.profiles = new TrafficManagerProfilesImpl(
-                    super.innerManagementClient,
-                    this);
+            this.profiles = new TrafficManagerProfilesImpl(this);
         }
         return this.profiles;
     }

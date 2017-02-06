@@ -93,9 +93,7 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClientImp
      */
     public CdnProfiles profiles() {
         if (this.profiles == null) {
-            this.profiles = new CdnProfilesImpl(
-                    super.innerManagementClient,
-                    this);
+            this.profiles = new CdnProfilesImpl(this);
         }
         return this.profiles;
     }

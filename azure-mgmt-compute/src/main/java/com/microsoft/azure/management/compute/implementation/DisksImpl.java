@@ -27,10 +27,10 @@ class DisksImpl
         ComputeManager>
         implements Disks {
 
-    DisksImpl(DisksInner client,
-              ComputeManager computeManager) {
-        super(client, computeManager);
+    DisksImpl(ComputeManager computeManager) {
+        super(computeManager.inner().disks(), computeManager);
     }
+
     @Override
     public String grantAccess(String resourceGroupName,
                               String diskName,
@@ -39,51 +39,51 @@ class DisksImpl
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.innerCollection.grantAccess(resourceGroupName,
+        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName,
                 diskName, grantAccessDataInner);
         return accessUriInner.accessSAS();
     }
 
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
-        this.innerCollection.revokeAccess(resourceGroupName, diskName);
+        this.inner().revokeAccess(resourceGroupName, diskName);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     public Disk getByGroup(String resourceGroupName, String name) {
-        DiskInner inner = this.innerCollection.get(resourceGroupName, name);
+        DiskInner inner = this.inner().get(resourceGroupName, name);
         return wrapModel(inner);
     }
 
     @Override
     public PagedList<Disk> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     public PagedList<Disk> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     protected DiskImpl wrapModel(String name) {
         return new DiskImpl(name,
                 new DiskInner(),
-                this.innerCollection,
-                myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
     protected DiskImpl wrapModel(DiskInner inner) {
         return new DiskImpl(inner.name(),
                 inner,
-                this.innerCollection,
-                myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override

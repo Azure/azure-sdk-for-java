@@ -92,9 +92,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(
-                    super.innerManagementClient.storageAccounts(),
-                    this);
+            storageAccounts = new StorageAccountsImpl(this);
         }
         return storageAccounts;
     }

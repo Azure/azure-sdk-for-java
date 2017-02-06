@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Completable;
 
 /**
- *  Implementation for {@link NetworkSecurityGroups}.
+ *  Implementation for NetworkSecurityGroups.
  */
 @LangDefinition
 class NetworkSecurityGroupsImpl
@@ -28,25 +28,23 @@ class NetworkSecurityGroupsImpl
             NetworkManager>
         implements NetworkSecurityGroups {
 
-    NetworkSecurityGroupsImpl(
-            final NetworkSecurityGroupsInner innerCollection,
-            final NetworkManager networkManager) {
-        super(innerCollection, networkManager);
+    NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().networkSecurityGroups(), networkManager);
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
@@ -69,7 +67,7 @@ class NetworkSecurityGroupsImpl
             }
         }
 
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -85,8 +83,8 @@ class NetworkSecurityGroupsImpl
         return new NetworkSecurityGroupImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
@@ -97,7 +95,7 @@ class NetworkSecurityGroupsImpl
         return new NetworkSecurityGroupImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 }

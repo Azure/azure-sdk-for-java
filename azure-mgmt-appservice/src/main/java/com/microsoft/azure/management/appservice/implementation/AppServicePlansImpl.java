@@ -29,28 +29,28 @@ class AppServicePlansImpl
         AppServiceManager>
         implements AppServicePlans {
 
-    AppServicePlansImpl(AppServicePlansInner innerCollection, AppServiceManager manager) {
-        super(innerCollection, manager);
+    AppServicePlansImpl(AppServiceManager manager) {
+        super(manager.inner().appServicePlans(), manager);
     }
 
     @Override
     public AppServicePlan getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     public PagedList<AppServicePlan> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     protected AppServicePlanImpl wrapModel(String name) {
-        return new AppServicePlanImpl(name, new AppServicePlanInner(), innerCollection, myManager);
+        return new AppServicePlanImpl(name, new AppServicePlanInner(), this.inner(), this.manager());
     }
 
     @Override
@@ -58,7 +58,7 @@ class AppServicePlansImpl
         if (inner == null) {
             return null;
         }
-        return new AppServicePlanImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServicePlanImpl(inner.name(), inner, this.inner(), this.manager());
     }
 
     @Override
@@ -68,7 +68,7 @@ class AppServicePlansImpl
 
     @Override
     public Observable<AppServicePlan> getByIdAsync(String id) {
-        return innerCollection.getAsync(
+        return this.inner().getAsync(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id))
                 .map(new Func1<AppServicePlanInner, AppServicePlan>() {

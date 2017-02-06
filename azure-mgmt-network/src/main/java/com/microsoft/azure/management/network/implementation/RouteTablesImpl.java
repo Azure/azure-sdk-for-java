@@ -25,30 +25,28 @@ class RouteTablesImpl
             NetworkManager>
         implements RouteTables {
 
-    RouteTablesImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.routeTables(), networkManager);
+    RouteTablesImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().routeTables(), networkManager);
     }
 
     @Override
     public PagedList<RouteTable> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<RouteTable> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public RouteTableImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -65,8 +63,8 @@ class RouteTablesImpl
         return new RouteTableImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
@@ -74,7 +72,7 @@ class RouteTablesImpl
         return new RouteTableImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 }

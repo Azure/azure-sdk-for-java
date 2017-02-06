@@ -26,30 +26,28 @@ class ApplicationGatewaysImpl
             NetworkManager>
         implements ApplicationGateways {
 
-    ApplicationGatewaysImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.applicationGateways(), networkManager);
+    ApplicationGatewaysImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().applicationGateways(), networkManager);
     }
 
     @Override
     public PagedList<ApplicationGateway> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<ApplicationGateway> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public ApplicationGatewayImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -65,8 +63,8 @@ class ApplicationGatewaysImpl
         return new ApplicationGatewayImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
@@ -74,7 +72,7 @@ class ApplicationGatewaysImpl
         return (inner == null) ? null : new ApplicationGatewayImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 }

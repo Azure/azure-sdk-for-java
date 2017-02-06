@@ -87,9 +87,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
      */
     public DnsZones zones() {
         if (this.zones == null) {
-            this.zones = new DnsZonesImpl(
-                    super.innerManagementClient,
-                    this);
+            this.zones = new DnsZonesImpl(this);
         }
         return this.zones;
     }

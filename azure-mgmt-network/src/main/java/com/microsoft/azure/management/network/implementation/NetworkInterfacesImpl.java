@@ -25,30 +25,28 @@ class NetworkInterfacesImpl
             NetworkManager>
         implements NetworkInterfaces {
 
-    NetworkInterfacesImpl(
-            final NetworkInterfacesInner client,
-            final NetworkManager networkManager) {
-        super(client, networkManager);
+    NetworkInterfacesImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().networkInterfaces(), networkManager);
     }
 
     @Override
     public PagedList<NetworkInterface> list() {
-        return wrapList(innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) {
-        return wrapList(innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -58,8 +56,8 @@ class NetworkInterfacesImpl
                                                                                         String name) {
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
                 scaleSetName,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
         return scaleSetNetworkInterfaces.getByVirtualMachineInstanceId(instanceId, name);
     }
 
@@ -68,8 +66,8 @@ class NetworkInterfacesImpl
                                                                                           String scaleSetName) {
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
                 scaleSetName,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
         return scaleSetNetworkInterfaces.list();
     }
 
@@ -84,8 +82,8 @@ class NetworkInterfacesImpl
                                                                                                     String instanceId) {
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
                 scaleSetName,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
         return scaleSetNetworkInterfaces.listByVirtualMachineInstanceId(instanceId);
     }
 
@@ -101,8 +99,8 @@ class NetworkInterfacesImpl
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
         return new NetworkInterfaceImpl(name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                super.manager());
     }
 
     @Override
@@ -112,7 +110,7 @@ class NetworkInterfacesImpl
         }
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                super.manager());
     }
 }

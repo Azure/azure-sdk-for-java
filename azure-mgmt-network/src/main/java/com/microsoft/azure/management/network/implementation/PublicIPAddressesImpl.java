@@ -26,30 +26,28 @@ class PublicIPAddressesImpl
             NetworkManager>
         implements PublicIPAddresses {
 
-    PublicIPAddressesImpl(
-            final PublicIPAddressesInner client,
-            final NetworkManager networkManager) {
-        super(client, networkManager);
+    PublicIPAddressesImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().publicIPAddresses(), networkManager);
     }
 
     @Override
     public PagedList<PublicIPAddress> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<PublicIPAddress> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public PublicIPAddressImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -70,8 +68,8 @@ class PublicIPAddressesImpl
         return new PublicIPAddressImpl(
                 name,
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
@@ -82,7 +80,7 @@ class PublicIPAddressesImpl
         return new PublicIPAddressImpl(
                 inner.id(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 }

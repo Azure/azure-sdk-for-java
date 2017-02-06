@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Completable;
 
 /**
- * Implementation of {@link DnsZones}.
+ * Implementation of DnsZones.
  */
 @LangDefinition
 class DnsZonesImpl extends GroupableResourcesImpl<
@@ -23,33 +23,29 @@ class DnsZonesImpl extends GroupableResourcesImpl<
         ZonesInner,
         DnsZoneManager>
         implements DnsZones {
-    private final RecordSetsInner recordSetsClient;
 
-    DnsZonesImpl(
-            final DnsManagementClientImpl dnsManagementClient,
-            final DnsZoneManager dnsZoneManager) {
-        super(dnsManagementClient.zones(), dnsZoneManager);
-        this.recordSetsClient = dnsManagementClient.recordSets();
+    DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
+        super(dnsZoneManager.inner().zones(), dnsZoneManager);
     }
 
     @Override
     public PagedList<DnsZone> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<DnsZone> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
     public DnsZone getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -61,18 +57,18 @@ class DnsZonesImpl extends GroupableResourcesImpl<
     protected DnsZoneImpl wrapModel(String name) {
         return new DnsZoneImpl(name,
                 new ZoneInner(),
-                this.innerCollection,
-                this.recordSetsClient,
-                this.myManager);
+                this.inner(),
+                this.manager().inner().recordSets(),
+                this.manager());
     }
 
     @Override
     protected DnsZoneImpl wrapModel(ZoneInner inner) {
         return new DnsZoneImpl(inner.name(),
                 inner,
-                this.innerCollection,
-                this.recordSetsClient,
-                this.myManager);
+                this.inner(),
+                this.manager().inner().recordSets(),
+                this.manager());
     }
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {

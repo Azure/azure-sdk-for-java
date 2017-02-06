@@ -108,7 +108,6 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
     public Vaults vaults() {
         if (vaults == null) {
             vaults = new VaultsImpl(
-                    super.innerManagementClient.vaults(),
                     this,
                     graphRbacManager,
                     tenantId);

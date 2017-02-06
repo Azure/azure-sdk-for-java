@@ -23,22 +23,10 @@ public class BatchAccountsImpl
         extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
-    private ApplicationsInner applicationsClient;
-    private ApplicationPackagesInner applicationPackagesClient;
-    private LocationsInner locationClient;
 
-    protected BatchAccountsImpl(
-            BatchAccountsInner innerCollection,
-            BatchManager manager,
-            ApplicationsInner applicationsClient,
-            ApplicationPackagesInner applicationPackagesClient,
-            LocationsInner locationClient,
-            StorageManager storageManager) {
-        super(innerCollection, manager);
+    protected BatchAccountsImpl(BatchManager manager, StorageManager storageManager) {
+        super(manager.inner().batchAccounts(), manager);
         this.storageManager = storageManager;
-        this.applicationsClient = applicationsClient;
-        this.applicationPackagesClient = applicationPackagesClient;
-        this.locationClient = locationClient;
     }
 
     @Override
@@ -53,21 +41,21 @@ public class BatchAccountsImpl
         return new BatchAccountImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager,
-                this.applicationsClient,
-                this.applicationPackagesClient,
+                this.inner(),
+                this.manager(),
+                this.manager().inner().applications(),
+                this.manager().inner().applicationPackages(),
                 this.storageManager);
     }
 
     @Override
     public PagedList<BatchAccount> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<BatchAccount> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -78,10 +66,10 @@ public class BatchAccountsImpl
         return new BatchAccountImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager,
-                this.applicationsClient,
-                this.applicationPackagesClient,
+                this.inner(),
+                this.manager(),
+                this.manager().inner().applications(),
+                this.manager().inner().applicationPackages(),
                 this.storageManager);
     }
 
@@ -92,11 +80,11 @@ public class BatchAccountsImpl
 
     @Override
     public BatchAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public int getBatchAccountQuotaByLocation(Region region) {
-        return this.locationClient.getQuotas(region.toString()).accountQuota();
+        return this.manager().inner().locations().getQuotas(region.toString()).accountQuota();
     }
 }

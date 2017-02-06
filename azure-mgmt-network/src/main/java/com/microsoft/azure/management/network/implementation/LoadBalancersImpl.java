@@ -25,30 +25,28 @@ class LoadBalancersImpl
             NetworkManager>
         implements LoadBalancers {
 
-    LoadBalancersImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.loadBalancers(), networkManager);
+    LoadBalancersImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().loadBalancers(), networkManager);
     }
 
     @Override
     public PagedList<LoadBalancer> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<LoadBalancer> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public LoadBalancerImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -64,8 +62,8 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.inner(),
+                this.manager());
     }
 
     @Override
@@ -76,7 +74,7 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.inner(),
+                this.manager());
     }
 }

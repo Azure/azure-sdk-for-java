@@ -16,25 +16,13 @@ class SqlServersImpl
         extends GroupableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 
-    private final ElasticPoolsInner elasticPoolsInner;
-    private final DatabasesInner databasesInner;
-    private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
-
-    protected SqlServersImpl(
-            ServersInner innerCollection,
-            ElasticPoolsInner elasticPoolsInner,
-            DatabasesInner databasesInner,
-            RecommendedElasticPoolsInner recommendedElasticPoolsInner,
-            SqlServerManager manager) {
-        super(innerCollection, manager);
-        this.elasticPoolsInner = elasticPoolsInner;
-        this.databasesInner = databasesInner;
-        this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
+    protected SqlServersImpl(SqlServerManager manager) {
+        super(manager.inner().servers(), manager);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -44,21 +32,21 @@ class SqlServersImpl
         return new SqlServerImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager,
-                this.elasticPoolsInner,
-                this.databasesInner,
-                this.recommendedElasticPoolsInner);
+                this.inner(),
+                this.manager(),
+                this.manager().inner().elasticPools(),
+                this.manager().inner().databases(),
+                this.manager().inner().recommendedElasticPools());
     }
 
     @Override
     public PagedList<SqlServer> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<SqlServer> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -70,11 +58,11 @@ class SqlServersImpl
         return new SqlServerImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager,
-                this.elasticPoolsInner,
-                this.databasesInner,
-                this.recommendedElasticPoolsInner);
+                this.inner(),
+                this.manager(),
+                this.manager().inner().elasticPools(),
+                this.manager().inner().databases(),
+                this.manager().inner().recommendedElasticPools());
     }
 
     @Override
@@ -84,6 +72,6 @@ class SqlServersImpl
 
     @Override
     public SqlServer getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.getByResourceGroup(groupName, name));
+        return wrapModel(this.inner().getByResourceGroup(groupName, name));
     }
 }

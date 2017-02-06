@@ -29,28 +29,28 @@ class AppServiceCertificateOrdersImpl
         AppServiceManager>
         implements AppServiceCertificateOrders {
 
-    AppServiceCertificateOrdersImpl(AppServiceCertificateOrdersInner innerCollection, AppServiceManager manager) {
-        super(innerCollection, manager);
+    AppServiceCertificateOrdersImpl(AppServiceManager manager) {
+        super(manager.inner().appServiceCertificateOrders(), manager);
     }
 
     @Override
     public AppServiceCertificateOrder getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteCertificateOrderAsync(groupName, name).toCompletable();
+        return this.inner().deleteCertificateOrderAsync(groupName, name).toCompletable();
     }
 
     @Override
     public PagedList<AppServiceCertificateOrder> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     protected AppServiceCertificateOrderImpl wrapModel(String name) {
-        return new AppServiceCertificateOrderImpl(name, new AppServiceCertificateOrderInner(), innerCollection, myManager);
+        return new AppServiceCertificateOrderImpl(name, new AppServiceCertificateOrderInner(), this.inner(), this.manager());
     }
 
     @Override
@@ -58,7 +58,7 @@ class AppServiceCertificateOrdersImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateOrderImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServiceCertificateOrderImpl(inner.name(), inner, this.inner(), this.manager());
     }
 
     @Override
@@ -68,7 +68,7 @@ class AppServiceCertificateOrdersImpl
 
     @Override
     public Observable<AppServiceCertificateOrder> getByGroupAsync(String resourceGroupName, String name) {
-        return innerCollection.getAsync(resourceGroupName, name)
+        return this.inner().getAsync(resourceGroupName, name)
                 .map(new Func1<AppServiceCertificateOrderInner, AppServiceCertificateOrder>() {
                     @Override
                     public AppServiceCertificateOrder call(AppServiceCertificateOrderInner appServiceCertificateOrderInner) {

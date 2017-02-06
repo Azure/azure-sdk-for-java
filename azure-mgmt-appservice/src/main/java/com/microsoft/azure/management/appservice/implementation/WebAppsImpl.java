@@ -15,7 +15,7 @@ import com.microsoft.azure.management.appservice.WebApps;
 import rx.Completable;
 
 /**
- * The implementation for {@link WebApps}.
+ * The implementation for WebApps.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
@@ -28,16 +28,13 @@ class WebAppsImpl
         implements WebApps {
 
     private final PagedListConverter<SiteInner, WebApp> converter;
-    private final WebSiteManagementClientImpl serviceClient;
 
-    WebAppsImpl(final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
-        super(innerCollection, manager);
-        this.serviceClient = serviceClient;
-
+    WebAppsImpl(final AppServiceManager manager) {
+        super(manager.inner().webApps(), manager);
         converter = new PagedListConverter<SiteInner, WebApp>() {
             @Override
             public WebApp typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
+                siteInner.withSiteConfig(manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 WebAppImpl impl = wrapModel(siteInner);
                 return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
             }
@@ -46,22 +43,22 @@ class WebAppsImpl
 
     @Override
     public PagedList<WebApp> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     public WebApp getByGroup(String groupName, String name) {
-        SiteInner siteInner = innerCollection.get(groupName, name);
+        SiteInner siteInner = this.inner().get(groupName, name);
         if (siteInner == null) {
             return null;
         }
-        siteInner.withSiteConfig(innerCollection.getConfiguration(groupName, name));
+        siteInner.withSiteConfig(this.inner().getConfiguration(groupName, name));
         return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager, serviceClient);
+        return new WebAppImpl(name, new SiteInner(), null, this.inner(), this.manager(), this.manager().inner());
     }
 
     @Override
@@ -70,7 +67,7 @@ class WebAppsImpl
             return null;
         }
         SiteConfigInner configInner = inner.siteConfig();
-        return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager, serviceClient);
+        return new WebAppImpl(inner.name(), inner, configInner, this.inner(), this.manager(), this.manager().inner());
     }
 
     protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {
@@ -85,6 +82,6 @@ class WebAppsImpl
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

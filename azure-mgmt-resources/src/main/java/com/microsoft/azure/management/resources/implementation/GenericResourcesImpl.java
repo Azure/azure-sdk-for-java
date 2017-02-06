@@ -32,26 +32,23 @@ final class GenericResourcesImpl
         ResourceManager>
     implements GenericResources {
 
-    private final ResourceManagementClientImpl serviceClient;
-
-    GenericResourcesImpl(ResourceManagementClientImpl serviceClient, ResourceManager resourceManager) {
-        super(serviceClient.resources(), resourceManager);
-        this.serviceClient = serviceClient;
+    GenericResourcesImpl(ResourceManager resourceManager) {
+        super(resourceManager.inner().resources(), resourceManager);
     }
 
     @Override
     public PagedList<GenericResource> list() {
-        return wrapList(this.serviceClient.resources().list());
+        return wrapList(this.manager().inner().resources().list());
     }
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
-        return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
+        return wrapList(this.manager().inner().resourceGroups().listResources(groupName));
     }
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.serviceClient.resourceGroups().listResources(
+        return wrapList(this.manager().inner().resourceGroups().listResources(
                 resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
@@ -60,15 +57,15 @@ final class GenericResourcesImpl
         return new GenericResourceImpl(
                 name,
                 new GenericResourceInner(),
-                this.innerCollection,
-                this.myManager.providers(),
-                serviceClient,
-                super.myManager);
+                this.inner(),
+                this.manager().providers(),
+                this.manager().inner(),
+                this.manager());
     }
 
     @Override
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return this.innerCollection.checkExistence(
+        return this.inner().checkExistence(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -80,14 +77,14 @@ final class GenericResourcesImpl
     @Override
     public boolean checkExistenceById(String id) {
         String apiVersion = getApiVersionFromId(id).toBlocking().single();
-        return innerCollection.checkExistenceById(id, apiVersion);
+        return this.inner().checkExistenceById(id, apiVersion);
     }
 
     @Override
     public GenericResource getById(String id) {
-        Provider provider = myManager.providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
+        Provider provider = this.manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
         String apiVersion = ResourceUtils.defaultApiVersion(id, provider);
-        return wrapModel(this.innerCollection.getById(id, apiVersion)).withApiVersion(apiVersion);
+        return wrapModel(this.inner().getById(id, apiVersion)).withApiVersion(apiVersion);
     }
 
     @Override
@@ -122,7 +119,7 @@ final class GenericResourcesImpl
             parentResourcePath = "";
         }
 
-        GenericResourceInner inner = this.innerCollection.get(
+        GenericResourceInner inner = this.inner().get(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -132,10 +129,10 @@ final class GenericResourcesImpl
         GenericResourceImpl resource = new GenericResourceImpl(
                 resourceName,
                 inner,
-                this.innerCollection,
-                this.myManager.providers(),
-                serviceClient,
-                this.myManager);
+                this.inner(),
+                this.manager().providers(),
+                this.manager().inner(),
+                this.manager());
 
         return resource.withExistingResourceGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
@@ -149,12 +146,12 @@ final class GenericResourcesImpl
         ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
         moveInfo.withTargetResourceGroup(targetResourceGroup.id());
         moveInfo.withResources(resources);
-        this.innerCollection.moveResources(sourceResourceGroupName, moveInfo);
+        this.inner().moveResources(sourceResourceGroupName, moveInfo);
     }
 
     @Override
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        this.innerCollection.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
+        this.inner().delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
     }
 
     @Override
@@ -162,10 +159,10 @@ final class GenericResourcesImpl
         return new GenericResourceImpl(
                 id,
                 new GenericResourceInner(),
-                this.innerCollection,
-                this.myManager.providers(),
-                this.serviceClient,
-                this.myManager)
+                this.inner(),
+                this.manager().providers(),
+                this.manager().inner(),
+                this.manager())
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
@@ -180,10 +177,10 @@ final class GenericResourcesImpl
         return new GenericResourceImpl(
                 inner.id(),
                 inner,
-                this.innerCollection,
-                this.myManager.providers(),
-                this.serviceClient,
-                this.myManager)
+                this.inner(),
+                this.manager().providers(),
+                this.manager().inner(),
+                this.manager())
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
@@ -204,17 +201,18 @@ final class GenericResourcesImpl
 
     @Override
     public Completable deleteByIdAsync(final String id) {
+       final ResourcesInner inner = this.inner();
         return getApiVersionFromId(id)
                 .flatMap(new Func1<String, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(String apiVersion) {
-                        return innerCollection.deleteByIdAsync(id, apiVersion);
+                        return inner.deleteByIdAsync(id, apiVersion);
                     }
                 }).toCompletable();
     }
 
     private Observable<String> getApiVersionFromId(final String id) {
-        return myManager.providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
+        return this.manager().providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
                 .map(new Func1<Provider, String>() {
                     @Override
                     public String call(Provider provider) {

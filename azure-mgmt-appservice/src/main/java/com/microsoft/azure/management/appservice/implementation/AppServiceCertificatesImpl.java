@@ -27,23 +27,23 @@ class AppServiceCertificatesImpl
         AppServiceManager>
         implements AppServiceCertificates {
 
-    AppServiceCertificatesImpl(CertificatesInner innerCollection, AppServiceManager manager) {
-        super(innerCollection, manager);
+    AppServiceCertificatesImpl(AppServiceManager manager) {
+        super(manager.inner().certificates(), manager);
     }
 
     @Override
     public AppServiceCertificate getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public PagedList<AppServiceCertificate> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     protected AppServiceCertificateImpl wrapModel(String name) {
-        return new AppServiceCertificateImpl(name, new CertificateInner(), innerCollection, myManager);
+        return new AppServiceCertificateImpl(name, new CertificateInner(), this.inner(), this.manager());
     }
 
     @Override
@@ -51,7 +51,7 @@ class AppServiceCertificatesImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServiceCertificateImpl(inner.name(), inner, this.inner(), this.manager());
     }
 
     @Override
@@ -61,6 +61,6 @@ class AppServiceCertificatesImpl
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

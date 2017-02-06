@@ -21,11 +21,12 @@ import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point to Azure resource management.
  */
-public final class ResourceManager extends ManagerBase {
+public final class ResourceManager extends ManagerBase implements HasInner<ResourceManagementClientImpl> {
     // The sdk clients
     private final ResourceManagementClientImpl resourceManagementClient;
     private final FeatureClientImpl featureClient;
@@ -177,7 +178,7 @@ public final class ResourceManager extends ManagerBase {
      */
     public GenericResources genericResources() {
         if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient, this);
+            genericResources = new GenericResourcesImpl(this);
         }
         return genericResources;
     }
@@ -233,5 +234,10 @@ public final class ResourceManager extends ManagerBase {
             policyAssignments = new PolicyAssignmentsImpl(policyClient.policyAssignments());
         }
         return policyAssignments;
+    }
+
+    @Override
+    public ResourceManagementClientImpl inner() {
+        return this.resourceManagementClient;
     }
 }

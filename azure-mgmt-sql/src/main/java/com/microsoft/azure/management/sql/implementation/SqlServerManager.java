@@ -92,12 +92,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
-            sqlServers = new SqlServersImpl(
-                    super.innerManagementClient.servers(),
-                    super.innerManagementClient.elasticPools(),
-                    super.innerManagementClient.databases(),
-                    super.innerManagementClient.recommendedElasticPools(),
-                    this);
+            sqlServers = new SqlServersImpl(this);
         }
 
         return sqlServers;
