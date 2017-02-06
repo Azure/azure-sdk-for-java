@@ -10,6 +10,7 @@ package com.microsoft.azure.management.samples;
 import com.microsoft.azure.management.resources.samples.DeployUsingARMTemplate;
 import com.microsoft.azure.management.resources.samples.DeployUsingARMTemplateWithProgress;
 import com.microsoft.azure.management.resources.samples.DeployUsingARMTemplateWithTags;
+import com.microsoft.azure.management.resources.samples.DeployVirtualMachineUsingARMTemplate;
 import com.microsoft.azure.management.resources.samples.ManageResource;
 import com.microsoft.azure.management.resources.samples.ManageResourceGroup;
 import org.junit.Assert;
@@ -39,5 +40,10 @@ public class ResourceSampleTests extends SamplesTestBase {
     @Test
     public void testManageResourceGroup() {
         Assert.assertTrue(ManageResourceGroup.runSample(azure));
+    }
+
+    @Test
+    public void testDeployVirtualMachineUsingARMTemplate() {
+        Assert.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azure));
     }
 }
