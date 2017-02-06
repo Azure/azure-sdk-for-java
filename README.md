@@ -183,15 +183,21 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   </tr>
   <tr>
     <td>Virtual Machines</td>
-    <td><ul style="list-style-type:circle">
+    <td<ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
-<li><a href="https://github.com/Azure-Samples/compute-java-create-virtual-machines-from-generalized-image-or-specialized-vhd">Create virtual machines from generalized image or specialized VHD</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-extension-images">List virtual machine extension images</li>
-</ul>
-</td>
+<li><a href="https://github.com/Azure-Samples/compute-java-create-virtual-machines-from-generalized-image-or-specialized-vhd">Create virtual machines from generalized image or specialized VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image">Create Virtual Machine Using Custom Image From Virtual Machine</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image-from-VHD">Create Virtual Machine Using Custom Image from VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-VHD">Create Virtual Machine by importing a specialized operating system disk VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create Virtual Machine Using Specialized VHD from Snapshot
+</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-convert-existing-virtual-machines-to-use-managed-disks">Convert Virtual Machines to Use Managed Disks</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage Virtual Machine with Unmanaged Disks</li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage Virtual Machine Scale Sets with unmanaged disks</li></ul></td>
   </tr>
   <tr>
     <td>Virtual Machines - parallel execution</td>
@@ -285,7 +291,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource">Manage resources</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
-</ul></td>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a Virtual Machine with Managed Disks using an ARM Template</li></ul></td>
   </tr>
   <tr>
     <td>Key Vault</td>
