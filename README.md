@@ -10,6 +10,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 
 - Azure Virtual Machines and VM Extensions
 - Virtual Machine Scale Sets
+- Managed Disks
 - Storage
 - Networking (virtual networks, subnets, network interfaces, IP addresses, network security groups, load balancers, DNS, traffic managers and application gateways)
 - Resource Manager
