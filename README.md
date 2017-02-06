@@ -2,11 +2,11 @@
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0 beta 4). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released preview version (1.0 beta 5). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0 beta 4** is a developer preview that supports major parts of: 
+**1.0 beta 5** is a developer preview that supports major parts of: 
 
 - Azure Virtual Machines and VM Extensions
 - Virtual Machine Scale Sets
@@ -310,15 +310,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 # Download
 
 
-**1.0 Beta 4**
+**1.0 Beta 5**
 
-If you are using released builds from 1.0 beta 4, add the following to your POM file:
+If you are using released builds from 1.0 beta 5, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta4.1</version>
+    <version>1.0.0-beta5</version>
 </dependency>
 ```
 
@@ -331,7 +331,7 @@ If you are using released builds from 1.0 beta 4, add the following to your POM 
 
 ## Help
 
-If you are migrating your code to 1.0 beta 4, you can use these notes for [preparing your code for 1.0 beta 4 from 1.0 beta 3](./notes/prepare-for-1.0.0-beta4.md).
+If you are migrating your code to 1.0 beta 5, you can use these notes for [preparing your code for 1.0 beta 5 from 1.0 beta 4](./notes/prepare-for-1.0.0-beta5.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -354,6 +354,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
 | 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
 | 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
 | 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
