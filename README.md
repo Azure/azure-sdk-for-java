@@ -176,7 +176,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 #Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
