@@ -9,7 +9,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 
 /**
  * Provides access to listing Azure resources of a specific type in a specific parent resource.
@@ -21,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
  * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
-public interface SupportsListingByParent<T, ParentT extends GroupableResource<ManagerT>, ManagerT> {
+public interface SupportsListingByParent<T, ParentT extends Resource & HasResourceGroup, ManagerT> {
     /**
      * Lists resources of the specified type in the specified resource group.
      *

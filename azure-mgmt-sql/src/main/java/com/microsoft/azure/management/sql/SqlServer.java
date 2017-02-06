@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import rx.Completable;
@@ -27,11 +26,10 @@ import java.util.Map;
  */
 @Fluent
 public interface SqlServer extends
-        GroupableResource<SqlServerManager>,
+        GroupableResource<SqlServerManager, ServerInner>,
         Refreshable<SqlServer>,
         Updatable<SqlServer.Update>,
-        HasManager<SqlServerManager>,
-        HasInner<ServerInner> {
+        HasManager<SqlServerManager> {
 
     /**
      * @return fully qualified name of the SQL Server

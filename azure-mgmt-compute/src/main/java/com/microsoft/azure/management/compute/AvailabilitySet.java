@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -23,9 +22,8 @@ import java.util.List;
  */
 @Fluent()
 public interface AvailabilitySet extends
-        GroupableResource<ComputeManager>,
+        GroupableResource<ComputeManager, AvailabilitySetInner>,
         Refreshable<AvailabilitySet>,
-        HasInner<AvailabilitySetInner>,
         Updatable<AvailabilitySet.Update> {
 
     /**

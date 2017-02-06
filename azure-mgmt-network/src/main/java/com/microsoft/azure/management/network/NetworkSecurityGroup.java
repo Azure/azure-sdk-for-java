@@ -19,16 +19,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Network security group.
  */
 @Fluent()
 public interface NetworkSecurityGroup extends
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, NetworkSecurityGroupInner>,
         Refreshable<NetworkSecurityGroup>,
-        HasInner<NetworkSecurityGroupInner>,
         Updatable<NetworkSecurityGroup.Update>,
         HasAssociatedSubnets {
 

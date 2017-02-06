@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceCertificateOrderInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
@@ -26,10 +25,9 @@ import rx.Observable;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificateOrder extends
-        GroupableResource<AppServiceManager>,
+        GroupableResource<AppServiceManager, AppServiceCertificateOrderInner>,
         Refreshable<AppServiceCertificateOrder>,
-        Updatable<AppServiceCertificateOrder.Update>,
-        HasInner<AppServiceCertificateOrderInner> {
+        Updatable<AppServiceCertificateOrder.Update> {
 
     /**
      * @return certificate's distinguished name

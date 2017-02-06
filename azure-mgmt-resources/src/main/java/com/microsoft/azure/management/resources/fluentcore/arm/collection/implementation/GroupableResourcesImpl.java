@@ -28,7 +28,7 @@ import rx.Completable;
  * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class GroupableResourcesImpl<
-        T extends GroupableResource<ManagerT>,
+        T extends GroupableResource<ManagerT, InnerT>,
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT,

@@ -8,6 +8,7 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -17,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DeploymentSlot extends
-        IndependentChildResource<AppServiceManager>,
+        IndependentChildResource<AppServiceManager, SiteInner>,
         WebAppBase,
         Refreshable<DeploymentSlot>,
         Updatable<DeploymentSlot.Update> {

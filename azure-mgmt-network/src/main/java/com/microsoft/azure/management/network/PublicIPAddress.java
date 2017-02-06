@@ -14,16 +14,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Public IP address.
  */
 @Fluent()
 public interface PublicIPAddress extends
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, PublicIPAddressInner>,
         Refreshable<PublicIPAddress>,
-        HasInner<PublicIPAddressInner>,
         Updatable<PublicIPAddress.Update> {
 
     // Getters

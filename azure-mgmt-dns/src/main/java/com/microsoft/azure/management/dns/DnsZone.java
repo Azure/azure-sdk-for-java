@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -23,9 +22,8 @@ import java.util.List;
  */
 @Fluent
 public interface DnsZone extends
-        GroupableResource<DnsZoneManager>,
+        GroupableResource<DnsZoneManager, ZoneInner>,
         Refreshable<DnsZone>,
-        HasInner<ZoneInner>,
         Updatable<DnsZone.Update> {
     /**
      * @return the maximum number of record sets that can be created in this zone.

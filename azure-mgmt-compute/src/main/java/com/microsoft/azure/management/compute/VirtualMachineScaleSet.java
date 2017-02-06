@@ -22,7 +22,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
@@ -34,9 +33,8 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineScaleSet extends
-        GroupableResource<ComputeManager>,
+        GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
         Refreshable<VirtualMachineScaleSet>,
-        HasInner<VirtualMachineScaleSetInner>,
         Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
     //

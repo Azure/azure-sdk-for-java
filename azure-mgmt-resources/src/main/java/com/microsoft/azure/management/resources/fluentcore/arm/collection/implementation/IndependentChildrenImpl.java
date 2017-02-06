@@ -14,9 +14,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCall;
@@ -40,7 +41,7 @@ public abstract class IndependentChildrenImpl<
         InnerT,
         InnerCollectionT,
         ManagerT extends ManagerBase,
-        ParentT extends GroupableResource<ManagerT>>
+        ParentT extends Resource & HasResourceGroup>
     extends CreatableResourcesImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,

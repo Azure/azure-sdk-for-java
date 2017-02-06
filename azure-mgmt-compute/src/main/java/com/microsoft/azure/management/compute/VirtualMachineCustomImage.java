@@ -24,9 +24,8 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineCustomImage extends
-        GroupableResource<ComputeManager>,
-        Refreshable<VirtualMachineCustomImage>,
-        HasInner<ImageInner> {
+        GroupableResource<ComputeManager, ImageInner>,
+        Refreshable<VirtualMachineCustomImage> {
     /**
      * @return true if this image is created by capturing a virtual machine
      */

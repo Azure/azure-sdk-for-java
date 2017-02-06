@@ -17,16 +17,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point for Virtual Network management API in Azure.
  */
 @Fluent()
 public interface Network extends
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, VirtualNetworkInner>,
         Refreshable<Network>,
-        HasInner<VirtualNetworkInner>,
         Updatable<Network.Update> {
 
     /***********************************************************

@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import java.util.Map;
 
 /**
@@ -24,9 +23,8 @@ import java.util.Map;
 @Fluent()
 public interface NetworkInterface extends
         NetworkInterfaceBase,
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, NetworkInterfaceInner>,
         Refreshable<NetworkInterface>,
-        HasInner<NetworkInterfaceInner>,
         Updatable<NetworkInterface.Update> {
     /**
      * @return the IP configurations of this network interface, indexed by their names

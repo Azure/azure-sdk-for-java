@@ -7,7 +7,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
@@ -17,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
  * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
-public interface SupportsGettingByParent<T, ParentT extends GroupableResource<ManagerT>, ManagerT> {
+public interface SupportsGettingByParent<T, ParentT extends Resource & HasResourceGroup, ManagerT> {
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *

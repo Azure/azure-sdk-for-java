@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
@@ -26,14 +27,14 @@ import java.io.IOException;
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-    ResourceT extends GroupableResource<?>,
+    ResourceT extends GroupableResource<? extends ManagerBase, ?>,
     CollectionT extends
         SupportsListing<ResourceT>
         & SupportsGettingByGroup<ResourceT>
         & SupportsDeletingById
         & SupportsGettingById<ResourceT>
         & HasInner<?>
-        & HasManager<?>> {
+        & HasManager<? extends ManagerBase>> {
 
     protected String testId = "";
     private ResourceT resource;

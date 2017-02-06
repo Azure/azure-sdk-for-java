@@ -19,7 +19,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +27,9 @@ import java.util.Map;
  */
 @Fluent
 public interface RedisCache extends
-        GroupableResource<RedisManager>,
+        GroupableResource<RedisManager, RedisResourceInner>,
         Refreshable<RedisCache>,
-        Updatable<RedisCache.Update>,
-        HasInner<RedisResourceInner> {
+        Updatable<RedisCache.Update> {
 
     /**
      * @return exposes features available only to Premium Sku Redis Cache instances.

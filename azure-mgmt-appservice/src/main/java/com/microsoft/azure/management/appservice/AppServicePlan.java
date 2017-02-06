@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.AppServicePlanInner;
 
@@ -22,11 +21,10 @@ import com.microsoft.azure.management.appservice.implementation.AppServicePlanIn
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServicePlan extends
-        GroupableResource<AppServiceManager>,
+        GroupableResource<AppServiceManager, AppServicePlanInner>,
         HasName,
         Refreshable<AppServicePlan>,
-        Updatable<AppServicePlan.Update>,
-        HasInner<AppServicePlanInner> {
+        Updatable<AppServicePlan.Update> {
     /**
      * @return maximum number of instances that can be assigned
      */
