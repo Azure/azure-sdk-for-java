@@ -193,8 +193,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image">Create Virtual Machine Using Custom Image From Virtual Machine</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image-from-VHD">Create Virtual Machine Using Custom Image from VHD</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-VHD">Create Virtual Machine by importing a specialized operating system disk VHD</li>
-<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create Virtual Machine Using Specialized VHD from Snapshot
-</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create Virtual Machine Using Specialized VHD from Snapshot</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-convert-existing-virtual-machines-to-use-managed-disks">Convert Virtual Machines to Use Managed Disks</li>
 <li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage Virtual Machine with Unmanaged Disks</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage Virtual Machine Scale Sets with unmanaged disks</li></ul></td>
