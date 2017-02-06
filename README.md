@@ -39,7 +39,7 @@ VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 	.withPrimaryPrivateIpAddressDynamic()
 	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
 	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-	.withRootUserName("tirekicker")
+	.withRootUsername("tirekicker")
 	.withSsh(sshKey)
 	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
 	.create();
@@ -75,10 +75,11 @@ You can create a virtual machine scale set instance by using another `define() â
      .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
      .withoutPrimaryInternalLoadBalancer()
      .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-     .withRootUserName(userName)
+     .withRootUsername(userName)
      .withSsh(sshKey)
-     .withNewStorageAccount(storageAccountName1)
-     .withNewStorageAccount(storageAccountName2)
+     .withNewDataDisk(100)
+     .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+     .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
      .withCapacity(3)
      .create();
 ```
