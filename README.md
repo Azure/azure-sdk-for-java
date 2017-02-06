@@ -183,7 +183,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   </tr>
   <tr>
     <td>Virtual Machines</td>
-    <td<ul style="list-style-type:circle">
+    <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
