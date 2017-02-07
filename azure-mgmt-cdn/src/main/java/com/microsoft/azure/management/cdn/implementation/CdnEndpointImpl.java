@@ -54,22 +54,11 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
         CdnEndpoint.UpdateStandardEndpoint,
         CdnEndpoint.UpdatePremiumEndpoint {
 
-    private final EndpointsInner client;
-    private final OriginsInner originsClient;
-    private final CustomDomainsInner customDomainsClient;
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
 
-    CdnEndpointImpl(String name,
-                    CdnProfileImpl parent,
-                    EndpointInner inner,
-                    EndpointsInner client,
-                    OriginsInner originsClient,
-                    CustomDomainsInner customDomainsClient) {
+    CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
-        this.client = client;
-        this.originsClient = originsClient;
-        this.customDomainsClient = customDomainsClient;
         this.customDomainList = new ArrayList<CustomDomainInner>();
         this.deletedCustomDomainList = new ArrayList<CustomDomainInner>();
     }
@@ -82,7 +71,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     @Override
     public Observable<CdnEndpoint> createAsync() {
         final CdnEndpointImpl self = this;
-        return this.client.createAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().endpoints().createAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 this.inner())
@@ -91,7 +80,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                     public CdnEndpoint call(EndpointInner inner) {
                         self.setInner(inner);
                         for (CustomDomainInner itemToCreate : self.customDomainList) {
-                            self.customDomainsClient.create(
+                            self.parent().manager().inner().customDomains().create(
                                     self.parent().resourceGroupName(),
                                     self.parent().name(),
                                     self.name(),
@@ -99,7 +88,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                                     itemToCreate.hostName());
                         }
                         self.customDomainList.clear();
-                        self.customDomainList.addAll(self.customDomainsClient.listByEndpoint(
+                        self.customDomainList.addAll(self.parent().manager().inner().customDomains().listByEndpoint(
                                 self.parent().resourceGroupName(),
                                 self.parent().name(),
                                 self.name()));
@@ -129,14 +118,14 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                 .withHttpPort(originInner.httpPort())
                 .withHttpsPort(originInner.httpsPort());
 
-        Observable<OriginInner> originObservable = this.originsClient.updateAsync(
+        Observable<OriginInner> originObservable = this.parent().manager().inner().origins().updateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 originInner.name(),
                 originParameters);
 
-        Observable<CdnEndpoint> endpointObservable = this.client.updateAsync(
+        Observable<CdnEndpoint> endpointObservable = this.parent().manager().inner().endpoints().updateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -152,7 +141,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
         List<Observable<CustomDomainInner>> customDomainDeleteObservables = new ArrayList<>();
 
         for (CustomDomainInner itemToDelete : this.deletedCustomDomainList) {
-            customDomainDeleteObservables.add(this.customDomainsClient.deleteAsync(
+            customDomainDeleteObservables.add(this.parent().manager().inner().customDomains().deleteAsync(
                     this.parent().resourceGroupName(),
                     this.parent().name(),
                     this.name(),
@@ -185,7 +174,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().endpoints().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name()).map(new Func1<Void, Void>() {
             @Override
@@ -197,13 +186,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public CdnEndpointImpl refresh() {
-        EndpointInner inner = this.client.get(this.parent().resourceGroupName(),
+        EndpointInner inner = this.parent().manager().inner().endpoints().get(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
         this.setInner(inner);
         this.customDomainList.clear();
         this.deletedCustomDomainList.clear();
-        this.customDomainList.addAll(this.customDomainsClient.listByEndpoint(
+        this.customDomainList.addAll(this.parent().manager().inner().customDomains().listByEndpoint(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name()));

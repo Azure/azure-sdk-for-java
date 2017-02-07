@@ -30,18 +30,9 @@ class CdnEndpointsImpl extends
                         EndpointInner,
                         CdnProfileImpl,
                         CdnProfile> {
-    private final EndpointsInner client;
-    private final OriginsInner originsClient;
-    private final CustomDomainsInner customDomainsClient;
 
-    CdnEndpointsImpl(EndpointsInner client,
-                     OriginsInner originsClient,
-                     CustomDomainsInner customDomainsClient,
-                     CdnProfileImpl parent) {
+    CdnEndpointsImpl(CdnProfileImpl parent) {
         super(parent, "Endpoint");
-        this.client = client;
-        this.originsClient = originsClient;
-        this.customDomainsClient = customDomainsClient;
         if (parent.id() != null) {
             this.cacheCollection();
         }
@@ -81,16 +72,11 @@ class CdnEndpointsImpl extends
     protected List<CdnEndpointImpl> listChildResources() {
         List<CdnEndpointImpl> childResources = new ArrayList<>();
 
-        for (EndpointInner innerEndpoint : this.client.listByProfile(
+        for (EndpointInner innerEndpoint : this.parent().manager().inner().endpoints().listByProfile(
                                         this.parent().resourceGroupName(),
                                         this.parent().name())) {
-            CdnEndpointImpl endpointResource = new CdnEndpointImpl(innerEndpoint.name(),
-                    this.parent(),
-                    innerEndpoint,
-                    this.client,
-                    this.originsClient,
-                    this.customDomainsClient);
-            for (CustomDomainInner customDomain : this.customDomainsClient.listByEndpoint(
+            CdnEndpointImpl endpointResource = new CdnEndpointImpl(innerEndpoint.name(), this.parent(), innerEndpoint);
+            for (CustomDomainInner customDomain : this.parent().manager().inner().customDomains().listByEndpoint(
                     this.parent().resourceGroupName(),
                     this.parent().name(),
                     innerEndpoint.name())) {
@@ -103,13 +89,7 @@ class CdnEndpointsImpl extends
 
     @Override
     protected CdnEndpointImpl newChildResource(String name) {
-        CdnEndpointImpl endpoint = new CdnEndpointImpl(name,
-                this.parent(),
-                new EndpointInner(),
-                this.client,
-                this.originsClient,
-                this.customDomainsClient);
-
+        CdnEndpointImpl endpoint = new CdnEndpointImpl(name, this.parent(), new EndpointInner());
         return endpoint;
     }
 
@@ -133,7 +113,6 @@ class CdnEndpointsImpl extends
         return endpoint;
     }
 
-
     public CdnEndpointImpl defineNewEndpoint() {
         String endpointName = this.generateUniqueEndpointName("Endpoint");
         return this.defineNewEndpoint(endpointName);
@@ -156,9 +135,7 @@ class CdnEndpointsImpl extends
 
         do {
             endpointName = SdkContext.randomResourceName(endpointNamePrefix, 50);
-
             result = this.parent().checkEndpointNameAvailability(endpointName);
-
         } while (!result.nameAvailable());
 
         return endpointName;

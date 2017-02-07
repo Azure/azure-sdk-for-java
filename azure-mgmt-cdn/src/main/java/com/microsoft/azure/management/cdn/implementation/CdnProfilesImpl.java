@@ -52,24 +52,12 @@ class CdnProfilesImpl
 
     @Override
     protected CdnProfileImpl wrapModel(String name) {
-        return new CdnProfileImpl(name,
-                new ProfileInner(),
-                this.inner(),
-                this.manager().inner().endpoints(),
-                this.manager().inner().origins(),
-                this.manager().inner().customDomains(),
-                this.manager());
+        return new CdnProfileImpl(name, new ProfileInner(), this.manager());
     }
 
     @Override
     protected CdnProfileImpl wrapModel(ProfileInner inner) {
-        return new CdnProfileImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager().inner().endpoints(),
-                this.manager().inner().origins(),
-                this.manager().inner().customDomains(),
-                this.manager());
+        return new CdnProfileImpl(inner.name(), inner, this.manager());
     }
 
     @Override
