@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import rx.Observable;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +20,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
+ *  Implementation for NetworkSecurityGroup and its create and update interfaces.
  */
 @LangDefinition
 class NetworkSecurityGroupImpl
@@ -35,17 +34,14 @@ class NetworkSecurityGroupImpl
         NetworkSecurityGroup.Definition,
         NetworkSecurityGroup.Update {
 
-    private final NetworkSecurityGroupsInner innerCollection;
     private Map<String, NetworkSecurityRule> rules;
     private Map<String, NetworkSecurityRule> defaultRules;
 
     NetworkSecurityGroupImpl(
             final String name,
             final NetworkSecurityGroupInner innerModel,
-            final NetworkSecurityGroupsInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -84,7 +80,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     public NetworkSecurityGroupImpl refresh() {
-        NetworkSecurityGroupInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
+        NetworkSecurityGroupInner response = this.manager().inner().networkSecurityGroups().get(this.resourceGroupName(), this.name());
         this.setInner(response);
         initializeChildrenFromInner();
         return this;
@@ -143,6 +139,6 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected Observable<NetworkSecurityGroupInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().networkSecurityGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

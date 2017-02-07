@@ -80,11 +80,7 @@ class NetworkSecurityGroupsImpl
     @Override
     protected NetworkSecurityGroupImpl wrapModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
-        return new NetworkSecurityGroupImpl(
-                name,
-                inner,
-                this.inner(),
-                this.manager());
+        return new NetworkSecurityGroupImpl(name, inner, this.manager());
     }
 
     @Override
@@ -92,10 +88,6 @@ class NetworkSecurityGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkSecurityGroupImpl(
-                inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.manager());
     }
 }

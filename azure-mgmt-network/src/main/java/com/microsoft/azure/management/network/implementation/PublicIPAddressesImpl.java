@@ -65,11 +65,7 @@ class PublicIPAddressesImpl
             inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
-        return new PublicIPAddressImpl(
-                name,
-                inner,
-                this.inner(),
-                this.manager());
+        return new PublicIPAddressImpl(name, inner, this.manager());
     }
 
     @Override
@@ -77,10 +73,6 @@ class PublicIPAddressesImpl
         if (inner == null) {
             return null;
         }
-        return new PublicIPAddressImpl(
-                inner.id(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new PublicIPAddressImpl(inner.id(), inner, this.manager());
     }
 }

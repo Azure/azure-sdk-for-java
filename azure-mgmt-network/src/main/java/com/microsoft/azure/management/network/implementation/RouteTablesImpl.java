@@ -60,19 +60,11 @@ class RouteTablesImpl
     protected RouteTableImpl wrapModel(String name) {
         RouteTableInner inner = new RouteTableInner();
 
-        return new RouteTableImpl(
-                name,
-                inner,
-                this.inner(),
-                this.manager());
+        return new RouteTableImpl(name, inner, this.manager());
     }
 
     @Override
     protected RouteTableImpl wrapModel(RouteTableInner inner) {
-        return new RouteTableImpl(
-                inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new RouteTableImpl(inner.name(), inner, this.manager());
     }
 }

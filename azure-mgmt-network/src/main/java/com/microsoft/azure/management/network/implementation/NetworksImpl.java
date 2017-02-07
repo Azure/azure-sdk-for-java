@@ -91,11 +91,7 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(
-                name,
-                inner,
-                this.inner(),
-                super.manager());
+        return new NetworkImpl(name, inner, super.manager());
     }
 
     @Override
@@ -103,10 +99,6 @@ class NetworksImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkImpl(
-                inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new NetworkImpl(inner.name(), inner, this.manager());
     }
 }

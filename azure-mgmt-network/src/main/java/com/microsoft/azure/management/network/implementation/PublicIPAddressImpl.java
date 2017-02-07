@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- *  Implementation for {@link PublicIPAddress} and its create and update interfaces.
+ *  Implementation for PublicIPAddress and its create and update interfaces.
  */
 @LangDefinition
 class PublicIPAddressImpl
@@ -34,21 +34,17 @@ class PublicIPAddressImpl
         PublicIPAddress.Definition,
         PublicIPAddress.Update {
 
-    private final PublicIPAddressesInner client;
-
     PublicIPAddressImpl(String name,
             PublicIPAddressInner innerModel,
-            final PublicIPAddressesInner client,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.client = client;
     }
 
     // Verbs
 
     @Override
     public PublicIPAddress refresh() {
-        PublicIPAddressInner response = this.client.get(this.resourceGroupName(), this.name());
+        PublicIPAddressInner response = this.manager().inner().publicIPAddresses().get(this.resourceGroupName(), this.name());
         this.setInner(response);
         return this;
     }
@@ -158,7 +154,8 @@ class PublicIPAddressImpl
             }
         }
 
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return this.manager().inner().publicIPAddresses().createOrUpdateAsync(
+                this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
