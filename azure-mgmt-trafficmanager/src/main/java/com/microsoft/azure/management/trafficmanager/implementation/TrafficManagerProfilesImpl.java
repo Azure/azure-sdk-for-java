@@ -66,20 +66,12 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(String name) {
-        return new TrafficManagerProfileImpl(name,
-                new ProfileInner(),
-                this.inner(),
-                this.manager().inner().endpoints(),
-                this.manager());
+        return new TrafficManagerProfileImpl(name, new ProfileInner(), this.manager());
     }
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(ProfileInner inner) {
-        return new TrafficManagerProfileImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager().inner().endpoints(),
-                this.manager());
+        return new TrafficManagerProfileImpl(inner.name(), inner, this.manager());
     }
 
     @Override
