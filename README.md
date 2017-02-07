@@ -54,11 +54,8 @@ You can update a virtual machine instance by using an `update() … apply()` met
 
 ```java
 linuxVM.update()
-    .defineNewDataDisk(dataDiskName)
-    .withSizeInGB(20)
-    .withCaching(CachingTypes.READ_WRITE)
-    .attach()
-    .apply();
+	.withNewDataDisk(20,  lun,  CachingTypes.READ_WRITE)
+	.apply();
 ```
 **Create a Virtual Machine Scale Set**
 
@@ -187,7 +184,6 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td>Virtual Machines</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-with-multiple-managed-disks">Manage virtual machines with multiple managed disks</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
