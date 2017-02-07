@@ -72,7 +72,8 @@ class ApplicationGatewayImpl
 
     private Map<String, String> creatablePipsByFrontend;
 
-    ApplicationGatewayImpl(String name,
+    ApplicationGatewayImpl(
+            String name,
             final ApplicationGatewayInner innerModel,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);

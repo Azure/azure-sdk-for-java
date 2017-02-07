@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The implementation for {@link WebAppBase}.
+ * The implementation for WebAppBase.
  *  @param <FluentT> the fluent interface of the web app or deployment slot
  *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
  */
