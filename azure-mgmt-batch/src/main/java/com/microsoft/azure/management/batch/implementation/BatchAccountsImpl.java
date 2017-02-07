@@ -31,7 +31,7 @@ public class BatchAccountsImpl
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

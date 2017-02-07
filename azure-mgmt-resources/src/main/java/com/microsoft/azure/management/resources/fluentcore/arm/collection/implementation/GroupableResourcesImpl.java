@@ -41,8 +41,8 @@ public abstract class GroupableResourcesImpl<
         HasManager<ManagerT>,
         HasInner<InnerCollectionT> {
 
-    protected final InnerCollectionT innerCollection;
-    protected final ManagerT myManager;
+    private final InnerCollectionT innerCollection;
+    private final ManagerT myManager;
     protected GroupableResourcesImpl(
             InnerCollectionT innerCollection,
             ManagerT manager) {
