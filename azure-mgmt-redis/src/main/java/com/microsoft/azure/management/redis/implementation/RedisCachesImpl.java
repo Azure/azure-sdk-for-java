@@ -19,11 +19,11 @@ import rx.Completable;
 @LangDefinition
 class RedisCachesImpl
         extends GroupableResourcesImpl<
-        RedisCache,
-        RedisCacheImpl,
-        RedisResourceInner,
-        RedisInner,
-        RedisManager>
+                RedisCache,
+                RedisCacheImpl,
+                RedisResourceInner,
+                RedisInner,
+                RedisManager>
         implements RedisCaches {
 
     RedisCachesImpl(final RedisManager redisManager) {
@@ -60,8 +60,6 @@ class RedisCachesImpl
         return new RedisCacheImpl(
                 name,
                 new RedisResourceInner(),
-                this.manager().inner().patchSchedules(),
-                this.inner(),
                 this.manager());
     }
 
@@ -73,8 +71,6 @@ class RedisCachesImpl
         return new RedisCacheImpl(
                 redisResourceInner.name(),
                 redisResourceInner,
-                this.manager().inner().patchSchedules(),
-                this.inner(),
                 this.manager());
     }
 }
