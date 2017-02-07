@@ -38,14 +38,7 @@ public class BatchAccountsImpl
     protected BatchAccountImpl wrapModel(String name) {
         BatchAccountInner inner = new BatchAccountInner();
 
-        return new BatchAccountImpl(
-                name,
-                inner,
-                this.inner(),
-                this.manager(),
-                this.manager().inner().applications(),
-                this.manager().inner().applicationPackages(),
-                this.storageManager);
+        return new BatchAccountImpl(name, inner, this.manager(), this.storageManager);
     }
 
     @Override
@@ -66,10 +59,7 @@ public class BatchAccountsImpl
         return new BatchAccountImpl(
                 inner.name(),
                 inner,
-                this.inner(),
                 this.manager(),
-                this.manager().inner().applications(),
-                this.manager().inner().applicationPackages(),
                 this.storageManager);
     }
 
