@@ -57,9 +57,6 @@ final class GenericResourcesImpl
         return new GenericResourceImpl(
                 name,
                 new GenericResourceInner(),
-                this.inner(),
-                this.manager().providers(),
-                this.manager().inner(),
                 this.manager());
     }
 
@@ -129,9 +126,6 @@ final class GenericResourcesImpl
         GenericResourceImpl resource = new GenericResourceImpl(
                 resourceName,
                 inner,
-                this.inner(),
-                this.manager().providers(),
-                this.manager().inner(),
                 this.manager());
 
         return resource.withExistingResourceGroup(resourceGroupName)
@@ -156,13 +150,7 @@ final class GenericResourcesImpl
 
     @Override
     protected GenericResourceImpl wrapModel(String id) {
-        return new GenericResourceImpl(
-                id,
-                new GenericResourceInner(),
-                this.inner(),
-                this.manager().providers(),
-                this.manager().inner(),
-                this.manager())
+        return new GenericResourceImpl(id, new GenericResourceInner(), this.manager())
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
@@ -174,13 +162,7 @@ final class GenericResourcesImpl
         if (inner == null) {
             return null;
         }
-        return new GenericResourceImpl(
-                inner.id(),
-                inner,
-                this.inner(),
-                this.manager().providers(),
-                this.manager().inner(),
-                this.manager())
+        return new GenericResourceImpl(inner.id(), inner, this.manager())
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
