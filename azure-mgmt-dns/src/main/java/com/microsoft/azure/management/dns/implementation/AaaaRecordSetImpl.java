@@ -15,24 +15,23 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link AaaaRecordSet}.
+ * Implementation of AaaaRecordSet.
  */
 @LangDefinition
 class AaaaRecordSetImpl
         extends DnsRecordSetImpl
         implements AaaaRecordSet {
 
-    AaaaRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    AaaaRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static AaaaRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static AaaaRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new AaaaRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.AAAA.toString())
-                        .withAaaaRecords(new ArrayList<AaaaRecord>()),
-                client);
+                        .withAaaaRecords(new ArrayList<AaaaRecord>()));
     }
 
     @Override

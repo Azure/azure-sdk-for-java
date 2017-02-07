@@ -55,20 +55,12 @@ class DnsZonesImpl extends GroupableResourcesImpl<
 
     @Override
     protected DnsZoneImpl wrapModel(String name) {
-        return new DnsZoneImpl(name,
-                new ZoneInner(),
-                this.inner(),
-                this.manager().inner().recordSets(),
-                this.manager());
+        return new DnsZoneImpl(name, new ZoneInner(), this.manager());
     }
 
     @Override
     protected DnsZoneImpl wrapModel(ZoneInner inner) {
-        return new DnsZoneImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager().inner().recordSets(),
-                this.manager());
+        return new DnsZoneImpl(inner.name(), inner, this.manager());
     }
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link SrvRecordSets}.
+ * Implementation of SrvRecordSets.
  */
 @LangDefinition
 class SrvRecordSetsImpl
@@ -21,29 +21,36 @@ class SrvRecordSetsImpl
         implements SrvRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    SrvRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    SrvRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public SrvRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.SRV);
-        return new SrvRecordSetImpl(this.dnsZone, inner, this.client);
+        return new SrvRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<SrvRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.SRV));
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.SRV));
     }
 
     @Override
     protected SrvRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new SrvRecordSetImpl(this.dnsZone, inner, this.client);
+        return new SrvRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

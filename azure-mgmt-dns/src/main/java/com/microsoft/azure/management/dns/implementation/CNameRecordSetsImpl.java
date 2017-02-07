@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link CNameRecordSets}.
+ * Implementation of CNameRecordSets.
  */
 @LangDefinition
 class CNameRecordSetsImpl
@@ -21,31 +21,36 @@ class CNameRecordSetsImpl
         implements CNameRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    CNameRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    CNameRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public CNameRecordSet getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.CNAME);
-        return new CNameRecordSetImpl(this.dnsZone, inner, this.client);
+        return new CNameRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<CNameRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 RecordType.CNAME));
     }
 
     @Override
     protected CNameRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new CNameRecordSetImpl(this.dnsZone, inner, this.client);
+        return new CNameRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

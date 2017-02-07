@@ -29,16 +29,14 @@ import java.util.List;
 @LangDefinition
 public class DnsZoneImpl
         extends GroupableResourceImpl<
-        DnsZone,
-        ZoneInner,
-        DnsZoneImpl,
-        DnsZoneManager>
+            DnsZone,
+            ZoneInner,
+            DnsZoneImpl,
+            DnsZoneManager>
         implements
-        DnsZone,
-        DnsZone.Definition,
-        DnsZone.Update {
-    private final ZonesInner innerCollection;
-    private final RecordSetsInner recordSetsClient;
+            DnsZone,
+            DnsZone.Definition,
+            DnsZone.Update {
 
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
@@ -50,15 +48,9 @@ public class DnsZoneImpl
     private TxtRecordSets txtRecordSets;
     private DnsRecordSetsImpl recordSetsImpl;
 
-    DnsZoneImpl(String name,
-                final ZoneInner innerModel,
-                final ZonesInner innerCollection,
-                final RecordSetsInner recordSetsClient,
-                final DnsZoneManager trafficManager) {
-        super(name, innerModel, trafficManager);
-        this.innerCollection = innerCollection;
-        this.recordSetsClient = recordSetsClient;
-        this.recordSetsImpl = new DnsRecordSetsImpl(recordSetsClient, this);
+    DnsZoneImpl(String name, final ZoneInner innerModel, final DnsZoneManager manager) {
+        super(name, innerModel, manager);
+        this.recordSetsImpl = new DnsRecordSetsImpl(this);
         initRecordSets();
     }
 
@@ -119,8 +111,8 @@ public class DnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = this.recordSetsClient.get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
-        return new SoaRecordSetImpl(this, inner, this.recordSetsClient);
+        RecordSetInner inner = this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        return new SoaRecordSetImpl(this, inner);
     }
 
     // Setters
@@ -257,7 +249,7 @@ public class DnsZoneImpl
     @Override
     public Observable<DnsZone> createResourceAsync() {
         final DnsZoneImpl self = this;
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return this.manager().inner().zones().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<DnsZone, Observable<? extends DnsZone>>() {
                     @Override
@@ -275,21 +267,21 @@ public class DnsZoneImpl
 
     @Override
     public DnsZone refresh() {
-        ZoneInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        ZoneInner inner = this.manager().inner().zones().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         this.initRecordSets();
         return this;
     }
 
     private void initRecordSets() {
-        this.aRecordSets = new ARecordSetsImpl(this, this.recordSetsClient);
-        this.aaaaRecordSets = new AaaaRecordSetsImpl(this, this.recordSetsClient);
-        this.cnameRecordSets = new CNameRecordSetsImpl(this, this.recordSetsClient);
-        this.mxRecordSets = new MXRecordSetsImpl(this, this.recordSetsClient);
-        this.nsRecordSets = new NSRecordSetsImpl(this, this.recordSetsClient);
-        this.ptrRecordSets = new PtrRecordSetsImpl(this, this.recordSetsClient);
-        this.srvRecordSets = new SrvRecordSetsImpl(this, this.recordSetsClient);
-        this.txtRecordSets = new TxtRecordSetsImpl(this, this.recordSetsClient);
+        this.aRecordSets = new ARecordSetsImpl(this);
+        this.aaaaRecordSets = new AaaaRecordSetsImpl(this);
+        this.cnameRecordSets = new CNameRecordSetsImpl(this);
+        this.mxRecordSets = new MXRecordSetsImpl(this);
+        this.nsRecordSets = new NSRecordSetsImpl(this);
+        this.ptrRecordSets = new PtrRecordSetsImpl(this);
+        this.srvRecordSets = new SrvRecordSetsImpl(this);
+        this.txtRecordSets = new TxtRecordSetsImpl(this);
         this.recordSetsImpl.clearPendingOperations();
     }
 }

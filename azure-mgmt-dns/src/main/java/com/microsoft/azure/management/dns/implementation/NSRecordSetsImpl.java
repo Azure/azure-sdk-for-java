@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link NSRecordSets}.
+ * Implementation of NSRecordSets.
  */
 @LangDefinition
 class NSRecordSetsImpl
@@ -21,29 +21,34 @@ class NSRecordSetsImpl
         implements NSRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    NSRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    NSRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public NSRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.NS);
-        return new NSRecordSetImpl(this.dnsZone, inner, this.client);
+        return new NSRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<NSRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.NS));
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
     }
 
     @Override
     protected NSRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new NSRecordSetImpl(this.dnsZone, inner, this.client);
+        return new NSRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link TxtRecordSets}.
+ * Implementation of TxtRecordSets.
  */
 @LangDefinition
 class TxtRecordSetsImpl
@@ -21,29 +21,34 @@ class TxtRecordSetsImpl
         implements TxtRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    TxtRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    TxtRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public TxtRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.TXT);
-        return new TxtRecordSetImpl(this.dnsZone, inner, this.client);
+        return new TxtRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<TxtRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.TXT));
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
     }
 
     @Override
     protected TxtRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new TxtRecordSetImpl(this.dnsZone, inner, this.client);
+        return new TxtRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

@@ -11,23 +11,22 @@ import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.RecordType;
 
 /**
- * Implementation of {@link CNameRecordSet}.
+ * Implementation of CNameRecordSet.
  */
 @LangDefinition
 class CNameRecordSetImpl
         extends DnsRecordSetImpl
         implements CNameRecordSet {
-    CNameRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    CNameRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static CNameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static CNameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new CNameRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.CNAME.toString())
-                        .withCnameRecord(new CnameRecord()),
-                client);
+                        .withCnameRecord(new CnameRecord()));
     }
 
     @Override

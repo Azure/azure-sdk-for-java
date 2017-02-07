@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link ARecordSets}.
+ * Implementation of ARecordSets.
  */
 @LangDefinition
 class ARecordSetsImpl
@@ -21,31 +21,35 @@ class ARecordSetsImpl
         implements ARecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    ARecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    ARecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public ARecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.A);
-        return new ARecordSetImpl(this.dnsZone, inner, this.client);
+        return new ARecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<ARecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.parent().resourceGroupName(),
+                this.parent().name(),
                 RecordType.A));
     }
 
     @Override
     protected ARecordSetImpl wrapModel(RecordSetInner inner) {
-        return new ARecordSetImpl(this.dnsZone, inner, this.client);
+        return new ARecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

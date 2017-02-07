@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link PtrRecordSets}.
+ * Implementation of PtrRecordSets.
  */
 @LangDefinition
 class PtrRecordSetsImpl
@@ -21,29 +21,34 @@ class PtrRecordSetsImpl
         implements PtrRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    PtrRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    PtrRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public PtrRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.PTR);
-        return new PtrRecordSetImpl(this.dnsZone, inner, this.client);
+        return new PtrRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<PtrRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.PTR));
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.PTR));
     }
 
     @Override
     protected PtrRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new PtrRecordSetImpl(this.dnsZone, inner, this.client);
+        return new PtrRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

@@ -20,7 +20,6 @@ class DnsRecordSetsImpl extends
                                         RecordSetInner,
                                         DnsZoneImpl,
                                         DnsZone> {
-    private final RecordSetsInner client;
     /**
      * The default record set ttl in seconds.
      */
@@ -29,110 +28,108 @@ class DnsRecordSetsImpl extends
     /**
      * Creates new DnsRecordSetsImpl.
      *
-     * @param client the client to perform REST calls on record sets
      * @param parent the parent DNS zone of the record set
      */
-    DnsRecordSetsImpl(RecordSetsInner client, DnsZoneImpl parent) {
+    DnsRecordSetsImpl(DnsZoneImpl parent) {
         super(parent, "RecordSet");
-        this.client = client;
     }
 
     DnsRecordSetImpl defineARecordSet(String name) {
-        return setDefaults(prepareDefine(ARecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(ARecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl defineAaaaRecordSet(String name) {
-        return setDefaults(prepareDefine(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(AaaaRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     void withCNameRecordSet(String name, String alias) {
-        CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.parent(), this.client);
+        CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.parent());
         recordSet.inner().cnameRecord().withCname(alias);
         setDefaults(prepareDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
     }
 
     DnsRecordSetImpl defineMXRecordSet(String name) {
-        return setDefaults(prepareDefine(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(MXRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl defineNSRecordSet(String name) {
-        return setDefaults(prepareDefine(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(NSRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl definePtrRecordSet(String name) {
-        return setDefaults(prepareDefine(PtrRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(PtrRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl defineSrvRecordSet(String name) {
-        return setDefaults(prepareDefine(SrvRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(SrvRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl defineTxtRecordSet(String name) {
-        return setDefaults(prepareDefine(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
+        return setDefaults(prepareDefine(TxtRecordSetImpl.newRecordSet(name, this.parent())));
     }
 
     DnsRecordSetImpl updateARecordSet(String name) {
-        return prepareUpdate(ARecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(ARecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateAaaaRecordSet(String name) {
-        return prepareUpdate(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(AaaaRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateMXRecordSet(String name) {
-        return prepareUpdate(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(MXRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateNSRecordSet(String name) {
-        return prepareUpdate(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(NSRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updatePtrRecordSet(String name) {
-        return prepareUpdate(PtrRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(PtrRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateSrvRecordSet(String name) {
-        return prepareUpdate(SrvRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(SrvRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateTxtRecordSet(String name) {
-        return prepareUpdate(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return prepareUpdate(TxtRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateSoaRecordSet() {
-        return prepareUpdate(SoaRecordSetImpl.newRecordSet(this.parent(), this.client));
+        return prepareUpdate(SoaRecordSetImpl.newRecordSet(this.parent()));
     }
 
     void withoutARecordSet(String name) {
-        prepareRemove(ARecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(ARecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutAaaaRecordSet(String name) {
-        prepareRemove(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(AaaaRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutCNameRecordSet(String name) {
-        prepareRemove(CNameRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(CNameRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutMXRecordSet(String name) {
-        prepareRemove(MXRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(MXRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutNSRecordSet(String name) {
-        prepareRemove(NSRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(NSRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutPtrRecordSet(String name) {
-        prepareRemove(PtrRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(PtrRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutSrvRecordSet(String name) {
-        prepareRemove(SrvRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(SrvRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     void withoutTxtRecordSet(String name) {
-        prepareRemove(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        prepareRemove(TxtRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     final void clearPendingOperations() {

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation of {@link MXRecordSets}.
+ * Implementation of MXRecordSets.
  */
 @LangDefinition
 class MXRecordSetsImpl
@@ -21,29 +21,33 @@ class MXRecordSetsImpl
         implements MXRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    MXRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    MXRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public MXRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(this.parent().resourceGroupName(),
+                this.parent().name(),
                 name,
                 RecordType.MX);
-        return new MXRecordSetImpl(this.dnsZone, inner, this.client);
+        return new MXRecordSetImpl(this.parent(), inner);
     }
 
     @Override
     public PagedList<MXRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.MX));
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.MX));
     }
 
     @Override
     protected MXRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new MXRecordSetImpl(this.dnsZone, inner, this.client);
+        return new MXRecordSetImpl(this.parent(), inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 }

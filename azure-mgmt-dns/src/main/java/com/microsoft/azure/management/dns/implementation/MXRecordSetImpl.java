@@ -15,23 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link MXRecordSet}.
+ * Implementation of MXRecordSet.
  */
 @LangDefinition
 class MXRecordSetImpl
         extends DnsRecordSetImpl
         implements MXRecordSet {
-    MXRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    MXRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static MXRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static MXRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new MXRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.MX.toString())
-                        .withMxRecords(new ArrayList<MxRecord>()),
-                client);
+                        .withMxRecords(new ArrayList<MxRecord>()));
     }
 
     @Override
