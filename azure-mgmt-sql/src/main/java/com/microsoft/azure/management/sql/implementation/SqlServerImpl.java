@@ -48,10 +48,6 @@ public class SqlServerImpl
             SqlServer,
             SqlServer.Definition,
             SqlServer.Update {
-    private final ServersInner innerCollection;
-    private final ElasticPoolsInner elasticPoolsInner;
-    private final DatabasesInner databasesInner;
-    private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
     private final Map<String, SqlElasticPool.DefinitionStages.WithCreate> elasticPoolCreatableMap;
     private final Map<String, SqlFirewallRule.DefinitionStages.WithCreate> firewallRuleCreatableMap;
     private final Map<String, SqlDatabase.DefinitionStages.WithAllDifferentOptions> databaseCreatableMap;
@@ -62,19 +58,8 @@ public class SqlServerImpl
     private final List<String> firewallRulesToDelete;
     private final List<String> databasesToDelete;
 
-    protected SqlServerImpl(String name,
-                            ServerInner innerObject,
-                            ServersInner innerCollection,
-                            SqlServerManager manager,
-                            ElasticPoolsInner elasticPoolsInner,
-                            DatabasesInner databasesInner,
-                            RecommendedElasticPoolsInner recommendedElasticPoolsInner) {
+    protected SqlServerImpl(String name, ServerInner innerObject, SqlServerManager manager) {
         super(name, innerObject, manager);
-        this.innerCollection = innerCollection;
-        this.elasticPoolsInner = elasticPoolsInner;
-        this.databasesInner = databasesInner;
-        this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
-
         this.databaseCreatableMap = new HashMap<>();
         this.elasticPoolCreatableMap = new HashMap<>();
         this.firewallRuleCreatableMap = new HashMap<>();
@@ -87,7 +72,7 @@ public class SqlServerImpl
     @Override
     public SqlServer refresh() {
         ServerInner response =
-                this.innerCollection.getByResourceGroup(this.resourceGroupName(), this.name());
+                this.manager().inner().servers().getByResourceGroup(this.resourceGroupName(), this.name());
         this.setInner(response);
 
         return this;
@@ -97,7 +82,7 @@ public class SqlServerImpl
     public Observable<SqlServer> createResourceAsync() {
         final SqlServer self = this;
 
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return this.manager().inner().servers().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(new Func1<ServerInner, SqlServer>() {
                     @Override
                     public SqlServer call(ServerInner serverInner) {
@@ -130,7 +115,7 @@ public class SqlServerImpl
     @Override
     public FirewallRules firewallRules() {
         if (this.firewallRulesImpl == null) {
-            this.firewallRulesImpl = new FirewallRulesImpl(this.innerCollection, this.myManager, this.resourceGroupName(), this.name());
+            this.firewallRulesImpl = new FirewallRulesImpl(this.manager(), this.resourceGroupName(), this.name());
         }
         return this.firewallRulesImpl;
     }
@@ -139,9 +124,7 @@ public class SqlServerImpl
     public ElasticPools elasticPools() {
         if (this.elasticPoolsImpl == null) {
             this.elasticPoolsImpl = new ElasticPoolsImpl(
-                    this.elasticPoolsInner,
-                    this.myManager,
-                    this.databasesInner,
+                    this.manager(),
                     (DatabasesImpl) this.databases(),
                     this.resourceGroupName(),
                     this.name(),
@@ -153,7 +136,11 @@ public class SqlServerImpl
     @Override
     public Databases databases() {
         if (this.databasesImpl == null) {
-            this.databasesImpl = new DatabasesImpl(this.databasesInner, myManager, this.resourceGroupName(), this.name(), this.region());
+            this.databasesImpl = new DatabasesImpl(
+                    this.manager(),
+                    this.resourceGroupName(),
+                    this.name(),
+                    this.region());
         }
         return this.databasesImpl;
     }
@@ -168,14 +155,14 @@ public class SqlServerImpl
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                this.innerCollection.listUsages(
+                this.manager().inner().servers().listUsages(
                         this.resourceGroupName(),
                         this.name())));
     }
 
     @Override
     public List<ServiceObjective> listServiceObjectives() {
-        final ServersInner innerCollection = this.innerCollection;
+        final ServersInner innerCollection = this.manager().inner().servers();
         PagedListConverter<ServiceObjectiveInner, ServiceObjective> converter = new PagedListConverter<ServiceObjectiveInner, ServiceObjective>() {
             @Override
             public ServiceObjective typeConvert(ServiceObjectiveInner serviceObjectiveInner) {
@@ -184,7 +171,7 @@ public class SqlServerImpl
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                        this.innerCollection.listServiceObjectives(
+                        this.manager().inner().servers().listServiceObjectives(
                         this.resourceGroupName(),
                         this.name())));
     }
@@ -192,8 +179,8 @@ public class SqlServerImpl
     @Override
     public ServiceObjective getServiceObjective(String serviceObjectiveName) {
         return new ServiceObjectiveImpl(
-                this.innerCollection.getServiceObjective(this.resourceGroupName(), this.name(), serviceObjectiveName),
-                this.innerCollection);
+                this.manager().inner().servers().getServiceObjective(this.resourceGroupName(), this.name(), serviceObjectiveName),
+                this.manager().inner().servers());
     }
 
     @Override
@@ -209,12 +196,10 @@ public class SqlServerImpl
             protected RecommendedElasticPool impl(RecommendedElasticPoolInner recommendedElasticPoolInner) {
                 return new RecommendedElasticPoolImpl(
                         recommendedElasticPoolInner,
-                        self.databasesInner,
-                        self.recommendedElasticPoolsInner,
                         self.manager());
             }
         };
-        return converter.convertToUnmodifiableMap(this.recommendedElasticPoolsInner.list(
+        return converter.convertToUnmodifiableMap(this.manager().inner().recommendedElasticPools().list(
                 this.resourceGroupName(),
                 this.name()));
     }

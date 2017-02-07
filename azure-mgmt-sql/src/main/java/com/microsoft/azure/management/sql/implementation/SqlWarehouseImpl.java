@@ -17,17 +17,19 @@ class SqlWarehouseImpl
         extends SqlDatabaseImpl
         implements SqlWarehouse {
 
-    protected SqlWarehouseImpl(String name, DatabaseInner innerObject, DatabasesInner innerCollection, SqlServerManager manager) {
-        super(name, innerObject, innerCollection, manager);
+    protected SqlWarehouseImpl(String name, DatabaseInner innerObject, SqlServerManager manager) {
+        super(name, innerObject, manager);
     }
 
     @Override
     public void pauseDataWarehouse() {
-        this.innerCollection.pauseDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
+        this.manager().inner().databases().pauseDataWarehouse(
+                this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override
     public void resumeDataWarehouse() {
-        this.innerCollection.resumeDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
+        this.manager().inner().databases().resumeDataWarehouse(
+                this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 }

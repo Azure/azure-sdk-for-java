@@ -26,11 +26,11 @@ public class DatabasesImpl implements SqlServer.Databases {
     private final SqlDatabases.SqlDatabaseCreatable databases;
     private final Region region;
 
-    DatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager, String resourceGroupName, String sqlServerName, Region region) {
+    DatabasesImpl(SqlServerManager manager, String resourceGroupName, String sqlServerName, Region region) {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.region = region;
-        this.databases = new SqlDatabasesImpl(innerCollection, manager);
+        this.databases = new SqlDatabasesImpl(manager);
     }
 
     protected SqlDatabases databases() {
@@ -39,26 +39,31 @@ public class DatabasesImpl implements SqlServer.Databases {
 
     @Override
     public SqlDatabase get(String databaseName) {
-        return this.databases.getBySqlServer(this.resourceGroupName, this.sqlServerName, databaseName);
+        return this.databases().getBySqlServer(
+                this.resourceGroupName, this.sqlServerName, databaseName);
 }
 
     @Override
     public SqlDatabase.DefinitionStages.Blank define(String databaseName) {
-        return this.databases.definedWithSqlServer(this.resourceGroupName, this.sqlServerName, databaseName, this.region);
+        return this.databases.definedWithSqlServer(
+                this.resourceGroupName, this.sqlServerName, databaseName, this.region);
     }
 
     @Override
     public List<SqlDatabase> list() {
-        return this.databases.listBySqlServer(this.resourceGroupName, this.sqlServerName);
+        return this.databases().listBySqlServer(
+                this.resourceGroupName, this.sqlServerName);
     }
 
     @Override
     public void delete(String databaseName) {
-        this.databases.deleteByParent(this.resourceGroupName, this.sqlServerName, databaseName);
+        this.databases().deleteByParent(
+                this.resourceGroupName, this.sqlServerName, databaseName);
     }
 
     @Override
     public Completable deleteAsync(String databaseName) {
-        return this.databases.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, databaseName);
+        return this.databases().deleteByParentAsync(
+                this.resourceGroupName, this.sqlServerName, databaseName);
     }
 }

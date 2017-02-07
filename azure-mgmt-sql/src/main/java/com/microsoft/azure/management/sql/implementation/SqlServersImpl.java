@@ -29,14 +29,7 @@ class SqlServersImpl
     protected SqlServerImpl wrapModel(String name) {
         ServerInner inner = new ServerInner();
         inner.withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
-        return new SqlServerImpl(
-                name,
-                inner,
-                this.inner(),
-                this.manager(),
-                this.manager().inner().elasticPools(),
-                this.manager().inner().databases(),
-                this.manager().inner().recommendedElasticPools());
+        return new SqlServerImpl(name, inner, this.manager());
     }
 
     @Override
@@ -55,14 +48,7 @@ class SqlServersImpl
             return null;
         }
 
-        return new SqlServerImpl(
-                inner.name(),
-                inner,
-                this.inner(),
-                this.manager(),
-                this.manager().inner().elasticPools(),
-                this.manager().inner().databases(),
-                this.manager().inner().recommendedElasticPools());
+        return new SqlServerImpl(inner.name(), inner, this.manager());
     }
 
     @Override
