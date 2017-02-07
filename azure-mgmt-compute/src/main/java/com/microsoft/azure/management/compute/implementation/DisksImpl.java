@@ -15,16 +15,16 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Completable;
 
 /**
- * The implementation for {@link Disks}.
+ * The implementation for Disks.
  */
 @LangDefinition
 class DisksImpl
         extends GroupableResourcesImpl<
-        Disk,
-        DiskImpl,
-        DiskInner,
-        DisksInner,
-        ComputeManager>
+            Disk,
+            DiskImpl,
+            DiskInner,
+            DisksInner,
+            ComputeManager>
         implements Disks {
 
     DisksImpl(ComputeManager computeManager) {
@@ -72,18 +72,12 @@ class DisksImpl
 
     @Override
     protected DiskImpl wrapModel(String name) {
-        return new DiskImpl(name,
-                new DiskInner(),
-                this.inner(),
-                this.manager());
+        return new DiskImpl(name, new DiskInner(), this.manager());
     }
 
     @Override
     protected DiskImpl wrapModel(DiskInner inner) {
-        return new DiskImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override

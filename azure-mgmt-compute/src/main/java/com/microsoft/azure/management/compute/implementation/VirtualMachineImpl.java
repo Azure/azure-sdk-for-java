@@ -69,23 +69,22 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The implementation for {@link VirtualMachine} and its create and update interfaces.
+ * The implementation for VirtualMachine and its create and update interfaces.
  */
 @LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
-        VirtualMachine,
-        VirtualMachineInner,
-        VirtualMachineImpl,
-        ComputeManager>
+            VirtualMachine,
+            VirtualMachineInner,
+            VirtualMachineImpl,
+            ComputeManager>
         implements
-        VirtualMachine,
-        VirtualMachine.DefinitionManagedOrUnmanaged,
-        VirtualMachine.DefinitionManaged,
-        VirtualMachine.DefinitionUnmanaged,
-        VirtualMachine.Update {
+            VirtualMachine,
+            VirtualMachine.DefinitionManagedOrUnmanaged,
+            VirtualMachine.DefinitionManaged,
+            VirtualMachine.DefinitionUnmanaged,
+            VirtualMachine.Update {
     // Clients
-    private final VirtualMachinesInner client;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
@@ -132,13 +131,10 @@ class VirtualMachineImpl
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
-                       VirtualMachinesInner client,
-                       VirtualMachineExtensionsInner extensionsClient,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
@@ -152,7 +148,7 @@ class VirtualMachineImpl
                 return new VirtualMachineSizeImpl(inner);
             }
         };
-        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
     }
@@ -161,7 +157,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() {
-        VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
+        VirtualMachineInner response = this.manager().inner().virtualMachines().get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
@@ -171,44 +167,44 @@ class VirtualMachineImpl
 
     @Override
     public void deallocate() {
-        this.client.deallocate(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().deallocate(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void generalize() {
-        this.client.generalize(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().generalize(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void powerOff() {
-        this.client.powerOff(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().powerOff(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void restart() {
-        this.client.restart(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().restart(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void start() {
-        this.client.start(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().start(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void redeploy() {
-        this.client.redeploy(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().redeploy(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.client.convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
     @Override
     public PagedList<VirtualMachineSize> availableSizes() {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
+        page.setItems(this.manager().inner().virtualMachines().listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
@@ -224,7 +220,7 @@ class VirtualMachineImpl
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
-        VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        VirtualMachineCaptureResultInner captureResult = this.manager().inner().virtualMachines().capture(this.resourceGroupName(), this.name(), parameters);
         if (captureResult == null) {
             return null;
         }
@@ -239,7 +235,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() {
-        this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
+        this.virtualMachineInstanceView = this.manager().inner().virtualMachines().get(this.resourceGroupName(),
                 this.name(),
                 InstanceViewTypes.INSTANCE_VIEW).instanceView();
         return this.virtualMachineInstanceView;
@@ -1315,6 +1311,7 @@ class VirtualMachineImpl
             UnmanagedDataDiskImpl.setDataDisksDefaults(this.unmanagedDataDisks, this.vmName);
         }
         final VirtualMachineImpl self = this;
+        final VirtualMachinesInner client = this.manager().inner().virtualMachines();
         return handleStorageSettingsAsync()
                 .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
                     @Override

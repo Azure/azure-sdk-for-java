@@ -28,27 +28,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The implementation for {@link VirtualMachineCustomImage}.
+ * The implementation for VirtualMachineCustomImage.
  */
 @LangDefinition
 class VirtualMachineCustomImageImpl
         extends GroupableResourceImpl<
-        VirtualMachineCustomImage,
-        ImageInner,
-        VirtualMachineCustomImageImpl,
-        ComputeManager>
+            VirtualMachineCustomImage,
+            ImageInner,
+            VirtualMachineCustomImageImpl,
+            ComputeManager>
         implements
-        VirtualMachineCustomImage,
-        VirtualMachineCustomImage.Definition {
+            VirtualMachineCustomImage,
+            VirtualMachineCustomImage.Definition {
 
-    private final ImagesInner client;
-
-    VirtualMachineCustomImageImpl(final String name,
-                                  ImageInner innerModel,
-                                  final ImagesInner client,
-                                  final ComputeManager computeManager) {
+    VirtualMachineCustomImageImpl(final String name, ImageInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
     }
 
     @Override
@@ -199,7 +193,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public CustomImageDataDiskImpl defineDataDiskImage() {
-        return new CustomImageDataDiskImpl(new ImageDataDisk(),this);
+        return new CustomImageDataDiskImpl(new ImageDataDisk(), this);
     }
 
     @Override
@@ -219,13 +213,13 @@ class VirtualMachineCustomImageImpl
     @Override
     public Observable<VirtualMachineCustomImage> createResourceAsync() {
         ensureDefaultLuns();
-        return client.createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+        return this.manager().inner().images().createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public VirtualMachineCustomImage refresh() {
-        ImageInner imageInner = this.client.get(this.resourceGroupName(), this.name());
+        ImageInner imageInner = this.manager().inner().images().get(this.resourceGroupName(), this.name());
         this.setInner(imageInner);
         return this;
     }

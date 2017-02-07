@@ -125,8 +125,6 @@ public class VirtualMachineScaleSetsImpl
 
         return new VirtualMachineScaleSetImpl(name,
                 inner,
-                this.inner(),
-                this.manager().inner().virtualMachineScaleSetVMs(),
                 this.manager(),
                 this.storageManager,
                 this.networkManager);
@@ -139,8 +137,6 @@ public class VirtualMachineScaleSetsImpl
         }
         return new VirtualMachineScaleSetImpl(inner.name(),
                 inner,
-                this.inner(),
-                this.manager().inner().virtualMachineScaleSetVMs(),
                 this.manager(),
                 this.storageManager,
                 this.networkManager);

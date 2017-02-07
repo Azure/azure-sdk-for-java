@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- * The implementation for {@link Snapshot} and its create and update interfaces.
+ * The implementation for Snapshot and its create and update interfaces.
  */
 @LangDefinition
 class SnapshotImpl
@@ -33,14 +33,11 @@ class SnapshotImpl
         Snapshot,
         Snapshot.Definition,
         Snapshot.Update  {
-    private final SnapshotsInner client;
 
     SnapshotImpl(String name,
              SnapshotInner innerModel,
-             SnapshotsInner client,
              final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
     }
 
     @Override
@@ -74,7 +71,7 @@ class SnapshotImpl
         grantAccessDataInner.withAccess(AccessLevel.READ)
                 .withDurationInSeconds(accessDurationInSeconds);
 
-        AccessUriInner accessUriInner = this.client.grantAccess(this.resourceGroupName(),
+        AccessUriInner accessUriInner = this.manager().inner().snapshots().grantAccess(this.resourceGroupName(),
                 this.name(), grantAccessDataInner);
         if (accessUriInner == null) {
             return null;
@@ -84,7 +81,7 @@ class SnapshotImpl
 
     @Override
     public void revokeAccess() {
-        this.client.revokeAccess(this.resourceGroupName(), this.name());
+        this.manager().inner().snapshots().revokeAccess(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -255,13 +252,13 @@ class SnapshotImpl
 
     @Override
     public Observable<Snapshot> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+        return this.manager().inner().snapshots().createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Snapshot refresh() {
-        SnapshotInner snapshotInner = this.client.get(this.resourceGroupName(), this.name());
+        SnapshotInner snapshotInner = this.manager().inner().snapshots().get(this.resourceGroupName(), this.name());
         this.setInner(snapshotInner);
         return this;
     }

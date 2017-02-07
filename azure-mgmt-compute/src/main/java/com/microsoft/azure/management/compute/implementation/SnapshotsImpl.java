@@ -20,11 +20,11 @@ import rx.Completable;
 @LangDefinition
 class SnapshotsImpl
         extends GroupableResourcesImpl<
-        Snapshot,
-        SnapshotImpl,
-        SnapshotInner,
-        SnapshotsInner,
-        ComputeManager>
+            Snapshot,
+            SnapshotImpl,
+            SnapshotInner,
+            SnapshotsInner,
+            ComputeManager>
         implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {
@@ -39,8 +39,7 @@ class SnapshotsImpl
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName,
-                snapshotName,grantAccessDataInner);
+        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName, snapshotName, grantAccessDataInner);
         return accessUriInner.accessSAS();
     }
 
@@ -72,18 +71,12 @@ class SnapshotsImpl
 
     @Override
     protected SnapshotImpl wrapModel(String name) {
-        return new SnapshotImpl(name,
-                new SnapshotInner(),
-                this.inner(),
-                this.manager());
+        return new SnapshotImpl(name, new SnapshotInner(), this.manager());
     }
 
     @Override
     protected SnapshotImpl wrapModel(SnapshotInner inner) {
-        return new SnapshotImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new SnapshotImpl(inner.name(), inner, this.manager());
     }
 
     @Override

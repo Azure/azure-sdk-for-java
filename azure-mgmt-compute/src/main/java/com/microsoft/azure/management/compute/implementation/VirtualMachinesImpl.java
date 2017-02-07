@@ -153,8 +153,6 @@ class VirtualMachinesImpl
                 .withNetworkInterfaces(new ArrayList<NetworkInterfaceReferenceInner>()));
         return new VirtualMachineImpl(name,
                 inner,
-                this.inner(),
-                this.manager().inner().virtualMachineExtensions(),
                 this.manager(),
                 this.storageManager,
                 this.networkManager);
@@ -167,8 +165,6 @@ class VirtualMachinesImpl
         }
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
-                this.inner(),
-                this.manager().inner().virtualMachineExtensions(),
                 this.manager(),
                 this.storageManager,
                 this.networkManager);

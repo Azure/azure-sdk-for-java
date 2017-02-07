@@ -72,7 +72,6 @@ class AvailabilitySetsImpl
     protected AvailabilitySetImpl wrapModel(String name) {
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
-                this.inner(),
                 this.manager());
     }
 
@@ -83,7 +82,6 @@ class AvailabilitySetsImpl
         }
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
-                this.inner(),
                 this.manager());
     }
 }

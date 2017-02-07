@@ -40,18 +40,12 @@ class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
 
     @Override
     protected VirtualMachineCustomImageImpl wrapModel(String name) {
-        return new VirtualMachineCustomImageImpl(name,
-                new ImageInner(),
-                this.inner(),
-                this.manager());
+        return new VirtualMachineCustomImageImpl(name, new ImageInner(), this.manager());
     }
 
     @Override
     protected VirtualMachineCustomImageImpl wrapModel(ImageInner inner) {
-        return new VirtualMachineCustomImageImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager());
+        return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
     @Override
