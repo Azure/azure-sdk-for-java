@@ -8,14 +8,10 @@
 package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -24,9 +20,7 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Azure Compute sample for managing virtual machines -
