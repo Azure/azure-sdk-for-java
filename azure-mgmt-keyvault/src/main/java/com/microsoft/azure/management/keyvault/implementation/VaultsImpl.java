@@ -71,7 +71,6 @@ class VaultsImpl
         return new VaultImpl(
                 name,
                 inner,
-                this.inner(),
                 this.manager(),
                 graphRbacManager);
     }
@@ -84,7 +83,6 @@ class VaultsImpl
         return new VaultImpl(
                 vaultInner.name(),
                 vaultInner,
-                this.inner(),
                 super.manager(),
                 graphRbacManager);
     }
