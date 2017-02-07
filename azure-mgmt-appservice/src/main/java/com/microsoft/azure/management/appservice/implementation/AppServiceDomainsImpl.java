@@ -16,7 +16,7 @@ import com.microsoft.azure.management.appservice.DomainLegalAgreement;
 import rx.Completable;
 
 /**
- * The implementation for {@link AppServiceDomains}.
+ * The implementation for AppServiceDomains.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainsImpl
@@ -44,12 +44,7 @@ class AppServiceDomainsImpl
 
     @Override
     protected AppServiceDomainImpl wrapModel(String name) {
-        return new AppServiceDomainImpl(
-                name,
-                new DomainInner(),
-                this.inner(),
-                this.manager().inner().topLevelDomains(),
-                this.manager());
+        return new AppServiceDomainImpl(name, new DomainInner(), this.manager());
     }
 
     @Override
@@ -57,11 +52,7 @@ class AppServiceDomainsImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceDomainImpl(inner.name(),
-                inner,
-                this.inner(),
-                this.manager().inner().topLevelDomains(),
-                this.manager());
+        return new AppServiceDomainImpl(inner.name(), inner, this.manager());
     }
 
     @Override

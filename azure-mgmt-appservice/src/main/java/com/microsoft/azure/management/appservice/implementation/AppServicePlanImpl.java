@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- * The implementation for {@link AppServicePlan}.
+ * The implementation for AppServicePlan.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlanImpl
@@ -29,22 +29,19 @@ class AppServicePlanImpl
         AppServicePlan.Definition,
         AppServicePlan.Update {
 
-    private final AppServicePlansInner client;
-
-    AppServicePlanImpl(String name, AppServicePlanInner innerObject, final AppServicePlansInner client, AppServiceManager manager) {
+    AppServicePlanImpl(String name, AppServicePlanInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
     }
 
     @Override
     public Observable<AppServicePlan> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return this.manager().inner().appServicePlans().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public AppServicePlanImpl refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
+        this.setInner(this.manager().inner().appServicePlans().get(resourceGroupName(), name()));
         return this;
     }
 

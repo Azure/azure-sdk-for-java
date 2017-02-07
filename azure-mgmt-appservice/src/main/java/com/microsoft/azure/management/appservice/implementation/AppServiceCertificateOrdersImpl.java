@@ -50,7 +50,7 @@ class AppServiceCertificateOrdersImpl
 
     @Override
     protected AppServiceCertificateOrderImpl wrapModel(String name) {
-        return new AppServiceCertificateOrderImpl(name, new AppServiceCertificateOrderInner(), this.inner(), this.manager());
+        return new AppServiceCertificateOrderImpl(name, new AppServiceCertificateOrderInner(), this.manager());
     }
 
     @Override
@@ -58,7 +58,7 @@ class AppServiceCertificateOrdersImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateOrderImpl(inner.name(), inner, this.inner(), this.manager());
+        return new AppServiceCertificateOrderImpl(inner.name(), inner, this.manager());
     }
 
     @Override

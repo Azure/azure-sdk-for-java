@@ -17,7 +17,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link AppServicePlans}.
+ * The implementation for AppServicePlans.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlansImpl
@@ -50,7 +50,7 @@ class AppServicePlansImpl
 
     @Override
     protected AppServicePlanImpl wrapModel(String name) {
-        return new AppServicePlanImpl(name, new AppServicePlanInner(), this.inner(), this.manager());
+        return new AppServicePlanImpl(name, new AppServicePlanInner(), this.manager());
     }
 
     @Override
@@ -58,7 +58,7 @@ class AppServicePlansImpl
         if (inner == null) {
             return null;
         }
-        return new AppServicePlanImpl(inner.name(), inner, this.inner(), this.manager());
+        return new AppServicePlanImpl(inner.name(), inner, this.manager());
     }
 
     @Override

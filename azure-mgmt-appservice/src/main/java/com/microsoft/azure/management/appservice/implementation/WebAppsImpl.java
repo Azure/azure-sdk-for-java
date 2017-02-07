@@ -20,11 +20,11 @@ import rx.Completable;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
         extends GroupableResourcesImpl<
-        WebApp,
-        WebAppImpl,
-        SiteInner,
-        WebAppsInner,
-        AppServiceManager>
+            WebApp,
+            WebAppImpl,
+            SiteInner,
+            WebAppsInner,
+            AppServiceManager>
         implements WebApps {
 
     private final PagedListConverter<SiteInner, WebApp> converter;
@@ -58,7 +58,7 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, this.inner(), this.manager(), this.manager().inner());
+        return new WebAppImpl(name, new SiteInner(), null, this.manager());
     }
 
     @Override
@@ -67,7 +67,7 @@ class WebAppsImpl
             return null;
         }
         SiteConfigInner configInner = inner.siteConfig();
-        return new WebAppImpl(inner.name(), inner, configInner, this.inner(), this.manager(), this.manager().inner());
+        return new WebAppImpl(inner.name(), inner, configInner, this.manager());
     }
 
     protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {

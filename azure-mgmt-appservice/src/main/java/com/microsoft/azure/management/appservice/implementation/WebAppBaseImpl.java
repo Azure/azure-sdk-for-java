@@ -70,10 +70,8 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
-    final WebAppsInner client;
-    final WebSiteManagementClientImpl serviceClient;
-    Map<String, AppSetting> cachedAppSettings;
-    Map<String, ConnectionString> cachedConnectionStrings;
+    private Map<String, AppSetting> cachedAppSettings;
+    private Map<String, ConnectionString> cachedConnectionStrings;
 
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
@@ -93,10 +91,8 @@ abstract class WebAppBaseImpl<
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
 
-    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
+    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
-        this.serviceClient = serviceClient;
         this.inner().withSiteConfig(configObject);
         normalizeProperties();
     }
@@ -746,7 +742,7 @@ abstract class WebAppBaseImpl<
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
         inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(inner, (FluentImplT) this, client);
+        return new HostNameBindingImpl<>(inner, (FluentImplT) this, this.manager().inner().webApps());
     }
 
     @Override
@@ -1089,7 +1085,7 @@ abstract class WebAppBaseImpl<
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
         SiteSourceControlInner sourceControlInner = new SiteSourceControlInner();
         sourceControlInner.withLocation(regionName());
-        return new WebAppSourceControlImpl<>(sourceControlInner, this, serviceClient);
+        return new WebAppSourceControlImpl<>(sourceControlInner, this);
     }
 
     @Override

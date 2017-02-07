@@ -18,7 +18,7 @@ import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 
 /**
- * The implementation for {@link DeploymentSlots}.
+ * The implementation DeploymentSlots.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotsImpl
@@ -33,13 +33,12 @@ class DeploymentSlotsImpl
 
     private final PagedListConverter<SiteInner, DeploymentSlot> converter;
     private final WebAppImpl parent;
-    private final WebSiteManagementClientImpl serviceClient;
 
-    DeploymentSlotsImpl(final WebAppImpl parent, final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
-        super(innerCollection, manager);
-        this.serviceClient = serviceClient;
+    DeploymentSlotsImpl(final WebAppImpl parent) {
+        super(parent.manager().inner().webApps(), parent.manager());
 
         this.parent = parent;
+        final WebAppsInner innerCollection = this.inner();
         converter = new PagedListConverter<SiteInner, DeploymentSlot>() {
             @Override
             public DeploymentSlot typeConvert(SiteInner siteInner) {
@@ -51,7 +50,7 @@ class DeploymentSlotsImpl
 
     @Override
     protected DeploymentSlotImpl wrapModel(String name) {
-        return new DeploymentSlotImpl(name, new SiteInner(), null, parent, innerCollection, super.manager, serviceClient)
+        return new DeploymentSlotImpl(name, new SiteInner(), null, parent)
                 .withRegion(parent.regionName())
                 .withExistingResourceGroup(parent.resourceGroupName());
     }
@@ -61,7 +60,7 @@ class DeploymentSlotsImpl
         if (inner == null) {
             return null;
         }
-        return new DeploymentSlotImpl(inner.name(), inner, inner.siteConfig(), parent, innerCollection, super.manager, serviceClient);
+        return new DeploymentSlotImpl(inner.name(), inner, inner.siteConfig(), parent);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {
@@ -116,5 +115,10 @@ class DeploymentSlotsImpl
     @Override
     public DeploymentSlot getByName(String name) {
         return getByParent(parent.resourceGroupName(), parent.name(), name);
+    }
+
+    @Override
+    public WebApp parent() {
+        return this.parent;
     }
 }

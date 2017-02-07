@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.SiteInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -21,12 +22,8 @@ public interface DeploymentSlot extends
         IndependentChildResource<AppServiceManager, SiteInner>,
         WebAppBase,
         Refreshable<DeploymentSlot>,
-        Updatable<DeploymentSlot.Update> {
-
-    /**
-     * @return the web app containing this deployment slot
-     */
-    WebApp parent();
+        Updatable<DeploymentSlot.Update>,
+        HasParent<WebApp> {
 
     /**************************************************************
      * Fluent interfaces to provision a deployment slot

@@ -11,20 +11,19 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificates;
-import com.microsoft.azure.management.appservice.AppServicePlans;
 import rx.Completable;
 
 /**
- * The implementation for {@link AppServicePlans}.
+ * The implementation for AppServiceCertificates.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificatesImpl
         extends GroupableResourcesImpl<
-        AppServiceCertificate,
-        AppServiceCertificateImpl,
-        CertificateInner,
-        CertificatesInner,
-        AppServiceManager>
+            AppServiceCertificate,
+            AppServiceCertificateImpl,
+            CertificateInner,
+            CertificatesInner,
+            AppServiceManager>
         implements AppServiceCertificates {
 
     AppServiceCertificatesImpl(AppServiceManager manager) {
@@ -43,7 +42,7 @@ class AppServiceCertificatesImpl
 
     @Override
     protected AppServiceCertificateImpl wrapModel(String name) {
-        return new AppServiceCertificateImpl(name, new CertificateInner(), this.inner(), this.manager());
+        return new AppServiceCertificateImpl(name, new CertificateInner(), this.manager());
     }
 
     @Override
@@ -51,7 +50,7 @@ class AppServiceCertificatesImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateImpl(inner.name(), inner, this.inner(), this.manager());
+        return new AppServiceCertificateImpl(inner.name(), inner, this.manager());
     }
 
     @Override
