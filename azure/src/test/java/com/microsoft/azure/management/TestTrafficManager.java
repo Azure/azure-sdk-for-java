@@ -3,7 +3,6 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
@@ -23,7 +22,6 @@ import java.util.Map;
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
 
     private final PublicIPAddresses publicIPAddresses;
-    private final ResourceGroups resourceGroups;
 
     private final String externalEndpointName21 = "external-ep-1";
     private final String externalEndpointName22 = "external-ep-2";
@@ -36,8 +34,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     private final String azureEndpointName = "azure-ep-1";
     private final String nestedProfileEndpointName = "nested-profile-ep-1";
 
-    public TestTrafficManager(ResourceGroups resourceGroups, PublicIPAddresses publicIPAddresses) {
-        this.resourceGroups = resourceGroups;
+    public TestTrafficManager(PublicIPAddresses publicIPAddresses) {
         this.publicIPAddresses = publicIPAddresses;
     }
 
@@ -55,7 +52,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
         final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
         final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 
-        ResourceGroup.DefinitionStages.WithCreate rgCreatable = resourceGroups.define(groupName)
+        ResourceGroup.DefinitionStages.WithCreate rgCreatable = profiles.manager().resourceManager().resourceGroups().define(groupName)
                 .withRegion(region);
 
         // Creates a TM profile that will be used as a nested profile endpoint in parent TM profile

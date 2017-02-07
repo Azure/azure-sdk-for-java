@@ -5,7 +5,6 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -20,11 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final StorageAccounts storageAccounts;
-    private final ResourceGroups resourceGroups;
 
-    public TestResourceStreaming(StorageAccounts storageAccounts, ResourceGroups resourceGroups) {
+    public TestResourceStreaming(StorageAccounts storageAccounts) {
         this.storageAccounts = storageAccounts;
-        this.resourceGroups = resourceGroups;
     }
 
     @Override
@@ -33,7 +30,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
 
         System.out.println("In createResource \n\n\n");
 
-        Creatable<ResourceGroup> rgCreatable = this.resourceGroups.define(SdkContext.randomResourceName("rg" + vmName, 20))
+        Creatable<ResourceGroup> rgCreatable = virtualMachines.manager().resourceManager().resourceGroups().define(SdkContext.randomResourceName("rg" + vmName, 20))
                 .withRegion(Region.US_EAST);
 
         Creatable<StorageAccount> storageCreatable = this.storageAccounts.define(SdkContext.randomResourceName("stg", 20))

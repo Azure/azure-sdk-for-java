@@ -66,27 +66,19 @@ public class TestLoadBalancer {
      * Internet-facing LB test with NAT pool test.
      */
     public static class InternetWithNatPool extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final PublicIPAddresses pips;
         private final VirtualMachines vms;
-        private final Networks networks;
         private final AvailabilitySets availabilitySets;
 
         /**
          * Test of a load balancer with a NAT pool.
-         * @param pips public IPs
          * @param vms virtual machines
-         * @param networks virtual networks
          * @param availabilitySets availability sets
          */
         public InternetWithNatPool(
-                PublicIPAddresses pips,
                 VirtualMachines vms,
-                Networks networks,
                 AvailabilitySets availabilitySets) {
             initializeResourceNames();
-            this.pips = pips;
             this.vms = vms;
-            this.networks = networks;
             this.availabilitySets = availabilitySets;
         }
 
@@ -97,10 +89,10 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            ensurePIPs(pips);
-            PublicIPAddress pip0 = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
-            PublicIPAddress pip1 = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            ensurePIPs(resources.manager().publicIPAddresses());
+            PublicIPAddress pip0 = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIPAddress pip1 = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -229,27 +221,19 @@ public class TestLoadBalancer {
      * Internet-facing LB test with NAT rules.
      */
     public static class InternetWithNatRule extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final PublicIPAddresses pips;
         private final VirtualMachines vms;
-        private final Networks networks;
         private final AvailabilitySets availabilitySets;
 
         /**
          * Tests an Internet-facing load balancer with NAT rules.
-         * @param pips public IP addresses
          * @param vms virtual machines
-         * @param networks virtual networks
          * @param availabilitySets availability sets
          */
         public InternetWithNatRule(
-                PublicIPAddresses pips,
                 VirtualMachines vms,
-                Networks networks,
                 AvailabilitySets availabilitySets) {
             initializeResourceNames();
-            this.pips = pips;
             this.vms = vms;
-            this.networks = networks;
             this.availabilitySets = availabilitySets;
         }
 
@@ -260,9 +244,9 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            ensurePIPs(pips);
-            PublicIPAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            ensurePIPs(resources.manager().publicIPAddresses());
+            PublicIPAddress pip = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
             NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
@@ -376,7 +360,7 @@ public class TestLoadBalancer {
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             List<NetworkInterface> nics = new ArrayList<>();
             for (String nicId : resource.backends().get("backend1").backendNicIpConfigurationNames().keySet()) {
-                nics.add(this.networks.manager().networkInterfaces().getById(nicId));
+                nics.add(resource.manager().networkInterfaces().getById(nicId));
             }
             NetworkInterface nic1 = nics.get(0);
             NetworkInterface nic2 = nics.get(1);
@@ -395,8 +379,8 @@ public class TestLoadBalancer {
             Assert.assertTrue(nic2.primaryIPConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
             // Update the load balancer
-            ensurePIPs(pips);
-            PublicIPAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            ensurePIPs(resource.manager().publicIPAddresses());
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .updateInternetFrontend("frontend1")
                         .withExistingPublicIPAddress(pip)
@@ -426,27 +410,19 @@ public class TestLoadBalancer {
      * Internet-facing minimalistic LB test.
      */
     public static class InternetMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final PublicIPAddresses pips;
         private final VirtualMachines vms;
-        private final Networks networks;
         private final AvailabilitySets availabilitySets;
 
         /**
          * Tests an Internet-facing load balancer with minimum inputs.
-         * @param pips public IP addresses
          * @param vms virtual machines
-         * @param networks virtual networks
          * @param availabilitySets availability sets
          */
         public InternetMinimal(
-                PublicIPAddresses pips,
                 VirtualMachines vms,
-                Networks networks,
                 AvailabilitySets availabilitySets) {
             initializeResourceNames();
-            this.pips = pips;
             this.vms = vms;
-            this.networks = networks;
             this.availabilitySets = availabilitySets;
         }
 
@@ -457,9 +433,9 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
-            ensurePIPs(pips);
-            PublicIPAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            ensurePIPs(resources.manager().publicIPAddresses());
+            PublicIPAddress pip = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -523,8 +499,8 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            ensurePIPs(pips);
-            PublicIPAddress pip = pips.getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            ensurePIPs(resource.manager().publicIPAddresses());
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .withExistingPublicIPAddress(pip)
                     .updateTcpProbe("default")
@@ -604,7 +580,6 @@ public class TestLoadBalancer {
      */
     public static class InternalMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final VirtualMachines vms;
-        private final Networks networks;
         private final AvailabilitySets availabilitySets;
         private Network network;
 
@@ -616,11 +591,9 @@ public class TestLoadBalancer {
          */
         public InternalMinimal(
                 VirtualMachines vms,
-                Networks networks,
                 AvailabilitySets availabilitySets) {
             initializeResourceNames();
             this.vms = vms;
-            this.networks = networks;
             this.availabilitySets = availabilitySets;
         }
 
@@ -631,7 +604,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, this.availabilitySets, 2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
 
             // Must use the same VNet as the VMs
             this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();

@@ -28,7 +28,6 @@ import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayTier;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -236,18 +235,13 @@ public class TestApplicationGateway {
      * Complex internal (private) app gateway test.
      */
     public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final Networks networks;
 
         /**
          * Tests minimal internal app gateways.
-         * @param networks networks
-         * @param pips public IP addresses
          * @throws Exception when something goes wrong
          */
-        public PrivateComplex(Networks networks, PublicIPAddresses pips) throws Exception {
+        public PrivateComplex() throws Exception {
             initializeResourceNames();
-            this.networks = networks;
-            ensurePIPs(pips);
         }
 
         @Override
@@ -257,7 +251,9 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            final Network vnet = this.networks.define("net" + TEST_ID)
+            ensurePIPs(resources.manager().publicIPAddresses());
+
+            final Network vnet = resources.manager().networks().define("net" + TEST_ID)
                     .withRegion(REGION)
                     .withNewResourceGroup(GROUP_NAME)
                     .withAddressSpace("10.0.0.0/28")
@@ -570,9 +566,8 @@ public class TestApplicationGateway {
          * @param pips public IPs
          * @throws Exception when something goes wrong with test PIP creation
          */
-        public PublicComplex(PublicIPAddresses pips) throws Exception {
+        public PublicComplex() throws Exception {
             initializeResourceNames();
-            ensurePIPs(pips);
         }
 
         @Override
@@ -582,6 +577,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
+            ensurePIPs(resources.manager().publicIPAddresses());
             Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
                 public void uncaughtException(Thread th, Throwable ex) {
                     System.out.println("Uncaught exception: " + ex);

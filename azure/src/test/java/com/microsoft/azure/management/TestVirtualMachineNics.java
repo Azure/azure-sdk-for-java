@@ -16,7 +16,6 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -25,12 +24,10 @@ import org.junit.Assert;
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final NetworkInterfaces networkInterfaces;
     private final Networks networks;
-    private final ResourceGroups resourceGroups;
 
-    public TestVirtualMachineNics(ResourceGroups resourceGroups,
-                                  Networks networks,
-                                  NetworkInterfaces networkInterfaces) {
-        this.resourceGroups = resourceGroups;
+    public TestVirtualMachineNics(
+            Networks networks,
+            NetworkInterfaces networkInterfaces) {
         this.networks = networks;
         this.networkInterfaces = networkInterfaces;
     }
@@ -39,7 +36,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
         final String rgName = "rg" + this.testId;
-        Creatable<ResourceGroup> resourceGroupCreatable = this.resourceGroups
+        Creatable<ResourceGroup> resourceGroupCreatable = virtualMachines.manager().resourceManager().resourceGroups()
                 .define(rgName)
                 .withRegion(Region.US_EAST);
 

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Route;
 import com.microsoft.azure.management.network.RouteNextHopType;
 import com.microsoft.azure.management.network.RouteTable;
@@ -31,11 +30,6 @@ public class TestRouteTables {
      * Test of minimal route tables.
      */
     public static class Minimal extends TestTemplate<RouteTable, RouteTables> {
-        private final Networks networks;
-
-        Minimal(Networks networks) {
-            this.networks = networks;
-        }
 
         @Override
         public RouteTable createResource(RouteTables routeTables) throws Exception {
@@ -75,7 +69,7 @@ public class TestRouteTables {
             Assert.assertTrue(route2.nextHopType().equals(hopType));
 
             // Create a subnet that references the route table
-            networks.define("net" + this.testId)
+            routeTables.manager().networks().define("net" + this.testId)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/22")
@@ -114,7 +108,7 @@ public class TestRouteTables {
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE_ADDED_NAME));
 
-            this.networks.getByGroup(routeTable.resourceGroupName(), "net" + this.testId).update()
+            routeTable.manager().networks().getByGroup(routeTable.resourceGroupName(), "net" + this.testId).update()
                 .updateSubnet("subnet1")
                     .withoutRouteTable()
                         .parent()

@@ -132,9 +132,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer.InternetWithNatRule(
-                azure.publicIPAddresses(),
                 azure.virtualMachines(),
-                azure.networks(),
                 azure.availabilitySets())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
@@ -146,9 +144,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer.InternetWithNatPool(
-                azure.publicIPAddresses(),
                 azure.virtualMachines(),
-                azure.networks(),
                 azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
@@ -160,9 +156,7 @@ public class AzureTests extends TestBase {
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer.InternetMinimal(
-                azure.publicIPAddresses(),
                 azure.virtualMachines(),
-                azure.networks(),
                 azure.availabilitySets())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
@@ -175,7 +169,6 @@ public class AzureTests extends TestBase {
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
                 azure.virtualMachines(),
-                azure.networks(),
                 azure.availabilitySets())
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
@@ -186,7 +179,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway.PrivateComplex(azure.networks(), azure.publicIPAddresses())
+        new TestApplicationGateway.PrivateComplex()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -216,8 +209,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
-        new TestApplicationGateway.PublicComplex(
-                azure.publicIPAddresses())
+        new TestApplicationGateway.PublicComplex()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -245,7 +237,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testNetworks() throws Exception {
-        new TestNetwork.WithSubnets(azure.networkSecurityGroups())
+        new TestNetwork.WithSubnets()
             .runTest(azure.networks(), azure.resourceGroups());
     }
 
@@ -255,7 +247,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testRouteTables() throws Exception {
-        new TestRouteTables.Minimal(azure.networks())
+        new TestRouteTables.Minimal()
             .runTest(azure.routeTables(), azure.resourceGroups());
     }
 
@@ -320,10 +312,10 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(azure.resourceGroups(),
-                    azure.networks(),
-                    azure.networkInterfaces())
-                .runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineNics(
+                azure.networks(),
+                azure.networkInterfaces())
+            .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     /**
@@ -430,7 +422,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testTrafficManager() throws Exception {
-        new TestTrafficManager(azure.resourceGroups(), azure.publicIPAddresses())
+        new TestTrafficManager(azure.publicIPAddresses())
                 .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
 
@@ -461,6 +453,6 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testResourceStreaming() throws Exception {
-        new TestResourceStreaming(azure.storageAccounts(), azure.resourceGroups()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 }
