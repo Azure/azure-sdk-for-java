@@ -64,11 +64,7 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(
-                name,
-                new StorageAccountInner(),
-                this.inner(),
-                super.manager());
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
     }
 
     @Override
@@ -76,10 +72,6 @@ class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(
-                storageAccountInner.name(),
-                storageAccountInner,
-                this.inner(),
-                super.manager());
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
     }
 }

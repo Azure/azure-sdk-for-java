@@ -71,10 +71,9 @@ public class SqlServerImpl
 
     @Override
     public SqlServer refresh() {
-        ServerInner response =
-                this.manager().inner().servers().getByResourceGroup(this.resourceGroupName(), this.name());
+        ServerInner response = this.manager().inner().servers().getByResourceGroup(
+                this.resourceGroupName(), this.name());
         this.setInner(response);
-
         return this;
     }
 
