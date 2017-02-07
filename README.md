@@ -2,14 +2,15 @@
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0 beta 4). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released preview version (1.0 beta 5). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0 beta 4** is a developer preview that supports major parts of: 
+**1.0 beta 5** is a developer preview that supports major parts of: 
 
 - Azure Virtual Machines and VM Extensions
 - Virtual Machine Scale Sets
+- Managed Disks
 - Storage
 - Networking (virtual networks, subnets, network interfaces, IP addresses, network security groups, load balancers, DNS, traffic managers and application gateways)
 - Resource Manager
@@ -39,7 +40,7 @@ VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 	.withPrimaryPrivateIpAddressDynamic()
 	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
 	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-	.withRootUserName("tirekicker")
+	.withRootUsername("tirekicker")
 	.withSsh(sshKey)
 	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
 	.create();
@@ -53,11 +54,8 @@ You can update a virtual machine instance by using an `update() … apply()` met
 
 ```java
 linuxVM.update()
-    .defineNewDataDisk(dataDiskName)
-    .withSizeInGB(20)
-    .withCaching(CachingTypes.READ_WRITE)
-    .attach()
-    .apply();
+	.withNewDataDisk(20,  lun,  CachingTypes.READ_WRITE)
+	.apply();
 ```
 **Create a Virtual Machine Scale Set**
 
@@ -75,10 +73,11 @@ You can create a virtual machine scale set instance by using another `define() �
      .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
      .withoutPrimaryInternalLoadBalancer()
      .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-     .withRootUserName(userName)
+     .withRootUsername(userName)
      .withSsh(sshKey)
-     .withNewStorageAccount(storageAccountName1)
-     .withNewStorageAccount(storageAccountName2)
+     .withNewDataDisk(100)
+     .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+     .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
      .withCapacity(3)
      .create();
 ```
@@ -174,7 +173,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 #Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -188,10 +187,14 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
-<li><a href="https://github.com/Azure-Samples/compute-java-create-virtual-machines-from-generalized-image-or-specialized-vhd">Create virtual machines from generalized image or specialized VHD</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-extension-images">List virtual machine extension images</li>
-</ul>
-</td>
+<li><a href="https://github.com/Azure-Samples/compute-java-create-virtual-machines-from-generalized-image-or-specialized-vhd">Create virtual machines from generalized image or specialized VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image">Create virtual machine using custom image from virtual machine</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-custom-image-from-VHD">Create virtual machine using custom image from VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-VHD">Create virtual machine by importing a specialized operating system disk VHD</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create virtual machine using specialized VHD from snapshot</li>
+<li><a href="https://github.com/Azure-Samples/managed-disk-java-convert-existing-virtual-machines-to-use-managed-disks">Convert virtual machines to use managed disks</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage virtual machine with unmanaged disks</li></ul></td>
   </tr>
   <tr>
     <td>Virtual Machines - parallel execution</td>
@@ -205,6 +208,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td>Virtual Machine Scale Sets</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets (behind an Internet facing load balancer)</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage virtual machine scale sets with unmanaged disks</li>
 </ul></td>
   </tr>
   <tr>
@@ -285,7 +289,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource">Manage resources</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
-</ul></td>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
   <tr>
     <td>Key Vault</td>
@@ -310,15 +314,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 # Download
 
 
-**1.0 Beta 4**
+**1.0 Beta 5**
 
-If you are using released builds from 1.0 beta 4, add the following to your POM file:
+If you are using released builds from 1.0 beta 5, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta4.1</version>
+    <version>1.0.0-beta5</version>
 </dependency>
 ```
 
@@ -331,7 +335,7 @@ If you are using released builds from 1.0 beta 4, add the following to your POM 
 
 ## Help
 
-If you are migrating your code to 1.0 beta 4, you can use these notes for [preparing your code for 1.0 beta 4 from 1.0 beta 3](./notes/prepare-for-1.0.0-beta4.md).
+If you are migrating your code to 1.0 beta 5, you can use these notes for [preparing your code for 1.0 beta 5 from 1.0 beta 4](./notes/prepare-for-1.0.0-beta5.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -354,6 +358,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
 | 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
 | 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
 | 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
