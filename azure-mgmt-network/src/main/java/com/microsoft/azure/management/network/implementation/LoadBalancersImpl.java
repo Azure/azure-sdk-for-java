@@ -62,7 +62,6 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 name,
                 inner,
-                this.inner(),
                 this.manager());
     }
 
@@ -74,7 +73,6 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 inner.name(),
                 inner,
-                this.inner(),
                 this.manager());
     }
 }

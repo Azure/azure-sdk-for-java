@@ -67,7 +67,6 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
 
     private static final String DEFAULT = "default";
-    private final ApplicationGatewaysInner innerCollection;
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
     private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
@@ -75,17 +74,15 @@ class ApplicationGatewayImpl
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
-            final ApplicationGatewaysInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     // Verbs
 
     @Override
     public ApplicationGatewayImpl refresh() {
-        ApplicationGatewayInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        ApplicationGatewayInner inner = this.manager().inner().applicationGateways().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();
         return this;
@@ -399,6 +396,7 @@ class ApplicationGatewayImpl
                 });
         }
 
+        final ApplicationGatewaysInner innerCollection = this.manager().inner().applicationGateways();
         return Observable.merge(networkObservable, pipObservable)
                 .defaultIfEmpty(null)
                 .last().flatMap(new Func1<Resource, Observable<ApplicationGatewayInner>>() {

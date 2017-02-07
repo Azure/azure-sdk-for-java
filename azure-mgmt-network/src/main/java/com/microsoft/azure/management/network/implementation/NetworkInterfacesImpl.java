@@ -54,9 +54,9 @@ class NetworkInterfacesImpl
                                                                                         String scaleSetName,
                                                                                         String instanceId,
                                                                                         String name) {
-        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(
+                resourceGroupName,
                 scaleSetName,
-                this.inner(),
                 this.manager());
         return scaleSetNetworkInterfaces.getByVirtualMachineInstanceId(instanceId, name);
     }
@@ -64,9 +64,9 @@ class NetworkInterfacesImpl
     @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName,
                                                                                           String scaleSetName) {
-        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(
+                resourceGroupName,
                 scaleSetName,
-                this.inner(),
                 this.manager());
         return scaleSetNetworkInterfaces.list();
     }
@@ -77,12 +77,13 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(String resourceGroupName,
-                                                                                                    String scaleSetName,
-                                                                                                    String instanceId) {
-        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(
+            String resourceGroupName,
+            String scaleSetName,
+            String instanceId) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(
+                resourceGroupName,
                 scaleSetName,
-                this.inner(),
                 this.manager());
         return scaleSetNetworkInterfaces.listByVirtualMachineInstanceId(instanceId);
     }
@@ -97,10 +98,7 @@ class NetworkInterfacesImpl
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
         inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfigurationInner>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
-        return new NetworkInterfaceImpl(name,
-                inner,
-                this.inner(),
-                super.manager());
+        return new NetworkInterfaceImpl(name, inner, super.manager());
     }
 
     @Override
@@ -108,9 +106,6 @@ class NetworkInterfacesImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkInterfaceImpl(inner.name(),
-                inner,
-                this.inner(),
-                super.manager());
+        return new NetworkInterfaceImpl(inner.name(), inner, this.manager());
     }
 }

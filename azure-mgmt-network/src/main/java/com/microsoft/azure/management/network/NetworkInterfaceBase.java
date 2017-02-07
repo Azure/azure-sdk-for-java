@@ -1,6 +1,10 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -8,7 +12,9 @@ import java.util.List;
  * The base network interface shared across regular and virtual machine scale set network interface.
  */
 @Fluent
-public interface NetworkInterfaceBase {
+public interface NetworkInterfaceBase extends
+    HasManager<NetworkManager>,
+    HasInner<NetworkInterfaceInner> {
     /**
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */

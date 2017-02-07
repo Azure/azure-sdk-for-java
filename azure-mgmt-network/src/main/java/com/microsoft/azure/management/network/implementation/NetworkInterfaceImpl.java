@@ -46,10 +46,6 @@ class NetworkInterfaceImpl
         NetworkInterface.Definition,
         NetworkInterface.Update {
     /**
-     * the inner collection.
-     */
-    private final NetworkInterfacesInner innerCollection;
-    /**
      * the name of the network interface.
      */
     private final String nicName;
@@ -80,10 +76,8 @@ class NetworkInterfaceImpl
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
-                         final NetworkInterfacesInner client,
                          final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = client;
         this.nicName = name;
         this.namer = SdkContext.getResourceNamerFactory().createResourceNamer(this.nicName);
         initializeChildrenFromInner();
@@ -93,7 +87,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterface refresh() {
-        NetworkInterfaceInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        NetworkInterfaceInner inner = this.manager().inner().networkInterfaces().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         clearCachedRelatedResources();
         initializeChildrenFromInner();
@@ -450,7 +444,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected Observable<NetworkInterfaceInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().networkInterfaces().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override

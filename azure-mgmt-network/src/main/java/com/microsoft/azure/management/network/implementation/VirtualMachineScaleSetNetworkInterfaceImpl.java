@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * The implementation for {@link VirtualMachineScaleSetNetworkInterface}.
+ * The implementation for VirtualMachineScaleSetNetworkInterface.
  */
 class VirtualMachineScaleSetNetworkInterfaceImpl
         extends
@@ -31,10 +31,6 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
                 VirtualMachineScaleSetNetworkInterfaceImpl>
         implements
         VirtualMachineScaleSetNetworkInterface {
-    /**
-     * inner client.
-     */
-    private final NetworkInterfacesInner client;
     /**
      * the network client.
      */
@@ -52,12 +48,10 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
                                                       String scaleSetName,
                                                       String resourceGroupName,
                                                       NetworkInterfaceInner innerObject,
-                                                      NetworkInterfacesInner client,
                                                       NetworkManager networkManager) {
         super(name, innerObject);
         this.scaleSetName = scaleSetName;
         this.resourceGroupName = resourceGroupName;
-        this.client = client;
         this.networkManager = networkManager;
     }
 
@@ -168,7 +162,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         if (nsgId == null) {
             return null;
         }
-        return networkManager
+        return this.manager()
             .networkSecurityGroups()
             .getByGroup(ResourceUtils.groupFromResourceId(nsgId),
                 ResourceUtils.nameFromResourceId(nsgId));
@@ -190,10 +184,16 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public VirtualMachineScaleSetNetworkInterface refresh() {
-        this.setInner(this.client.getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName,
+        this.setInner(this.manager().inner().networkInterfaces().getVirtualMachineScaleSetNetworkInterface(
+                this.resourceGroupName,
                 this.scaleSetName,
                 ResourceUtils.nameFromResourceId(this.virtualMachineId()),
                 this.name()));
         return this;
+    }
+
+    @Override
+    public NetworkManager manager() {
+        return this.networkManager;
     }
 }

@@ -56,7 +56,6 @@ class LoadBalancerImpl
 
     private final Map<String, String> nicsInBackends = new HashMap<>();
     protected final Map<String, String> creatablePIPKeys = new HashMap<>();
-    protected final LoadBalancersInner innerCollection;
 
     private Map<String, LoadBalancerBackend> backends;
     private Map<String, LoadBalancerTcpProbe> tcpProbes;
@@ -70,17 +69,15 @@ class LoadBalancerImpl
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
-            final LoadBalancersInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     // Verbs
 
     @Override
     public LoadBalancerImpl refresh() {
-        LoadBalancerInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        LoadBalancerInner inner = this.manager().inner().loadBalancers().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();
         return this;
@@ -213,7 +210,7 @@ class LoadBalancerImpl
 
     @Override
     protected Observable<LoadBalancerInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().loadBalancers().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     private void initializeFrontendsFromInner() {
