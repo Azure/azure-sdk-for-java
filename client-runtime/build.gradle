@@ -12,7 +12,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'checkstyle'
 
 group = 'com.microsoft.rest'
-version = '1.0.0-beta5-SNAPSHOT'
+version = '1.0.0-beta6-SNAPSHOT'
 
 checkstyle {
     toolVersion = "6.18"
