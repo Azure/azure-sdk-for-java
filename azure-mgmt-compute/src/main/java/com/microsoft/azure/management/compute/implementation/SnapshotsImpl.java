@@ -40,7 +40,7 @@ class SnapshotsImpl
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
         AccessUriInner accessUriInner = this.innerCollection.grantAccess(resourceGroupName,
-                snapshotName,grantAccessDataInner);
+                snapshotName, grantAccessDataInner);
         return accessUriInner.accessSAS();
     }
 

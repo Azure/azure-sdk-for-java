@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -1779,11 +1785,11 @@ class VirtualMachineImpl
     }
 
     private class ManagedDataDiskCollection {
-        public final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
-        public final List<DataDisk> existingDisksToAttach = new ArrayList<>();
-        public final List<DataDisk> implicitDisksToAssociate = new ArrayList<>();
-        public final List<Integer> diskLunsToRemove = new ArrayList<>();
-        public final List<DataDisk> newDisksFromImage= new ArrayList<>();
+        private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
+        private final List<DataDisk> existingDisksToAttach = new ArrayList<>();
+        private final List<DataDisk> implicitDisksToAssociate = new ArrayList<>();
+        private final List<Integer> diskLunsToRemove = new ArrayList<>();
+        private final List<DataDisk> newDisksFromImage = new ArrayList<>();
         private final VirtualMachineImpl vm;
         private CachingTypes defaultCachingType;
         private StorageAccountTypes defaultStorageAccountType;

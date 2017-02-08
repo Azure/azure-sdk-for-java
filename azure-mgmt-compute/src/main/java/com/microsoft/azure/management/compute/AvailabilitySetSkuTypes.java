@@ -28,6 +28,7 @@ public final class AvailabilitySetSkuTypes {
         this.value = value;
     }
 
+    @Override
     public String toString() {
         return value;
     }
