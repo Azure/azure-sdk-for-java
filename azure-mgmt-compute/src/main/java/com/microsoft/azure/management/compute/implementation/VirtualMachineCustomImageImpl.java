@@ -199,7 +199,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public CustomImageDataDiskImpl defineDataDiskImage() {
-        return new CustomImageDataDiskImpl(new ImageDataDisk(),this);
+        return new CustomImageDataDiskImpl(new ImageDataDisk(), this);
     }
 
     @Override

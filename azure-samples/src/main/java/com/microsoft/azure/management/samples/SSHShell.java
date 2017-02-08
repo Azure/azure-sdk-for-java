@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.samples;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * Utility class to run commands on Linux VM via SSH.
  */
-public class SSHShell {
+public final class SSHShell {
     private final Session session;
     private final ChannelShell channel;
     private final Expect4j expect;
@@ -75,8 +74,8 @@ public class SSHShell {
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -88,7 +87,7 @@ public class SSHShell {
      *
      * @param commands the commands
      * @return the result
-     * @throws Exception
+     * @throws Exception exception thrown
      */
     public String runCommands(List<String> commands) throws Exception {
         String output = null;
