@@ -34,5 +34,5 @@ public interface RedisCaches extends
         SupportsDeletingByGroup,
         SupportsBatchCreation<RedisCache>,
         HasManager<RedisManager>,
-        HasInner<RedisInner>{
+        HasInner<RedisInner> {
 }
