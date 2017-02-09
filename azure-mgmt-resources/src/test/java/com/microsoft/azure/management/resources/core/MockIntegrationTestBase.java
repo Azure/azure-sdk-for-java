@@ -279,6 +279,8 @@ public class MockIntegrationTestBase {
             mBuilder = delete(urlPattern);
         } else if (method.equals("PATCH")) {
             mBuilder = patch(urlPattern);
+        } else if (method.equals("HEAD")) {
+            mBuilder = head(urlPattern);
         } else {
             throw new Exception("Invalid HTTP method.");
         }
