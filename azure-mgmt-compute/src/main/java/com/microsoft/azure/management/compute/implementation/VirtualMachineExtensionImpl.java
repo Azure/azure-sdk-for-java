@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Implementation of {@link VirtualMachineExtension}.
+ * Implementation of VirtualMachineExtension.
  */
 @LangDefinition
 class VirtualMachineExtensionImpl

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * The implementation for {@link VirtualMachineExtensionImageTypes}.
+ * The implementation for VirtualMachineExtensionImageTypes.
  */
 @LangDefinition
 class VirtualMachineExtensionImageTypesImpl

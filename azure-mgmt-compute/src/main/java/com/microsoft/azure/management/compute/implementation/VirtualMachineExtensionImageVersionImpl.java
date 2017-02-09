@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersio
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
- * The implementation for {@link VirtualMachineExtensionImageVersion}.
+ * The implementation for VirtualMachineExtensionImageVersion.
  */
 @LangDefinition
 class VirtualMachineExtensionImageVersionImpl

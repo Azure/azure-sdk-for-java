@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
- * The implementation for {@link VirtualMachineExtensionImageType}.
+ * The implementation for VirtualMachineExtensionImageType.
  */
 @LangDefinition
 class VirtualMachineExtensionImageTypeImpl

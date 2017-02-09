@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * {@link ChildListFlattener} that can take a paged list of parents and flatten their child lists
+ * ChildListFlattener that can take a paged list of parents and flatten their child lists
  * as a single lazy paged list.
  *
  * @param <ParentT> the type of parent paged list item

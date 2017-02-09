@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.compute.implementation;
@@ -1825,9 +1824,9 @@ public class VirtualMachineScaleSetImpl
     }
 
     private class ManagedDataDiskCollection {
-        public final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
-        public final List<Integer> diskLunsToRemove = new ArrayList<>();
-        public final List<VirtualMachineScaleSetDataDisk> newDisksFromImage = new ArrayList<>();
+        private final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
+        private final List<Integer> diskLunsToRemove = new ArrayList<>();
+        private final List<VirtualMachineScaleSetDataDisk> newDisksFromImage = new ArrayList<>();
         private final VirtualMachineScaleSetImpl vmss;
         private CachingTypes defaultCachingType;
         private StorageAccountTypes defaultStorageAccountType;

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
-
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;

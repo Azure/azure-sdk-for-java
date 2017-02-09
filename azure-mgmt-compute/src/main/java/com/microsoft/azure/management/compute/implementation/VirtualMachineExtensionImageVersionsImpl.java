@@ -13,7 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersio
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * The implementation for {@link VirtualMachineExtensionImageVersions}.
+ * The implementation for VirtualMachineExtensionImageVersions.
  */
 @LangDefinition
 public class VirtualMachineExtensionImageVersionsImpl
