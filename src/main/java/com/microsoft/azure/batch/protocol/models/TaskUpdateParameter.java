@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The set of changes to be made to a task.
@@ -17,6 +18,7 @@ public class TaskUpdateParameter {
      * Constraints that apply to this task.
      * If omitted, the task is given the default constraints.
      */
+    @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
 
     /**

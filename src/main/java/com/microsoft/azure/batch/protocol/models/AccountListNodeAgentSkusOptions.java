@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Account_ListNodeAgentSkus operation.
+ * Additional parameters for the Account_listNodeAgentSkus operation.
  */
 public class AccountListNodeAgentSkusOptions {
     /**
@@ -23,8 +24,8 @@ public class AccountListNodeAgentSkusOptions {
     private String filter;
 
     /**
-     * The maximum number of items to return in the response. A maximum of
-     * 1000 results will be returned.
+     * The maximum number of items to return in the response. A maximum of 1000
+     * results will be returned.
      */
     @JsonProperty(value = "")
     private Integer maxResults;
@@ -42,7 +43,7 @@ public class AccountListNodeAgentSkusOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -51,8 +52,9 @@ public class AccountListNodeAgentSkusOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
@@ -122,7 +124,7 @@ public class AccountListNodeAgentSkusOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -132,7 +134,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions withClientRequestId(String clientRequestId) {
+    public AccountListNodeAgentSkusOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -166,7 +168,7 @@ public class AccountListNodeAgentSkusOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**

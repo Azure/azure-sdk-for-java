@@ -78,9 +78,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
     }
 
     /**
@@ -151,9 +149,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
     }
 
     /**
@@ -439,9 +435,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().list(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().list(options);
     }
 
 }

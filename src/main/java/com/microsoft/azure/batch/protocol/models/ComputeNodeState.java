@@ -36,17 +36,17 @@ public enum ComputeNodeState {
     /** Enum value starting. */
     STARTING("starting"),
 
-    /** Enum value waitingforstarttask. */
-    WAITINGFORSTARTTASK("waitingforstarttask"),
+    /** Enum value waitingForStartTask. */
+    WAITING_FOR_START_TASK("waitingForStartTask"),
 
-    /** Enum value starttaskfailed. */
-    STARTTASKFAILED("starttaskfailed"),
+    /** Enum value startTaskFailed. */
+    START_TASK_FAILED("startTaskFailed"),
 
     /** Enum value unknown. */
     UNKNOWN("unknown"),
 
-    /** Enum value leavingpool. */
-    LEAVINGPOOL("leavingpool"),
+    /** Enum value leavingPool. */
+    LEAVING_POOL("leavingPool"),
 
     /** Enum value offline. */
     OFFLINE("offline");

@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.batch.protocol;
 
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
 import com.microsoft.azure.batch.protocol.models.CertificateAddHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
@@ -22,13 +21,14 @@ import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateListNextOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -39,33 +39,40 @@ public interface Certificates {
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateAddHeaders> add(CertificateAddParameter certificate) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(CertificateAddParameter certificate);
 
     /**
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(CertificateAddParameter certificate);
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate);
     /**
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateAddHeaders> add(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions);
 
     /**
      * Adds a certificate to the specified account.
@@ -73,163 +80,263 @@ public interface Certificates {
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @param certificateAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions);
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @param certificateAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;Certificate&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<Certificate> list();
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<Page<Certificate>> listAsync();
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync();
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;Certificate&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list(final CertificateListOptions certificateListOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<Certificate> list(final CertificateListOptions certificateListOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param certificateListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param certificateListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync(final CertificateListOptions certificateListOptions);
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletion(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException;
+    void cancelDeletion(String thumbprintAlgorithm, String thumbprint);
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback);
+
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint);
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint);
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletion(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void cancelDeletion(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions);
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions);
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions);
 
     /**
      * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> delete(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException;
+    void delete(String thumbprintAlgorithm, String thumbprint);
 
     /**
      * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback);
+
     /**
      * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint);
+
+    /**
+     * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint);
+    /**
+     * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> delete(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void delete(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions);
 
     /**
      * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @param certificateDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions);
+
+    /**
+     * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @param certificateDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions);
 
     /**
      * Gets information about the specified certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Certificate object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the Certificate object if successful.
      */
-    ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> get(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException;
+    Certificate get(String thumbprintAlgorithm, String thumbprint);
 
     /**
      * Gets information about the specified certificate.
@@ -237,22 +344,36 @@ public interface Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback);
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @return the observable to the Certificate object
+     */
+    Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint);
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @return the observable to the Certificate object
+     */
+    Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint);
     /**
      * Gets information about the specified certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Certificate object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the Certificate object if successful.
      */
-    ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> get(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    Certificate get(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions);
 
     /**
      * Gets information about the specified certificate.
@@ -261,21 +382,37 @@ public interface Certificates {
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback);
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @param certificateGetOptions Additional parameters for the operation
+     * @return the observable to the Certificate object
+     */
+    Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions);
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @param certificateGetOptions Additional parameters for the operation
+     * @return the observable to the Certificate object
+     */
+    Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;Certificate&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<Certificate> listNext(final String nextPageLink);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -283,21 +420,33 @@ public interface Certificates {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<Page<Certificate>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param certificateListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;Certificate&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<Certificate> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -306,9 +455,26 @@ public interface Certificates {
      * @param certificateListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
 
 }

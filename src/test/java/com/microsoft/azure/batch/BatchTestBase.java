@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.batch.auth.BatchTokenCredentials;
+import com.microsoft.azure.batch.auth.BatchCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 import com.microsoft.azure.batch.BatchClient;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
@@ -19,11 +21,24 @@ import org.junit.Assert;
 public abstract class BatchTestBase {
     protected static BatchClient batchClient;
 
-    protected static void createClient() {
-        BatchSharedKeyCredentials credentials = new BatchSharedKeyCredentials(
-                System.getenv("AZURE_BATCH_ENDPOINT"),
-                System.getenv("AZURE_BATCH_ACCOUNT"),
-                System.getenv("AZURE_BATCH_ACCESS_KEY"));
+    protected static void createClient(boolean aadAuth) {
+        BatchCredentials credentials = null;
+
+        if (aadAuth) {
+            credentials = new BatchTokenCredentials(
+                    System.getenv("AZURE_BATCH_ENDPOINT"),
+                    System.getenv("CLIENT_ID"),
+                    System.getenv("APPLICATION_SECRET"),
+                    "microsoft.onmicrosoft.com",
+                    null,
+                    null);
+        }
+        else {
+            credentials = new BatchSharedKeyCredentials(
+                    System.getenv("AZURE_BATCH_ENDPOINT"),
+                    System.getenv("AZURE_BATCH_ACCOUNT"),
+                    System.getenv("AZURE_BATCH_ACCESS_KEY"));
+        }
         batchClient = BatchClient.open(credentials);
     }
 

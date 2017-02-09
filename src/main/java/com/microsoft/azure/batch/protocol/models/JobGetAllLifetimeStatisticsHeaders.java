@@ -8,33 +8,34 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines headers for ListPoolUsageMetrics operation.
+ * Defines headers for GetAllLifetimeStatistics operation.
  */
-public class PoolListPoolUsageMetricsHeaders {
+public class JobGetAllLifetimeStatisticsHeaders {
     /**
      * The client-request-id provided by the client during the request. This
-     * will be returned only if the return-client-request-id parameter was
-     * set to true.
+     * will be returned only if the return-client-request-id parameter was set
+     * to true.
      */
     @JsonProperty(value = "client-request-id")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
-     * This header uniquely identifies the request that was made and can be
-     * used for troubleshooting the request. If a request is consistently
-     * failing and you have verified that the request is properly formulated,
-     * you may use this value to report the error to Microsoft. In your
-     * report, include the value of this header, the approximate time that
-     * the request was made, the Batch account against which the request was
-     * made, and the region that account resides in.
+     * A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the
+     * request is properly formulated, you may use this value to report the
+     * error to Microsoft. In your report, include the value of this request
+     * ID, the approximate time that the request was made, the Batch account
+     * against which the request was made, and the region that account resides
+     * in.
      */
     @JsonProperty(value = "request-id")
-    private String requestId;
+    private UUID requestId;
 
     /**
      * The ETag HTTP response header. This is an opaque string. You can use it
@@ -56,7 +57,7 @@ public class PoolListPoolUsageMetricsHeaders {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -64,9 +65,9 @@ public class PoolListPoolUsageMetricsHeaders {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the PoolListPoolUsageMetricsHeaders object itself.
+     * @return the JobGetAllLifetimeStatisticsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders withClientRequestId(String clientRequestId) {
+    public JobGetAllLifetimeStatisticsHeaders withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -76,7 +77,7 @@ public class PoolListPoolUsageMetricsHeaders {
      *
      * @return the requestId value
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -84,9 +85,9 @@ public class PoolListPoolUsageMetricsHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set
-     * @return the PoolListPoolUsageMetricsHeaders object itself.
+     * @return the JobGetAllLifetimeStatisticsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders withRequestId(String requestId) {
+    public JobGetAllLifetimeStatisticsHeaders withRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -104,9 +105,9 @@ public class PoolListPoolUsageMetricsHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set
-     * @return the PoolListPoolUsageMetricsHeaders object itself.
+     * @return the JobGetAllLifetimeStatisticsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders withETag(String eTag) {
+    public JobGetAllLifetimeStatisticsHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -120,16 +121,16 @@ public class PoolListPoolUsageMetricsHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.getDateTime();
+        return this.lastModified.dateTime();
     }
 
     /**
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set
-     * @return the PoolListPoolUsageMetricsHeaders object itself.
+     * @return the JobGetAllLifetimeStatisticsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders withLastModified(DateTime lastModified) {
+    public JobGetAllLifetimeStatisticsHeaders withLastModified(DateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {

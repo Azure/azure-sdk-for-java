@@ -17,36 +17,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskAddResult {
     /**
      * The status of the add task request.
-     * Possible values include: 'success', 'clienterror', 'servererror',
+     * Possible values include: 'success', 'clientError', 'serverError',
      * 'unmapped'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "status", required = true)
     private TaskAddStatus status;
 
     /**
      * The ID of the task for which this is the result.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "taskId", required = true)
     private String taskId;
 
     /**
      * The ETag of the task, if the task was successfully added.
      */
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
      * The last modified time of the task.
      */
+    @JsonProperty(value = "lastModified")
     private DateTime lastModified;
 
     /**
      * The URL of the task, if the task was successfully added.
      */
+    @JsonProperty(value = "location")
     private String location;
 
     /**
      * The error encountered while attempting to add the task.
      */
+    @JsonProperty(value = "error")
     private BatchError error;
 
     /**

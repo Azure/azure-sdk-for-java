@@ -9,10 +9,8 @@
 package com.microsoft.azure.batch.protocol;
 
 import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudPool;
 import com.microsoft.azure.batch.protocol.models.NodeRemoveParameter;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.batch.protocol.models.PoolAddHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolAddOptions;
 import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
@@ -27,16 +25,16 @@ import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
 import com.microsoft.azure.batch.protocol.models.PoolExistsHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllPoolsLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllPoolsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsHeaders;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolGetHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolListNextOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsNextOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsHeaders;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsNextOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolPatchHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolPatchOptions;
 import com.microsoft.azure.batch.protocol.models.PoolPatchParameter;
@@ -55,11 +53,13 @@ import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSOptions;
 import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -70,122 +70,183 @@ public interface Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics() throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<PoolUsageMetrics> listUsageMetrics();
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
-     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
-     *
-     * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceCall<List<PoolUsageMetrics>> listUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
-     * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync();
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync();
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
+     */
+    PagedList<PoolUsageMetrics> listUsageMetrics(final PoolListUsageMetricsOptions poolListUsageMetricsOptions);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions);
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PoolStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PoolStatistics object if successful.
      */
-    ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics() throws BatchErrorException, IOException, IllegalArgumentException;
+    PoolStatistics getAllLifetimeStatistics();
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAllPoolsLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
-     *
-     * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PoolStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics(PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceCall<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback);
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
+     * @return the observable to the PoolStatistics object
+     */
+    Observable<PoolStatistics> getAllLifetimeStatisticsAsync();
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @return the observable to the PoolStatistics object
+     */
+    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @return the PoolStatistics object if successful.
+     */
+    PoolStatistics getAllLifetimeStatistics(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAllPoolsLifetimeStatisticsAsync(PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback);
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @return the observable to the PoolStatistics object
+     */
+    Observable<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @return the observable to the PoolStatistics object
+     */
+    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
 
     /**
      * Adds a pool to the specified account.
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    void add(PoolAddParameter pool);
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolAddHeaders> add(PoolAddParameter pool) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> addAsync(PoolAddParameter pool);
 
     /**
      * Adds a pool to the specified account.
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceCall addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool);
     /**
      * Adds a pool to the specified account.
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolAddHeaders> add(PoolAddParameter pool, PoolAddOptions poolAddOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(PoolAddParameter pool, PoolAddOptions poolAddOptions);
 
     /**
      * Adds a pool to the specified account.
@@ -194,61 +255,98 @@ public interface Pools {
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Lists all of the pools in the specified account.
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException;
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall listAsync(final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param poolListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list(final PoolListOptions poolListOptions) throws BatchErrorException, IOException, IllegalArgumentException;
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param poolListOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
-
-    /**
-     * Deletes a pool from the specified account.
-     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
-     *
-     * @param poolId The ID of the pool to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param pool The pool to be added.
+     * @param poolAddOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolDeleteHeaders> delete(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions);
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param poolAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
+     */
+    PagedList<CloudPool> list();
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<Page<CloudPool>> listAsync();
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync();
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
+     */
+    PagedList<CloudPool> list(final PoolListOptions poolListOptions);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync(final PoolListOptions poolListOptions);
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     */
+    void delete(String poolId);
 
     /**
      * Deletes a pool from the specified account.
@@ -256,22 +354,35 @@ public interface Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deleteAsync(String poolId);
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId);
     /**
      * Deletes a pool from the specified account.
      * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolDeleteHeaders> delete(String poolId, PoolDeleteOptions poolDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void delete(String poolId, PoolDeleteOptions poolDeleteOptions);
 
     /**
      * Deletes a pool from the specified account.
@@ -280,42 +391,70 @@ public interface Pools {
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @param poolDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions);
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @param poolDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId, PoolDeleteOptions poolDeleteOptions);
 
     /**
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the boolean object if successful.
      */
-    ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> exists(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
+    boolean exists(String poolId);
 
     /**
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Boolean> existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback);
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @return the observable to the boolean object
+     */
+    Observable<Boolean> existsAsync(String poolId);
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @return the observable to the boolean object
+     */
+    Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId);
     /**
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the boolean object if successful.
      */
-    ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> exists(String poolId, PoolExistsOptions poolExistsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    boolean exists(String poolId, PoolExistsOptions poolExistsOptions);
 
     /**
      * Gets basic properties of a pool.
@@ -323,42 +462,68 @@ public interface Pools {
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback);
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolExistsOptions Additional parameters for the operation
+     * @return the observable to the boolean object
+     */
+    Observable<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions);
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolExistsOptions Additional parameters for the operation
+     * @return the observable to the boolean object
+     */
+    Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId, PoolExistsOptions poolExistsOptions);
 
     /**
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudPool object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the CloudPool object if successful.
      */
-    ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> get(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudPool get(String poolId);
 
     /**
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<CloudPool> getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback);
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @return the observable to the CloudPool object
+     */
+    Observable<CloudPool> getAsync(String poolId);
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @return the observable to the CloudPool object
+     */
+    Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId);
     /**
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudPool object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the CloudPool object if successful.
      */
-    ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> get(String poolId, PoolGetOptions poolGetOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudPool get(String poolId, PoolGetOptions poolGetOptions);
 
     /**
      * Gets information about the specified pool.
@@ -366,10 +531,27 @@ public interface Pools {
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback);
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolGetOptions Additional parameters for the operation
+     * @return the observable to the CloudPool object
+     */
+    Observable<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions);
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolGetOptions Additional parameters for the operation
+     * @return the observable to the CloudPool object
+     */
+    Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId, PoolGetOptions poolGetOptions);
 
     /**
      * Updates the properties of the specified pool.
@@ -377,12 +559,8 @@ public interface Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolPatchHeaders> patch(String poolId, PoolPatchParameter poolPatchParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void patch(String poolId, PoolPatchParameter poolPatchParameter);
 
     /**
      * Updates the properties of the specified pool.
@@ -391,10 +569,29 @@ public interface Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter);
     /**
      * Updates the properties of the specified pool.
      * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
@@ -402,12 +599,8 @@ public interface Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolPatchHeaders> patch(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void patch(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions);
 
     /**
      * Updates the properties of the specified pool.
@@ -417,42 +610,70 @@ public interface Pools {
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param poolPatchOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param poolPatchOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions);
 
     /**
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScale(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
+    void disableAutoScale(String poolId);
 
     /**
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> disableAutoScaleAsync(String poolId);
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId);
     /**
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScale(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void disableAutoScale(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions);
 
     /**
      * Disables automatic scaling for a pool.
@@ -460,10 +681,27 @@ public interface Pools {
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions);
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions);
 
     /**
      * Enables automatic scaling for a pool.
@@ -471,12 +709,8 @@ public interface Pools {
      *
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter);
 
     /**
      * Enables automatic scaling for a pool.
@@ -485,10 +719,29 @@ public interface Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter);
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter);
     /**
      * Enables automatic scaling for a pool.
      * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
@@ -496,12 +749,8 @@ public interface Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions);
 
     /**
      * Enables automatic scaling for a pool.
@@ -511,10 +760,31 @@ public interface Pools {
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions);
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions);
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the pool.
@@ -522,12 +792,9 @@ public interface Pools {
      *
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AutoScaleRun object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the AutoScaleRun object if successful.
      */
-    ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScale(String poolId, String autoScaleFormula) throws BatchErrorException, IOException, IllegalArgumentException;
+    AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula);
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the pool.
@@ -536,10 +803,29 @@ public interface Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback);
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @return the observable to the AutoScaleRun object
+     */
+    Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula);
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @return the observable to the AutoScaleRun object
+     */
+    Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula);
     /**
      * Gets the result of evaluating an automatic scaling formula on the pool.
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
@@ -547,12 +833,9 @@ public interface Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AutoScaleRun object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the AutoScaleRun object if successful.
      */
-    ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScale(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions);
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the pool.
@@ -562,10 +845,31 @@ public interface Pools {
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback);
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @return the observable to the AutoScaleRun object
+     */
+    Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions);
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @return the observable to the AutoScaleRun object
+     */
+    Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions);
 
     /**
      * Changes the number of compute nodes that are assigned to a pool.
@@ -573,12 +877,8 @@ public interface Pools {
      *
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolResizeHeaders> resize(String poolId, PoolResizeParameter poolResizeParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void resize(String poolId, PoolResizeParameter poolResizeParameter);
 
     /**
      * Changes the number of compute nodes that are assigned to a pool.
@@ -587,10 +887,29 @@ public interface Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter);
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter);
     /**
      * Changes the number of compute nodes that are assigned to a pool.
      * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
@@ -598,12 +917,8 @@ public interface Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolResizeHeaders> resize(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void resize(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions);
 
     /**
      * Changes the number of compute nodes that are assigned to a pool.
@@ -613,22 +928,39 @@ public interface Pools {
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param poolResizeOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions);
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param poolResizeOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions);
 
     /**
      * Stops an ongoing resize operation on the pool.
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
+    void stopResize(String poolId);
 
     /**
      * Stops an ongoing resize operation on the pool.
@@ -636,22 +968,35 @@ public interface Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> stopResizeAsync(String poolId);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId);
     /**
      * Stops an ongoing resize operation on the pool.
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions);
 
     /**
      * Stops an ongoing resize operation on the pool.
@@ -660,10 +1005,29 @@ public interface Pools {
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @param poolStopResizeOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @param poolStopResizeOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions);
 
     /**
      * Updates the properties of the specified pool.
@@ -671,12 +1035,8 @@ public interface Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter);
 
     /**
      * Updates the properties of the specified pool.
@@ -685,10 +1045,29 @@ public interface Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter);
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter);
     /**
      * Updates the properties of the specified pool.
      * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
@@ -696,12 +1075,8 @@ public interface Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions);
 
     /**
      * Updates the properties of the specified pool.
@@ -711,61 +1086,114 @@ public interface Pools {
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param poolUpdatePropertiesOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOS(String poolId, String targetOSVersion) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions);
 
     /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param poolUpdatePropertiesOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions);
 
     /**
      * Upgrades the operating system of the specified pool.
      * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
      *
      * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
-     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     */
+    void upgradeOS(String poolId, String targetOSVersion);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion);
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     */
+    void upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions);
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions);
 
     /**
      * Removes compute nodes from the specified pool.
@@ -773,12 +1201,8 @@ public interface Pools {
      *
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter);
 
     /**
      * Removes compute nodes from the specified pool.
@@ -787,10 +1211,29 @@ public interface Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter);
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter);
     /**
      * Removes compute nodes from the specified pool.
      * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
@@ -798,12 +1241,8 @@ public interface Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions);
 
     /**
      * Removes compute nodes from the specified pool.
@@ -813,22 +1252,40 @@ public interface Pools {
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions);
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
@@ -837,46 +1294,76 @@ public interface Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
-     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceCall<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink);
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
+     */
+    PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions);
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions);
 
     /**
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudPool> listNext(final String nextPageLink);
 
     /**
      * Lists all of the pools in the specified account.
@@ -884,21 +1371,33 @@ public interface Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<Page<CloudPool>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
     /**
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudPool> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
 
     /**
      * Lists all of the pools in the specified account.
@@ -907,9 +1406,26 @@ public interface Pools {
      * @param poolListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
 
 }

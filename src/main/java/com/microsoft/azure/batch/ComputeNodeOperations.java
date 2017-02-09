@@ -248,9 +248,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
     }
 
     /**
@@ -445,10 +443,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
+        InputStream response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
 
-        if (response.getBody() != null) {
-            return CharStreams.toString(new InputStreamReader(response.getBody(), "UTF-8"));
+        if (response != null) {
+            return CharStreams.toString(new InputStreamReader(response, "UTF-8"));
         }
         else {
             return null;
@@ -483,9 +481,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
     }
 
     /**
@@ -529,9 +525,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
     }
 
 }

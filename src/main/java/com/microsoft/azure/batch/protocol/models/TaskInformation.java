@@ -17,33 +17,38 @@ public class TaskInformation {
     /**
      * The URL of the task.
      */
+    @JsonProperty(value = "taskUrl")
     private String taskUrl;
 
     /**
      * The ID of the job to which the task belongs.
      */
+    @JsonProperty(value = "jobId")
     private String jobId;
 
     /**
      * The ID of the task.
      */
+    @JsonProperty(value = "taskId")
     private String taskId;
 
     /**
      * The ID of the subtask if the task is a multi-instance task.
      */
+    @JsonProperty(value = "subtaskId")
     private Integer subtaskId;
 
     /**
      * The current state of the task.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "taskState", required = true)
     private TaskState taskState;
 
     /**
      * Information about the execution of the task.
      */
+    @JsonProperty(value = "executionInfo")
     private TaskExecutionInformation executionInfo;
 
     /**

@@ -6,17 +6,18 @@
 
 package com.microsoft.azure.batch.auth;
 
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 
 /**
  * Shared key credentials for an Azure Batch account.
  */
-public class BatchSharedKeyCredentials extends BatchCredentials implements ServiceClientCredentials {
+public class BatchSharedKeyCredentials implements BatchCredentials {
 
     private String accountName;
 
     private String keyValue;
+
+    private String baseUrl;
 
     /**
      * Gets the Batch account name.
@@ -55,7 +56,7 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
             throw new IllegalArgumentException("Parameter keyValue is required and cannot be null.");
         }
 
-        this.withBaseUrl(baseUrl);
+        this.baseUrl = baseUrl;
         this.accountName = accountName;
         this.keyValue = keyValue;
     }
@@ -67,6 +68,11 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
      */
     @Override
     public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new BatchCredentialsInterceptor(this));
+        clientBuilder.interceptors().add(new BatchSharedKeyCredentialsInterceptor(this));
+    }
+
+    @Override
+    public String baseUrl() {
+        return this.baseUrl;
     }
 }

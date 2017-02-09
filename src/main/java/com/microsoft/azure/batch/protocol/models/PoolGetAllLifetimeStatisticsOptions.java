@@ -8,14 +8,15 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Pool_GetAllPoolsLifetimeStatistics operation.
+ * Additional parameters for the Pool_getAllLifetimeStatistics operation.
  */
-public class PoolGetAllPoolsLifetimeStatisticsOptions {
+public class PoolGetAllLifetimeStatisticsOptions {
     /**
      * The maximum time that the server can spend processing the request, in
      * seconds. The default is 30 seconds.
@@ -29,7 +30,7 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -38,8 +39,9 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
@@ -57,9 +59,9 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
      * Set the timeout value.
      *
      * @param timeout the timeout value to set
-     * @return the PoolGetAllPoolsLifetimeStatisticsOptions object itself.
+     * @return the PoolGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolGetAllPoolsLifetimeStatisticsOptions withTimeout(Integer timeout) {
+    public PoolGetAllLifetimeStatisticsOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -69,7 +71,7 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -77,9 +79,9 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the PoolGetAllPoolsLifetimeStatisticsOptions object itself.
+     * @return the PoolGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolGetAllPoolsLifetimeStatisticsOptions withClientRequestId(String clientRequestId) {
+    public PoolGetAllLifetimeStatisticsOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -97,9 +99,9 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
      * Set the returnClientRequestId value.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the PoolGetAllPoolsLifetimeStatisticsOptions object itself.
+     * @return the PoolGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolGetAllPoolsLifetimeStatisticsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolGetAllLifetimeStatisticsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -113,16 +115,16 @@ public class PoolGetAllPoolsLifetimeStatisticsOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
      * Set the ocpDate value.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the PoolGetAllPoolsLifetimeStatisticsOptions object itself.
+     * @return the PoolGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolGetAllPoolsLifetimeStatisticsOptions withOcpDate(DateTime ocpDate) {
+    public PoolGetAllLifetimeStatisticsOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {

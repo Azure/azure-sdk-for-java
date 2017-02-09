@@ -72,13 +72,11 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public JobStatistics getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobGetAllJobsLifetimeStatisticsOptions options = new JobGetAllJobsLifetimeStatisticsOptions();
+        JobGetAllLifetimeStatisticsOptions options = new JobGetAllLifetimeStatisticsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> response = this._parentBatchClient.protocolLayer().jobs().getAllJobsLifetimeStatistics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().getAllLifetimeStatistics(options);
     }
 
     /**
@@ -123,8 +121,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getJobOptions);
 
-        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response = this._parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
     }
 
     /**
@@ -166,9 +163,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> response = this._parentBatchClient.protocolLayer().jobs().list(jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().list(jobListOptions);
     }
 
     /**
@@ -213,9 +208,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> response = this._parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
     }
 
     /**
@@ -245,9 +238,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = this._parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
     }
 
     /**

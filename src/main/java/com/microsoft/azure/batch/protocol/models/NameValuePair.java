@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a name-value pair.
@@ -16,11 +17,13 @@ public class NameValuePair {
     /**
      * The name in the name-value pair.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The value in the name-value pair.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

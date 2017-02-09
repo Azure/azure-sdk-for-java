@@ -14,14 +14,14 @@ import com.microsoft.azure.batch.protocol.models.ApplicationListHeaders;
 import com.microsoft.azure.batch.protocol.models.ApplicationListNextOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationListOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationSummary;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -32,33 +32,42 @@ public interface Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<ApplicationSummary> list();
 
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<Page<ApplicationSummary>> listAsync();
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync();
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list(final ApplicationListOptions applicationListOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<ApplicationSummary> list(final ApplicationListOptions applicationListOptions);
 
     /**
      * Lists all of the applications available in the specified account.
@@ -66,42 +75,68 @@ public interface Applications {
      *
      * @param applicationListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param applicationListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<Page<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param applicationListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync(final ApplicationListOptions applicationListOptions);
 
     /**
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationSummary object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the ApplicationSummary object if successful.
      */
-    ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> get(String applicationId) throws BatchErrorException, IOException, IllegalArgumentException;
+    ApplicationSummary get(String applicationId);
 
     /**
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ApplicationSummary> getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param applicationId The ID of the application.
+     * @return the observable to the ApplicationSummary object
+     */
+    Observable<ApplicationSummary> getAsync(String applicationId);
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param applicationId The ID of the application.
+     * @return the observable to the ApplicationSummary object
+     */
+    Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId);
     /**
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationSummary object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the ApplicationSummary object if successful.
      */
-    ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> get(String applicationId, ApplicationGetOptions applicationGetOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ApplicationSummary get(String applicationId, ApplicationGetOptions applicationGetOptions);
 
     /**
      * Gets information about the specified application.
@@ -109,22 +144,36 @@ public interface Applications {
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param applicationId The ID of the application.
+     * @param applicationGetOptions Additional parameters for the operation
+     * @return the observable to the ApplicationSummary object
+     */
+    Observable<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions);
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param applicationId The ID of the application.
+     * @param applicationGetOptions Additional parameters for the operation
+     * @return the observable to the ApplicationSummary object
+     */
+    Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId, ApplicationGetOptions applicationGetOptions);
 
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<ApplicationSummary> listNext(final String nextPageLink);
 
     /**
      * Lists all of the applications available in the specified account.
@@ -133,22 +182,36 @@ public interface Applications {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<ApplicationSummary> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions);
 
     /**
      * Lists all of the applications available in the specified account.
@@ -158,9 +221,28 @@ public interface Applications {
      * @param applicationListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param applicationListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions);
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param applicationListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions);
 
 }

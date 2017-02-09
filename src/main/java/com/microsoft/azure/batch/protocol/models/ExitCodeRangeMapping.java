@@ -11,27 +11,27 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A range of exit codes and how the Batch service should respond to exit
- * codes within that range.
+ * A range of exit codes and how the Batch service should respond to exit codes
+ * within that range.
  */
 public class ExitCodeRangeMapping {
     /**
      * The first exit code in the range.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "start", required = true)
     private int start;
 
     /**
      * The last exit code in the range.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "end", required = true)
     private int end;
 
     /**
-     * How the Batch service should respond if the task exits with an exit
-     * code in the range start to end (inclusive).
+     * How the Batch service should respond if the task exits with an exit code
+     * in the range start to end (inclusive).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "exitOptions", required = true)
     private ExitOptions exitOptions;
 
     /**

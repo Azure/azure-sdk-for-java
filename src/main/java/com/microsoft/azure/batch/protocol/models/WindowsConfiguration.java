@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Windows operating system settings to apply to the virtual machine.
@@ -17,6 +18,7 @@ public class WindowsConfiguration {
      * Whether automatic updates are enabled on the virtual machine.
      * If omitted, the default value is true.
      */
+    @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /**

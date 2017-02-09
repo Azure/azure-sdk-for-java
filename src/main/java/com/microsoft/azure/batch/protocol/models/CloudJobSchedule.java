@@ -10,26 +10,30 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A job schedule that allows recurring jobs by specifying when to run jobs
- * and a specification used to create each job.
+ * A job schedule that allows recurring jobs by specifying when to run jobs and
+ * a specification used to create each job.
  */
 public class CloudJobSchedule {
     /**
      * A string that uniquely identifies the schedule within the account.
      * It is common to use a GUID for the id.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The display name for the schedule.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The URL of the job schedule.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
@@ -37,23 +41,25 @@ public class CloudJobSchedule {
      * This is an opaque string. You can use it to detect whether the job
      * schedule has changed between requests. In particular, you can be pass
      * the ETag with an Update Job Schedule request to specify that your
-     * changes should take effect only if nobody else has modified the
-     * schedule in the meantime.
+     * changes should take effect only if nobody else has modified the schedule
+     * in the meantime.
      */
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
      * The last modified time of the job schedule.
      * This is the last time at which the schedule level data, such as the job
-     * specification or recurrence information, changed. It does not factor
-     * in job-level changes such as new jobs being created or jobs changing
-     * state.
+     * specification or recurrence information, changed. It does not factor in
+     * job-level changes such as new jobs being created or jobs changing state.
      */
+    @JsonProperty(value = "lastModified")
     private DateTime lastModified;
 
     /**
      * The creation time of the job schedule.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
@@ -61,11 +67,13 @@ public class CloudJobSchedule {
      * Possible values include: 'active', 'completed', 'disabled',
      * 'terminating', 'deleting'.
      */
+    @JsonProperty(value = "state")
     private JobScheduleState state;
 
     /**
      * The time at which the job schedule entered the current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
@@ -74,6 +82,7 @@ public class CloudJobSchedule {
      * active state. Possible values include: 'active', 'completed',
      * 'disabled', 'terminating', 'deleting'.
      */
+    @JsonProperty(value = "previousState")
     private JobScheduleState previousState;
 
     /**
@@ -81,22 +90,26 @@ public class CloudJobSchedule {
      * This property is not present if the job schedule is in its initial
      * active state.
      */
+    @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
 
     /**
      * The schedule according to which jobs will be created.
      */
+    @JsonProperty(value = "schedule")
     private Schedule schedule;
 
     /**
      * The details of the jobs to be created on this schedule.
      */
+    @JsonProperty(value = "jobSpecification")
     private JobSpecification jobSpecification;
 
     /**
      * Information about jobs that have been and will be run under this
      * schedule.
      */
+    @JsonProperty(value = "executionInfo")
     private JobScheduleExecutionInformation executionInfo;
 
     /**
@@ -104,11 +117,13 @@ public class CloudJobSchedule {
      * The Batch service does not assign any meaning to metadata; it is solely
      * for the use of user code.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**
      * The lifetime resource usage statistics for the job schedule.
      */
+    @JsonProperty(value = "stats")
     private JobScheduleStatistics stats;
 
     /**

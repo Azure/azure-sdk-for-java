@@ -19,34 +19,34 @@ public class TaskStatistics {
     /**
      * The URL of the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
      * The start time of the time range covered by the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the statistics were last updated. All statistics are
      * limited to the range between startTime and lastUpdateTime.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true)
     private DateTime lastUpdateTime;
 
     /**
      * The total user mode CPU time (summed across all cores and all compute
      * nodes) consumed by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "userCPUTime", required = true)
     private Period userCPUTime;
 
     /**
      * The total kernel mode CPU time (summed across all cores and all compute
      * nodes) consumed by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "kernelCPUTime", required = true)
     private Period kernelCPUTime;
 
     /**
@@ -57,40 +57,40 @@ public class TaskStatistics {
      * task was retried, this includes the wall clock time of all the task
      * retries.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "wallClockTime", required = true)
     private Period wallClockTime;
 
     /**
      * The total number of disk read operations made by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "readIOps", required = true)
     private long readIOps;
 
     /**
      * The total number of disk write operations made by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "writeIOps", required = true)
     private long writeIOps;
 
     /**
      * The total gibibytes read from disk by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "readIOGiB", required = true)
     private double readIOGiB;
 
     /**
      * The total gibibytes written to disk by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "writeIOGiB", required = true)
     private double writeIOGiB;
 
     /**
      * The total wait time of the task. The wait time for a task is defined as
-     * the elapsed time between the creation of the task and the start of
-     * task execution. (If the task is retried due to failures, the wait time
-     * is the time to the most recent task execution.).
+     * the elapsed time between the creation of the task and the start of task
+     * execution. (If the task is retried due to failures, the wait time is the
+     * time to the most recent task execution.).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "waitTime", required = true)
     private Period waitTime;
 
     /**

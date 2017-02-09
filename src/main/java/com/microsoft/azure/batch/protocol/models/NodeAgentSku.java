@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A node agent SKU supported by the Batch service.
@@ -21,20 +22,23 @@ public class NodeAgentSku {
     /**
      * The ID of the node agent SKU.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The list of images verified to be compatible with this node agent SKU.
-     * This collection is not exhaustive (the node agent may be compatible
-     * with other images).
+     * This collection is not exhaustive (the node agent may be compatible with
+     * other images).
      */
+    @JsonProperty(value = "verifiedImageReferences")
     private List<ImageReference> verifiedImageReferences;
 
     /**
-     * The type of operating system (e.g. Windows or Linux) compatible with
-     * the node agent SKU.
+     * The type of operating system (e.g. Windows or Linux) compatible with the
+     * node agent SKU.
      * Possible values include: 'linux', 'windows', 'unmapped'.
      */
+    @JsonProperty(value = "osType")
     private OSType osType;
 
     /**

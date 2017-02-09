@@ -18,19 +18,19 @@ public class ApplicationSummary {
     /**
      * A string that uniquely identifies the application within the account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
      * The display name for the application.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /**
      * The versions of the application which are available.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "versions", required = true)
     private List<String> versions;
 
     /**

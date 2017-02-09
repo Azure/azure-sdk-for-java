@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The result of listing the subtasks of a task.
@@ -17,6 +18,7 @@ public class CloudTaskListSubtasksResult {
     /**
      * The list of subtasks.
      */
+    @JsonProperty(value = "value")
     private List<SubtaskInformation> value;
 
     /**

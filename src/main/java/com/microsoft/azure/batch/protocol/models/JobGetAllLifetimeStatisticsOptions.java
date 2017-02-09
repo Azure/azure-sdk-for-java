@@ -8,21 +8,29 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListPoolUsageMetricsNext operation.
+ * Additional parameters for the Job_getAllLifetimeStatistics operation.
  */
-public class PoolListPoolUsageMetricsNextOptions {
+public class JobGetAllLifetimeStatisticsOptions {
+    /**
+     * The maximum time that the server can spend processing the request, in
+     * seconds. The default is 30 seconds.
+     */
+    @JsonProperty(value = "")
+    private Integer timeout;
+
     /**
      * The caller-generated request identity, in the form of a GUID with no
      * decoration such as curly braces, e.g.
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -31,18 +39,39 @@ public class PoolListPoolUsageMetricsNextOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
+
+    /**
+     * Get the timeout value.
+     *
+     * @return the timeout value
+     */
+    public Integer timeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Set the timeout value.
+     *
+     * @param timeout the timeout value to set
+     * @return the JobGetAllLifetimeStatisticsOptions object itself.
+     */
+    public JobGetAllLifetimeStatisticsOptions withTimeout(Integer timeout) {
+        this.timeout = timeout;
+        return this;
+    }
 
     /**
      * Get the clientRequestId value.
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -50,9 +79,9 @@ public class PoolListPoolUsageMetricsNextOptions {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the PoolListPoolUsageMetricsNextOptions object itself.
+     * @return the JobGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolListPoolUsageMetricsNextOptions withClientRequestId(String clientRequestId) {
+    public JobGetAllLifetimeStatisticsOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -70,9 +99,9 @@ public class PoolListPoolUsageMetricsNextOptions {
      * Set the returnClientRequestId value.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the PoolListPoolUsageMetricsNextOptions object itself.
+     * @return the JobGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolListPoolUsageMetricsNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobGetAllLifetimeStatisticsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -86,16 +115,16 @@ public class PoolListPoolUsageMetricsNextOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
      * Set the ocpDate value.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the PoolListPoolUsageMetricsNextOptions object itself.
+     * @return the JobGetAllLifetimeStatisticsOptions object itself.
      */
-    public PoolListPoolUsageMetricsNextOptions withOcpDate(DateTime ocpDate) {
+    public JobGetAllLifetimeStatisticsOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {

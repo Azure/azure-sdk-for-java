@@ -27,16 +27,16 @@ import java.util.TreeMap;
 /**
  * The interceptor class to insert Shared Key credential information to request HEADER.
  */
-class BatchCredentialsInterceptor implements Interceptor {
+class BatchSharedKeyCredentialsInterceptor implements Interceptor {
 
     private BatchSharedKeyCredentials credentials;
 
     /**
-     * Constructor for BatchCredentialsInterceptor
+     * Constructor for BatchSharedKeyCredentialsInterceptor
      *
      * @param batchCredentials The account name/key credential
      */
-    public BatchCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
+    public BatchSharedKeyCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
         this.credentials = batchCredentials;
     }
 

@@ -8,23 +8,38 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * How the Batch service should respond to a particular exit condition.
+ * Specifies how the Batch service responds to a particular exit condition.
  */
 public class ExitOptions {
     /**
      * An action to take on the job containing the task, if the task completes
-     * with the given exit condition and the job’s onTaskFailed property is
-     * 'performexitoptionsjobaction'.
+     * with the given exit condition and the job's onTaskFailed property is
+     * 'performExitOptionsJobAction'.
      * The default is none for exit code 0 and terminate for all other exit
-     * conditions. It is an error to specify this if the job's onTaskFailed
-     * is noaction. The add task request fails with an invalid property value
-     * error; if you are calling the REST API directly, the HTTP status code
-     * is 400 (Bad Request). Possible values include: 'none', 'disable',
-     * 'terminate'.
+     * conditions. If the job's onTaskFailed property is noAction, then specify
+     * this property returns an error. The add task request fails with an
+     * invalid property value error;; if you are calling the REST API directly,
+     * the HTTP status code is 400 (Bad Request). Possible values include:
+     * 'none', 'disable', 'terminate'.
      */
+    @JsonProperty(value = "jobAction")
     private JobAction jobAction;
+
+    /**
+     * An action that the Batch service performs on tasks that depend on this
+     * task.
+     * The default is 'satisfy' for exit code 0, and 'block' for all other exit
+     * conditions. If the job's usesTaskDependencies property is set to false,
+     * then specifying the dependencyAction property returns an error. The add
+     * task request fails with an invalid property value error; if you are
+     * calling the REST API directly, the HTTP status code is 400  (Bad
+     * Request). Possible values include: 'satisfy', 'block'.
+     */
+    @JsonProperty(value = "dependencyAction")
+    private DependencyAction dependencyAction;
 
     /**
      * Get the jobAction value.
@@ -43,6 +58,26 @@ public class ExitOptions {
      */
     public ExitOptions withJobAction(JobAction jobAction) {
         this.jobAction = jobAction;
+        return this;
+    }
+
+    /**
+     * Get the dependencyAction value.
+     *
+     * @return the dependencyAction value
+     */
+    public DependencyAction dependencyAction() {
+        return this.dependencyAction;
+    }
+
+    /**
+     * Set the dependencyAction value.
+     *
+     * @param dependencyAction the dependencyAction value to set
+     * @return the ExitOptions object itself.
+     */
+    public ExitOptions withDependencyAction(DependencyAction dependencyAction) {
+        this.dependencyAction = dependencyAction;
         return this;
     }
 

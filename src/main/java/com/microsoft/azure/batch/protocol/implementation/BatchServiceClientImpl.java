@@ -20,13 +20,13 @@ import com.microsoft.azure.batch.protocol.Jobs;
 import com.microsoft.azure.batch.protocol.JobSchedules;
 import com.microsoft.azure.batch.protocol.Pools;
 import com.microsoft.azure.batch.protocol.Tasks;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the BatchServiceClientImpl class.
  */
-public final class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
+public class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -252,10 +252,8 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * @param credentials the management credentials for Azure
      */
     public BatchServiceClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -269,7 +267,7 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-07-01.3.1";
+        this.apiVersion = "2017-01-01.4.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -294,6 +292,6 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "BatchServiceClient, 2016-07-01.3.1");
+                "BatchServiceClient, 2017-01-01.4.0");
     }
 }

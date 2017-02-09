@@ -21,8 +21,8 @@ public enum DisableComputeNodeSchedulingOption {
     /** Enum value terminate. */
     TERMINATE("terminate"),
 
-    /** Enum value taskcompletion. */
-    TASKCOMPLETION("taskcompletion");
+    /** Enum value taskCompletion. */
+    TASK_COMPLETION("taskCompletion");
 
     /** The actual serialized value for a DisableComputeNodeSchedulingOption instance. */
     private String value;

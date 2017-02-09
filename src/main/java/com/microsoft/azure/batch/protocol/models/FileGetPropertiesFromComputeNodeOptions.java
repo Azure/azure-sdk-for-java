@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the File_GetNodeFilePropertiesFromComputeNode
- * operation.
+ * Additional parameters for the File_getPropertiesFromComputeNode operation.
  */
-public class FileGetNodeFilePropertiesFromComputeNodeOptions {
+public class FileGetPropertiesFromComputeNodeOptions {
     /**
      * The maximum time that the server can spend processing the request, in
      * seconds. The default is 30 seconds.
@@ -30,7 +30,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -39,22 +39,25 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Specify this header to perform the operation only if the resource has
-     * been modified since the specified date/time.
+     * A timestamp indicating the last modified time of the resource known to
+     * the client. The operation will be performed only if the resource on the
+     * service has been modified since the specified time.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ifModifiedSince;
 
     /**
-     * Specify this header to perform the operation only if the resource has
-     * not been modified since the specified date/time.
+     * A timestamp indicating the last modified time of the resource known to
+     * the client. The operation will be performed only if the resource on the
+     * service has not been modified since the specified time.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ifUnmodifiedSince;
@@ -72,9 +75,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
      * Set the timeout value.
      *
      * @param timeout the timeout value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withTimeout(Integer timeout) {
+    public FileGetPropertiesFromComputeNodeOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -84,7 +87,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -92,9 +95,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withClientRequestId(String clientRequestId) {
+    public FileGetPropertiesFromComputeNodeOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -112,9 +115,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
      * Set the returnClientRequestId value.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public FileGetPropertiesFromComputeNodeOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -128,16 +131,16 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
      * Set the ocpDate value.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withOcpDate(DateTime ocpDate) {
+    public FileGetPropertiesFromComputeNodeOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {
@@ -155,16 +158,16 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ifModifiedSince == null) {
             return null;
         }
-        return this.ifModifiedSince.getDateTime();
+        return this.ifModifiedSince.dateTime();
     }
 
     /**
      * Set the ifModifiedSince value.
      *
      * @param ifModifiedSince the ifModifiedSince value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withIfModifiedSince(DateTime ifModifiedSince) {
+    public FileGetPropertiesFromComputeNodeOptions withIfModifiedSince(DateTime ifModifiedSince) {
         if (ifModifiedSince == null) {
             this.ifModifiedSince = null;
         } else {
@@ -182,16 +185,16 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
-        return this.ifUnmodifiedSince.getDateTime();
+        return this.ifUnmodifiedSince.dateTime();
     }
 
     /**
      * Set the ifUnmodifiedSince value.
      *
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeOptions object itself.
+     * @return the FileGetPropertiesFromComputeNodeOptions object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
+    public FileGetPropertiesFromComputeNodeOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
         if (ifUnmodifiedSince == null) {
             this.ifUnmodifiedSince = null;
         } else {

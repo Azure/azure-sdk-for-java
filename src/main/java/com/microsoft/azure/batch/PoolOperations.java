@@ -93,9 +93,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> response = this._parentBatchClient.protocolLayer().pools().list(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().list(options);
     }
 
     /**
@@ -139,9 +137,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> response = this._parentBatchClient.protocolLayer().pools().get(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().get(poolId, options);
     }
 
     /**
@@ -476,8 +472,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> response = this._parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
     }
 
     /**
@@ -648,9 +643,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> response = this._parentBatchClient.protocolLayer().pools().exists(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().exists(poolId, options);
     }
 
     /**
@@ -794,16 +787,14 @@ public class PoolOperations implements IInheritedBehaviors {
      */
     public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel,
                                                        Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        PoolListPoolUsageMetricsOptions options = new PoolListPoolUsageMetricsOptions()
+        PoolListUsageMetricsOptions options = new PoolListUsageMetricsOptions()
                 .withStartTime(startTime)
                 .withEndTime(endTime);
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = this._parentBatchClient.protocolLayer().pools().listPoolUsageMetrics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().listUsageMetrics(options);
     }
 
     /**
@@ -828,12 +819,10 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public PoolStatistics getAllPoolsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        PoolGetAllPoolsLifetimeStatisticsOptions options = new PoolGetAllPoolsLifetimeStatisticsOptions();
+        PoolGetAllLifetimeStatisticsOptions options = new PoolGetAllLifetimeStatisticsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> response = this._parentBatchClient.protocolLayer().pools().getAllPoolsLifetimeStatistics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().getAllLifetimeStatistics(options);
     }
 }

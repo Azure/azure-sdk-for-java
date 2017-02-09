@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for PoolLifetimeOption.
  */
 public enum PoolLifetimeOption {
-    /** Enum value jobschedule. */
-    JOBSCHEDULE("jobschedule"),
+    /** Enum value jobSchedule. */
+    JOB_SCHEDULE("jobSchedule"),
 
     /** Enum value job. */
     JOB("job"),

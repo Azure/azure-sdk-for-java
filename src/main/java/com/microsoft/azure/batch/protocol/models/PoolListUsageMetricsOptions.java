@@ -9,13 +9,14 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Pool_ListPoolUsageMetrics operation.
+ * Additional parameters for the Pool_listUsageMetrics operation.
  */
-public class PoolListPoolUsageMetricsOptions {
+public class PoolListUsageMetricsOptions {
     /**
      * The earliest time from which to include metrics. This must be at least
      * two and a half hours before the current time. If not specified this
@@ -26,24 +27,24 @@ public class PoolListPoolUsageMetricsOptions {
     private DateTime startTime;
 
     /**
-     * The latest time from which to include metrics. This must be at least
-     * two hours before the current time. If not specified this defaults to
-     * the end time of the last aggregation interval currently available.
+     * The latest time from which to include metrics. This must be at least two
+     * hours before the current time. If not specified this defaults to the end
+     * time of the last aggregation interval currently available.
      */
     @JsonProperty(value = "")
     private DateTime endTime;
 
     /**
      * An OData $filter clause. If this is not specified the response includes
-     * all pools that existed in the account in the time range of the
-     * returned aggregation intervals.
+     * all pools that existed in the account in the time range of the returned
+     * aggregation intervals.
      */
     @JsonProperty(value = "")
     private String filter;
 
     /**
-     * The maximum number of items to return in the response. A maximum of
-     * 1000 results will be returned.
+     * The maximum number of items to return in the response. A maximum of 1000
+     * results will be returned.
      */
     @JsonProperty(value = "")
     private Integer maxResults;
@@ -61,7 +62,7 @@ public class PoolListPoolUsageMetricsOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -70,8 +71,9 @@ public class PoolListPoolUsageMetricsOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
@@ -89,9 +91,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the startTime value.
      *
      * @param startTime the startTime value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withStartTime(DateTime startTime) {
+    public PoolListUsageMetricsOptions withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -109,9 +111,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the endTime value.
      *
      * @param endTime the endTime value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withEndTime(DateTime endTime) {
+    public PoolListUsageMetricsOptions withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -129,9 +131,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the filter value.
      *
      * @param filter the filter value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withFilter(String filter) {
+    public PoolListUsageMetricsOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -149,9 +151,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the maxResults value.
      *
      * @param maxResults the maxResults value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withMaxResults(Integer maxResults) {
+    public PoolListUsageMetricsOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -169,9 +171,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the timeout value.
      *
      * @param timeout the timeout value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withTimeout(Integer timeout) {
+    public PoolListUsageMetricsOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -181,7 +183,7 @@ public class PoolListPoolUsageMetricsOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -189,9 +191,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withClientRequestId(String clientRequestId) {
+    public PoolListUsageMetricsOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -209,9 +211,9 @@ public class PoolListPoolUsageMetricsOptions {
      * Set the returnClientRequestId value.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolListUsageMetricsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -225,16 +227,16 @@ public class PoolListPoolUsageMetricsOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
      * Set the ocpDate value.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the PoolListPoolUsageMetricsOptions object itself.
+     * @return the PoolListUsageMetricsOptions object itself.
      */
-    public PoolListPoolUsageMetricsOptions withOcpDate(DateTime ocpDate) {
+    public PoolListUsageMetricsOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {

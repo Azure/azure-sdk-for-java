@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.batch.protocol;
 
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudJobSchedule;
 import com.microsoft.azure.batch.protocol.models.JobScheduleAddHeaders;
 import com.microsoft.azure.batch.protocol.models.JobScheduleAddOptions;
@@ -34,13 +33,14 @@ import com.microsoft.azure.batch.protocol.models.JobScheduleTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateHeaders;
 import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateOptions;
 import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateParameter;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -51,33 +51,42 @@ public interface JobSchedules {
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the boolean object if successful.
      */
-    ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> exists(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    boolean exists(String jobScheduleId);
 
     /**
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Boolean> existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback);
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @return the observable to the boolean object
+     */
+    Observable<Boolean> existsAsync(String jobScheduleId);
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @return the observable to the boolean object
+     */
+    Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId);
     /**
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the boolean object if successful.
      */
-    ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> exists(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    boolean exists(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
 
     /**
      * Checks the specified job schedule exists.
@@ -85,45 +94,71 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback);
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @return the observable to the boolean object
+     */
+    Observable<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @return the observable to the boolean object
+     */
+    Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
 
     /**
      * Deletes a job schedule from the specified account.
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    void delete(String jobScheduleId);
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> delete(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> deleteAsync(String jobScheduleId);
 
     /**
      * Deletes a job schedule from the specified account.
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceCall deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId);
     /**
      * Deletes a job schedule from the specified account.
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> delete(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void delete(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
 
     /**
      * Deletes a job schedule from the specified account.
@@ -132,42 +167,70 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
 
     /**
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJobSchedule object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the CloudJobSchedule object if successful.
      */
-    ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> get(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudJobSchedule get(String jobScheduleId);
 
     /**
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<CloudJobSchedule> getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @return the observable to the CloudJobSchedule object
+     */
+    Observable<CloudJobSchedule> getAsync(String jobScheduleId);
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @return the observable to the CloudJobSchedule object
+     */
+    Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId);
     /**
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJobSchedule object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the CloudJobSchedule object if successful.
      */
-    ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> get(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudJobSchedule get(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
 
     /**
      * Gets information about the specified job schedule.
@@ -175,10 +238,27 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param jobScheduleGetOptions Additional parameters for the operation
+     * @return the observable to the CloudJobSchedule object
+     */
+    Observable<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param jobScheduleGetOptions Additional parameters for the operation
+     * @return the observable to the CloudJobSchedule object
+     */
+    Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -186,12 +266,8 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -200,10 +276,29 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
     /**
      * Updates the properties of the specified job schedule.
      * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
@@ -211,12 +306,8 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -226,10 +317,31 @@ public interface JobSchedules {
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -237,12 +349,8 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter) throws BatchErrorException, IOException, IllegalArgumentException;
+    void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -251,10 +359,29 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
     /**
      * Updates the properties of the specified job schedule.
      * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
@@ -262,12 +389,8 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -277,22 +400,39 @@ public interface JobSchedules {
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
 
     /**
      * Disables a job schedule.
      * No new jobs will be created until the job schedule is enabled again.
      *
      * @param jobScheduleId The ID of the job schedule to disable.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disable(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    void disable(String jobScheduleId);
 
     /**
      * Disables a job schedule.
@@ -300,22 +440,35 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> disableAsync(String jobScheduleId);
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId);
     /**
      * Disables a job schedule.
      * No new jobs will be created until the job schedule is enabled again.
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disable(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void disable(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
 
     /**
      * Disables a job schedule.
@@ -324,42 +477,68 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
 
     /**
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enable(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    void enable(String jobScheduleId);
 
     /**
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> enableAsync(String jobScheduleId);
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId);
     /**
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enable(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void enable(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
 
     /**
      * Enables a job schedule.
@@ -367,42 +546,66 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
 
     /**
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminate(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException;
+    void terminate(String jobScheduleId);
 
     /**
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> terminateAsync(String jobScheduleId);
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId);
     /**
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminate(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void terminate(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
 
     /**
      * Terminates a job schedule.
@@ -410,42 +613,66 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
 
     /**
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> add(JobScheduleAddParameter cloudJobSchedule) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(JobScheduleAddParameter cloudJobSchedule);
 
     /**
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule);
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule);
     /**
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> add(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
 
     /**
      * Adds a job schedule to the specified account.
@@ -453,60 +680,96 @@ public interface JobSchedules {
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param jobScheduleAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param jobScheduleAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudJobSchedule> list();
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<Page<CloudJobSchedule>> listAsync();
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync();
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list(final JobScheduleListOptions jobScheduleListOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudJobSchedule> list(final JobScheduleListOptions jobScheduleListOptions);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param jobScheduleListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<Page<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param jobScheduleListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync(final JobScheduleListOptions jobScheduleListOptions);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudJobSchedule> listNext(final String nextPageLink);
 
     /**
      * Lists all of the job schedules in the specified account.
@@ -514,21 +777,33 @@ public interface JobSchedules {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudJobSchedule> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
 
     /**
      * Lists all of the job schedules in the specified account.
@@ -537,9 +812,26 @@ public interface JobSchedules {
      * @param jobScheduleListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
 
 }

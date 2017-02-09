@@ -8,33 +8,34 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines headers for GetNodeFilePropertiesFromComputeNode operation.
+ * Defines headers for GetPropertiesFromTask operation.
  */
-public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
+public class FileGetPropertiesFromTaskHeaders {
     /**
      * The client-request-id provided by the client during the request. This
-     * will be returned only if the return-client-request-id parameter was
-     * set to true.
+     * will be returned only if the return-client-request-id parameter was set
+     * to true.
      */
     @JsonProperty(value = "client-request-id")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
-     * This header uniquely identifies the request that was made and can be
-     * used for troubleshooting the request. If a request is consistently
-     * failing and you have verified that the request is properly formulated,
-     * you may use this value to report the error to Microsoft. In your
-     * report, include the value of this header, the approximate time that
-     * the request was made, the Batch account against which the request was
-     * made, and the region that account resides in.
+     * A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the
+     * request is properly formulated, you may use this value to report the
+     * error to Microsoft. In your report, include the value of this request
+     * ID, the approximate time that the request was made, the Batch account
+     * against which the request was made, and the region that account resides
+     * in.
      */
     @JsonProperty(value = "request-id")
-    private String requestId;
+    private UUID requestId;
 
     /**
      * The ETag HTTP response header. This is an opaque string. You can use it
@@ -92,7 +93,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -100,9 +101,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the clientRequestId value.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withClientRequestId(String clientRequestId) {
+    public FileGetPropertiesFromTaskHeaders withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -112,7 +113,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      *
      * @return the requestId value
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -120,9 +121,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withRequestId(String requestId) {
+    public FileGetPropertiesFromTaskHeaders withRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -140,9 +141,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withETag(String eTag) {
+    public FileGetPropertiesFromTaskHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -156,16 +157,16 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.getDateTime();
+        return this.lastModified.dateTime();
     }
 
     /**
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withLastModified(DateTime lastModified) {
+    public FileGetPropertiesFromTaskHeaders withLastModified(DateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -183,16 +184,16 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
         if (this.ocpCreationTime == null) {
             return null;
         }
-        return this.ocpCreationTime.getDateTime();
+        return this.ocpCreationTime.dateTime();
     }
 
     /**
      * Set the ocpCreationTime value.
      *
      * @param ocpCreationTime the ocpCreationTime value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withOcpCreationTime(DateTime ocpCreationTime) {
+    public FileGetPropertiesFromTaskHeaders withOcpCreationTime(DateTime ocpCreationTime) {
         if (ocpCreationTime == null) {
             this.ocpCreationTime = null;
         } else {
@@ -214,9 +215,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the ocpBatchFileIsdirectory value.
      *
      * @param ocpBatchFileIsdirectory the ocpBatchFileIsdirectory value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
+    public FileGetPropertiesFromTaskHeaders withOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
         this.ocpBatchFileIsdirectory = ocpBatchFileIsdirectory;
         return this;
     }
@@ -234,9 +235,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the ocpBatchFileUrl value.
      *
      * @param ocpBatchFileUrl the ocpBatchFileUrl value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withOcpBatchFileUrl(String ocpBatchFileUrl) {
+    public FileGetPropertiesFromTaskHeaders withOcpBatchFileUrl(String ocpBatchFileUrl) {
         this.ocpBatchFileUrl = ocpBatchFileUrl;
         return this;
     }
@@ -254,9 +255,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the ocpBatchFileMode value.
      *
      * @param ocpBatchFileMode the ocpBatchFileMode value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withOcpBatchFileMode(String ocpBatchFileMode) {
+    public FileGetPropertiesFromTaskHeaders withOcpBatchFileMode(String ocpBatchFileMode) {
         this.ocpBatchFileMode = ocpBatchFileMode;
         return this;
     }
@@ -274,9 +275,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the contentType value.
      *
      * @param contentType the contentType value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withContentType(String contentType) {
+    public FileGetPropertiesFromTaskHeaders withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -294,9 +295,9 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      * Set the contentLength value.
      *
      * @param contentLength the contentLength value to set
-     * @return the FileGetNodeFilePropertiesFromComputeNodeHeaders object itself.
+     * @return the FileGetPropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromComputeNodeHeaders withContentLength(Long contentLength) {
+    public FileGetPropertiesFromTaskHeaders withContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }

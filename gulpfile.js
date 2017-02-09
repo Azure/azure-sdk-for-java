@@ -28,7 +28,7 @@ var isMac = (process.platform.lastIndexOf('darwin') === 0);
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = 'batchService'; // default
-var autoRestVersion = '0.17.0-Nightly20160727'; // default
+var autoRestVersion = '1.0.0-Nightly20170129'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

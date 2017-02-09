@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for CertificateStoreLocation.
  */
 public enum CertificateStoreLocation {
-    /** Enum value currentuser. */
-    CURRENTUSER("currentuser"),
+    /** Enum value currentUser. */
+    CURRENT_USER("currentUser"),
 
-    /** Enum value localmachine. */
-    LOCALMACHINE("localmachine"),
+    /** Enum value localMachine. */
+    LOCAL_MACHINE("localMachine"),
 
     /** Enum value unmapped. */
     UNMAPPED("unmapped");

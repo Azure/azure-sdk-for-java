@@ -21,14 +21,15 @@ public class PoolSpecification {
      * The display name need not be unique and can contain any Unicode
      * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The size of the virtual machines in the pool. All virtual machines in a
      * pool are the same size.
      * For information about available sizes of virtual machines for Cloud
-     * Services pools (pools created with cloudServiceConfiguration), see
-     * Sizes for Cloud Services
+     * Services pools (pools created with cloudServiceConfiguration), see Sizes
+     * for Cloud Services
      * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
      * Batch supports all Cloud Services VM sizes except ExtraSmall. For
      * information about available VM sizes for pools using images from the
@@ -40,7 +41,7 @@ public class PoolSpecification {
      * Batch supports all Azure VM sizes except STANDARD_A0 and those with
      * premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /**
@@ -48,45 +49,49 @@ public class PoolSpecification {
      * This property must be specified if the pool needs to be created with
      * Azure PaaS VMs. This property and virtualMachineConfiguration are
      * mutually exclusive and one of the properties must be specified. If
-     * neither is specified then the Batch service returns an error; if you
-     * are calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request).
+     * neither is specified then the Batch service returns an error; if you are
+     * calling the REST API directly, the HTTP status code is 400 (Bad
+     * Request). This property cannot be specified if the Batch account was
+     * created with its poolAllocationMode property set to 'UserSubscription'.
      */
+    @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
      * The virtual machine configuration for the pool.
      * This property must be specified if the pool needs to be created with
-     * Azure IaaS VMs. This property and cloudServiceConfiguration are
-     * mutually exclusive and one of the properties must be specified. If
-     * neither is specified then the Batch service returns an error; if you
-     * are calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request).
+     * Azure IaaS VMs. This property and cloudServiceConfiguration are mutually
+     * exclusive and one of the properties must be specified. If neither is
+     * specified then the Batch service returns an error; if you are calling
+     * the REST API directly, the HTTP status code is 400 (Bad Request).
      */
+    @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
      * The maximum number of tasks that can run concurrently on a single
      * compute node in the pool.
-     * The default value is 1. The maximum value of this setting depends on
-     * the size of the compute nodes in the pool (the vmSize setting).
+     * The default value is 1. The maximum value of this setting depends on the
+     * size of the compute nodes in the pool (the vmSize setting).
      */
+    @JsonProperty(value = "maxTasksPerNode")
     private Integer maxTasksPerNode;
 
     /**
      * How tasks are distributed among compute nodes in the pool.
      */
+    @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;
 
     /**
      * The timeout for allocation of compute nodes to the pool.
      * This timeout applies only to manual scaling; it has no effect when
      * enableAutoScale is set to true. The default value is 15 minutes. The
-     * minimum value is 5 minutes. If you specify a value less than 5
-     * minutes, the Batch service rejects the request with an error; if you
-     * are calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request).
+     * minimum value is 5 minutes. If you specify a value less than 5 minutes,
+     * the Batch service rejects the request with an error; if you are calling
+     * the REST API directly, the HTTP status code is 400 (Bad Request).
      */
+    @JsonProperty(value = "resizeTimeout")
     private Period resizeTimeout;
 
     /**
@@ -94,6 +99,7 @@ public class PoolSpecification {
      * This property must not be specified if enableAutoScale is set to true.
      * It is required if enableAutoScale is set to false.
      */
+    @JsonProperty(value = "targetDedicated")
     private Integer targetDedicated;
 
     /**
@@ -102,16 +108,17 @@ public class PoolSpecification {
      * autoScaleFormula element is required. The pool automatically resizes
      * according to the formula. The default value is false.
      */
+    @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
 
     /**
      * The formula for the desired number of compute nodes in the pool.
      * This property must not be specified if enableAutoScale is set to false.
-     * It is required if enableAutoScale is set to true. The formula is
-     * checked for validity before the pool is created. If the formula is not
-     * valid, the Batch service rejects the request with detailed error
-     * information.
+     * It is required if enableAutoScale is set to true. The formula is checked
+     * for validity before the pool is created. If the formula is not valid,
+     * the Batch service rejects the request with detailed error information.
      */
+    @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
     /**
@@ -119,30 +126,33 @@ public class PoolSpecification {
      * according to the autoscale formula.
      * The default value is 15 minutes. The minimum and maximum value are 5
      * minutes and 168 hours respectively. If you specify a value less than 5
-     * minutes or greater than 168 hours, the Batch service rejects the
-     * request with an invalid property value error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * minutes or greater than 168 hours, the Batch service rejects the request
+     * with an invalid property value error; if you are calling the REST API
+     * directly, the HTTP status code is 400 (Bad Request).
      */
+    @JsonProperty(value = "autoScaleEvaluationInterval")
     private Period autoScaleEvaluationInterval;
 
     /**
      * Whether the pool permits direct communication between nodes.
      * Enabling inter-node communication limits the maximum size of the pool
-     * due to deployment restrictions on the nodes of the pool. This may
-     * result in the pool not reaching its desired size. The default value is
-     * false.
+     * due to deployment restrictions on the nodes of the pool. This may result
+     * in the pool not reaching its desired size. The default value is false.
      */
+    @JsonProperty(value = "enableInterNodeCommunication")
     private Boolean enableInterNodeCommunication;
 
     /**
      * The network configuration for the pool.
      */
+    @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
     /**
      * A task to run on each compute node as it joins the pool. The task runs
      * when the node is added to the pool or when the node is restarted.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
@@ -150,27 +160,36 @@ public class PoolSpecification {
      * For Windows compute nodes, the Batch service installs the certificates
      * to the specified certificate store and location. For Linux compute
      * nodes, the certificates are stored in a directory inside the task
-     * working directory and an environment variable
-     * AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
-     * location. For certificates with visibility of remoteuser, a certs
-     * directory is created in the user's home directory (e.g.,
-     * /home/&lt;user-name&gt;/certs) where certificates are placed.
+     * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR
+     * is supplied to the task to query for this location. For certificates
+     * with visibility of 'remoteUser', a 'certs' directory is created in the
+     * user's home directory (e.g., /home/{user-name}/certs) and certificates
+     * are placed in that directory.
      */
+    @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
 
     /**
-     * The list of application packages to be installed on each compute node
-     * in the pool.
+     * The list of application packages to be installed on each compute node in
+     * the pool.
      * This property is currently not supported on auto pools created with the
      * virtualMachineConfiguration (IaaS) property.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
+
+    /**
+     * The list of user accounts to be created on each node in the pool.
+     */
+    @JsonProperty(value = "userAccounts")
+    private List<UserAccount> userAccounts;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
      * The Batch service does not assign any meaning to metadata; it is solely
      * for the use of user code.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**
@@ -490,6 +509,26 @@ public class PoolSpecification {
      */
     public PoolSpecification withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the userAccounts value.
+     *
+     * @return the userAccounts value
+     */
+    public List<UserAccount> userAccounts() {
+        return this.userAccounts;
+    }
+
+    /**
+     * Set the userAccounts value.
+     *
+     * @param userAccounts the userAccounts value to set
+     * @return the PoolSpecification object itself.
+     */
+    public PoolSpecification withUserAccounts(List<UserAccount> userAccounts) {
+        this.userAccounts = userAccounts;
         return this;
     }
 

@@ -12,32 +12,35 @@ import com.microsoft.azure.batch.protocol.models.TaskAddResult;
 
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 /**
  * The exception that is thrown when the {@link TaskOperations#createTasks(String, List)} operation is terminated.
  */
-public class CreateTasksTerminatedException extends BatchErrorException {
+public class CreateTasksErrorException extends BatchErrorException {
 
     /**
-     * Initializes a new instance of the CreateTasksTerminatedException class.
+     * Initializes a new instance of the CreateTasksErrorException class.
      *
      * @param message The exception message.
-     * @param failureTasks The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
-     * @param pendingList The list of {@link TaskAddParameter} instances containing the tasks that were not added, but for which the operation can be retried.
+     * @param failureTaskList The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * @param pendingTaskList The list of {@link TaskAddParameter} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
-        super(message);
-        this.failureTasks = failureTasks;
+    public CreateTasksErrorException(final String message, List<TaskAddResult> failureTaskList, List<TaskAddParameter> pendingTaskList) {
+        super(message, null);
+        this.failureTaskList = unmodifiableList(failureTaskList);
+        this.pendingTaskList = unmodifiableList(pendingTaskList);
     }
 
-    private List<TaskAddResult> failureTasks;
+    private List<TaskAddResult> failureTaskList;
 
     private List<TaskAddParameter> pendingTaskList;
 
     /**
      * @return The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
      */
-    public List<TaskAddResult> failureTasks() {
-        return failureTasks;
+    public List<TaskAddResult> failureTaskList() {
+        return failureTaskList;
     }
 
     /**

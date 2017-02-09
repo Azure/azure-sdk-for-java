@@ -18,7 +18,7 @@ public class PoolUpgradeOSParameter {
      * The Azure Guest OS version to be installed on the virtual machines in
      * the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "targetOSVersion", required = true)
     private String targetOSVersion;
 
     /**

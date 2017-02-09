@@ -19,7 +19,7 @@ public class PoolTests extends BatchTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
-        createClient();
+        createClient(true);
         String poolId = getStringWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
         Assert.assertNotNull(livePool);
@@ -134,7 +134,7 @@ public class PoolTests extends BatchTestBase {
                 try {
                     pool = batchClient.poolOperations().getPool(poolId);
                 } catch (BatchErrorException err) {
-                    if (err.getBody().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
+                    if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
                         deleted = true;
                         break;
                     } else {

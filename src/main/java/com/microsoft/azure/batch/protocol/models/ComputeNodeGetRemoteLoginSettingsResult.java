@@ -17,13 +17,13 @@ public class ComputeNodeGetRemoteLoginSettingsResult {
     /**
      * The IP address used for remote login to the compute node.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "remoteLoginIPAddress", required = true)
     private String remoteLoginIPAddress;
 
     /**
      * The port used for remote login to the compute node.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "remoteLoginPort", required = true)
     private int remoteLoginPort;
 
     /**

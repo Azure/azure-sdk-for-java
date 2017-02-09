@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
+import com.microsoft.azure.batch.auth.BatchCredentials;
 import com.microsoft.azure.batch.interceptor.ClientRequestIdInterceptor;
 import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.microsoft.azure.batch.protocol.implementation.BatchServiceClientImpl;
@@ -40,7 +40,7 @@ public class BatchClient {
         return this.protocolLayer;
     }
 
-    private BatchClient(BatchSharedKeyCredentials credentials) {
+    private BatchClient(BatchCredentials credentials) {
         this.protocolLayer = new BatchServiceClientImpl(credentials.baseUrl(), credentials);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
@@ -61,7 +61,7 @@ public class BatchClient {
      * @param credentials A {@link BatchSharedKeyCredentials} object specifying the Batch account credentials.
      * @return The new {@link BatchClient} instance.
      */
-    public static BatchClient open(BatchSharedKeyCredentials credentials) {
+    public static BatchClient open(BatchCredentials credentials) {
         return new BatchClient(credentials);
     }
 

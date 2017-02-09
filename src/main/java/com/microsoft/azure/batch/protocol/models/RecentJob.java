@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information about the most recent job to run under the job schedule.
@@ -16,11 +17,13 @@ public class RecentJob {
     /**
      * The ID of the job.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The URL of the job.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**

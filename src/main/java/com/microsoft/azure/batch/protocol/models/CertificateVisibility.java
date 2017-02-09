@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for CertificateVisibility.
  */
 public enum CertificateVisibility {
-    /** Enum value starttask. */
-    STARTTASK("starttask"),
+    /** Enum value startTask. */
+    START_TASK("startTask"),
 
     /** Enum value task. */
     TASK("task"),
 
-    /** Enum value remoteuser. */
-    REMOTEUSER("remoteuser"),
+    /** Enum value remoteUser. */
+    REMOTE_USER("remoteUser"),
 
     /** Enum value unmapped. */
     UNMAPPED("unmapped");

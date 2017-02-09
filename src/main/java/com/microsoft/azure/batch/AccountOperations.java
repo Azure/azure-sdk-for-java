@@ -93,8 +93,6 @@ public class AccountOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
     }
 }

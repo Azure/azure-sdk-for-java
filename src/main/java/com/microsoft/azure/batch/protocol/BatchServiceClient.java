@@ -9,7 +9,7 @@
 package com.microsoft.azure.batch.protocol;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.RestClient;
 
 /**
  * The interface for BatchServiceClient class.
