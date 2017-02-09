@@ -34,7 +34,7 @@ public interface VirtualMachines extends
         SupportsDeletingByGroup,
         SupportsBatchCreation<VirtualMachine>,
         HasManager<ComputeManager>,
-        HasInner<VirtualMachinesInner>{
+        HasInner<VirtualMachinesInner> {
 
     /**
      * @return available virtual machine sizes
