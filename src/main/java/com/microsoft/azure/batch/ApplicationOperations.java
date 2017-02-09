@@ -6,14 +6,10 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetOptions;
-import com.microsoft.azure.batch.protocol.models.ApplicationListHeaders;
 import com.microsoft.azure.batch.protocol.models.ApplicationListOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationSummary;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,7 +29,7 @@ public class ApplicationOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch service.

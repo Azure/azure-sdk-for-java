@@ -6,26 +6,20 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeOptions;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromTaskOptions;
-import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeOptions;
-import com.microsoft.azure.batch.protocol.models.FileGetFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileGetPropertiesFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetPropertiesFromComputeNodeOptions;
 import com.microsoft.azure.batch.protocol.models.FileGetPropertiesFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetPropertiesFromTaskOptions;
-import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeOptions;
-import com.microsoft.azure.batch.protocol.models.FileListFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileListFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileProperties;
 import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import rx.Observable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +33,7 @@ public class FileOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     FileOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
         _parentBatchClient = batchClient;

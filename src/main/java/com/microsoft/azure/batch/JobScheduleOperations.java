@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -21,7 +19,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     JobScheduleOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
         _parentBatchClient = batchClient;

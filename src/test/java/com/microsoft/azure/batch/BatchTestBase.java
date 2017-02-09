@@ -6,10 +6,8 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.batch.auth.BatchTokenCredentials;
+import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import com.microsoft.azure.batch.auth.BatchCredentials;
-import okhttp3.logging.HttpLoggingInterceptor;
-import com.microsoft.azure.batch.BatchClient;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.protocol.models.*;
 import java.util.*;
@@ -18,14 +16,20 @@ import org.junit.Assert;
 /**
  * The base for batch dataplane tests.
  */
-public abstract class BatchTestBase {
-    protected static BatchClient batchClient;
+abstract class BatchTestBase {
+    static BatchClient batchClient;
 
-    protected static void createClient(boolean aadAuth) {
-        BatchCredentials credentials = null;
+    public enum AuthMode
+    {
+        AAD,
+        SharedKey
+    }
 
-        if (aadAuth) {
-            credentials = new BatchTokenCredentials(
+    static void createClient(AuthMode mode) {
+        BatchCredentials credentials;
+
+        if (mode == AuthMode.AAD) {
+            credentials = new BatchApplicationTokenCredentials(
                     System.getenv("AZURE_BATCH_ENDPOINT"),
                     System.getenv("CLIENT_ID"),
                     System.getenv("APPLICATION_SECRET"),
@@ -42,7 +46,7 @@ public abstract class BatchTestBase {
         batchClient = BatchClient.open(credentials);
     }
 
-    protected static CloudPool createIfNotExistPaaSPool(String poolId) throws Exception {
+    static CloudPool createIfNotExistPaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "Small";
         int POOL_VM_COUNT = 3;
@@ -50,7 +54,7 @@ public abstract class BatchTestBase {
         String POOL_OS_VERSION = "*";
 
         // 5 minutes
-        long POOL_STEADY_TIMEOUT = 5 * 60 * 60;
+        long POOL_STEADY_TIMEOUT = 5 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -83,7 +87,7 @@ public abstract class BatchTestBase {
         return batchClient.poolOperations().getPool(poolId);
     }
 
-    protected static String getStringWithUserNamePrefix(String name) {
+    static String getStringWithUserNamePrefix(String name) {
         String userName = System.getProperty("user.name");
         return userName + name;
     }

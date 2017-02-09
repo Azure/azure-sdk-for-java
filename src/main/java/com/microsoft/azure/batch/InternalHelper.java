@@ -16,12 +16,12 @@ class InternalHelper {
     /**
      * Inherit the BatchClientBehavior classes from parent object
      *
-     * @param inheritingObject
-     * @param baseBehaviors
+     * @param inheritingObject the inherit object
+     * @param baseBehaviors base class behavior list
      */
     public static void InheritClientBehaviorsAndSetPublicProperty(IInheritedBehaviors inheritingObject, Iterable<BatchClientBehavior> baseBehaviors) {
         // implement inheritance of behaviors
-        List<BatchClientBehavior> customBehaviors = new ArrayList<BatchClientBehavior>();
+        List<BatchClientBehavior> customBehaviors = new ArrayList<>();
 
         // if there were any behaviors, pre-populate the collection (ie: inherit)
         if (null != baseBehaviors)

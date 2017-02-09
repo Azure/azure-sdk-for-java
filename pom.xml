@@ -8,7 +8,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta5-SNAPSHOT</version>
+  <version>1.0.0-beta6-SNAPSHOT</version>
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>
@@ -40,16 +40,29 @@
     </developer>
   </developers>
 
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.0-beta5</version>
+      <version>1.0.0-beta6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.0.0-beta5</version>
+      <version>1.0.0-beta6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>

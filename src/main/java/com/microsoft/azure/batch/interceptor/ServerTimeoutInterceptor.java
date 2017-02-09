@@ -28,13 +28,23 @@ public class ServerTimeoutInterceptor extends RequestInterceptor {
             public void modify(Object request) {
                 Class<?> c = request.getClass();
                 try {
-                    Method timeoutMethod = c.getMethod("withTimeout", new Class[]{Integer.class});
+                    Method timeoutMethod = c.getMethod("withTimeout", Integer.class);
                     if (timeoutMethod != null) {
                         timeoutMethod.invoke(request, serverTimeout);
                     }
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
                 }
             }
         });
+    }
+
+    /**
+     * Gets the service timeout interval applied by this {@link ServerTimeoutInterceptor} instance.
+     *
+     * @return The service timeout interval, in seconds.
+     */
+    public int serverTimeout() {
+        return this.serverTimeout;
     }
 }

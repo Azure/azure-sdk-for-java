@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -21,7 +19,7 @@ public class JobOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     JobOperations(BatchClient batchClient, Collection<BatchClientBehavior> inheritedBehaviors) {
         _parentBatchClient = batchClient;
@@ -144,7 +142,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(DetailLevel detailLevel) throws BatchErrorException, IOException {
-        return listJobs(detailLevel, (Iterable<BatchClientBehavior>) null);
+        return listJobs(detailLevel, null);
     }
 
     /**

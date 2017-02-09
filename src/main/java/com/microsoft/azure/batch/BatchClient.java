@@ -19,16 +19,16 @@ import java.util.LinkedList;
  */
 public class BatchClient {
 
-    private BatchServiceClient protocolLayer;
-    private CertificateOperations certificateOperations;
-    private JobOperations jobOperations;
-    private TaskOperations taskOperations;
-    private JobScheduleOperations jobScheduleOperations;
-    private PoolOperations poolOperations;
-    private FileOperations fileOperations;
-    private ComputeNodeOperations computeNodeOperations;
-    private ApplicationOperations applicationOperations;
-    private AccountOperations accountOperations;
+    private final BatchServiceClient protocolLayer;
+    private final CertificateOperations certificateOperations;
+    private final JobOperations jobOperations;
+    private final TaskOperations taskOperations;
+    private final JobScheduleOperations jobScheduleOperations;
+    private final PoolOperations poolOperations;
+    private final FileOperations fileOperations;
+    private final ComputeNodeOperations computeNodeOperations;
+    private final ApplicationOperations applicationOperations;
+    private final AccountOperations accountOperations;
     private Collection<BatchClientBehavior> customBehaviors;
 
     /**
@@ -58,7 +58,7 @@ public class BatchClient {
     /**
      * Creates an instance of {@link BatchClient} associated with the specified credentials.
      *
-     * @param credentials A {@link BatchSharedKeyCredentials} object specifying the Batch account credentials.
+     * @param credentials A {@link BatchCredentials} object specifying the Batch account credentials.
      * @return The new {@link BatchClient} instance.
      */
     public static BatchClient open(BatchCredentials credentials) {

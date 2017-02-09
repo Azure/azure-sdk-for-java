@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
@@ -30,7 +28,7 @@ public class PoolOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch service.
@@ -685,11 +683,11 @@ public class PoolOperations implements IInheritedBehaviors {
 
         PoolUpdatePropertiesParameter param = new PoolUpdatePropertiesParameter()
                 .withMetadata(metadata == null ?
-                        new LinkedList<MetadataItem>() : new LinkedList<MetadataItem>(metadata))
+                        new LinkedList<MetadataItem>() : new LinkedList<>(metadata))
                 .withApplicationPackageReferences(applicationPackageReferences == null ?
-                        new LinkedList<ApplicationPackageReference>() : new LinkedList<ApplicationPackageReference>(applicationPackageReferences))
+                        new LinkedList<ApplicationPackageReference>() : new LinkedList<>(applicationPackageReferences))
                 .withCertificateReferences(certificateReferences == null ?
-                        new LinkedList<CertificateReference>() : new LinkedList<CertificateReference>(certificateReferences))
+                        new LinkedList<CertificateReference>() : new LinkedList<>(certificateReferences))
                 .withStartTask(startTask);
 
         this._parentBatchClient.protocolLayer().pools().updateProperties(poolId, param, options);
@@ -735,13 +733,13 @@ public class PoolOperations implements IInheritedBehaviors {
         PoolPatchParameter param = new PoolPatchParameter()
                 .withStartTask(startTask);
         if (metadata != null) {
-            param.withMetadata(new LinkedList<MetadataItem>(metadata));
+            param.withMetadata(new LinkedList<>(metadata));
         }
         if (applicationPackageReferences != null) {
-            param.withApplicationPackageReferences(new LinkedList<ApplicationPackageReference>(applicationPackageReferences));
+            param.withApplicationPackageReferences(new LinkedList<>(applicationPackageReferences));
         }
         if (certificateReferences != null) {
-            param.withCertificateReferences(new LinkedList<CertificateReference>(certificateReferences));
+            param.withCertificateReferences(new LinkedList<>(certificateReferences));
         }
 
         this._parentBatchClient.protocolLayer().pools().patch(poolId, param, options);

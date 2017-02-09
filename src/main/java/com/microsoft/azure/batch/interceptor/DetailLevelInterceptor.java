@@ -31,33 +31,45 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                 if (detailLevel != null) {
                     Class<?> c = request.getClass();
                     try {
-                        Method selectMethod = c.getMethod("withSelect", new Class[]{String.class});
+                        Method selectMethod = c.getMethod("withSelect", String.class);
                         if (selectMethod != null) {
                             selectMethod.invoke(request, detailLevel.selectClause());
                         }
                     }
                     catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        // Ignore exception
                     }
 
                     try {
-                        Method filterMethod = c.getMethod("withFilter", new Class[]{String.class});
+                        Method filterMethod = c.getMethod("withFilter", String.class);
                         if (filterMethod != null) {
                             filterMethod.invoke(request, detailLevel.filterClause());
                         }
                     }
                     catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        // Ignore exception
                     }
 
                     try {
-                        Method expandMethod = c.getMethod("withExpand", new Class[]{String.class});
+                        Method expandMethod = c.getMethod("withExpand", String.class);
                         if (expandMethod != null) {
                             expandMethod.invoke(request, detailLevel.expandClause());
                         }
                     }
                     catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        // Ignore exception
                     }
                 }
             }
         });
+    }
+
+    /**
+     * Gets the detail level applied by this {@link DetailLevelInterceptor} instance.
+     *
+     * @return The detail level applied.
+     */
+    public DetailLevel detailLevel() {
+        return this.detailLevel;
     }
 }

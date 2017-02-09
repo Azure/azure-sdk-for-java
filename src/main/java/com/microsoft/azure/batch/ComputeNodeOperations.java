@@ -7,9 +7,7 @@
 package com.microsoft.azure.batch;
 
 import com.google.common.io.CharStreams;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
@@ -462,8 +460,8 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
-        return getRemoteLoginSettings(poolId, nodeId, null);
+    public ComputeNodeGetRemoteLoginSettingsResult getComputeNodeRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
+        return getComputeNodeRemoteLoginSettings(poolId, nodeId, null);
     }
 
     /**
@@ -476,7 +474,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public ComputeNodeGetRemoteLoginSettingsResult getComputeNodeRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteLoginSettingsOptions options = new ComputeNodeGetRemoteLoginSettingsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);

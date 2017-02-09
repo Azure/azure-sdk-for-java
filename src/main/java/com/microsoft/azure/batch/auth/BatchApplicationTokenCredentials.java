@@ -10,8 +10,7 @@ import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.rest.credentials.TokenCredentials;
-import com.microsoft.rest.credentials.TokenCredentialsInterceptor;
-import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import java.io.IOException;
 import java.util.Date;
@@ -19,9 +18,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Token based credentials for use with a Batch Service Client.
+ * Application token based credentials for use with a Batch Service Client.
  */
-public class BatchTokenCredentials extends TokenCredentials implements BatchCredentials {
+public class BatchApplicationTokenCredentials extends TokenCredentials implements BatchCredentials {
 
     /** The Active Directory application client id. */
     final private String clientId;
@@ -39,7 +38,7 @@ public class BatchTokenCredentials extends TokenCredentials implements BatchCred
     private AuthenticationResult authenticationResult;
 
     /**
-     * Initializes a new instance of the BatchTokenCredentials.
+     * Initializes a new instance of the BatchApplicationTokenCredentials.
      *
      * @param baseUrl     the Batch service endpoint.
      * @param clientId    the Active Directory application client id.
@@ -48,7 +47,7 @@ public class BatchTokenCredentials extends TokenCredentials implements BatchCred
      * @param batchEndpoint the Batch service endpoint to authenticate with.
      * @param authenticationEndpoint the Active Directory endpoint to authenticate with.
      */
-    public BatchTokenCredentials(String baseUrl, String clientId, String secret, String domain, String batchEndpoint, String authenticationEndpoint) {
+    public BatchApplicationTokenCredentials(String baseUrl, String clientId, String secret, String domain, String batchEndpoint, String authenticationEndpoint) {
         super(null, null);
 
         if (baseUrl == null) {
@@ -128,7 +127,7 @@ public class BatchTokenCredentials extends TokenCredentials implements BatchCred
     }
 
     @Override
-    public String getToken() throws IOException {
+    public String getToken(Request request) throws IOException {
         if (authenticationResult == null || authenticationResult.getExpiresOnDate().before(new Date())) {
             this.authenticationResult = acquireAccessToken();
         }
@@ -150,10 +149,5 @@ public class BatchTokenCredentials extends TokenCredentials implements BatchCred
         } finally {
             executor.shutdown();
         }
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new TokenCredentialsInterceptor(this));
     }
 }

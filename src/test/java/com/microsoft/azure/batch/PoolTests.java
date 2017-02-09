@@ -15,11 +15,11 @@ import java.util.*;
 import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchTestBase {
-    static CloudPool livePool;
+    private static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
-        createClient(true);
+        createClient(AuthMode.AAD);
         String poolId = getStringWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
         Assert.assertNotNull(livePool);
@@ -61,7 +61,7 @@ public class PoolTests extends BatchTestBase {
         String POOL_OS_VERSION = "*";
 
         // 5 minutes
-        long POOL_STEADY_TIMEOUT = 5 * 60 * 60;
+        long POOL_STEADY_TIMEOUT = 5 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -111,7 +111,7 @@ public class PoolTests extends BatchTestBase {
             Assert.assertTrue(found);
 
             // UPDATE
-            LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
+            LinkedList<MetadataItem> metadata = new LinkedList<>();
             metadata.add((new MetadataItem()).withName("key1").withValue("value1"));
             batchClient.poolOperations().patchPool(poolId, null, null, null, metadata);
 
@@ -132,7 +132,11 @@ public class PoolTests extends BatchTestBase {
             // Wait for the VM to be allocated
             while (elapsedTime < POOL_STEADY_TIMEOUT) {
                 try {
-                    pool = batchClient.poolOperations().getPool(poolId);
+                    CloudPool pool1 = batchClient.poolOperations().getPool(poolId);
+                    if (pool1 != null)
+                    {
+                        System.out.println(pool1.id());
+                    }
                 } catch (BatchErrorException err) {
                     if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
                         deleted = true;

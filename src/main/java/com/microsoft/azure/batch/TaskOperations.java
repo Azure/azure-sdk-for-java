@@ -27,7 +27,7 @@ public class TaskOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch service.
