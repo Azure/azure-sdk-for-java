@@ -15,22 +15,22 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Completable;
 
 /**
- * The implementation for {@link Snapshots}.
+ * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
         extends GroupableResourcesImpl<
-        Snapshot,
-        SnapshotImpl,
-        SnapshotInner,
-        SnapshotsInner,
-        ComputeManager>
+            Snapshot,
+            SnapshotImpl,
+            SnapshotInner,
+            SnapshotsInner,
+            ComputeManager>
         implements Snapshots {
 
-    SnapshotsImpl(SnapshotsInner client,
-              ComputeManager computeManager) {
-        super(client, computeManager);
+    SnapshotsImpl(ComputeManager computeManager) {
+        super(computeManager.inner().snapshots(), computeManager);
     }
+
     @Override
     public String grantAccess(String resourceGroupName,
                               String snapshotName,
@@ -39,51 +39,44 @@ class SnapshotsImpl
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.innerCollection.grantAccess(resourceGroupName,
-                snapshotName, grantAccessDataInner);
+        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName, snapshotName, grantAccessDataInner);
         return accessUriInner.accessSAS();
     }
 
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
-        this.innerCollection.revokeAccess(resourceGroupName, diskName);
+        this.inner().revokeAccess(resourceGroupName, diskName);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     public Snapshot getByGroup(String resourceGroupName, String name) {
-        SnapshotInner inner = this.innerCollection.get(resourceGroupName, name);
+        SnapshotInner inner = this.inner().get(resourceGroupName, name);
         return wrapModel(inner);
     }
 
     @Override
     public PagedList<Snapshot> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     public PagedList<Snapshot> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     protected SnapshotImpl wrapModel(String name) {
-        return new SnapshotImpl(name,
-                new SnapshotInner(),
-                this.innerCollection,
-                myManager);
+        return new SnapshotImpl(name, new SnapshotInner(), this.manager());
     }
 
     @Override
     protected SnapshotImpl wrapModel(SnapshotInner inner) {
-        return new SnapshotImpl(inner.name(),
-                inner,
-                this.innerCollection,
-                myManager);
+        return new SnapshotImpl(inner.name(), inner, this.manager());
     }
 
     @Override

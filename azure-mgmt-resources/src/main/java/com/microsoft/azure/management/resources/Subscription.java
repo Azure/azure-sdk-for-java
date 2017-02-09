@@ -10,7 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.SubscriptionInner;
 
 /**
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.implementation.SubscriptionInner
 @Fluent
 public interface Subscription extends
         Indexable,
-        Wrapper<SubscriptionInner> {
+        HasInner<SubscriptionInner> {
 
     /**
      * @return the UUID of the subscription

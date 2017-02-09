@@ -33,14 +33,9 @@ class DiskImpl
         Disk,
         Disk.Definition,
         Disk.Update  {
-    private final DisksInner client;
 
-    DiskImpl(String name,
-             DiskInner innerModel,
-             DisksInner client,
-             final ComputeManager computeManager) {
+    DiskImpl(String name, DiskInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
     }
 
     @Override
@@ -84,7 +79,7 @@ class DiskImpl
         grantAccessDataInner.withAccess(AccessLevel.READ)
                 .withDurationInSeconds(accessDurationInSeconds);
 
-        AccessUriInner accessUriInner = this.client.grantAccess(this.resourceGroupName(),
+        AccessUriInner accessUriInner = this.manager().inner().disks().grantAccess(this.resourceGroupName(),
                 this.name(), grantAccessDataInner);
         if (accessUriInner == null) {
             return null;
@@ -94,7 +89,7 @@ class DiskImpl
 
     @Override
     public void revokeAccess() {
-        this.client.revokeAccess(this.resourceGroupName(), this.name());
+        this.manager().inner().disks().revokeAccess(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -274,13 +269,13 @@ class DiskImpl
 
     @Override
     public Observable<Disk> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+        return manager().inner().disks().createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Disk refresh() {
-        DiskInner diskInner = this.client.get(this.resourceGroupName(), this.name());
+        DiskInner diskInner = this.manager().inner().disks().get(this.resourceGroupName(), this.name());
         this.setInner(diskInner);
         return this;
     }

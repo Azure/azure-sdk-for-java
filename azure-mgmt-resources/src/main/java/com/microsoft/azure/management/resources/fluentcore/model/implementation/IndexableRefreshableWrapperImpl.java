@@ -8,17 +8,17 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * The implementation for {@link Indexable}, {@link Refreshable}, and {@link Wrapper}.
+ * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInner}.
  *
  * @param <FluentModelT> The fluent model type
  * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
     extends IndexableRefreshableImpl<FluentModelT>
-    implements Wrapper<InnerModelT> {
+    implements HasInner<InnerModelT> {
 
     private InnerModelT innerObject;
     protected IndexableRefreshableWrapperImpl(InnerModelT innerObject) {

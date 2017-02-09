@@ -42,13 +42,11 @@ class VaultImpl
         Vault,
         Vault.Definition,
         Vault.Update {
-    private VaultsInner client;
     private GraphRbacManager graphRbacManager;
     private List<AccessPolicyImpl> accessPolicies;
 
-    VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
+    VaultImpl(String key, VaultInner innerObject, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
         super(key, innerObject, manager);
-        this.client = client;
         this.graphRbacManager = graphRbacManager;
         this.accessPolicies = new ArrayList<>();
         if (innerObject != null && innerObject.properties() != null && innerObject.properties().accessPolicies() != null) {
@@ -239,6 +237,7 @@ class VaultImpl
 
     @Override
     public Observable<Vault> createResourceAsync() {
+        final VaultsInner client = this.manager().inner().vaults();
         return populateAccessPolicies()
                 .flatMap(new Func1<Object, Observable<VaultInner>>() {
                     @Override
@@ -259,7 +258,7 @@ class VaultImpl
 
     @Override
     public VaultImpl refresh() {
-        setInner(client.get(resourceGroupName(), name()));
+        setInner(this.manager().inner().vaults().get(resourceGroupName(), name()));
         return this;
     }
 }

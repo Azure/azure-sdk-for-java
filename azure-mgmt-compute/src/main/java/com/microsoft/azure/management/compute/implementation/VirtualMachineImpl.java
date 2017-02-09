@@ -3,7 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-
 package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,7 +48,7 @@ import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -75,23 +74,22 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The implementation for {@link VirtualMachine} and its create and update interfaces.
+ * The implementation for VirtualMachine and its create and update interfaces.
  */
 @LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
-        VirtualMachine,
-        VirtualMachineInner,
-        VirtualMachineImpl,
-        ComputeManager>
+            VirtualMachine,
+            VirtualMachineInner,
+            VirtualMachineImpl,
+            ComputeManager>
         implements
-        VirtualMachine,
-        VirtualMachine.DefinitionManagedOrUnmanaged,
-        VirtualMachine.DefinitionManaged,
-        VirtualMachine.DefinitionUnmanaged,
-        VirtualMachine.Update {
+            VirtualMachine,
+            VirtualMachine.DefinitionManagedOrUnmanaged,
+            VirtualMachine.DefinitionManaged,
+            VirtualMachine.DefinitionUnmanaged,
+            VirtualMachine.Update {
     // Clients
-    private final VirtualMachinesInner client;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
@@ -138,13 +136,10 @@ class VirtualMachineImpl
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
-                       VirtualMachinesInner client,
-                       VirtualMachineExtensionsInner extensionsClient,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
@@ -158,7 +153,7 @@ class VirtualMachineImpl
                 return new VirtualMachineSizeImpl(inner);
             }
         };
-        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
     }
@@ -167,7 +162,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() {
-        VirtualMachineInner response = this.client.get(this.resourceGroupName(), this.name());
+        VirtualMachineInner response = this.manager().inner().virtualMachines().get(this.resourceGroupName(), this.name());
         this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
@@ -177,44 +172,44 @@ class VirtualMachineImpl
 
     @Override
     public void deallocate() {
-        this.client.deallocate(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().deallocate(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void generalize() {
-        this.client.generalize(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().generalize(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void powerOff() {
-        this.client.powerOff(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().powerOff(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void restart() {
-        this.client.restart(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().restart(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void start() {
-        this.client.start(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().start(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void redeploy() {
-        this.client.redeploy(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().redeploy(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.client.convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
     @Override
     public PagedList<VirtualMachineSize> availableSizes() {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
+        page.setItems(this.manager().inner().virtualMachines().listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
@@ -230,7 +225,7 @@ class VirtualMachineImpl
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
-        VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        VirtualMachineCaptureResultInner captureResult = this.manager().inner().virtualMachines().capture(this.resourceGroupName(), this.name(), parameters);
         if (captureResult == null) {
             return null;
         }
@@ -245,7 +240,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() {
-        this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
+        this.virtualMachineInstanceView = this.manager().inner().virtualMachines().get(this.resourceGroupName(),
                 this.name(),
                 InstanceViewTypes.INSTANCE_VIEW).instanceView();
         return this.virtualMachineInstanceView;
@@ -286,50 +281,50 @@ class VirtualMachineImpl
     // Fluent methods for defining private IP association for the new primary network interface
     //
     @Override
-    public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
+    public VirtualMachineImpl withPrimaryPrivateIPAddressDynamic() {
         this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
-                .withPrimaryPrivateIpAddressDynamic();
+                .withPrimaryPrivateIPAddressDynamic();
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
+    public VirtualMachineImpl withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress) {
         this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
-                .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
+                .withPrimaryPrivateIPAddressStatic(staticPrivateIPAddress);
         return this;
     }
 
     // Fluent methods for defining public IP association for the new primary network interface
     //
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIpAddress(creatable);
+                .withNewPrimaryPublicIPAddress(creatable);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIpAddress(leafDnsLabel);
+                .withNewPrimaryPublicIPAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
+    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withExistingPrimaryPublicIpAddress(publicIpAddress);
+                .withExistingPrimaryPublicIPAddress(publicIPAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
+    public VirtualMachineImpl withoutPrimaryPublicIPAddress() {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate;
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -347,7 +342,7 @@ class VirtualMachineImpl
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
         Creatable<NetworkInterface> definitionCreatable = prepareNetworkInterface(name)
-                .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
+                .withNewPrimaryPublicIPAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
 
@@ -1198,13 +1193,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress getPrimaryPublicIpAddress() {
-        return this.getPrimaryNetworkInterface().primaryIpConfiguration().getPublicIpAddress();
+    public PublicIPAddress getPrimaryPublicIPAddress() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIPAddress();
     }
 
     @Override
-    public String getPrimaryPublicIpAddressId() {
-        return this.getPrimaryNetworkInterface().primaryIpConfiguration().publicIpAddressId();
+    public String getPrimaryPublicIPAddressId() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIPAddressId();
     }
 
     @Override
@@ -1321,6 +1316,7 @@ class VirtualMachineImpl
             UnmanagedDataDiskImpl.setDataDisksDefaults(this.unmanagedDataDisks, this.vmName);
         }
         final VirtualMachineImpl self = this;
+        final VirtualMachinesInner client = this.manager().inner().virtualMachines();
         return handleStorageSettingsAsync()
                 .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
                     @Override
@@ -1719,7 +1715,7 @@ class VirtualMachineImpl
         return "{storage-base-url}" + containerName + "/" + blobName;
     }
 
-    private NetworkInterface.DefinitionStages.WithPrimaryPublicIpAddress prepareNetworkInterface(String name) {
+    private NetworkInterface.DefinitionStages.WithPrimaryPublicIPAddress prepareNetworkInterface(String name) {
         NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
@@ -1732,7 +1728,7 @@ class VirtualMachineImpl
         }
         return definitionWithNetwork
                 .withNewPrimaryNetwork("vnet" + name)
-                .withPrimaryPrivateIpAddressDynamic();
+                .withPrimaryPrivateIPAddressDynamic();
     }
 
     private void initializeDataDisks() {

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ServiceObjectiveInner;
 
 
@@ -20,7 +20,7 @@ import com.microsoft.azure.management.sql.implementation.ServiceObjectiveInner;
  */
 @Fluent
 public interface ServiceObjective extends
-        Wrapper<ServiceObjectiveInner>,
+        HasInner<ServiceObjectiveInner>,
         Refreshable<ServiceObjective>,
         HasResourceGroup,
         HasName,

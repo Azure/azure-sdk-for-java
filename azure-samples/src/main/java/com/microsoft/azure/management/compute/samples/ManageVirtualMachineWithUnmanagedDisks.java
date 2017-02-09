@@ -64,8 +64,8 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
@@ -185,7 +185,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
             System.out.println("Powered OFF VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
             // Get the network where Windows VM is hosted
-            Network network = windowsVM.getPrimaryNetworkInterface().primaryIpConfiguration().getNetwork();
+            Network network = windowsVM.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
 
             //=============================================================
@@ -198,8 +198,8 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)

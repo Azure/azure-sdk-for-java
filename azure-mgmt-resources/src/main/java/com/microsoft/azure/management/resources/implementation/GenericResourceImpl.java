@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -17,7 +16,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link GenericResource} and its nested interfaces.
+ * The implementation for GenericResource and its nested interfaces.
  */
 final class GenericResourceImpl
     extends GroupableResourceImpl<
@@ -30,9 +29,6 @@ final class GenericResourceImpl
         GenericResource.Definition,
         GenericResource.UpdateStages.WithApiVersion,
         GenericResource.Update {
-    private final ResourceManagementClientImpl serviceClient;
-    private final ResourcesInner resourceClient;
-    private final Providers providersClient;
     private String resourceProviderNamespace;
     private String parentResourcePath;
     private String resourceType;
@@ -40,17 +36,11 @@ final class GenericResourceImpl
 
     GenericResourceImpl(String key,
                         GenericResourceInner innerModel,
-                        ResourcesInner innerCollection,
-                        Providers providerClient,
-                        final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
         resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
         resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
         parentResourcePath = ResourceUtils.parentRelativePathFromResourceId(innerModel.id());
-        this.serviceClient = serviceClient;
-        this.resourceClient = innerCollection;
-        this.providersClient = providerClient;
     }
 
     @Override
@@ -142,7 +132,8 @@ final class GenericResourceImpl
         final GenericResourceImpl self = this;
         Observable<String> observable = Observable.just(apiVersion);
         if (apiVersion == null) {
-            observable = providersClient.getByNameAsync(resourceProviderNamespace)
+            final ResourceManagementClientImpl serviceClient = this.manager().inner();
+            observable = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                     .map(new Func1<Provider, String>() {
                         @Override
                         public String call(Provider provider) {
@@ -163,6 +154,7 @@ final class GenericResourceImpl
                         }
                     });
         }
+        final ResourcesInner resourceClient = this.manager().inner().resources();
         return observable
                 .flatMap(new Func1<String, Observable<GenericResource>>() {
                     @Override

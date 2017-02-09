@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.DomainInner;
 import org.joda.time.DateTime;
@@ -32,11 +31,10 @@ import java.util.Map;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceDomain extends
-        GroupableResource<AppServiceManager>,
+        GroupableResource<AppServiceManager, DomainInner>,
         HasName,
         Refreshable<AppServiceDomain>,
-        Updatable<AppServiceDomain.Update>,
-        Wrapper<DomainInner> {
+        Updatable<AppServiceDomain.Update> {
 
     /**
      * @return admin contact information

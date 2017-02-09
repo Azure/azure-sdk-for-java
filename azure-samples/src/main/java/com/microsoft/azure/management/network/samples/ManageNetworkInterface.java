@@ -42,8 +42,8 @@ public final class ManageNetworkInterface {
         final String networkInterfaceName1 = SdkContext.randomResourceName("nic1", 24);
         final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
         final String networkInterfaceName3 = SdkContext.randomResourceName("nic3", 24);
-        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
-        final String publicIpAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 24);
+        final String publicIPAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
+        final String publicIPAddressLeafDNS2 = SdkContext.randomResourceName("pip2", 24);
 
         // TODO adjust the length of vm name from 8 to 24
         final String vmName = SdkContext.randomResourceName("vm", 8);
@@ -85,8 +85,8 @@ public final class ManageNetworkInterface {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
                     .withIpForwarding()
                     .create();
 
@@ -99,7 +99,7 @@ public final class ManageNetworkInterface {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Mid-tier")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .create();
 
             System.out.println("Created network interface 2");
@@ -112,7 +112,7 @@ public final class ManageNetworkInterface {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .create();
 
             System.out.println("Created network interface 3");
@@ -149,7 +149,7 @@ public final class ManageNetworkInterface {
             // Configure a network interface
             System.out.println("Updating the first network interface");
             networkInterface1.update()
-                    .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS2)
+                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS2)
                     .apply();
 
             System.out.println("Updated the first network interface");

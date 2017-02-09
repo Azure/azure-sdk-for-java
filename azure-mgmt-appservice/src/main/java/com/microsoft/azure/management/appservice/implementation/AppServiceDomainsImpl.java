@@ -16,7 +16,7 @@ import com.microsoft.azure.management.appservice.DomainLegalAgreement;
 import rx.Completable;
 
 /**
- * The implementation for {@link AppServiceDomains}.
+ * The implementation for AppServiceDomains.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainsImpl
@@ -27,26 +27,24 @@ class AppServiceDomainsImpl
         DomainsInner,
         AppServiceManager>
         implements AppServiceDomains {
-    private final TopLevelDomainsInner topLevelDomainsInner;
 
-    AppServiceDomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
-        super(innerCollection, manager);
-        this.topLevelDomainsInner = topLevelDomainsInner;
+    AppServiceDomainsImpl(AppServiceManager manager) {
+        super(manager.inner().domains(), manager);
     }
 
     @Override
     public AppServiceDomainImpl getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     protected AppServiceDomainImpl wrapModel(String name) {
-        return new AppServiceDomainImpl(name, new DomainInner(), innerCollection, topLevelDomainsInner, myManager);
+        return new AppServiceDomainImpl(name, new DomainInner(), this.manager());
     }
 
     @Override
@@ -54,7 +52,7 @@ class AppServiceDomainsImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceDomainImpl(inner.name(), inner, innerCollection, topLevelDomainsInner, myManager);
+        return new AppServiceDomainImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -64,12 +62,12 @@ class AppServiceDomainsImpl
 
     @Override
     public PagedList<AppServiceDomain> list() {
-        return wrapList(innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<AppServiceDomain> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -79,6 +77,6 @@ class AppServiceDomainsImpl
             public DomainLegalAgreement typeConvert(TldLegalAgreementInner tldLegalAgreementInner) {
                 return new DomainLegalAgreementImpl(tldLegalAgreementInner);
             }
-        }.convert(topLevelDomainsInner.listAgreements(topLevelExtension));
+        }.convert(this.manager().inner().topLevelDomains().listAgreements(topLevelExtension));
     }
 }

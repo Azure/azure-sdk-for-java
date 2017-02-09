@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
 
@@ -23,9 +22,8 @@ import java.util.List;
  */
 @Fluent
 public interface DnsZone extends
-        GroupableResource<DnsZoneManager>,
+        GroupableResource<DnsZoneManager, ZoneInner>,
         Refreshable<DnsZone>,
-        Wrapper<ZoneInner>,
         Updatable<DnsZone.Update> {
     /**
      * @return the maximum number of record sets that can be created in this zone.
@@ -43,7 +41,7 @@ public interface DnsZone extends
     List<String> nameServers();
 
     /**
-     * @return entry point to manage record sets in this zone containing A (Ipv4 address) records
+     * @return entry point to manage record sets in this zone containing A (IPv4 address) records
      */
     ARecordSets aRecordSets();
 
@@ -53,42 +51,42 @@ public interface DnsZone extends
     AaaaRecordSets aaaaRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing CName (canonical name) records
+     * @return entry point to manage record sets in this zone containing CNAME (canonical name) records
      */
-    CnameRecordSets cnameRecordSets();
+    CNameRecordSets cNameRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Mx (mail exchange) records
+     * @return entry point to manage record sets in this zone containing MX (mail exchange) records
      */
-    MxRecordSets mxRecordSets();
+    MXRecordSets mxRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Ns (name server) records
+     * @return entry point to manage record sets in this zone containing NS (name server) records
      */
-    NsRecordSets nsRecordSets();
+    NSRecordSets nsRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Ptr (pointer) records
+     * @return entry point to manage record sets in this zone containing PTR (pointer) records
      */
     PtrRecordSets ptrRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Srv (service) records
+     * @return entry point to manage record sets in this zone containing SRV (service) records
      */
     SrvRecordSets srvRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Txt (text) records
+     * @return entry point to manage record sets in this zone containing TXT (text) records
      */
     TxtRecordSets txtRecordSets();
 
     /**
-     * @return the record set containing Soa (start of authority) record associated with this Dns zone
+     * @return the record set containing SOA (start of authority) record associated with this DNS zone
      */
     SoaRecordSet getSoaRecordSet();
 
     /**
-     * The entirety of the Dns zone definition.
+     * The entirety of the DNS zone definition.
      */
     interface Definition extends
             DefinitionStages.Blank,
@@ -96,17 +94,17 @@ public interface DnsZone extends
     }
 
     /**
-     * Grouping of Dns zone definition stages.
+     * Grouping of DNS zone definition stages.
      */
     interface DefinitionStages {
         /**
-         * The stage of the Dns zone definition allowing to specify the resource group.
+         * The stage of the DNS zone definition allowing to specify the resource group.
          */
         interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithCreate> {
         }
 
         /**
-         * The stage of the Dns zone definition allowing to specify record set.
+         * The stage of the DNS zone definition allowing to specify record set.
          */
         interface WithRecordSet {
             /**
@@ -118,59 +116,59 @@ public interface DnsZone extends
             DnsRecordSet.DefinitionStages.ARecordSetBlank<WithCreate> defineARecordSet(String name);
 
             /**
-             * Specifies definition of an Aaaa record set.
+             * Specifies definition of an AAAA record set.
              *
-             * @param name name of the Aaaa record set
-             * @return the stage representing configuration for the Aaaa record set
+             * @param name name of the AAAA record set
+             * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.DefinitionStages.AaaaRecordSetBlank<WithCreate> defineAaaaRecordSet(String name);
 
             /**
-             * Specifies definition of a Cname record set.
+             * Specifies definition of a CNAME record set.
              *
-             * @param name name of the Cname record set
-             * @param alias the Cname record alias
-             * @return the next stage of Dns zone definition
+             * @param name name of the CNAME record set
+             * @param alias the CNAME record alias
+             * @return the next stage of DNS zone definition
              */
-            WithCreate withCnameRecordSet(String name, String alias);
+            WithCreate withCNameRecordSet(String name, String alias);
 
             /**
-             * Specifies definition of a Mx record set.
+             * Specifies definition of a MX record set.
              *
-             * @param name name of the Mx record set
-             * @return the stage representing configuration for the Mx record set
+             * @param name name of the MX record set
+             * @return the stage representing configuration for the MX record set
              */
-            DnsRecordSet.DefinitionStages.MxRecordSetBlank<WithCreate> defineMxRecordSet(String name);
+            DnsRecordSet.DefinitionStages.MXRecordSetBlank<WithCreate> defineMXRecordSet(String name);
 
             /**
-             * Specifies definition of an Ns record set.
+             * Specifies definition of an NS record set.
              *
-             * @param name name of the Ns record set
-             * @return the stage representing configuration for the Ns record set
+             * @param name name of the NS record set
+             * @return the stage representing configuration for the NS record set
              */
-            DnsRecordSet.DefinitionStages.NsRecordSetBlank<WithCreate> defineNsRecordSet(String name);
+            DnsRecordSet.DefinitionStages.NSRecordSetBlank<WithCreate> defineNSRecordSet(String name);
 
             /**
-             * Specifies definition of a Ptr record set.
+             * Specifies definition of a PTR record set.
              *
-             * @param name name of the Ptr record set
-             * @return the stage representing configuration for the Ptr record set
+             * @param name name of the PTR record set
+             * @return the stage representing configuration for the PTR record set
              */
             DnsRecordSet.DefinitionStages.PtrRecordSetBlank<WithCreate> definePtrRecordSet(String name);
 
             /**
-             * Specifies definition of a Srv record set.
+             * Specifies definition of a SRV record set.
              *
-             * @param name the name of the Srv record set
-             * @return the stage representing configuration for the Srv record set
+             * @param name the name of the SRV record set
+             * @return the stage representing configuration for the SRV record set
              */
             DnsRecordSet.DefinitionStages.SrvRecordSetBlank<WithCreate> defineSrvRecordSet(String name);
 
             /**
-             * Specifies definition of a Txt record set.
+             * Specifies definition of a TXT record set.
              *
-             * @param name the name of the Txt record set
-             * @return the stage representing configuration for the Txt record set
+             * @param name the name of the TXT record set
+             * @return the stage representing configuration for the TXT record set
              */
             DnsRecordSet.DefinitionStages.TxtRecordSetBlank<WithCreate> defineTxtRecordSet(String name);
         }
@@ -187,15 +185,15 @@ public interface DnsZone extends
     }
 
     /**
-     * Grouping of Dns zone update stages.
+     * Grouping of DNS zone update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the Dns zone update allowing to specify record set.
+         * The stage of the DNS zone update allowing to specify record set.
          */
         interface WithRecordSet {
             /**
-             * Specifies definition of an A record set to be attached to the Dns zone.
+             * Specifies definition of an A record set to be attached to the DNS zone.
              *
              * @param name name of the A record set
              * @return the stage representing configuration for the A record set
@@ -203,64 +201,64 @@ public interface DnsZone extends
             DnsRecordSet.UpdateDefinitionStages.ARecordSetBlank<Update> defineARecordSet(String name);
 
             /**
-             * Specifies definition of an Aaaa record set to be attached to the Dns zone.
+             * Specifies definition of an AAAA record set to be attached to the DNS zone.
              *
-             * @param name name of the Aaaa record set
-             * @return the stage representing configuration for the Aaaa record set
+             * @param name name of the AAAA record set
+             * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.UpdateDefinitionStages.AaaaRecordSetBlank<Update> defineAaaaRecordSet(String name);
 
             /**
-             * Specifies definition of a Cname record set to be attached to the Dns zone.
+             * Specifies definition of a CNAME record set to be attached to the DNS zone.
              *
-             * @param name name of the Cname record set
-             * @param alias the Cname record alias
-             * @return the next stage of Dns zone definition
+             * @param name name of the CNAME record set
+             * @param alias the CNAME record alias
+             * @return the next stage of DNS zone definition
              */
-            Update withCnameRecordSet(String name, String alias);
+            Update withCNameRecordSet(String name, String alias);
 
             /**
-             * Specifies definition of a Mx record set to be attached to the Dns zone.
+             * Specifies definition of a MX record set to be attached to the DNS zone.
              *
-             * @param name name of the Mx record set
-             * @return the stage representing configuration for the Mx record set
+             * @param name name of the MX record set
+             * @return the stage representing configuration for the MX record set
              */
-            DnsRecordSet.UpdateDefinitionStages.MxRecordSetBlank<Update> defineMxRecordSet(String name);
+            DnsRecordSet.UpdateDefinitionStages.MXRecordSetBlank<Update> defineMXRecordSet(String name);
 
             /**
-             * Specifies definition of an Ns record set to be attached to the Dns zone.
+             * Specifies definition of an NS record set to be attached to the DNS zone.
              *
-             * @param name name of the Ns record set
-             * @return the stage representing configuration for the Ns record set
+             * @param name name of the NS record set
+             * @return the stage representing configuration for the NS record set
              */
-            DnsRecordSet.UpdateDefinitionStages.NsRecordSetBlank<Update> defineNsRecordSet(String name);
+            DnsRecordSet.UpdateDefinitionStages.NSRecordSetBlank<Update> defineNSRecordSet(String name);
 
             /**
-             * Specifies definition of a Ptr record set to be attached to the Dns zone.
+             * Specifies definition of a PTR record set to be attached to the DNS zone.
              *
-             * @param name name of the Ptr record set
-             * @return the stage representing configuration for the Ptr record set
+             * @param name name of the PTR record set
+             * @return the stage representing configuration for the PTR record set
              */
             DnsRecordSet.UpdateDefinitionStages.PtrRecordSetBlank<Update> definePtrRecordSet(String name);
 
             /**
-             * Specifies definition of a Srv record set to be attached to the Dns zone.
+             * Specifies definition of a SRV record set to be attached to the DNS zone.
              *
-             * @param name the name of the Srv record set
-             * @return the stage representing configuration for the Srv record set
+             * @param name the name of the SRV record set
+             * @return the stage representing configuration for the SRV record set
              */
             DnsRecordSet.UpdateDefinitionStages.SrvRecordSetBlank<Update> defineSrvRecordSet(String name);
 
             /**
-             * Specifies definition of a Txt record set to be attached to the Dns zone.
+             * Specifies definition of a TXT record set to be attached to the DNS zone.
              *
-             * @param name the name of the Txt record set
-             * @return the stage representing configuration for the Txt record set
+             * @param name the name of the TXT record set
+             * @return the stage representing configuration for the TXT record set
              */
             DnsRecordSet.UpdateDefinitionStages.TxtRecordSetBlank<Update> defineTxtRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing A record set in this Dns zone.
+             * Begins the description of an update of an existing A record set in this DNS zone.
              *
              * @param name name of the A record set
              * @return the stage representing configuration for the A record set
@@ -268,121 +266,121 @@ public interface DnsZone extends
             DnsRecordSet.UpdateARecordSet updateARecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Aaaa record set in this Dns zone.
+             * Begins the description of an update of an existing AAAA record set in this DNS zone.
              *
-             * @param name name of the Aaaa record set
-             * @return the stage representing configuration for the Aaaa record set
+             * @param name name of the AAAA record set
+             * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.UpdateAaaaRecordSet updateAaaaRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Mx record set in this Dns zone.
+             * Begins the description of an update of an existing MX record set in this DNS zone.
              *
-             * @param name name of the Mx record set
-             * @return the stage representing configuration for the Mx record set
+             * @param name name of the MX record set
+             * @return the stage representing configuration for the MX record set
              */
-            DnsRecordSet.UpdateMxRecordSet updateMxRecordSet(String name);
+            DnsRecordSet.UpdateMXRecordSet updateMXRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Ns record set in this Dns zone.
+             * Begins the description of an update of an existing NS record set in this DNS zone.
              *
-             * @param name name of the Ns record set
-             * @return the stage representing configuration for the Ns record set
+             * @param name name of the NS record set
+             * @return the stage representing configuration for the NS record set
              */
-            DnsRecordSet.UpdateNsRecordSet updateNsRecordSet(String name);
+            DnsRecordSet.UpdateNSRecordSet updateNSRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Ptr record set in this Dns zone.
+             * Begins the description of an update of an existing PTR record set in this DNS zone.
              *
-             * @param name name of the Ptr record set
-             * @return the stage representing configuration for the Ptr record set
+             * @param name name of the PTR record set
+             * @return the stage representing configuration for the PTR record set
              */
             DnsRecordSet.UpdatePtrRecordSet updatePtrRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Srv record set in this Dns zone.
+             * Begins the description of an update of an existing SRV record set in this DNS zone.
              *
-             * @param name the name of the Srv record set
-             * @return the stage representing configuration for the Srv record set
+             * @param name the name of the SRV record set
+             * @return the stage representing configuration for the SRV record set
              */
             DnsRecordSet.UpdateSrvRecordSet updateSrvRecordSet(String name);
 
             /**
-             * Begins the description of an update of an existing Txt record set in this Dns zone.
+             * Begins the description of an update of an existing TXT record set in this DNS zone.
              *
-             * @param name the name of the Txt record set
-             * @return the stage representing configuration for the Txt record set
+             * @param name the name of the TXT record set
+             * @return the stage representing configuration for the TXT record set
              */
             DnsRecordSet.UpdateTxtRecordSet updateTxtRecordSet(String name);
 
             /**
-             * Begins the description of an update of the Soa record in this Dns zone.
+             * Begins the description of an update of the SOA record in this DNS zone.
              *
-             * @return the stage representing configuration for the Txt record set
+             * @return the stage representing configuration for the TXT record set
              */
             DnsRecordSet.UpdateSoaRecord updateSoaRecord();
 
             /**
-             * Removes a A record set in the Dns zone.
+             * Removes a A record set in the DNS zone.
              *
              * @param name name of the A record set
-             * @return the next stage of Dns zone update
+             * @return the next stage of DNS zone update
              */
             Update withoutARecordSet(String name);
 
             /**
-             * Removes a Aaaa record set in the Dns zone.
+             * Removes a AAAA record set in the DNS zone.
              *
-             * @param name name of the Aaaa record set
-             * @return the next stage of Dns zone update
+             * @param name name of the AAAA record set
+             * @return the next stage of DNS zone update
              */
             Update withoutAaaaRecordSet(String name);
 
             /**
-             * Removes a Cname record set in the Dns zone.
+             * Removes a CNAME record set in the DNS zone.
              *
-             * @param name name of the Cname record set
-             * @return the next stage of Dns zone update
+             * @param name name of the CNAME record set
+             * @return the next stage of DNS zone update
              */
-            Update withoutCnameRecordSet(String name);
+            Update withoutCNameRecordSet(String name);
 
             /**
-             * Removes a Mx record set in the Dns zone.
+             * Removes a MX record set in the DNS zone.
              *
-             * @param name name of the Mx record set
-             * @return the next stage of Dns zone update
+             * @param name name of the MX record set
+             * @return the next stage of DNS zone update
              */
-            Update withoutMxRecordSet(String name);
+            Update withoutMXRecordSet(String name);
 
             /**
-             * Removes a Ns record set in the Dns zone.
+             * Removes a NS record set in the DNS zone.
              *
-             * @param name name of the Ns record set
-             * @return the next stage of Dns zone update
+             * @param name name of the NS record set
+             * @return the next stage of DNS zone update
              */
-            Update withoutNsRecordSet(String name);
+            Update withoutNSRecordSet(String name);
 
             /**
-             * Removes a Ptr record set in the Dns zone.
+             * Removes a PTR record set in the DNS zone.
              *
-             * @param name name of the Ptr record set
-             * @return the next stage of Dns zone update
+             * @param name name of the PTR record set
+             * @return the next stage of DNS zone update
              */
             Update withoutPtrRecordSet(String name);
 
             /**
-             * Removes a Srv record set in the Dns zone.
+             * Removes a SRV record set in the DNS zone.
              *
-             * @param name name of the Srv record set
-             * @return the next stage of Dns zone update
+             * @param name name of the SRV record set
+             * @return the next stage of DNS zone update
              */
             Update withoutSrvRecordSet(String name);
 
             /**
-             * Removes a Txt record set in the Dns zone.
+             * Removes a TXT record set in the DNS zone.
              *
-             * @param name name of the Txt record set
-             * @return the next stage of Dns zone update
+             * @param name name of the TXT record set
+             * @return the next stage of DNS zone update
              */
             Update withoutTxtRecordSet(String name);
         }

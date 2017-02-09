@@ -38,17 +38,15 @@ import java.util.TreeMap;
 @LangDefinition
 class RedisCacheImpl
         extends GroupableResourceImpl<
-        RedisCache,
-        RedisResourceInner,
-        RedisCacheImpl,
-        RedisManager>
+            RedisCache,
+            RedisResourceInner,
+            RedisCacheImpl,
+            RedisManager>
         implements
-        RedisCache,
-        RedisCachePremium,
-        RedisCache.Definition,
-        RedisCache.Update {
-    private final PatchSchedulesInner patchSchedulesInner;
-    private final RedisInner client;
+            RedisCache,
+            RedisCachePremium,
+            RedisCache.Definition,
+            RedisCache.Update {
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParametersInner createParameters;
     private RedisUpdateParametersInner updateParameters;
@@ -56,14 +54,10 @@ class RedisCacheImpl
 
     RedisCacheImpl(String name,
                    RedisResourceInner innerModel,
-                   final PatchSchedulesInner patchSchedulesInner,
-                   final RedisInner client,
                    final RedisManager redisManager) {
         super(name, innerModel, redisManager);
         this.createParameters = new RedisCreateParametersInner();
         this.scheduleEntries = new TreeMap<>();
-        this.client = client;
-        this.patchSchedulesInner = patchSchedulesInner;
     }
 
     @Override
@@ -149,7 +143,7 @@ class RedisCacheImpl
     @Override
     public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
-                this.client.listKeys(this.resourceGroupName(), this.name());
+                this.manager().inner().redis().listKeys(this.resourceGroupName(), this.name());
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
@@ -157,7 +151,7 @@ class RedisCacheImpl
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
-                this.client.regenerateKey(this.resourceGroupName(), this.name(), keyType);
+                this.manager().inner().redis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
@@ -166,7 +160,7 @@ class RedisCacheImpl
     public void forceReboot(RebootType rebootType) {
         RedisRebootParametersInner parameters = new RedisRebootParametersInner()
                 .withRebootType(rebootType);
-        this.client.forceReboot(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
@@ -174,14 +168,14 @@ class RedisCacheImpl
         RedisRebootParametersInner parameters = new RedisRebootParametersInner()
                 .withRebootType(rebootType)
                 .withShardId(shardId);
-        this.client.forceReboot(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files) {
         ImportRDBParametersInner parameters = new ImportRDBParametersInner()
                 .withFiles(files);
-        this.client.importData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
@@ -189,7 +183,7 @@ class RedisCacheImpl
         ImportRDBParametersInner parameters = new ImportRDBParametersInner()
                 .withFiles(files)
                 .withFormat(fileFormat);
-        this.client.importData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
@@ -197,7 +191,7 @@ class RedisCacheImpl
         ExportRDBParametersInner parameters = new ExportRDBParametersInner()
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix);
-        this.client.exportData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
@@ -206,13 +200,13 @@ class RedisCacheImpl
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix)
                 .withFormat(fileFormat);
-        this.client.exportData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().inner().redis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public RedisCacheImpl refresh() {
         RedisResourceInner redisResourceInner =
-                this.client.get(this.resourceGroupName(), this.name());
+                this.manager().inner().redis().get(this.resourceGroupName(), this.name());
         this.setInner(redisResourceInner);
         return this;
     }
@@ -434,7 +428,7 @@ class RedisCacheImpl
 
     @Override
     public List<ScheduleEntry> listPatchSchedules() {
-        RedisPatchScheduleInner patchSchedules =  patchSchedulesInner.get(resourceGroupName(), name());
+        RedisPatchScheduleInner patchSchedules =  this.manager().inner().patchSchedules().get(resourceGroupName(), name());
         if (patchSchedules != null) {
             return patchSchedules.scheduleEntries();
         }
@@ -443,7 +437,7 @@ class RedisCacheImpl
 
     @Override
     public void deletePatchSchedule() {
-        patchSchedulesInner.delete(resourceGroupName(), name());
+        this.manager().inner().patchSchedules().delete(resourceGroupName(), name());
     }
 
     private void updatePatchSchedules() {
@@ -453,7 +447,7 @@ class RedisCacheImpl
             for (ScheduleEntry entry : this.scheduleEntries.values()) {
                 parameters.scheduleEntries().add(entry);
             }
-            this.patchSchedulesInner.createOrUpdate(resourceGroupName(), name(), parameters.scheduleEntries());
+            this.manager().inner().patchSchedules().createOrUpdate(resourceGroupName(), name(), parameters.scheduleEntries());
         }
     }
 
@@ -467,7 +461,7 @@ class RedisCacheImpl
     @Override
     public Observable<RedisCache> updateResourceAsync() {
         final RedisCacheImpl self = this;
-        return client.updateAsync(resourceGroupName(), name(), updateParameters)
+        return this.manager().inner().redis().updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this))
                 .doOnNext(new Action1<RedisCache>() {
                     @Override
@@ -475,7 +469,7 @@ class RedisCacheImpl
                         while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
                             SdkContext.sleep(30 * 1000);
 
-                            RedisResourceInner innerResource = client.get(resourceGroupName(), name());
+                            RedisResourceInner innerResource = self.manager().inner().redis().get(resourceGroupName(), name());
                             ((RedisCacheImpl) redisCache).setInner(innerResource);
                             self.setInner(innerResource);
                         }
@@ -488,7 +482,7 @@ class RedisCacheImpl
     public Observable<RedisCache> createResourceAsync() {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters)
+        return this.manager().inner().redis().createAsync(this.resourceGroupName(), this.name(), createParameters)
                 .map(innerToFluentMap(this))
                 .doOnNext(new Action1<RedisCache>() {
                     @Override

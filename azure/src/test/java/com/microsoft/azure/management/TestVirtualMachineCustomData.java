@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management;
 
 import com.jcraft.jsch.ChannelExec;
@@ -7,8 +13,8 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -21,9 +27,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, VirtualMachines> {
-    final PublicIpAddresses pips;
+    final PublicIPAddresses pips;
 
-    public TestVirtualMachineCustomData(PublicIpAddresses pips) {
+    public TestVirtualMachineCustomData(PublicIPAddresses pips) {
         this.pips = pips;
     }
 
@@ -40,7 +46,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
         byte[] cloudInitEncoded = Base64.encodeBase64(cloudInitAsBytes);
         String cloudInitEncodedString = new String(cloudInitEncoded);
 
-        PublicIpAddress pip = pips.define(publicIpDnsLabel)
+        PublicIPAddress pip = pips.define(publicIpDnsLabel)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withLeafDomainLabel(publicIpDnsLabel)
@@ -50,8 +56,8 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
                 .withRegion(pip.regionName())
                 .withExistingResourceGroup(pip.resourceGroupName())
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withExistingPrimaryPublicIpAddress(pip)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingPrimaryPublicIPAddress(pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")

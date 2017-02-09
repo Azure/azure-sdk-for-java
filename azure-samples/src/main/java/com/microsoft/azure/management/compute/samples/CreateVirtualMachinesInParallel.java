@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -110,13 +110,13 @@ public final class CreateVirtualMachinesInParallel {
                     //=============================================================
                     // Create 1 public IP address creatable
                     //
-                    Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
+                    Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
                                 .withLeafDomainLabel(SdkContext.randomResourceName("pip", 10));
 
-                    publicIpCreatableKeys.add(publicIpAddressCreatable.key());
+                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
                     //=============================================================
                     // Create 1 virtual machine creatable
@@ -125,8 +125,8 @@ public final class CreateVirtualMachinesInParallel {
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
                                 .withNewPrimaryNetwork(networkCreatable)
-                                .withPrimaryPrivateIpAddressDynamic()
-                                .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
+                                .withPrimaryPrivateIPAddressDynamic()
+                                .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                                 .withRootUsername(userName)
                                 .withSsh(sshKey)
@@ -157,7 +157,7 @@ public final class CreateVirtualMachinesInParallel {
 
             List<String> publicIpResourceIds = new ArrayList<>();
             for (String publicIpCreatableKey : publicIpCreatableKeys) {
-                PublicIpAddress pip = (PublicIpAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
+                PublicIPAddress pip = (PublicIPAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
                 publicIpResourceIds.add(pip.id());
             }
 

@@ -3,7 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -23,7 +22,7 @@ import rx.Completable;
 import java.util.ArrayList;
 
 /**
- * The implementation for {@link VirtualMachineScaleSets}.
+ * The implementation for VirtualMachineScaleSets.
  */
 @LangDefinition
 public class VirtualMachineScaleSetsImpl
@@ -34,64 +33,61 @@ public class VirtualMachineScaleSetsImpl
                         VirtualMachineScaleSetsInner,
                         ComputeManager>
         implements VirtualMachineScaleSets {
-    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
 
-    VirtualMachineScaleSetsImpl(VirtualMachineScaleSetsInner client,
-                        VirtualMachineScaleSetVMsInner vmInstancesClient,
-                        ComputeManager computeManager,
-                        StorageManager storageManager,
-                        NetworkManager networkManager) {
-        super(client, computeManager);
-        this.vmInstancesClient = vmInstancesClient;
+    VirtualMachineScaleSetsImpl(
+            ComputeManager computeManager,
+            StorageManager storageManager,
+            NetworkManager networkManager) {
+        super(computeManager.inner().virtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
     }
 
     @Override
     public VirtualMachineScaleSet getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public PagedList<VirtualMachineScaleSet> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public PagedList<VirtualMachineScaleSet> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     public void deallocate(String groupName, String name) {
-        this.innerCollection.deallocate(groupName, name);
+        this.inner().deallocate(groupName, name);
     }
 
     @Override
     public void powerOff(String groupName, String name) {
-        this.innerCollection.powerOff(groupName, name);
+        this.inner().powerOff(groupName, name);
     }
 
     @Override
     public void restart(String groupName, String name) {
-        this.innerCollection.restart(groupName, name);
+        this.inner().restart(groupName, name);
     }
 
     @Override
     public void start(String groupName, String name) {
-        this.innerCollection.start(groupName, name);
+        this.inner().start(groupName, name);
     }
 
     @Override
     public void reimage(String groupName, String name) {
-        this.innerCollection.reimage(groupName, name);
+        this.inner().reimage(groupName, name);
     }
 
     @Override
@@ -134,9 +130,7 @@ public class VirtualMachineScaleSetsImpl
 
         return new VirtualMachineScaleSetImpl(name,
                 inner,
-                this.innerCollection,
-                this.vmInstancesClient,
-                super.myManager,
+                this.manager(),
                 this.storageManager,
                 this.networkManager);
     }
@@ -148,9 +142,7 @@ public class VirtualMachineScaleSetsImpl
         }
         return new VirtualMachineScaleSetImpl(inner.name(),
                 inner,
-                this.innerCollection,
-                this.vmInstancesClient,
-                super.myManager,
+                this.manager(),
                 this.storageManager,
                 this.networkManager);
     }

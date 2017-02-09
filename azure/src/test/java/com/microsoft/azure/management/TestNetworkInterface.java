@@ -13,7 +13,7 @@ import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -25,8 +25,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress("pipdns" + this.testId)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress("pipdns" + this.testId)
                 .withIpForwarding()
                 .create();
     }
@@ -36,8 +36,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         resource =  resource.update()
                 .withoutIpForwarding()
                 .updateIpConfiguration("primary") // Updating the primary ip configuration
-                    .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
-                    .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
+                    .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
+                    .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -67,19 +67,19 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
         info.append("\n\tIP forwarding enabled: ").append(resource.isIpForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
-                .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIpConfiguration().networkId())
-                .append("\n\tPrimary subnet name: ").append(resource.primaryIpConfiguration().subnetName())
+                .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
+                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
+                .append("\n\tPrimary subnet name: ").append(resource.primaryIPConfiguration().subnetName())
                 .append("\n\tIP configurations: ");
 
         // Output IP configs
-        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
+        for (NicIPConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
-                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
-                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod().toString())
-                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIpAddressVersion().toString())
-                .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
+                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIPAddress())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIPAllocationMethod().toString())
+                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIPAddressVersion().toString())
+                .append("\n\t\tPIP id: ").append(ipConfig.publicIPAddressId())
                 .append("\n\t\tAssociated network ID: ").append(ipConfig.networkId())
                 .append("\n\t\tAssociated subnet name: ").append(ipConfig.subnetName());
 

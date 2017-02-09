@@ -3,7 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -14,7 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * The implementation for {@link VirtualMachineExtensionImageTypes}.
+ * The implementation for VirtualMachineExtensionImageTypes.
  */
 @LangDefinition
 class VirtualMachineExtensionImageTypesImpl

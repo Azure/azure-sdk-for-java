@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.io.File;
 
@@ -18,7 +18,7 @@ import java.io.File;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface HostNameSslBinding extends
-    Wrapper<HostNameSslState>,
+    HasInner<HostNameSslState>,
     ChildResource<WebAppBase> {
     /**
      * @return the SSL type

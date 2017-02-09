@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,8 +51,8 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withRegion(REGION)
                 .withExistingResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
@@ -85,8 +91,8 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
@@ -137,8 +143,8 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
@@ -180,8 +186,8 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")

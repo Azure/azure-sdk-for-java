@@ -30,56 +30,34 @@ class CdnProfilesImpl
             ProfilesInner,
             CdnManager>
         implements CdnProfiles {
-    private final EndpointsInner endpointsClient;
-    private final OriginsInner originsClient;
-    private final CustomDomainsInner customDomainsClient;
-    private final CdnManagementClientImpl cdnManagementClient;
 
-    CdnProfilesImpl(
-            final CdnManagementClientImpl cdnManagementClient,
-            final CdnManager cdnManager) {
-        super(cdnManagementClient.profiles(), cdnManager);
-        this.endpointsClient = cdnManagementClient.endpoints();
-        this.originsClient = cdnManagementClient.origins();
-        this.customDomainsClient = cdnManagementClient.customDomains();
-        this.cdnManagementClient = cdnManagementClient;
+    CdnProfilesImpl(final CdnManager cdnManager) {
+        super(cdnManager.inner().profiles(), cdnManager);
     }
 
     @Override
     public PagedList<CdnProfile> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<CdnProfile> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
     public CdnProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     protected CdnProfileImpl wrapModel(String name) {
-        return new CdnProfileImpl(name,
-                new ProfileInner(),
-                this.innerCollection,
-                this.endpointsClient,
-                this.originsClient,
-                this.customDomainsClient,
-                this.myManager);
+        return new CdnProfileImpl(name, new ProfileInner(), this.manager());
     }
 
     @Override
     protected CdnProfileImpl wrapModel(ProfileInner inner) {
-        return new CdnProfileImpl(inner.name(),
-                inner,
-                this.innerCollection,
-                this.endpointsClient,
-                this.originsClient,
-                this.customDomainsClient,
-                this.myManager);
+        return new CdnProfileImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -89,7 +67,7 @@ class CdnProfilesImpl
 
     @Override
     public String generateSsoUri(String resourceGroupName, String profileName) {
-        SsoUriInner ssoUri = this.cdnManagementClient.profiles().generateSsoUri(resourceGroupName, profileName);
+        SsoUriInner ssoUri = this.manager().inner().profiles().generateSsoUri(resourceGroupName, profileName);
         if (ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
@@ -98,7 +76,7 @@ class CdnProfilesImpl
 
     @Override
     public CheckNameAvailabilityResult checkEndpointNameAvailability(String name) {
-        return new CheckNameAvailabilityResult(this.cdnManagementClient.checkNameAvailability(name));
+        return new CheckNameAvailabilityResult(this.manager().inner().checkNameAvailability(name));
     }
 
     @Override
@@ -108,31 +86,31 @@ class CdnProfilesImpl
             public Operation typeConvert(OperationInner inner) {
                 return new Operation(inner);
             }
-        }).convert(this.cdnManagementClient.listOperations());
+        }).convert(this.manager().inner().listOperations());
     }
 
     @Override
     public void startEndpoint(String resourceGroupName, String profileName, String endpointName) {
-        this.cdnManagementClient.endpoints().start(resourceGroupName, profileName, endpointName);
+        this.manager().inner().endpoints().start(resourceGroupName, profileName, endpointName);
     }
 
     @Override
     public void stopEndpoint(String resourceGroupName, String profileName, String endpointName) {
-        this.cdnManagementClient.endpoints().stop(resourceGroupName, profileName, endpointName);
+        this.manager().inner().endpoints().stop(resourceGroupName, profileName, endpointName);
     }
 
     @Override
     public void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.cdnManagementClient.endpoints().purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
+        this.manager().inner().endpoints().purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 
     @Override
     public void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.cdnManagementClient.endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
+        this.manager().inner().endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

@@ -8,25 +8,25 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
-import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An IP configuration in a network interface.
  */
 @Fluent()
-public interface NicIpConfiguration extends
-        NicIpConfigurationBase,
-        Wrapper<NetworkInterfaceIPConfigurationInner>,
+public interface NicIPConfiguration extends
+        NicIPConfigurationBase,
+        HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
-        HasPrivateIpAddress,
-        HasPublicIpAddress,
+        HasPrivateIPAddress,
+        HasPublicIPAddress,
         HasSubnet {
     /**
      * The entirety of the network interface IP configuration definition.
@@ -37,7 +37,7 @@ public interface NicIpConfiguration extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithNetwork<ParentT>,
         DefinitionStages.WithSubnet<ParentT>,
-        DefinitionStages.WithPrivateIp<ParentT> {
+        DefinitionStages.WithPrivateIP<ParentT> {
     }
 
     /**
@@ -66,7 +66,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
+            WithPrivateIP<ParentT> withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.
@@ -79,7 +79,7 @@ public interface NicIpConfiguration extends
              * @param addressSpace the address space for rhe virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
+            WithPrivateIP<ParentT> withNewNetwork(String name, String addressSpace);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.
@@ -91,7 +91,7 @@ public interface NicIpConfiguration extends
              * @param addressSpace the address space for the virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(String addressSpace);
+            WithPrivateIP<ParentT> withNewNetwork(String addressSpace);
 
             /**
              * Associate an existing virtual network with the network interface IP configuration.
@@ -108,13 +108,13 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+        interface WithPrivateIP<ParentT> extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
              * Specifies the IP version for the private IP address.
              * @param ipVersion an IP version
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
+            WithAttach<ParentT> withPrivateIPVersion(IPVersion ipVersion);
         }
 
         /**
@@ -129,7 +129,7 @@ public interface NicIpConfiguration extends
              * @param name the subnet name
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withSubnet(String name);
+            WithPrivateIP<ParentT> withSubnet(String name);
         }
 
         /**
@@ -138,7 +138,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -176,7 +176,7 @@ public interface NicIpConfiguration extends
         interface WithAttach<ParentT>
                 extends
                 Attachable.InDefinition<ParentT>,
-                WithPublicIpAddress<ParentT>,
+                WithPublicIPAddress<ParentT>,
                 WithLoadBalancer<ParentT> {
         }
     }
@@ -188,9 +188,9 @@ public interface NicIpConfiguration extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
             UpdateDefinitionStages.WithNetwork<ParentT>,
-            UpdateDefinitionStages.WithPrivateIp<ParentT>,
+            UpdateDefinitionStages.WithPrivateIP<ParentT>,
             UpdateDefinitionStages.WithSubnet<ParentT>,
-            UpdateDefinitionStages.WithPublicIpAddress<ParentT> {
+            UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /**
@@ -218,7 +218,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
+            WithPrivateIP<ParentT> withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.
@@ -231,7 +231,7 @@ public interface NicIpConfiguration extends
              * @param addressSpace the address space for rhe virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
+            WithPrivateIP<ParentT> withNewNetwork(String name, String addressSpace);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.
@@ -243,7 +243,7 @@ public interface NicIpConfiguration extends
              * @param addressSpace the address space for the virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(String addressSpace);
+            WithPrivateIP<ParentT> withNewNetwork(String addressSpace);
 
             /**
              * Associate an existing virtual network with the network interface IP configuration.
@@ -260,13 +260,13 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+        interface WithPrivateIP<ParentT> extends HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
              * Specifies the IP version for the private IP address.
              * @param ipVersion an IP version
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
+            WithAttach<ParentT> withPrivateIPVersion(IPVersion ipVersion);
         }
 
         /**
@@ -281,7 +281,7 @@ public interface NicIpConfiguration extends
              * @param name the subnet name
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withSubnet(String name);
+            WithPrivateIP<ParentT> withSubnet(String name);
         }
 
         /**
@@ -290,7 +290,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.UpdateDefinitionStages.WithPublicIpAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -328,7 +328,7 @@ public interface NicIpConfiguration extends
         interface WithAttach<ParentT>
                 extends
                 Attachable.InUpdate<ParentT>,
-                WithPublicIpAddress<ParentT> {
+                WithPublicIPAddress<ParentT> {
         }
     }
 
@@ -338,8 +338,8 @@ public interface NicIpConfiguration extends
     interface Update extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
-        UpdateStages.WithPrivateIp,
-        UpdateStages.WithPublicIpAddress,
+        UpdateStages.WithPrivateIP,
+        UpdateStages.WithPublicIPAddress,
         UpdateStages.WithLoadBalancer {
     }
 
@@ -363,19 +363,19 @@ public interface NicIpConfiguration extends
         /**
          * The stage of the network interface IP configuration update allowing to specify private IP.
          */
-        interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+        interface WithPrivateIP extends HasPrivateIPAddress.UpdateStages.WithPrivateIPAddress<Update> {
             /**
              * Specifies the IP version for the private IP address.
              * @param ipVersion an IP version
              * @return the next stage of the update
              */
-            Update withPrivateIpVersion(IPVersion ipVersion);
+            Update withPrivateIPVersion(IPVersion ipVersion);
         }
 
         /**
          * The stage of the network interface IP configuration update allowing to specify public IP address.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithPublicIpAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddress<Update> {
         }
 
         /**

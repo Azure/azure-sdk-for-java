@@ -22,7 +22,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -64,8 +64,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(linuxVM1Pip)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(linuxVM1Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshkey)
@@ -123,8 +123,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(linuxVM2Pip)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(linuxVM2Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshkey)
@@ -182,8 +182,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withSsh(sshkey)
@@ -205,8 +205,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withSpecializedOsUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
@@ -289,8 +289,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
                     .withSpecializedOsDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisk)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -308,8 +308,8 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(linuxVM7Pip)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(linuxVM7Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
                     .withSsh(sshkey)
@@ -390,8 +390,8 @@ public final class ManageManagedDisks {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword(password)
@@ -408,7 +408,7 @@ public final class ManageManagedDisks {
                 .create();
 
         // De-provision the virtual machine
-        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
         System.out.println("Deallocate VM: " + linuxVM.id());
         linuxVM.deallocate();
         System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
@@ -428,8 +428,8 @@ public final class ManageManagedDisks {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword(password)
@@ -439,7 +439,7 @@ public final class ManageManagedDisks {
                 .create();
 
         // De-provision the virtual machine
-        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
         System.out.println("Deallocate VM: " + linuxVM.id());
         linuxVM.deallocate();
         System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
@@ -498,7 +498,7 @@ public final class ManageManagedDisks {
         final String natPool60XXto23 = "natPool60XXto23";
         final String publicIpName = "pip-" + loadBalancerName1;
 
-        PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName)
+        PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(publicIpName)
@@ -507,7 +507,7 @@ public final class ManageManagedDisks {
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .definePublicFrontend(frontendName)
-                .withExistingPublicIpAddress(publicIpAddress)
+                .withExistingPublicIPAddress(publicIPAddress)
                 .attach()
                 // Add two backend one per rule
                 .defineBackend(backendPoolName1)

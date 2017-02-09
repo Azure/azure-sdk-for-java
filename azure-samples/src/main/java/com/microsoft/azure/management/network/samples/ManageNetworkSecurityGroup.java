@@ -48,7 +48,7 @@ public final class ManageNetworkSecurityGroup {
         final String vnetName = SdkContext.randomResourceName("vnet", 24);
         final String networkInterfaceName1 = SdkContext.randomResourceName("nic1", 24);
         final String networkInterfaceName2 = SdkContext.randomResourceName("nic2", 24);
-        final String publicIpAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
+        final String publicIPAddressLeafDNS1 = SdkContext.randomResourceName("pip1", 24);
         final String frontEndVMName = SdkContext.randomResourceName("fevm", 24);
         final String backEndVMName = SdkContext.randomResourceName("bevm", 24);
         final String userName = "tirekicker";
@@ -162,8 +162,8 @@ public final class ManageNetworkSecurityGroup {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Front-end")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
                     .withIpForwarding()
                     .withExistingNetworkSecurityGroup(frontEndNSG)
                     .create();
@@ -184,7 +184,7 @@ public final class ManageNetworkSecurityGroup {
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .withExistingNetworkSecurityGroup(backEndNSG)
                     .create();
 

@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
 
@@ -24,10 +23,9 @@ import java.util.List;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vault extends
-        GroupableResource<KeyVaultManager>,
+        GroupableResource<KeyVaultManager, VaultInner>,
         Refreshable<Vault>,
-        Updatable<Vault.Update>,
-        Wrapper<VaultInner> {
+        Updatable<Vault.Update> {
     /**
      * @return the URI of the vault for performing operations on keys and secrets.
      */

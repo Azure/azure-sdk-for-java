@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
@@ -19,8 +25,8 @@ public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMac
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(newRgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")

@@ -11,14 +11,14 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -100,7 +100,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName)
+            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName)
@@ -108,7 +108,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
 
             System.out.println("Created a public IP address");
             // Print the virtual network details
-            Utils.print(publicIpAddress);
+            Utils.print(publicIPAddress);
 
             //=============================================================
             // Create an Internet facing load balancer with
@@ -139,7 +139,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
-                        .withExistingPublicIpAddress(publicIpAddress)
+                        .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
                     // Add two backend one per rule
@@ -260,12 +260,12 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                 PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
                 // Pick the first NIC
                 VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
-                for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
                     if (ipConfig.isPrimary()) {
                         List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
                         for (LoadBalancerInboundNatRule natRule : natRules) {
                             if (natRule.backendPort() == 22) {
-                                System.out.println("SSH connection string: " + userName + "@" + publicIpAddress.fqdn() + ":" + natRule.frontendPort());
+                                System.out.println("SSH connection string: " + userName + "@" + publicIPAddress.fqdn() + ":" + natRule.frontendPort());
                                 break;
                             }
                         }

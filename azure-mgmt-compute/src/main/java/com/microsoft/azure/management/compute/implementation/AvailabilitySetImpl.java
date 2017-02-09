@@ -38,14 +38,8 @@ class AvailabilitySetImpl
 
     private List<String> idOfVMsInSet;
 
-    // The client to make AvailabilitySet Management API calls
-    private final AvailabilitySetsInner client;
-
-    AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
-                               final AvailabilitySetsInner client,
-                               final ComputeManager computeManager) {
+    AvailabilitySetImpl(String name, AvailabilitySetInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
     }
 
     @Override
@@ -84,7 +78,7 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySet refresh() {
-        AvailabilitySetInner response = client.get(this.resourceGroupName(), this.name());
+        AvailabilitySetInner response = this.manager().inner().availabilitySets().get(this.resourceGroupName(), this.name());
         this.setInner(response);
         this.idOfVMsInSet = null;
         return this;
@@ -122,7 +116,7 @@ class AvailabilitySetImpl
         if (this.inner().platformUpdateDomainCount() == null) {
             this.inner().withPlatformUpdateDomainCount(5);
         }
-        return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return this.manager().inner().availabilitySets().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
                     @Override
                     public AvailabilitySet call(AvailabilitySetInner availabilitySetInner) {

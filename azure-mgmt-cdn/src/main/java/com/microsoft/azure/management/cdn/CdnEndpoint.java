@@ -12,7 +12,7 @@ import com.microsoft.azure.management.cdn.implementation.EndpointInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 @Fluent
 public interface CdnEndpoint extends
         ExternalChildResource<CdnEndpoint, CdnProfile>,
-        Wrapper<EndpointInner> {
+        HasInner<EndpointInner> {
 
     /**
      * @return origin host header

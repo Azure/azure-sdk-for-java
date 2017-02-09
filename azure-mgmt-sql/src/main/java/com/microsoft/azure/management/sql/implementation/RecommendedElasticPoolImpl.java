@@ -28,26 +28,19 @@ class RecommendedElasticPoolImpl
         extends WrapperImpl<RecommendedElasticPoolInner>
         implements RecommendedElasticPool {
 
-    private final DatabasesInner databasesInner;
-    private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
     private final ResourceId resourceId;
     private final SqlServerManager manager;
 
-    protected RecommendedElasticPoolImpl(
-            RecommendedElasticPoolInner innerObject,
-            DatabasesInner databasesInner,
-            RecommendedElasticPoolsInner recommendedElasticPoolsInner,
-            SqlServerManager manager) {
+    protected RecommendedElasticPoolImpl(RecommendedElasticPoolInner innerObject, SqlServerManager manager) {
         super(innerObject);
-        this.databasesInner = databasesInner;
-        this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
         this.resourceId = ResourceId.fromString(this.inner().id());
         this.manager = manager;
     }
 
     @Override
     public RecommendedElasticPool refresh() {
-        this.setInner(this.recommendedElasticPoolsInner.get(this.resourceGroupName(), this.sqlServerName(), this.name()));
+        this.setInner(this.manager().inner().recommendedElasticPools().get(
+                this.resourceGroupName(), this.sqlServerName(), this.name()));
         return this;
     }
 
@@ -111,7 +104,7 @@ class RecommendedElasticPoolImpl
         ArrayList<SqlDatabase> databases = new ArrayList<>();
 
         for (DatabaseInner databaseInner : this.inner().databases()) {
-            databases.add(new SqlDatabaseImpl(databaseInner.name(), databaseInner, this.databasesInner, this.manager()));
+            databases.add(new SqlDatabaseImpl(databaseInner.name(), databaseInner, this.manager()));
         }
 
         return databases;
@@ -124,11 +117,11 @@ class RecommendedElasticPoolImpl
             @Override
             public SqlDatabase typeConvert(DatabaseInner databaseInner) {
 
-                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, self.databasesInner, self.manager());
+                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, self.manager());
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                this.recommendedElasticPoolsInner.listDatabases(
+                this.manager().inner().recommendedElasticPools().listDatabases(
                         this.resourceGroupName(),
                         this.sqlServerName(),
                         this.name())));
@@ -136,13 +129,13 @@ class RecommendedElasticPoolImpl
 
     @Override
     public SqlDatabase getDatabase(String databaseName) {
-        DatabaseInner databaseInner = this.recommendedElasticPoolsInner.getDatabases(
+        DatabaseInner databaseInner = this.manager().inner().recommendedElasticPools().getDatabases(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.name(),
                 databaseName);
 
-        return new SqlDatabaseImpl(databaseInner.name(), databaseInner, this.databasesInner, this.manager());
+        return new SqlDatabaseImpl(databaseInner.name(), databaseInner, this.manager());
     }
 
     @Override
@@ -155,7 +148,7 @@ class RecommendedElasticPoolImpl
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                this.recommendedElasticPoolsInner.listMetrics(
+                this.manager().inner().recommendedElasticPools().listMetrics(
                         this.resourceGroupName(),
                         this.sqlServerName(),
                         this.name())));

@@ -106,7 +106,7 @@ public final class ManageWebAppSqlConnection {
             System.out.println("Allowing web app " + appName + " to access SQL server...");
 
             SqlServer.Update update = server.update();
-            for (String ip : app.outboundIpAddresses()) {
+            for (String ip : app.outboundIPAddresses()) {
                 update = update.withNewFirewallRule(ip);
             }
             server = update.apply();

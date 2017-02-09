@@ -10,16 +10,19 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Base interface for resources in resource groups.
  * @param <TManager> the manager object type representing the service
+ * @param <InnerT> the wrapped, inner, auto-generated implementation object type
  */
 @Fluent()
-public interface GroupableResource<TManager> extends
+public interface GroupableResource<TManager, InnerT> extends
     Resource,
     HasResourceGroup,
-    HasManager<TManager> {
+    HasManager<TManager>,
+    HasInner<InnerT> {
 
     /**
      * Grouping of all the definition stages.

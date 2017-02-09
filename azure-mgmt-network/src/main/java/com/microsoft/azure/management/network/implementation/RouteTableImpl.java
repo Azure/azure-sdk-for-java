@@ -33,15 +33,12 @@ class RouteTableImpl
         RouteTable.Definition,
         RouteTable.Update {
 
-    private final RouteTablesInner innerCollection;
     private Map<String, Route> routes;
 
     RouteTableImpl(String name,
             final RouteTableInner innerModel,
-            final RouteTablesInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -62,7 +59,7 @@ class RouteTableImpl
 
     @Override
     public RouteTableImpl refresh() {
-        RouteTableInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        RouteTableInner inner = this.manager().inner().routeTables().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();
         return this;
@@ -129,7 +126,7 @@ class RouteTableImpl
 
     @Override
     protected Observable<RouteTableInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().routeTables().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override

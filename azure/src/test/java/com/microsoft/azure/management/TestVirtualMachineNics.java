@@ -14,9 +14,8 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -25,12 +24,10 @@ import org.junit.Assert;
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final NetworkInterfaces networkInterfaces;
     private final Networks networks;
-    private final ResourceGroups resourceGroups;
 
-    public TestVirtualMachineNics(ResourceGroups resourceGroups,
-                                  Networks networks,
-                                  NetworkInterfaces networkInterfaces) {
-        this.resourceGroups = resourceGroups;
+    public TestVirtualMachineNics(
+            Networks networks,
+            NetworkInterfaces networkInterfaces) {
         this.networks = networks;
         this.networkInterfaces = networkInterfaces;
     }
@@ -39,7 +36,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
         final String rgName = "rg" + this.testId;
-        Creatable<ResourceGroup> resourceGroupCreatable = this.resourceGroups
+        Creatable<ResourceGroup> resourceGroupCreatable = virtualMachines.manager().resourceManager().resourceGroups()
                 .define(rgName)
                 .withRegion(Region.US_EAST);
 
@@ -58,9 +55,9 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.5");
-                // .withNewPrimaryPublicIpAddress();
-                // [Secondary NIC cannot have PublicIp - Only primary network interface can reference a public IP address]
+                .withPrimaryPrivateIPAddressStatic("10.0.0.5");
+                // .withNewPrimaryPublicIPAddress();
+                // [Secondary NIC cannot have PublicIP - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
         final String secondaryNicName2 = "nic2" + this.testId;
@@ -69,7 +66,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.6");
+                .withPrimaryPrivateIPAddressStatic("10.0.0.6");
 
         // Create Virtual Machine
         final String vmName = "vm" + this.testId;
@@ -78,8 +75,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.4")
-                .withNewPrimaryPublicIpAddress(primaryPipName)
+                .withPrimaryPrivateIPAddressStatic("10.0.0.4")
+                .withNewPrimaryPublicIPAddress(primaryPipName)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
@@ -90,10 +87,10 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 3);
         NetworkInterface primaryNetworkInterface = virtualMachine.getPrimaryNetworkInterface();
-        Assert.assertEquals(primaryNetworkInterface.primaryPrivateIp(), "10.0.0.4");
+        Assert.assertEquals(primaryNetworkInterface.primaryPrivateIP(), "10.0.0.4");
 
-        PublicIpAddress primaryPublicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
-        Assert.assertTrue(primaryPublicIpAddress.fqdn().startsWith(primaryPipName));
+        PublicIPAddress primaryPublicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIPAddress();
+        Assert.assertTrue(primaryPublicIPAddress.fqdn().startsWith(primaryPipName));
         return virtualMachine;
     }
 

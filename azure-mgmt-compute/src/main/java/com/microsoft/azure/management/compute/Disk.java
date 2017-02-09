@@ -15,16 +15,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
  * An immutable client-side representation of an Azure managed disk.
  */
 @Fluent
 public interface Disk extends
-        GroupableResource<ComputeManager>,
+        GroupableResource<ComputeManager, DiskInner>,
         Refreshable<Disk>,
-        Wrapper<DiskInner>,
         Updatable<Disk.Update> {
     /**
      * @return the disk sku

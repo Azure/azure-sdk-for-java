@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The implementation for {@link AppServiceDomain}.
+ * The implementation for AppServiceDomain.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainImpl
@@ -44,15 +44,10 @@ class AppServiceDomainImpl
         AppServiceDomain.Definition,
         AppServiceDomain.Update {
 
-    private final DomainsInner client;
-    private final TopLevelDomainsInner topLevelDomainsInner;
-
     private Map<String, HostName> hostNameMap;
 
-    AppServiceDomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
+    AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
-        this.topLevelDomainsInner = topLevelDomainsInner;
         inner().withLocation("global");
         if (inner().managedHostNames() != null) {
             this.hostNameMap = Maps.uniqueIndex(inner().managedHostNames(), new Function<HostName, String>() {
@@ -68,7 +63,8 @@ class AppServiceDomainImpl
     public Observable<AppServiceDomain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        return topLevelDomainsInner.listAgreementsAsync(topLevel)
+        final DomainsInner client = this.manager().inner().domains();
+        return this.manager().inner().topLevelDomains().listAgreementsAsync(topLevel)
                 // Step 1: Consent to agreements
                 .flatMap(new Func1<Page<TldLegalAgreementInner>, Observable<List<String>>>() {
                     @Override
@@ -100,7 +96,7 @@ class AppServiceDomainImpl
 
     @Override
     public AppServiceDomainImpl refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
+        this.setInner(this.manager().inner().domains().get(resourceGroupName(), name()));
         return this;
     }
 
@@ -186,7 +182,7 @@ class AppServiceDomainImpl
     public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         DomainOwnershipIdentifierInner identifierInner = new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
         identifierInner.withLocation("global");
-        return client.createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
+        return this.manager().inner().domains().createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
                 .map(new Func1<DomainOwnershipIdentifierInner, Void>() {
                     @Override
                     public Void call(DomainOwnershipIdentifierInner domainOwnershipIdentifierInner) {

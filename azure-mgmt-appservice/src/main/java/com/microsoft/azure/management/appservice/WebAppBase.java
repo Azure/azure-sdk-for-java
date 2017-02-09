@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -28,8 +27,7 @@ import java.util.Set;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebAppBase extends
         HasName,
-        GroupableResource<AppServiceManager>,
-        Wrapper<SiteInner> {
+        GroupableResource<AppServiceManager, SiteInner> {
 
     /**
      * @return state of the web app
@@ -136,7 +134,7 @@ public interface WebAppBase extends
      * outbound connections. Those can be used when configuring firewall
      * rules for databases accessed by this web app.
      */
-    Set<String> outboundIpAddresses();
+    Set<String> outboundIPAddresses();
 
     /**
      * @return size of a function container

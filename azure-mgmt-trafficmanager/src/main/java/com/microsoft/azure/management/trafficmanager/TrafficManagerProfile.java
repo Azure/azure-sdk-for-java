@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.trafficmanager.implementation.ProfileInner;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
@@ -23,9 +22,8 @@ import java.util.Map;
  */
 @Fluent
 public interface TrafficManagerProfile extends
-        GroupableResource<TrafficManager>,
+        GroupableResource<TrafficManager, ProfileInner>,
         Refreshable<TrafficManagerProfile>,
-        Wrapper<ProfileInner>,
         Updatable<TrafficManagerProfile.Update> {
     /**
      * @return the relative DNS name of the traffic manager profile

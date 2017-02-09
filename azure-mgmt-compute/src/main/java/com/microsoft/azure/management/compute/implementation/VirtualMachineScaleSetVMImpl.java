@@ -3,7 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -276,7 +275,7 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
-    public boolean isWindowsVmAgentProvisioned() {
+    public boolean isWindowsVMAgentProvisioned() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
             return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().provisionVMAgent());
         }

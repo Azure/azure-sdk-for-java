@@ -11,7 +11,7 @@ import com.microsoft.azure.management.batch.implementation.ApplicationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ import java.util.Map;
 @Fluent
 public interface Application extends
         ExternalChildResource<Application, BatchAccount>,
-        Wrapper<ApplicationInner> {
+        HasInner<ApplicationInner> {
 
     /**
      * @return the display name for application

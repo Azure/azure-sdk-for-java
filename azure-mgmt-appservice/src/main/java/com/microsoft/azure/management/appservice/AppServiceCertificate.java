@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.CertificateInner;
 import org.joda.time.DateTime;
@@ -23,9 +22,8 @@ import java.util.List;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificate extends
-        GroupableResource<AppServiceManager>,
-        Refreshable<AppServiceCertificate>,
-        Wrapper<CertificateInner> {
+        GroupableResource<AppServiceManager, CertificateInner>,
+        Refreshable<AppServiceCertificate> {
     /**
      * @return the friendly name of the certificate
      */

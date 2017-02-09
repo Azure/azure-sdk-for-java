@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The implementation for {@link WebAppBase}.
+ * The implementation for WebAppBase.
  *  @param <FluentT> the fluent interface of the web app or deployment slot
  *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
  */
@@ -70,15 +70,13 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
-    final WebAppsInner client;
-    final WebSiteManagementClientImpl serviceClient;
-    Map<String, AppSetting> cachedAppSettings;
-    Map<String, ConnectionString> cachedConnectionStrings;
+    private Map<String, AppSetting> cachedAppSettings;
+    private Map<String, ConnectionString> cachedConnectionStrings;
 
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
     private Set<String> trafficManagerHostNamesSet;
-    private Set<String> outboundIpAddressesSet;
+    private Set<String> outboundIPAddressesSet;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
     private List<String> hostNameBindingsToDelete;
@@ -93,10 +91,8 @@ abstract class WebAppBaseImpl<
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
 
-    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
+    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
-        this.serviceClient = serviceClient;
         this.inner().withSiteConfig(configObject);
         normalizeProperties();
     }
@@ -124,7 +120,7 @@ abstract class WebAppBaseImpl<
             this.trafficManagerHostNamesSet = Sets.newHashSet(inner().trafficManagerHostNames());
         }
         if (inner().outboundIpAddresses() != null) {
-            this.outboundIpAddressesSet = Sets.newHashSet(inner().outboundIpAddresses().split(",[ ]*"));
+            this.outboundIPAddressesSet = Sets.newHashSet(inner().outboundIpAddresses().split(",[ ]*"));
         }
         this.hostNameSslStateMap = new HashMap<>();
         if (inner().hostNameSslStates() != null) {
@@ -238,8 +234,8 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public Set<String> outboundIpAddresses() {
-        return Collections.unmodifiableSet(outboundIpAddressesSet);
+    public Set<String> outboundIPAddresses() {
+        return Collections.unmodifiableSet(outboundIPAddressesSet);
     }
 
     @Override
@@ -746,7 +742,7 @@ abstract class WebAppBaseImpl<
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
         inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(inner, (FluentImplT) this, client);
+        return new HostNameBindingImpl<>(inner, (FluentImplT) this, this.manager().inner().webApps());
     }
 
     @Override
@@ -1089,7 +1085,7 @@ abstract class WebAppBaseImpl<
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
         SiteSourceControlInner sourceControlInner = new SiteSourceControlInner();
         sourceControlInner.withLocation(regionName());
-        return new WebAppSourceControlImpl<>(sourceControlInner, this, serviceClient);
+        return new WebAppSourceControlImpl<>(sourceControlInner, this);
     }
 
     @Override

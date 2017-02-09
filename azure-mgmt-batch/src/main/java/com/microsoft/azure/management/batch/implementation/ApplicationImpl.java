@@ -30,18 +30,14 @@ public class ApplicationImpl
                 Application.Definition<BatchAccount.DefinitionStages.WithApplicationAndStorage>,
                 Application.UpdateDefinition<BatchAccount.Update>,
                 Application.Update {
-    private final ApplicationsInner client;
     private final ApplicationPackagesImpl applicationPackages;
 
     protected ApplicationImpl(
             String name,
             BatchAccountImpl batchAccount,
-            ApplicationInner inner,
-            ApplicationsInner client,
-            ApplicationPackagesInner applicationPackagesClient) {
+            ApplicationInner inner) {
         super(name, batchAccount, inner);
-        this.client = client;
-        applicationPackages = new ApplicationPackagesImpl(applicationPackagesClient, this);
+        applicationPackages = new ApplicationPackagesImpl(this);
     }
 
     @Override
@@ -76,7 +72,7 @@ public class ApplicationImpl
         createParameter.withDisplayName(this.inner().displayName());
         createParameter.withAllowUpdates(this.inner().allowUpdates());
 
-        return this.client.createAsync(
+        return this.parent().manager().inner().applications().createAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(), createParameter)
@@ -109,7 +105,7 @@ public class ApplicationImpl
         updateParameter.withDisplayName(this.inner().displayName());
         updateParameter.withAllowUpdates(this.inner().allowUpdates());
 
-        return this.client.updateAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().applications().updateAsync(this.parent().resourceGroupName(),
                 this.parent().name(), this.name(), updateParameter)
                 .map(new Func1<Void, Application>() {
                     @Override
@@ -133,7 +129,7 @@ public class ApplicationImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().applications().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
@@ -141,7 +137,8 @@ public class ApplicationImpl
     @Override
     public Application refresh() {
         ApplicationInner inner =
-                this.client.get(this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
+                this.parent().manager().inner().applications().get(
+                        this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
         this.setInner(inner);
         this.applicationPackages.refresh();
         return this;
@@ -166,15 +163,10 @@ public class ApplicationImpl
 
     protected static ApplicationImpl newApplication(
             String name,
-            BatchAccountImpl parent,
-            ApplicationsInner client,
-            ApplicationPackagesInner applicationPackagesClient) {
+            BatchAccountImpl parent) {
         ApplicationInner inner = new ApplicationInner();
         inner.withId(name);
-        ApplicationImpl applicationImpl = new ApplicationImpl(name,
-                parent,
-                inner,
-                client, applicationPackagesClient);
+        ApplicationImpl applicationImpl = new ApplicationImpl(name, parent, inner);
         return applicationImpl;
     }
 

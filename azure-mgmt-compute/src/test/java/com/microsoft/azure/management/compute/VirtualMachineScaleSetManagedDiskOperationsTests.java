@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
@@ -102,8 +108,8 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword(password)
@@ -121,7 +127,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         Assert.assertNotNull(vm);
 
-        deprovisionAgentInLinuxVM(vm.getPrimaryPublicIpAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(vm.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
         vm.deallocate();
         vm.generalize();
 

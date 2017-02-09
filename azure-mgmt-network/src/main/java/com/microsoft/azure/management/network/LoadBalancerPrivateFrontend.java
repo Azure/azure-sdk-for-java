@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 @Fluent()
 public interface LoadBalancerPrivateFrontend extends
     LoadBalancerFrontend,
-    HasPrivateIpAddress,
+    HasPrivateIPAddress,
     HasSubnet {
 
     /**
@@ -61,7 +61,7 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinitionAlt<ParentT>,
-            HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
         }
     }
 
@@ -98,7 +98,7 @@ public interface LoadBalancerPrivateFrontend extends
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithSubnet,
-        HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+        HasPrivateIPAddress.UpdateStages.WithPrivateIPAddress<Update> {
     }
 
     /**
@@ -134,7 +134,7 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdateAlt<ParentT>,
-            HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
         }
     }
 

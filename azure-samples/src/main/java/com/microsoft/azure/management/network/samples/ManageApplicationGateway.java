@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -112,14 +112,14 @@ public final class ManageApplicationGateway {
             // Create a public IP address for the Application Gateway
             System.out.println("Creating a public IP address for the application gateway ...");
 
-            PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(pipName)
+            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(pipName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .create();
 
             System.out.println("Created a public IP address");
             // Print the virtual network details
-            Utils.print(publicIpAddress);
+            Utils.print(publicIPAddress);
 
             //=============================================================
             // Create backend pools
@@ -155,13 +155,13 @@ public final class ManageApplicationGateway {
 
                     //=============================================================
                     // Create 1 public IP address creatable
-                    Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
+                    Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, j))
                                 .withRegion(regions[i])
                                 .withExistingResourceGroup(resourceGroup)
                                 .withLeafDomainLabel(String.format("%s-%d", linuxVMNamePrefix, j));
 
-                    publicIpCreatableKeys[i][j] = publicIpAddressCreatable.key();
+                    publicIpCreatableKeys[i][j] = publicIPAddressCreatable.key();
 
 
                     //=============================================================
@@ -171,8 +171,8 @@ public final class ManageApplicationGateway {
                                 .withRegion(regions[i])
                                 .withExistingResourceGroup(resourceGroup)
                                 .withNewPrimaryNetwork(networkCreatable)
-                                .withPrimaryPrivateIpAddressDynamic()
-                                .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
+                                .withPrimaryPrivateIPAddressDynamic()
+                                .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                                 .withRootUsername(userName)
                                 .withSsh(sshKey)
@@ -209,7 +209,7 @@ public final class ManageApplicationGateway {
             System.out.println("IP Addresses in the backend pools are - ");
             for (int i = 0; i < backendPools; i++) {
                 for (int j = 0; j < vmCountInAPool; j++) {
-                    PublicIpAddress pip = (PublicIpAddress) virtualMachines
+                    PublicIPAddress pip = (PublicIPAddress) virtualMachines
                             .createdRelatedResource(publicIpCreatableKeys[i][j]);
                     pip.refresh();
                     ipAddresses[i][j] = pip.ipAddress();
@@ -240,10 +240,10 @@ public final class ManageApplicationGateway {
                         .fromPublicFrontend()
                         .fromFrontendHttpPort(80)
                         .toBackendHttpPort(8080)
-                        .toBackendIpAddress(ipAddresses[0][0])
-                        .toBackendIpAddress(ipAddresses[0][1])
-                        .toBackendIpAddress(ipAddresses[0][2])
-                        .toBackendIpAddress(ipAddresses[0][3])
+                        .toBackendIPAddress(ipAddresses[0][0])
+                        .toBackendIPAddress(ipAddresses[0][1])
+                        .toBackendIPAddress(ipAddresses[0][2])
+                        .toBackendIPAddress(ipAddresses[0][3])
                         .attach()
 
                     // Request routing rule for HTTPS from public 443 to public 8080
@@ -253,13 +253,13 @@ public final class ManageApplicationGateway {
                         .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath))
                         .withSslCertificatePassword("Abc123")
                         .toBackendHttpPort(8080)
-                        .toBackendIpAddress(ipAddresses[1][0])
-                        .toBackendIpAddress(ipAddresses[1][1])
-                        .toBackendIpAddress(ipAddresses[1][2])
-                        .toBackendIpAddress(ipAddresses[1][3])
+                        .toBackendIPAddress(ipAddresses[1][0])
+                        .toBackendIPAddress(ipAddresses[1][1])
+                        .toBackendIPAddress(ipAddresses[1][2])
+                        .toBackendIPAddress(ipAddresses[1][3])
                         .attach()
 
-                    .withExistingPublicIpAddress(publicIpAddress)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .create();
 
             stopwatch.stop();
@@ -284,10 +284,10 @@ public final class ManageApplicationGateway {
                         .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath2))
                         .withSslCertificatePassword("Abc123")
                         .toBackendHttpPort(8080)
-                        .toBackendIpAddress(ipAddresses[0][0])
-                        .toBackendIpAddress(ipAddresses[0][1])
-                        .toBackendIpAddress(ipAddresses[0][2])
-                        .toBackendIpAddress(ipAddresses[0][3])
+                        .toBackendIPAddress(ipAddresses[0][0])
+                        .toBackendIPAddress(ipAddresses[0][1])
+                        .toBackendIPAddress(ipAddresses[0][2])
+                        .toBackendIPAddress(ipAddresses[0][3])
                         .withHostName("www.contoso.com")
                         .withCookieBasedAffinity()
                         .attach()

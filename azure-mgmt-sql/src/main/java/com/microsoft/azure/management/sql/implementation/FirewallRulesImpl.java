@@ -24,10 +24,10 @@ class FirewallRulesImpl implements SqlServer.FirewallRules {
     private final String sqlServerName;
     private final SqlFirewallRules.SqlFirewallRulesCreatable sqlFirewallRules;
 
-    FirewallRulesImpl(ServersInner innerCollection, SqlServerManager manager, String resourceGroupName, String sqlServerName) {
+    FirewallRulesImpl(SqlServerManager manager, String resourceGroupName, String sqlServerName) {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
-        this.sqlFirewallRules = new SqlFirewallRulesImpl(innerCollection, manager);
+        this.sqlFirewallRules = new SqlFirewallRulesImpl(manager.inner().servers(), manager);
     }
 
     @Override

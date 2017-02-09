@@ -68,7 +68,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation of {@link VirtualMachineScaleSet}.
+ * Implementation of VirtualMachineScaleSet.
  */
 @LangDefinition
 public class VirtualMachineScaleSetImpl
@@ -84,8 +84,6 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.DefinitionUnmanaged,
         VirtualMachineScaleSet.Update {
     // Clients
-    private final VirtualMachineScaleSetsInner client;
-    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // used to generate unique name for any dependency resources
@@ -126,16 +124,13 @@ public class VirtualMachineScaleSetImpl
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
 
-    VirtualMachineScaleSetImpl(String name,
+    VirtualMachineScaleSetImpl(
+                        String name,
                         VirtualMachineScaleSetInner innerModel,
-                        VirtualMachineScaleSetsInner client,
-                        VirtualMachineScaleSetVMsInner vmInstancesClient,
                         final ComputeManager computeManager,
                         final StorageManager storageManager,
                         final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
-        this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.namer = SdkContext.getResourceNamerFactory().createResourceNamer(this.name());
@@ -162,37 +157,37 @@ public class VirtualMachineScaleSetImpl
 
    @Override
    public VirtualMachineScaleSetVMs virtualMachines() {
-        return new VirtualMachineScaleSetVMsImpl(this, this.vmInstancesClient, this.myManager);
+        return new VirtualMachineScaleSetVMsImpl(this, this.manager().inner().virtualMachineScaleSetVMs(), this.myManager);
    }
 
    @Override
    public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
-        return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
+        return this.skuConverter.convert(this.manager().inner().virtualMachineScaleSets().listSkus(this.resourceGroupName(), this.name()));
    }
 
     @Override
     public void deallocate() throws CloudException, IOException, InterruptedException {
-        this.client.deallocate(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachineScaleSets().deallocate(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void powerOff() throws CloudException, IOException, InterruptedException {
-        this.client.powerOff(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachineScaleSets().powerOff(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void restart() throws CloudException, IOException, InterruptedException {
-        this.client.restart(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachineScaleSets().restart(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void start() throws CloudException, IOException, InterruptedException {
-        this.client.start(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachineScaleSets().start(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void reimage() throws CloudException, IOException, InterruptedException {
-        this.client.reimage(this.resourceGroupName(), this.name());
+        this.manager().inner().virtualMachineScaleSets().reimage(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -298,10 +293,10 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public List<String> primaryPublicIpAddressIds() throws IOException {
+    public List<String> primaryPublicIPAddressIds() throws IOException {
         LoadBalancer loadBalancer = this.getPrimaryInternetFacingLoadBalancer();
         if (loadBalancer != null) {
-            return loadBalancer.publicIpAddressIds();
+            return loadBalancer.publicIPAddressIds();
         }
         return new ArrayList<>();
     }
@@ -375,7 +370,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
-        if (loadBalancer.publicIpAddressIds().isEmpty()) {
+        if (loadBalancer.publicIPAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
         }
 
@@ -420,7 +415,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
-        if (!loadBalancer.publicIpAddressIds().isEmpty()) {
+        if (!loadBalancer.publicIPAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
@@ -1129,6 +1124,7 @@ public class VirtualMachineScaleSetImpl
                     .dataDisks();
             VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
         }
+        final VirtualMachineScaleSetsInner client = this.manager().inner().virtualMachineScaleSets();
         return this.handleOSDiskContainersAsync()
                 .flatMap(new Func1<Void, Observable<VirtualMachineScaleSetInner>>() {
                     @Override
@@ -1146,7 +1142,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl refresh() {
-        VirtualMachineScaleSetInner inner = this.client.get(this.resourceGroupName(), this.name());
+        VirtualMachineScaleSetInner inner = this.manager().inner().virtualMachineScaleSets().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         this.clearCachedProperties();
         this.initializeChildrenFromInner();
@@ -1478,7 +1474,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer1 = this.networkManager
                 .loadBalancers()
                 .getById(firstLoadBalancerId);
-        if (loadBalancer1.publicIpAddressIds() != null && loadBalancer1.publicIpAddressIds().size() > 0) {
+        if (loadBalancer1.publicIPAddressIds() != null && loadBalancer1.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer1;
         } else {
             this.primaryInternalLoadBalancer = loadBalancer1;
@@ -1510,7 +1506,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer2 = this.networkManager
             .loadBalancers()
             .getById(secondLoadBalancerId);
-        if (loadBalancer2.publicIpAddressIds() != null && loadBalancer2.publicIpAddressIds().size() > 0) {
+        if (loadBalancer2.publicIPAddressIds() != null && loadBalancer2.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer2;
          } else {
             this.primaryInternalLoadBalancer = loadBalancer2;

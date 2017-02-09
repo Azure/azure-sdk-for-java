@@ -15,6 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.trafficmanager.implementation.ProfilesInner;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
 /**
@@ -30,7 +32,8 @@ public interface TrafficManagerProfiles extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<TrafficManagerProfile>,
-        HasManager<TrafficManager> {
+        HasManager<TrafficManager>,
+        HasInner<ProfilesInner> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.

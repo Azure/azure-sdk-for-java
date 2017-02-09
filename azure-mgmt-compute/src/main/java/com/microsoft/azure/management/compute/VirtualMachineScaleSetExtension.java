@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineScale
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineScaleSetExtension extends
-        Wrapper<VirtualMachineScaleSetExtensionInner>,
+        HasInner<VirtualMachineScaleSetExtensionInner>,
         ChildResource<VirtualMachineScaleSet> {
     /**
      * @return the publisher name of the virtual machine scale set extension image this extension is created from

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.trafficmanager.samples;
 
-
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;

@@ -22,7 +22,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -36,7 +36,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
 
     // Collections
-    private PublicIpAddresses publicIpAddresses;
+    private PublicIPAddresses publicIPAddresses;
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
@@ -118,9 +118,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public RouteTables routeTables() {
         if (this.routeTables == null) {
-            this.routeTables = new RouteTablesImpl(
-                    super.innerManagementClient,
-                    this);
+            this.routeTables = new RouteTablesImpl(this);
         }
         return this.routeTables;
     }
@@ -130,9 +128,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public Networks networks() {
         if (this.networks == null) {
-            this.networks = new NetworksImpl(
-                    super.innerManagementClient,
-                    this);
+            this.networks = new NetworksImpl(this);
         }
         return this.networks;
     }
@@ -142,9 +138,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public NetworkSecurityGroups networkSecurityGroups() {
         if (this.networkSecurityGroups == null) {
-            this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
-                    super.innerManagementClient.networkSecurityGroups(),
-                    this);
+            this.networkSecurityGroups = new NetworkSecurityGroupsImpl(this);
         }
         return this.networkSecurityGroups;
     }
@@ -152,13 +146,11 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to public IP address management
      */
-    public PublicIpAddresses publicIpAddresses() {
-        if (this.publicIpAddresses == null) {
-            this.publicIpAddresses = new PublicIpAddressesImpl(
-                    super.innerManagementClient.publicIPAddresses(),
-                    this);
+    public PublicIPAddresses publicIPAddresses() {
+        if (this.publicIPAddresses == null) {
+            this.publicIPAddresses = new PublicIPAddressesImpl(this);
         }
-        return this.publicIpAddresses;
+        return this.publicIPAddresses;
     }
 
     /**
@@ -166,9 +158,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public NetworkInterfaces networkInterfaces() {
         if (networkInterfaces == null) {
-            this.networkInterfaces = new NetworkInterfacesImpl(
-                    super.innerManagementClient.networkInterfaces(),
-                    this);
+            this.networkInterfaces = new NetworkInterfacesImpl(this);
         }
         return this.networkInterfaces;
     }
@@ -178,9 +168,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public ApplicationGateways applicationGateways() {
         if (this.applicationGateways == null) {
-            this.applicationGateways = new ApplicationGatewaysImpl(
-                    super.innerManagementClient,
-                    this);
+            this.applicationGateways = new ApplicationGatewaysImpl(this);
         }
         return this.applicationGateways;
     }
@@ -190,9 +178,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      */
     public LoadBalancers loadBalancers() {
         if (this.loadBalancers == null) {
-            this.loadBalancers = new LoadBalancersImpl(
-                    super.innerManagementClient,
-                    this);
+            this.loadBalancers = new LoadBalancersImpl(this);
         }
         return this.loadBalancers;
     }

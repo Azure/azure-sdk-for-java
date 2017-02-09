@@ -9,6 +9,7 @@ package com.microsoft.azure.management.cdn;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
+import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -34,7 +36,8 @@ public interface CdnProfiles extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<CdnProfile>,
-        HasManager<CdnManager> {
+        HasManager<CdnManager>,
+        HasInner<ProfilesInner> {
 
     /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal.

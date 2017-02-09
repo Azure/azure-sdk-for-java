@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * The implementation of {@link NetworkUsages}.
+ * The implementation of NetworkUsages.
  */
 class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
         implements NetworkUsages {

@@ -16,7 +16,7 @@ import rx.Completable;
 import java.util.List;
 
 /**
- * The implementation for {@link AvailabilitySets}.
+ * The implementation for AvailabilitySets.
  */
 @LangDefinition
 class AvailabilitySetsImpl
@@ -28,30 +28,29 @@ class AvailabilitySetsImpl
         ComputeManager>
     implements AvailabilitySets {
 
-    AvailabilitySetsImpl(
-            final AvailabilitySetsInner client,
-            final ComputeManager computeManager) {
-        super(client, computeManager);
+    AvailabilitySetsImpl(final ComputeManager computeManager) {
+        super(computeManager.inner().availabilitySets(), computeManager);
     }
 
     @Override
     public PagedList<AvailabilitySet> list() {
-        return new GroupPagedList<AvailabilitySet>(this.myManager.resourceManager().resourceGroups().list()) {
+        final AvailabilitySetsImpl self = this;
+        return new GroupPagedList<AvailabilitySet>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) {
-                return wrapList(innerCollection.list(resourceGroupName));
+                return wrapList(self.inner().list(resourceGroupName));
             }
         };
     }
 
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public AvailabilitySetImpl getByGroup(String groupName, String name) {
-        AvailabilitySetInner response = this.innerCollection.get(groupName, name);
+        AvailabilitySetInner response = this.inner().get(groupName, name);
         return wrapModel(response);
     }
 
@@ -62,7 +61,7 @@ class AvailabilitySetsImpl
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     /**************************************************************
@@ -73,8 +72,7 @@ class AvailabilitySetsImpl
     protected AvailabilitySetImpl wrapModel(String name) {
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
-                this.innerCollection,
-                super.myManager);
+                this.manager());
     }
 
     @Override
@@ -84,7 +82,6 @@ class AvailabilitySetsImpl
         }
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
-                this.innerCollection,
-                this.myManager);
+                this.manager());
     }
 }

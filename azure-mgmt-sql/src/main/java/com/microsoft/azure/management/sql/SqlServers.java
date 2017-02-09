@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.sql.implementation.ServersInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 /**
@@ -31,5 +33,6 @@ public interface SqlServers extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<SqlServer>,
-        HasManager<SqlServerManager> {
+        HasManager<SqlServerManager>,
+        HasInner<ServersInner> {
 }

@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
- * Implementation for {@link Network} and its create and update interfaces.
+ * Implementation for Network and its create and update interfaces.
  */
 @LangDefinition
 class NetworkImpl
@@ -35,15 +35,12 @@ class NetworkImpl
         Network.Definition,
         Network.Update {
 
-    private final VirtualNetworksInner innerCollection;
     private Map<String, Subnet> subnets;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
-            final VirtualNetworksInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -62,7 +59,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl refresh() {
-        VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        VirtualNetworkInner inner = this.manager().inner().virtualNetworks().get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();
         return this;
@@ -195,6 +192,6 @@ class NetworkImpl
 
     @Override
     protected Observable<VirtualNetworkInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().virtualNetworks().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

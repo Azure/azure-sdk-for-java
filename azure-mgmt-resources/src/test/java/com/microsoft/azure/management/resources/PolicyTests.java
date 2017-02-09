@@ -1,17 +1,18 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 

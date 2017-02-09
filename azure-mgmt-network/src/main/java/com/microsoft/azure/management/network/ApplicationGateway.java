@@ -11,8 +11,8 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -20,19 +20,17 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
 public interface ApplicationGateway extends
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,
-        Wrapper<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
-        HasPrivateIpAddress {
+        HasPrivateIPAddress {
 
     // Getters
 
@@ -187,13 +185,13 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway definition allowing to add a new Internet-facing frontend with a public IP address.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddressNoDnsLabel<WithCreate> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
         }
 
         /**
          * The stage of an application gateway definition allowing to define one or more public, or Internet-facing, frontends.
          */
-        interface WithPublicFrontend extends WithPublicIpAddress {
+        interface WithPublicFrontend extends WithPublicIPAddress {
             /**
              * Specifies that the application gateway should not be Internet-facing.
              * @return the next stage of the definition
@@ -379,7 +377,7 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to specify the default IP address the app gateway will be internally available at,
          * if the default private frontend has been enabled.
          */
-        interface WithPrivateIpAddress extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithCreate> {
+        interface WithPrivateIPAddress extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithCreate> {
         }
 
         /**
@@ -398,10 +396,10 @@ public interface ApplicationGateway extends
             WithBackendHttpConfig,
             WithBackend,
             WithExistingSubnet,
-            WithPrivateIpAddress,
+            WithPrivateIPAddress,
             WithPrivateFrontend,
             WithPublicFrontend,
-            WithPublicIpAddress {
+            WithPublicIPAddress {
         }
     }
 
@@ -539,7 +537,7 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway update allowing to specify a public IP address for the public frontend.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithPublicIpAddressNoDnsLabel<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
         }
 
         /**
@@ -635,7 +633,7 @@ public interface ApplicationGateway extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withoutBackendIpAddress(String ipAddress);
+            Update withoutBackendIPAddress(String ipAddress);
 
             /**
              * Removes the specified backend.
@@ -798,7 +796,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithBackendHttpConfig,
         UpdateStages.WithIpConfig,
         UpdateStages.WithFrontend,
-        UpdateStages.WithPublicIpAddress,
+        UpdateStages.WithPublicIPAddress,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithSslCert,
         UpdateStages.WithListener,

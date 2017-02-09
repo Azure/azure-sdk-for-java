@@ -26,35 +26,33 @@ class StorageAccountsImpl
             StorageManager>
         implements StorageAccounts {
 
-    StorageAccountsImpl(
-            final StorageAccountsInner client,
-            final StorageManager storageManager) {
-        super(client, storageManager);
+    StorageAccountsImpl(final StorageManager storageManager) {
+        super(storageManager.inner().storageAccounts(), storageManager);
     }
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name));
+        return new CheckNameAvailabilityResult(this.inner().checkNameAvailability(name));
     }
 
     @Override
     public PagedList<StorageAccount> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<StorageAccount> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
     public StorageAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.getProperties(groupName, name));
+        return wrapModel(this.inner().getProperties(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -66,11 +64,7 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(
-                name,
-                new StorageAccountInner(),
-                this.innerCollection,
-                super.myManager);
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
     }
 
     @Override
@@ -78,10 +72,6 @@ class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(
-                storageAccountInner.name(),
-                storageAccountInner,
-                this.innerCollection,
-                super.myManager);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
     }
 }

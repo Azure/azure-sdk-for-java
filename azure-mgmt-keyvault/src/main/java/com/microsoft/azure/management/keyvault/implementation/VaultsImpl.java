@@ -34,28 +34,27 @@ class VaultsImpl
     private final String tenantId;
 
     VaultsImpl(
-            final VaultsInner client,
             final KeyVaultManager keyVaultManager,
             final GraphRbacManager graphRbacManager,
             final String tenantId) {
-        super(client, keyVaultManager);
+        super(keyVaultManager.inner().vaults(), keyVaultManager);
         this.graphRbacManager = graphRbacManager;
         this.tenantId = tenantId;
     }
 
     @Override
     public PagedList<Vault> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
     public Vault getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -72,8 +71,7 @@ class VaultsImpl
         return new VaultImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager,
+                this.manager(),
                 graphRbacManager);
     }
 
@@ -85,8 +83,7 @@ class VaultsImpl
         return new VaultImpl(
                 vaultInner.name(),
                 vaultInner,
-                this.innerCollection,
-                super.myManager,
+                super.manager(),
                 graphRbacManager);
     }
 }

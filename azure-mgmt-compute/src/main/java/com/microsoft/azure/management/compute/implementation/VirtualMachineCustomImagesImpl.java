@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Completable;
 
 /**
- * The implementation for {@link VirtualMachineCustomImages}.
+ * The implementation for VirtualMachineCustomImages.
  */
 @LangDefinition
 class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
@@ -25,50 +25,42 @@ class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
         ComputeManager>
         implements VirtualMachineCustomImages {
 
-    VirtualMachineCustomImagesImpl(
-            final ImagesInner client,
-            final ComputeManager computeManager) {
-        super(client, computeManager);
+    VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
+        super(computeManager.inner().images(), computeManager);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     public VirtualMachineCustomImage getByGroup(String resourceGroupName, String name) {
-        return wrapModel(this.innerCollection.get(resourceGroupName, name));
+        return wrapModel(this.inner().get(resourceGroupName, name));
     }
 
     @Override
     public PagedList<VirtualMachineCustomImage> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     protected VirtualMachineCustomImageImpl wrapModel(String name) {
-        return new VirtualMachineCustomImageImpl(name,
-                new ImageInner(),
-                this.innerCollection,
-                this.manager());
+        return new VirtualMachineCustomImageImpl(name, new ImageInner(), this.manager());
     }
 
     @Override
     protected VirtualMachineCustomImageImpl wrapModel(ImageInner inner) {
-        return new VirtualMachineCustomImageImpl(inner.name(),
-                inner,
-                this.innerCollection,
-                this.manager());
+        return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
     @Override
-    public VirtualMachineCustomImage.DefinitionStages.Blank define(String name) {
+    public VirtualMachineCustomImageImpl define(String name) {
         return this.wrapModel(name);
     }
 
     @Override
     public PagedList<VirtualMachineCustomImage> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.inner().list());
     }
 }

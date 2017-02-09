@@ -43,15 +43,11 @@ class StorageAccountImpl
     private StorageAccountCreateParametersInner createParameters;
     private StorageAccountUpdateParametersInner updateParameters;
 
-    private final StorageAccountsInner client;
-
     StorageAccountImpl(String name,
                               StorageAccountInner innerModel,
-                              final StorageAccountsInner client,
                               final StorageManager storageManager) {
         super(name, innerModel, storageManager);
         this.createParameters = new StorageAccountCreateParametersInner();
-        this.client = client;
     }
 
     @Override
@@ -113,21 +109,24 @@ class StorageAccountImpl
     @Override
     public List<StorageAccountKey> getKeys() {
         StorageAccountListKeysResultInner response =
-                this.client.listKeys(this.resourceGroupName(), this.name());
+                this.manager().inner().storageAccounts().listKeys(
+                        this.resourceGroupName(), this.name());
         return response.keys();
     }
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
         StorageAccountListKeysResultInner response =
-                this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
+                this.manager().inner().storageAccounts().regenerateKey(
+                        this.resourceGroupName(), this.name(), keyName);
         return response.keys();
     }
 
     @Override
     public StorageAccountImpl refresh() {
         StorageAccountInner response =
-            this.client.getProperties(this.resourceGroupName(), this.name());
+            this.manager().inner().storageAccounts().getProperties(
+                    this.resourceGroupName(), this.name());
         this.setInner(response);
         clearWrapperProperties();
         return this;
@@ -178,7 +177,8 @@ class StorageAccountImpl
 
     @Override
     public Observable<StorageAccount> updateResourceAsync() {
-        return client.updateAsync(resourceGroupName(), name(), updateParameters)
+        return this.manager().inner().storageAccounts().updateAsync(
+                resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
     }
 
@@ -225,7 +225,9 @@ class StorageAccountImpl
     public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters)
+        final StorageAccountsInner client = this.manager().inner().storageAccounts();
+        return this.manager().inner().storageAccounts().createAsync(
+                this.resourceGroupName(), this.name(), createParameters)
                 .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
                     @Override
                     public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {

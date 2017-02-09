@@ -7,13 +7,15 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- *  Entry point to Cname record sets in a Dns zone.
+ *  Entry point to MX record sets in an Azure DNS zone.
  */
 @Fluent
-public interface CnameRecordSets extends
-        SupportsListing<CnameRecordSet>,
-        SupportsGettingByName<CnameRecordSet> {
+public interface MXRecordSets extends
+        SupportsListing<MXRecordSet>,
+        SupportsGettingByName<MXRecordSet>,
+        HasParent<DnsZone> {
 }

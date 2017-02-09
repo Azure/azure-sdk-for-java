@@ -14,7 +14,7 @@ import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface AccessPolicy extends
         ChildResource<Vault>,
-        Wrapper<AccessPolicyEntry> {
+        HasInner<AccessPolicyEntry> {
     /**
      * @return The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.

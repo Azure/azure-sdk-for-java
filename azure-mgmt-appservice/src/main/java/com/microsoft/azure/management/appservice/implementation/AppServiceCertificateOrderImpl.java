@@ -41,21 +41,21 @@ class AppServiceCertificateOrderImpl
         AppServiceCertificateOrder.Definition,
         AppServiceCertificateOrder.Update {
 
-    final AppServiceCertificateOrdersInner client;
-
     private WebAppBase domainVerifyWebApp;
     private AppServiceDomain domainVerifyDomain;
     private Observable<Vault> bindingVault;
 
-    AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
+    AppServiceCertificateOrderImpl(
+            String key,
+            AppServiceCertificateOrderInner innerObject,
+            AppServiceManager manager) {
         super(key, innerObject, manager);
-        this.client = client;
         this.withRegion("global").withValidYears(1);
     }
 
     @Override
     public AppServiceCertificateOrder refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
+        this.setInner(this.manager().inner().appServiceCertificateOrders().get(resourceGroupName(), name()));
         return this;
     }
 
@@ -67,7 +67,7 @@ class AppServiceCertificateOrderImpl
     @Override
     public Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
         final AppServiceCertificateOrderImpl self = this;
-        return client.listCertificatesAsync(resourceGroupName(), name())
+        return this.manager().inner().appServiceCertificateOrders().listCertificatesAsync(resourceGroupName(), name())
                 .map(new Func1<Page<AppServiceCertificateInner>, AppServiceCertificateKeyVaultBinding>() {
                     @Override
                     public AppServiceCertificateKeyVaultBinding call(Page<AppServiceCertificateInner> appServiceCertificateInnerPage) {
@@ -182,7 +182,8 @@ class AppServiceCertificateOrderImpl
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName);
         final AppServiceCertificateOrderImpl self = this;
-        return client.createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
+        return this.manager().inner().appServiceCertificateOrders().createOrUpdateCertificateAsync(
+                resourceGroupName(), name(), certificateName, certInner)
                 .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
                     public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {
@@ -218,7 +219,8 @@ class AppServiceCertificateOrderImpl
     @Override
     public Observable<AppServiceCertificateOrder> createResourceAsync() {
         final AppServiceCertificateOrder self = this;
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return this.manager().inner().appServiceCertificateOrders().createOrUpdateAsync(
+                resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<AppServiceCertificateOrder, Observable<Void>>() {
                     @Override

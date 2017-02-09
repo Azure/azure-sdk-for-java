@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.RecommendedElasticPoolInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
@@ -26,7 +26,7 @@ import java.util.List;
 @Fluent
 public interface RecommendedElasticPool extends
         Refreshable<RecommendedElasticPool>,
-        Wrapper<RecommendedElasticPoolInner>,
+        HasInner<RecommendedElasticPoolInner>,
         HasResourceGroup,
         HasName,
         HasId,

@@ -30,13 +30,11 @@ class AppServiceCertificateKeyVaultBindingImpl
         implements
         AppServiceCertificateKeyVaultBinding {
 
-    private final AppServiceCertificateOrdersInner innerCollection;
     private final AppServiceCertificateOrderImpl parent;
 
     AppServiceCertificateKeyVaultBindingImpl(AppServiceCertificateInner innerObject, AppServiceCertificateOrderImpl parent) {
         super(innerObject.name(), innerObject, (parent != null) ? parent.manager() : null);
         this.parent = parent;
-        innerCollection = parent.client;
     }
 
     @Override
@@ -47,7 +45,8 @@ class AppServiceCertificateKeyVaultBindingImpl
     @Override
     public Observable<AppServiceCertificateKeyVaultBinding> createChildResourceAsync() {
         final AppServiceCertificateKeyVaultBinding self = this;
-        return innerCollection.createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), inner())
+        return parent.manager().inner().appServiceCertificateOrders().createOrUpdateCertificateAsync(
+                parent.resourceGroupName(), parent.name(), name(), inner())
                 .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
                     public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {
@@ -74,7 +73,8 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     @Override
     public AppServiceCertificateKeyVaultBinding refresh() {
-        setInner(innerCollection.getCertificate(parent.resourceGroupName(), parent.name(), name()));
+        setInner(parent.manager().inner().appServiceCertificateOrders().getCertificate(
+                parent.resourceGroupName(), parent.name(), name()));
         return this;
     }
 }

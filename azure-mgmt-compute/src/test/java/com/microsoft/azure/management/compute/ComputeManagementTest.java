@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.jcraft.jsch.JSch;
@@ -5,7 +11,7 @@ import com.jcraft.jsch.JSchException;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -112,7 +118,7 @@ public abstract class ComputeManagementTest extends TestBase {
         final String backendPoolName = loadBalancerName + "-BAP1";
         final String natPoolName = loadBalancerName + "-INP1";
 
-        PublicIpAddress publicIpAddress = this.networkManager.publicIpAddresses().define(publicIpName)
+        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIpName)
@@ -122,7 +128,7 @@ public abstract class ComputeManagementTest extends TestBase {
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIpAddress)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
                 .defineBackend(backendPoolName)
                     .attach()
@@ -151,24 +157,24 @@ public abstract class ComputeManagementTest extends TestBase {
 
     protected LoadBalancer createInternetFacingLoadBalancer(Region region, ResourceGroup resourceGroup, String id) throws Exception {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
-        final String publicIpName = "pip-" + loadBalancerName;
+        final String publicIPName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
         final String backendPoolName1 = loadBalancerName + "-BAP1";
         final String backendPoolName2 = loadBalancerName + "-BAP2";
         final String natPoolName1 = loadBalancerName + "-INP1";
         final String natPoolName2 = loadBalancerName + "-INP2";
 
-        PublicIpAddress publicIpAddress = this.networkManager.publicIpAddresses().define(publicIpName)
+        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().define(publicIPName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withLeafDomainLabel(publicIpName)
+                .withLeafDomainLabel(publicIPName)
                 .create();
 
         LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIpAddress)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
 
                 // Add two backend one per rule

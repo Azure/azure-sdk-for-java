@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 @Fluent()
 public interface LoadBalancerPublicFrontend extends
     LoadBalancerFrontend,
-    HasPublicIpAddress {
+    HasPublicIPAddress {
 
     /**
      * Grouping of public frontend definition stages.
@@ -26,14 +26,14 @@ public interface LoadBalancerPublicFrontend extends
          * The first stage of a public frontend definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithPublicIpAddress<ParentT> {
+        interface Blank<ParentT> extends WithPublicIPAddress<ParentT> {
         }
 
         /**
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.DefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -54,7 +54,7 @@ public interface LoadBalancerPublicFrontend extends
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithPublicIpAddress<ParentT> {
+        DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /**
@@ -64,7 +64,7 @@ public interface LoadBalancerPublicFrontend extends
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithExistingPublicIpAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithExistingPublicIPAddress<Update> {
         }
     }
 
@@ -73,7 +73,7 @@ public interface LoadBalancerPublicFrontend extends
      */
     interface Update extends
         Settable<LoadBalancer.Update>,
-        UpdateStages.WithPublicIpAddress {
+        UpdateStages.WithPublicIPAddress {
     }
 
     /**
@@ -84,14 +84,14 @@ public interface LoadBalancerPublicFrontend extends
          * The first stage of a public frontend definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithPublicIpAddress<ParentT> {
+        interface Blank<ParentT> extends WithPublicIPAddress<ParentT> {
         }
 
         /**
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.UpdateDefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /** The final stage of the public frontend definition.
@@ -111,6 +111,6 @@ public interface LoadBalancerPublicFrontend extends
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
-        UpdateDefinitionStages.WithPublicIpAddress<ParentT> {
+        UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
     }
 }

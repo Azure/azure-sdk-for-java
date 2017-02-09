@@ -1,14 +1,20 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
-import com.microsoft.azure.management.dns.CnameRecordSet;
+import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.MxRecord;
-import com.microsoft.azure.management.dns.MxRecordSet;
-import com.microsoft.azure.management.dns.NsRecordSet;
+import com.microsoft.azure.management.dns.MXRecordSet;
+import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
@@ -32,21 +38,21 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         DnsZone dnsZone = dnsZones.define(topLevelDomain)
                 .withNewResourceGroup(groupName, region)
                 .defineARecordSet("www")
-                    .withIpv4Address("23.96.104.40")
-                    .withIpv4Address("24.97.105.41")
+                    .withIPv4Address("23.96.104.40")
+                    .withIPv4Address("24.97.105.41")
                     .withTimeToLive(7200) // Overwrite default 3600 seconds
                     .attach()
                 .defineAaaaRecordSet("www")
-                    .withIpv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                    .withIpv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                    .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                    .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
                     .attach()
-                .defineMxRecordSet("email")
+                .defineMXRecordSet("email")
                     .withMailExchange("mail.contoso-mail-exchange1.com", 1)
                     .withMailExchange("mail.contoso-mail-exchange2.com", 2)
                     .withMetadata("mxa", "mxaa")
                     .withMetadata("mxb", "mxbb")
                     .attach()
-                .defineNsRecordSet("partners")
+                .defineNSRecordSet("partners")
                     .withNameServer("ns1-05.azure-dns.com")
                     .withNameServer("ns2-05.azure-dns.net")
                     .withNameServer("ns3-05.azure-dns.org")
@@ -72,8 +78,8 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                     .withTargetDomainName("www.contoso.com")
                     .withTargetDomainName("mail.contoso.com")
                     .attach()
-                .withCnameRecordSet("documents", "doc.contoso.com")
-                .withCnameRecordSet("userguide", "doc.contoso.com")
+                .withCNameRecordSet("documents", "doc.contoso.com")
+                .withCNameRecordSet("userguide", "doc.contoso.com")
                 .withTag("a", "aa")
                 .withTag("b", "bb")
                 .create();
@@ -104,9 +110,9 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assert.assertTrue(aaaaRecordSets.get(0).ipv6Addresses().size() == 2);
 
         // Check MX records
-        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         Assert.assertTrue(mxRecordSets.size() == 1);
-        MxRecordSet mxRecordSet = mxRecordSets.get(0);
+        MXRecordSet mxRecordSet = mxRecordSets.get(0);
         Assert.assertNotNull(mxRecordSet);
         Assert.assertTrue(mxRecordSet.name().startsWith("email"));
         Assert.assertTrue(mxRecordSet.metadata().size() == 2);
@@ -119,7 +125,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         }
 
         // Check NS records
-        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         Assert.assertTrue(nsRecordSets.size() == 2); // One created above with name 'partners' + the default '@'
 
         // Check TXT records
@@ -135,7 +141,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assert.assertTrue(ptrRecordSets.size() == 2);
 
         // Check CNAME records
-        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assert.assertTrue(cnameRecordSets.size() == 2);
         return dnsZone;
     }
@@ -144,15 +150,15 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
     public DnsZone updateResource(DnsZone dnsZone) throws Exception {
         dnsZone.update()
                 .withoutTxtRecordSet("www")
-                .withoutCnameRecordSet("userguide")
-                .withCnameRecordSet("help", "doc.contoso.com")
-                .updateNsRecordSet("partners")
+                .withoutCNameRecordSet("userguide")
+                .withCNameRecordSet("help", "doc.contoso.com")
+                .updateNSRecordSet("partners")
                     .withoutNameServer("ns4-05.azure-dns.info")
                     .withNameServer("ns4-06.azure-dns.info")
                     .parent()
                 .updateARecordSet("www")
-                    .withoutIpv4Address("23.96.104.40")
-                    .withIpv4Address("23.96.104.42")
+                    .withoutIPv4Address("23.96.104.40")
+                    .withIPv4Address("23.96.104.42")
                     .parent()
                 .updateSrvRecordSet("_sip._tcp")
                     .withoutRecord("bigbox.contoso-service.com", 5060, 10, 60)
@@ -162,7 +168,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                     .withNegativeResponseCachingTimeToLiveInSeconds(600)
                     .withTimeToLive(7200)
                     .parent()
-                .defineMxRecordSet("email-internal")
+                .defineMXRecordSet("email-internal")
                     .withMailExchange("mail.contoso-mail-exchange1.com", 1)
                     .withMailExchange("mail.contoso-mail-exchange2.com", 2)
                     .attach()
@@ -173,17 +179,17 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assert.assertEquals(txtRecordSets.size(), 1);
 
         // Check CNAME records
-        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assert.assertEquals(cnameRecordSets.size(), 2);
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
             Assert.assertTrue(cnameRecordSet.canonicalName().startsWith("doc.contoso.com"));
             Assert.assertTrue(cnameRecordSet.name().startsWith("documents") || cnameRecordSet.name().startsWith("help"));
         }
 
         // Check NS records
-        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         Assert.assertTrue(nsRecordSets.size() == 2); // One created above with name 'partners' + the default '@'
-        for (NsRecordSet nsRecordSet : nsRecordSets) {
+        for (NSRecordSet nsRecordSet : nsRecordSets) {
             Assert.assertTrue(nsRecordSet.name().startsWith("partners") || nsRecordSet.name().startsWith("@"));
             if (nsRecordSet.name().startsWith("partners")) {
                 Assert.assertEquals(nsRecordSet.nameServers().size(), 4);
@@ -220,11 +226,11 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assert.assertTrue(soaRecordSet.timeToLive() == 7200);
 
         // Check MX records
-        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         Assert.assertTrue(mxRecordSets.size() == 2);
 
         dnsZone.update()
-                .updateMxRecordSet("email")
+                .updateMXRecordSet("email")
                     .withoutMailExchange("mail.contoso-mail-exchange2.com", 2)
                     .withoutMetadata("mxa")
                     .withMetadata("mxc", "mxcc")
@@ -235,7 +241,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
 
         Assert.assertTrue(dnsZone.tags().size() == 3);
         // Check "mail" MX record
-        MxRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
+        MXRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
         Assert.assertTrue(mxRecordSet.records().size() == 1);
         Assert.assertTrue(mxRecordSet.metadata().size() == 3);
         Assert.assertTrue(mxRecordSet.records().get(0).exchange().startsWith("mail.contoso-mail-exchange1.com"));
@@ -264,15 +270,15 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                 .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
                 .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
                 .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-                .append("\n\t\tTtl (seconds):").append(soaRecordSet.timeToLive());
+                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
 
         PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
         info.append("\n\tA Record sets:");
         for (ARecordSet aRecordSet : aRecordSets) {
             info.append("\n\t\tId: ").append(aRecordSet.id())
                 .append("\n\t\tName: ").append(aRecordSet.name())
-                .append("\n\t\tTtl (seconds): ").append(aRecordSet.timeToLive())
-                .append("\n\t\tIp v4 addresses: ");
+                .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+                .append("\n\t\tIP v4 addresses: ");
             for (String ipAddress : aRecordSet.ipv4Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
             }
@@ -283,28 +289,28 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
             info.append("\n\t\tId: ").append(aaaaRecordSet.id())
                     .append("\n\t\tName: ").append(aaaaRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(aaaaRecordSet.timeToLive())
-                    .append("\n\t\tIp v6 addresses: ");
+                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+                    .append("\n\t\tIP v6 addresses: ");
             for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
             }
         }
 
-        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(cnameRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MxRecordSet mxRecordSet : mxRecordSets) {
+        for (MXRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(mxRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (MxRecord mxRecord : mxRecordSet.records()) {
                 info.append("\n\t\t\tExchange server, Preference: ")
@@ -314,12 +320,12 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
             }
         }
 
-        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NsRecordSet nsRecordSet : nsRecordSets) {
+        for (NSRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(nsRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
                     .append("\n\t\tName servers: ");
             for (String nameServer : nsRecordSet.nameServers()) {
                 info.append("\n\t\t\t").append(nameServer);
@@ -331,7 +337,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
             info.append("\n\t\tId: ").append(ptrRecordSet.id())
                     .append("\n\t\tName: ").append(ptrRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(ptrRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
                     .append("\n\t\tTarget domain names: ");
             for (String domainNames : ptrRecordSet.targetDomainNames()) {
                 info.append("\n\t\t\t").append(domainNames);
@@ -343,7 +349,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         for (SrvRecordSet srvRecordSet : srvRecordSets) {
             info.append("\n\t\tId: ").append(srvRecordSet.id())
                     .append("\n\t\tName: ").append(srvRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(srvRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (SrvRecord srvRecord : srvRecordSet.records()) {
                 info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
@@ -362,7 +368,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         for (TxtRecordSet txtRecordSet : txtRecordSets) {
             info.append("\n\t\tId: ").append(txtRecordSet.id())
                     .append("\n\t\tName: ").append(txtRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(txtRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (TxtRecord txtRecord : txtRecordSet.records()) {
                 if (txtRecord.value().size() > 0) {

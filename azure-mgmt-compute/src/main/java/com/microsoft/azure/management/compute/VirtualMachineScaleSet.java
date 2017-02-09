@@ -22,7 +22,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
@@ -34,9 +33,8 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineScaleSet extends
-        GroupableResource<ComputeManager>,
+        GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
         Refreshable<VirtualMachineScaleSet>,
-        Wrapper<VirtualMachineScaleSetInner>,
         Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
     //
@@ -206,7 +204,7 @@ public interface VirtualMachineScaleSet extends
      * of the scale set
      * @throws IOException the IO exception
      */
-    List<String> primaryPublicIpAddressIds() throws IOException;
+    List<String> primaryPublicIPAddressIds() throws IOException;
 
     /**
      * @return the URL to storage containers that store the VHDs of the virtual machines in the scale set

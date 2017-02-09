@@ -12,7 +12,7 @@ import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInter
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
- * Implementation for {@link VirtualMachineScaleSetNetworkInterfaces}.
+ * Implementation for VirtualMachineScaleSetNetworkInterfaces.
  */
 class VirtualMachineScaleSetNetworkInterfacesImpl
         extends
@@ -20,20 +20,23 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
                 VirtualMachineScaleSetNetworkInterfaceImpl,
                 NetworkInterfaceInner>
         implements
-        VirtualMachineScaleSetNetworkInterfaces {
+            VirtualMachineScaleSetNetworkInterfaces {
     private final String resourceGroupName;
     private final String scaleSetName;
-    private final NetworkInterfacesInner client;
     private final NetworkManager networkManager;
 
-    VirtualMachineScaleSetNetworkInterfacesImpl(String resourceGroupName,
-                                                String scaleSetName,
-                                                NetworkInterfacesInner client,
-                                                NetworkManager networkManager) {
+    VirtualMachineScaleSetNetworkInterfacesImpl(
+            String resourceGroupName,
+            String scaleSetName,
+            NetworkManager networkManager) {
         this.resourceGroupName = resourceGroupName;
         this.scaleSetName = scaleSetName;
-        this.client = client;
         this.networkManager = networkManager;
+    }
+
+    @Override
+    public NetworkInterfacesInner inner() {
+        return this.networkManager.inner().networkInterfaces();
     }
 
     @Override
@@ -42,13 +45,12 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
                 this.scaleSetName,
                 this.resourceGroupName,
                 inner,
-                this.client,
                 this.networkManager);
     }
 
     @Override
     public VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name) {
-        NetworkInterfaceInner networkInterfaceInner = this.client.getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName,
+        NetworkInterfaceInner networkInterfaceInner = this.inner().getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName,
                 this.scaleSetName,
                 instanceId,
                 name);
@@ -60,13 +62,13 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> list() {
-        return super.wrapList(this.client.listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName,
+        return super.wrapList(this.inner().listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName,
                 this.scaleSetName));
     }
 
     @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineInstanceId(String instanceId) {
-        return super.wrapList(this.client.listVirtualMachineScaleSetVMNetworkInterfaces(this.resourceGroupName,
+        return super.wrapList(this.inner().listVirtualMachineScaleSetVMNetworkInterfaces(this.resourceGroupName,
                 this.scaleSetName,
                 instanceId));
     }

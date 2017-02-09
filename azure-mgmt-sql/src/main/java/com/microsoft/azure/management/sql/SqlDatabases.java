@@ -14,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.sql.implementation.DatabasesInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
@@ -28,7 +30,8 @@ public interface SqlDatabases extends
         SupportsGettingById<SqlDatabase>,
         SupportsBatchCreation<SqlDatabase>,
         SupportsDeletingByParent,
-        HasManager<SqlServerManager> {
+        HasManager<SqlServerManager>,
+        HasInner<DatabasesInner> {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and SQLDatabase name.

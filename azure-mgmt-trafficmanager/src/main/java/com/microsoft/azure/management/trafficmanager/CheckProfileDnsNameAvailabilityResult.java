@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManagerNameAvailabilityInner;
 
 /**
- * The {@link com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles#checkDnsNameAvailability} action result.
+ * The result of checking for DNS name availability.
  */
 @LangDefinition
 public class CheckProfileDnsNameAvailabilityResult {

@@ -1,9 +1,14 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
@@ -22,8 +27,7 @@ import java.util.Map;
  */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
 
-    private final PublicIpAddresses publicIpAddresses;
-    private final ResourceGroups resourceGroups;
+    private final PublicIPAddresses publicIPAddresses;
 
     private final String externalEndpointName21 = "external-ep-1";
     private final String externalEndpointName22 = "external-ep-2";
@@ -36,9 +40,8 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     private final String azureEndpointName = "azure-ep-1";
     private final String nestedProfileEndpointName = "nested-profile-ep-1";
 
-    public TestTrafficManager(ResourceGroups resourceGroups, PublicIpAddresses publicIpAddresses) {
-        this.resourceGroups = resourceGroups;
-        this.publicIpAddresses = publicIpAddresses;
+    public TestTrafficManager(PublicIPAddresses publicIPAddresses) {
+        this.publicIPAddresses = publicIPAddresses;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
         final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
         final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 
-        ResourceGroup.DefinitionStages.WithCreate rgCreatable = resourceGroups.define(groupName)
+        ResourceGroup.DefinitionStages.WithCreate rgCreatable = profiles.manager().resourceManager().resourceGroups().define(groupName)
                 .withRegion(region);
 
         // Creates a TM profile that will be used as a nested profile endpoint in parent TM profile
@@ -84,13 +87,13 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
 
         // Creates a public ip to be used as an Azure endpoint
         //
-        PublicIpAddress publicIpAddress = this.publicIpAddresses.define(pipName)
+        PublicIPAddress publicIPAddress = this.publicIPAddresses.define(pipName)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
                 .withLeafDomainLabel(pipDnsLabel)
                 .create();
 
-        Assert.assertNotNull(publicIpAddress.fqdn());
+        Assert.assertNotNull(publicIPAddress.fqdn());
         // Creates a TM profile
         //
 
@@ -112,7 +115,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .withTrafficDisabled()
                     .attach()
                 .defineAzureTargetEndpoint(azureEndpointName)
-                    .toResourceId(publicIpAddress.id())
+                    .toResourceId(publicIPAddress.id())
                     .withRoutingPriority(3)
                     .attach()
                 .defineNestedTargetEndpoint(nestedProfileEndpointName)
@@ -164,7 +167,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             if (endpoint.name().equalsIgnoreCase(azureEndpointName)) {
                 Assert.assertEquals(endpoint.routingPriority(), 3);
                 Assert.assertNotNull(endpoint.monitorStatus());
-                Assert.assertEquals(endpoint.targetAzureResourceId(), publicIpAddress.id());
+                Assert.assertEquals(endpoint.targetAzureResourceId(), publicIPAddress.id());
                 Assert.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
                 c++;
             }

@@ -44,7 +44,7 @@ class RouteImpl
     }
 
     @Override
-    public String nextHopIpAddress() {
+    public String nextHopIPAddress() {
         return this.inner().nextHopIpAddress();
     }
 

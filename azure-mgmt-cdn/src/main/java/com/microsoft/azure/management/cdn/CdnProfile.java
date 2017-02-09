@@ -16,7 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,8 @@ import java.util.Map;
  */
 @Fluent
 public interface CdnProfile extends
-        GroupableResource<CdnManager>,
+        GroupableResource<CdnManager, ProfileInner>,
         Refreshable<CdnProfile>,
-        Wrapper<ProfileInner>,
         Updatable<CdnProfile.Update> {
 
     /**

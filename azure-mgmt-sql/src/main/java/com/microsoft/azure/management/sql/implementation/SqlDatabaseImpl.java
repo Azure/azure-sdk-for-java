@@ -51,15 +51,10 @@ class SqlDatabaseImpl
             SqlDatabase.DefinitionStages.WithExistingDatabase,
             SqlDatabase.Update,
         IndependentChild.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
-    protected final DatabasesInner innerCollection;
     private String elasticPoolCreatableKey;
 
-    protected SqlDatabaseImpl(String name,
-                            DatabaseInner innerObject,
-                            DatabasesInner innerCollection,
-                            SqlServerManager manager) {
+    protected SqlDatabaseImpl(String name, DatabaseInner innerObject, SqlServerManager manager) {
         super(name, innerObject, manager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -135,7 +130,8 @@ class SqlDatabaseImpl
     @Override
     public UpgradeHintInterface getUpgradeHint() {
         if (this.inner().upgradeHint() == null) {
-            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
+            this.setInner(this.manager().inner().databases().get(
+                    this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
         }
         if (this.inner().upgradeHint() != null) {
             return new UpgradeHintImpl(this.inner().upgradeHint());
@@ -167,7 +163,7 @@ class SqlDatabaseImpl
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                this.innerCollection.listRestorePoints(
+                this.manager().inner().databases().listRestorePoints(
                         this.resourceGroupName(),
                         this.sqlServerName(),
                         this.name())));
@@ -182,7 +178,7 @@ class SqlDatabaseImpl
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
-                this.innerCollection.listUsages(
+                this.manager().inner().databases().listUsages(
                         this.resourceGroupName(),
                         this.sqlServerName(),
                         this.name())));
@@ -191,10 +187,10 @@ class SqlDatabaseImpl
     @Override
     public TransparentDataEncryption getTransparentDataEncryption() {
         return new TransparentDataEncryptionImpl(
-                this.innerCollection.getTransparentDataEncryptionConfiguration(
+                this.manager().inner().databases().getTransparentDataEncryptionConfiguration(
                         this.resourceGroupName(),
                         this.sqlServerName(),
-                        this.name()), this.innerCollection);
+                        this.name()), this.manager().inner().databases());
     }
 
     @Override
@@ -209,10 +205,10 @@ class SqlDatabaseImpl
             @Override
             protected ServiceTierAdvisor impl(ServiceTierAdvisorInner serviceTierAdvisorInner) {
                 return new ServiceTierAdvisorImpl(serviceTierAdvisorInner,
-                        self.innerCollection);
+                        self.manager().inner().databases());
             }
         };
-        return converter.convertToUnmodifiableMap(this.innerCollection.listServiceTierAdvisors(
+        return converter.convertToUnmodifiableMap(this.manager().inner().databases().listServiceTierAdvisors(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.name()));
@@ -230,10 +226,10 @@ class SqlDatabaseImpl
 
             @Override
             protected ReplicationLink impl(ReplicationLinkInner replicationLinkInner) {
-                return new ReplicationLinkImpl(replicationLinkInner, self.innerCollection);
+                return new ReplicationLinkImpl(replicationLinkInner, self.manager().inner().databases());
             }
         };
-        return converter.convertToUnmodifiableMap(this.innerCollection.listReplicationLinks(
+        return converter.convertToUnmodifiableMap(this.manager().inner().databases().listReplicationLinks(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.name()));
@@ -241,16 +237,18 @@ class SqlDatabaseImpl
 
     @Override
     public void delete() {
-        this.innerCollection.delete(this.resourceGroupName(), this.sqlServerName(), this.name());
+        this.manager().inner().databases().delete(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override
     public SqlDatabase refresh() {
         if (this.inner().upgradeHint() != null) {
-            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name()));
+            this.setInner(this.manager().inner().databases().get(
+                    this.resourceGroupName(), this.sqlServerName(), this.name()));
         }
         else {
-            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
+            this.setInner(this.manager().inner().databases().get(
+                    this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
         }
 
         return this;
@@ -270,7 +268,8 @@ class SqlDatabaseImpl
             this.inner().withRequestedServiceObjectiveId(null);
         }
 
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
+        return this.manager().inner().databases().createOrUpdateAsync(
+                this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<DatabaseInner, SqlDatabase>() {
             @Override
             public SqlDatabase call(DatabaseInner databaseInner) {

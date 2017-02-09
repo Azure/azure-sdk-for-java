@@ -11,14 +11,14 @@ import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A network security rule in a network security group.
  */
 @Fluent
 public interface NetworkSecurityRule extends
-    Wrapper<SecurityRuleInner>,
+    HasInner<SecurityRuleInner>,
     ChildResource<NetworkSecurityGroup> {
 
     /**

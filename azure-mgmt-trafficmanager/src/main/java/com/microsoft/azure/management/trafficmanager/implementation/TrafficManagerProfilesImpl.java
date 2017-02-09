@@ -18,7 +18,7 @@ import rx.Completable;
 import java.util.ArrayList;
 
 /**
- * Implementation for {@link TrafficManagerProfiles}.
+ * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
 class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
@@ -28,13 +28,9 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
         ProfilesInner,
         TrafficManager>
         implements TrafficManagerProfiles {
-    private final EndpointsInner endpointsClient;
 
-    TrafficManagerProfilesImpl(
-            final TrafficManagerManagementClientImpl trafficManagementClient,
-            final TrafficManager trafficManager) {
-        super(trafficManagementClient.profiles(), trafficManager);
-        this.endpointsClient = trafficManagementClient.endpoints();
+    TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
+        super(trafficManager.inner().profiles(), trafficManager);
     }
 
     @Override
@@ -44,46 +40,38 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
                     .withName(dnsNameLabel)
                     .withType("Microsoft.Network/trafficManagerProfiles");
         return new CheckProfileDnsNameAvailabilityResult(this
-                .innerCollection
+                .inner()
                 .checkTrafficManagerRelativeDnsNameAvailability(parameter));
     }
 
     @Override
     public PagedList<TrafficManagerProfile> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<TrafficManagerProfile> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listAllInResourceGroup(groupName));
+        return wrapList(this.inner().listAllInResourceGroup(groupName));
     }
 
     @Override
     public TrafficManagerProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(String name) {
-        return new TrafficManagerProfileImpl(name,
-                new ProfileInner(),
-                this.innerCollection,
-                this.endpointsClient,
-                this.myManager);
+        return new TrafficManagerProfileImpl(name, new ProfileInner(), this.manager());
     }
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(ProfileInner inner) {
-        return new TrafficManagerProfileImpl(inner.name(),
-                inner,
-                this.innerCollection,
-                this.endpointsClient,
-                this.myManager);
+        return new TrafficManagerProfileImpl(inner.name(), inner, this.manager());
     }
 
     @Override

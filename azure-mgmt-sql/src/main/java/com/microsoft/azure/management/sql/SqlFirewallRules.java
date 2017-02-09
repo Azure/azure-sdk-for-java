@@ -12,6 +12,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.sql.implementation.ServersInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
@@ -25,7 +27,8 @@ public interface SqlFirewallRules extends
         SupportsGettingById<SqlFirewallRule>,
         SupportsBatchCreation<SqlFirewallRule>,
         SupportsDeletingByParent,
-        HasManager<SqlServerManager> {
+        HasManager<SqlServerManager>,
+        HasInner<ServersInner> {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and FirewallRule name.

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ServiceTierAdvisorInner;
 import org.joda.time.DateTime;
 
@@ -25,7 +25,7 @@ import java.util.UUID;
 @Fluent
 public interface ServiceTierAdvisor extends
         Refreshable<ServiceTierAdvisor>,
-        Wrapper<ServiceTierAdvisorInner>,
+        HasInner<ServiceTierAdvisorInner>,
         HasResourceGroup,
         HasName,
         HasId {

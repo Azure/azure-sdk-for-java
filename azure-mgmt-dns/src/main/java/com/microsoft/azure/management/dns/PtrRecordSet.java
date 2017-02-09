@@ -10,12 +10,12 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Ptr (pointer) record set in Azure Dns Zone.
+ * An immutable client-side representation of a PTR (pointer) record set in Azure DNS Zone.
  */
 @Fluent
 public interface PtrRecordSet extends DnsRecordSet {
     /**
-     * @return the target domain names of Ptr records in this record set
+     * @return the target domain names of PTR records in this record set
      */
     List<String> targetDomainNames();
 }

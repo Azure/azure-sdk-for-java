@@ -153,7 +153,7 @@ public final class ManageInternalLoadBalancer {
                     .withExistingResourceGroup(rgName)
                     .definePrivateFrontend(privateFrontEndName)
                         .withExistingSubnet(network, "Back-end")
-                        .withPrivateIpAddressStatic("172.16.3.5")
+                        .withPrivateIPAddressStatic("172.16.3.5")
                         .attach()
 
                     // Add one backend - one per rule
@@ -218,7 +218,7 @@ public final class ManageInternalLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
@@ -228,7 +228,7 @@ public final class ManageInternalLoadBalancer {
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet("Back-end")
-                    .withPrimaryPrivateIpAddressDynamic()
+                    .withPrimaryPrivateIPAddressDynamic()
                     .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6002to22forVM4)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6003to23forVM4);
@@ -335,7 +335,7 @@ public final class ManageInternalLoadBalancer {
                     .withExistingResourceGroup(rgName)
                     .definePrivateFrontend(privateFrontEndName)
                         .withExistingSubnet(network, "Back-end")
-                        .withPrivateIpAddressStatic("172.16.3.15")
+                        .withPrivateIPAddressStatic("172.16.3.15")
                         .attach()
 
                     // Add one backend - one per rule

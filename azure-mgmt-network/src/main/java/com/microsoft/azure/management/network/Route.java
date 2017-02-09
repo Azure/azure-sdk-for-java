@@ -10,14 +10,14 @@ import com.microsoft.azure.management.network.implementation.RouteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a route of a route table.
  */
 @Fluent()
 public interface Route extends
-    Wrapper<RouteInner>,
+    HasInner<RouteInner>,
     ChildResource<RouteTable> {
 
     /**
@@ -33,7 +33,7 @@ public interface Route extends
     /**
      * @return the IP address of the next hop
      */
-    String nextHopIpAddress();
+    String nextHopIPAddress();
 
     // Grouping of route definition stages
 

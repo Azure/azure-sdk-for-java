@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.sql;
 
     import com.microsoft.azure.management.apigeneration.Fluent;
-    import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+    import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
     import java.util.UUID;
 
 
@@ -16,7 +16,7 @@ package com.microsoft.azure.management.sql;
  */
 @Fluent
 public interface SloUsageMetricInterface extends
-        Wrapper<SloUsageMetric> {
+        HasInner<SloUsageMetric> {
     /**
      * @return the serviceLevelObjective for SLO usage metric.
      */

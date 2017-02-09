@@ -90,13 +90,13 @@ class ApplicationGatewayBackendImpl
     // Withers
 
     @Override
-    public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
+    public ApplicationGatewayBackendImpl withIPAddress(String ipAddress) {
         if (ipAddress == null) {
             return this;
         }
 
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
-                .withIpAddress(ipAddress);
+                .withIPAddress(ipAddress);
         List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (ApplicationGatewayBackendAddress a : addresses) {
             if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
@@ -119,7 +119,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+    public ApplicationGatewayBackendImpl withoutIPAddress(String ipAddress) {
         if (ipAddress == null) {
             return this;
         }
@@ -161,7 +161,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public boolean containsIpAddress(String ipAddress) {
+    public boolean containsIPAddress(String ipAddress) {
         if (ipAddress != null) {
             for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
                 if (ipAddress.equalsIgnoreCase(address.ipAddress())) {

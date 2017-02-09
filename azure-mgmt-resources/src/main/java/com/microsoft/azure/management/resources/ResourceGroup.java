@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 
 /**
@@ -26,7 +26,7 @@ public interface ResourceGroup extends
         Indexable,
         Resource,
         Refreshable<ResourceGroup>,
-        Wrapper<ResourceGroupInner>,
+        HasInner<ResourceGroupInner>,
         Updatable<ResourceGroup.Update>,
         HasName {
 

@@ -5,8 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -19,16 +19,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
  * Network security group.
  */
 @Fluent()
 public interface NetworkSecurityGroup extends
-        GroupableResource<NetworkManager>,
+        GroupableResource<NetworkManager, NetworkSecurityGroupInner>,
         Refreshable<NetworkSecurityGroup>,
-        Wrapper<NetworkSecurityGroupInner>,
         Updatable<NetworkSecurityGroup.Update>,
         HasAssociatedSubnets {
 
@@ -45,9 +43,9 @@ public interface NetworkSecurityGroup extends
     Map<String, NetworkSecurityRule> defaultSecurityRules();
 
     /**
-     * @return list of the ids of the network interfaces associated with this network security group
+     * @return the IDs of the network interfaces associated with this network security group
      */
-    List<String> networkInterfaceIds();
+    Set<String> networkInterfaceIds();
 
     // Fluent interfaces for creating NSGs
 

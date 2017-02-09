@@ -114,9 +114,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
-            availabilitySets = new AvailabilitySetsImpl(
-                    super.innerManagementClient.availabilitySets(),
-                    this);
+            availabilitySets = new AvailabilitySetsImpl(this);
         }
         return availabilitySets;
     }
@@ -126,9 +124,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
-            virtualMachines = new VirtualMachinesImpl(super.innerManagementClient.virtualMachines(),
-                    super.innerManagementClient.virtualMachineExtensions(),
-                    super.innerManagementClient.virtualMachineSizes(),
+            virtualMachines = new VirtualMachinesImpl(
                     this,
                     storageManager,
                     networkManager);
@@ -164,8 +160,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
-            virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(super.innerManagementClient.virtualMachineScaleSets(),
-                    this.innerManagementClient.virtualMachineScaleSetVMs(),
+            virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(
                     this,
                     storageManager,
                     networkManager);
@@ -188,8 +183,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public VirtualMachineCustomImages virtualMachineCustomImages() {
         if (virtualMachineCustomImages == null) {
-            virtualMachineCustomImages = new VirtualMachineCustomImagesImpl(super.innerManagementClient.images(),
-                    this);
+            virtualMachineCustomImages = new VirtualMachineCustomImagesImpl(this);
         }
         return virtualMachineCustomImages;
     }
@@ -199,8 +193,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public Disks disks() {
         if (disks == null) {
-            disks = new DisksImpl(super.innerManagementClient.disks(),
-                    this);
+            disks = new DisksImpl(this);
         }
         return disks;
     }
@@ -210,8 +203,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public Snapshots snapshots() {
         if (snapshots == null) {
-            snapshots = new SnapshotsImpl(super.innerManagementClient.snapshots(),
-                    this);
+            snapshots = new SnapshotsImpl(this);
         }
         return snapshots;
     }

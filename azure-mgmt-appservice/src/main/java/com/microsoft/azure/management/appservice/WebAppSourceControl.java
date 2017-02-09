@@ -8,7 +8,7 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.SiteSourceControlInner;
 
 /**
@@ -16,7 +16,7 @@ import com.microsoft.azure.management.appservice.implementation.SiteSourceContro
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebAppSourceControl extends
-    Wrapper<SiteSourceControlInner>,
+    HasInner<SiteSourceControlInner>,
     ChildResource<WebAppBase> {
     /**
      * @return the repository or source control url

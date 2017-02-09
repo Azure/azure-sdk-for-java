@@ -17,7 +17,7 @@ import rx.Completable;
 import java.util.ArrayList;
 
 /**
- *  Implementation for {@link Networks}.
+ *  Implementation for Networks.
  */
 @LangDefinition
 class NetworksImpl
@@ -29,30 +29,28 @@ class NetworksImpl
             NetworkManager>
         implements Networks {
 
-    NetworksImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.virtualNetworks(), networkManager);
+    NetworksImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().virtualNetworks(), networkManager);
     }
 
     @Override
     public PagedList<Network> list() {
-        return wrapList(this.innerCollection.listAll());
+        return wrapList(this.inner().listAll());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+        return wrapList(this.inner().list(groupName));
     }
 
     @Override
     public NetworkImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name).toCompletable();
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -93,11 +91,7 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(
-                name,
-                inner,
-                this.innerCollection,
-                super.myManager);
+        return new NetworkImpl(name, inner, super.manager());
     }
 
     @Override
@@ -105,10 +99,6 @@ class NetworksImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkImpl(
-                inner.name(),
-                inner,
-                this.innerCollection,
-                this.myManager);
+        return new NetworkImpl(inner.name(), inner, this.manager());
     }
 }

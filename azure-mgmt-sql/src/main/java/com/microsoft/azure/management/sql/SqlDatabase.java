@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.DatabaseInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
@@ -29,10 +28,9 @@ import java.util.UUID;
  */
 @Fluent
 public interface SqlDatabase extends
-        IndependentChildResource<SqlServerManager>,
+        IndependentChildResource<SqlServerManager, DatabaseInner>,
         Refreshable<SqlDatabase>,
-        Updatable<SqlDatabase.Update>,
-        Wrapper<DatabaseInner> {
+        Updatable<SqlDatabase.Update> {
     /**
      * @return name of the SQL Server to which this database belongs
      */

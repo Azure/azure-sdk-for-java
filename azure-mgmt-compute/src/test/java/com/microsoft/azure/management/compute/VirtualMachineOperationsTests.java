@@ -1,7 +1,13 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -44,8 +50,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
                 .withAdminUsername("Foo12")
                 .withAdminPassword("abc!@#F0orL")
@@ -119,14 +125,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             Assert.assertTrue(networkNames.contains(createdNetwork.name()));
         }
 
-        Set<String> publicIpAddressNames = new HashSet<>();
+        Set<String> publicIPAddressNames = new HashSet<>();
         for (int i = 0; i < count; i ++) {
-            publicIpAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
+            publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
         for (String publicIpCreatableKey : publicIpCreatableKeys) {
-            PublicIpAddress createdPublicIpAddress = (PublicIpAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
-            Assert.assertNotNull(createdPublicIpAddress);
-            Assert.assertTrue(publicIpAddressNames.contains(createdPublicIpAddress.name()));
+            PublicIPAddress createdPublicIPAddress = (PublicIPAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
+            Assert.assertNotNull(createdPublicIPAddress);
+            Assert.assertTrue(publicIPAddressNames.contains(createdPublicIPAddress.name()));
         }
     }
 
@@ -147,9 +153,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             networkNames.add(String.format("%s-%d", networkNamePrefix, i));
         }
 
-        final Set<String> publicIpAddressNames = new HashSet<>();
+        final Set<String> publicIPAddressNames = new HashSet<>();
         for (int i = 0; i < count; i ++) {
-            publicIpAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
+            publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
 
         final CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(REGION,
@@ -174,10 +180,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                                 Network network = (Network) resource;
                                 Assert.assertTrue(networkNames.contains(network.name()));
                                 Assert.assertNotNull(network.id());
-                            } else if (resource instanceof PublicIpAddress) {
-                                PublicIpAddress publicIpAddress = (PublicIpAddress) resource;
-                                Assert.assertTrue(publicIpAddressNames.contains(publicIpAddress.name()));
-                                Assert.assertNotNull(publicIpAddress.id());
+                            } else if (resource instanceof PublicIPAddress) {
+                                PublicIPAddress publicIPAddress = (PublicIPAddress) resource;
+                                Assert.assertTrue(publicIPAddressNames.contains(publicIPAddress.name()));
+                                Assert.assertNotNull(publicIPAddress.id());
                             }
                         }
                         resourceCount.incrementAndGet();
@@ -215,11 +221,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withAddressSpace("10.0.0.0/28");
             networkCreatableKeys.add(networkCreatable.key());
 
-            Creatable<PublicIpAddress> publicIpAddressCreatable = networkManager.publicIpAddresses()
+            Creatable<PublicIPAddress> publicIPAddressCreatable = networkManager.publicIPAddresses()
                     .define(String.format("%s-%d", publicIpNamePrefix, i))
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable);
-            publicIpCreatableKeys.add(publicIpAddressCreatable.key());
+            publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
 
             Creatable<VirtualMachine> virtualMachineCreatable = computeManager.virtualMachines()
@@ -227,8 +233,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable)
                     .withNewPrimaryNetwork(networkCreatable)
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
                     .withRootPassword("BaR@12!#")

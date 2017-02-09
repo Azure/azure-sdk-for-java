@@ -7,7 +7,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.NsRecord;
-import com.microsoft.azure.management.dns.NsRecordSet;
+import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
@@ -15,23 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link NsRecordSet}.
+ * Implementation of NSRecordSet.
  */
 @LangDefinition
-class NsRecordSetImpl
+class NSRecordSetImpl
         extends DnsRecordSetImpl
-        implements NsRecordSet {
-    NsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+        implements NSRecordSet {
+    NSRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static NsRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
-        return new NsRecordSetImpl(parent,
+    static NSRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
+        return new NSRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.NS.toString())
-                        .withNsRecords(new ArrayList<NsRecord>()),
-                client);
+                        .withNsRecords(new ArrayList<NsRecord>()));
     }
 
     @Override
