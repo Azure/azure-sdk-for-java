@@ -12,35 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * 
+ */
 package com.microsoft.azure.storage.file;
 
 /**
- * Specifies which details to include when listing the shares in this storage account.
+ * Specifies options when calling the delete share operation.
  */
-public enum ShareListingDetails {
+public enum DeleteShareSnapshotsOption {
 
     /**
-     * Specifies including share metadata.
+     * Specifies deleting the blob and its snapshots.
      */
-    METADATA(1),
+    INCLUDE_SNAPSHOTS,
 
     /**
-     * Specifies listing share snapshots.
+     * Specifies deleting the blob only. If the blob has snapshots, this option will result in an error from the
+     * service.
      */
-    SNAPSHOTS(2);
-
-    /**
-     * Returns the value of this enum.
-     */
-    public int value;
-
-    /**
-     * Sets the value of this enum.
-     * 
-     * @param val
-     *            An <code>int</code> which represents the value being assigned.
-     */
-    ShareListingDetails(final int val) {
-        this.value = val;
-    }
+    NONE
 }

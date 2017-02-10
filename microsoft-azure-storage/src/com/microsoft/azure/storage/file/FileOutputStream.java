@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Callable;
@@ -205,6 +206,8 @@ public class FileOutputStream extends OutputStream {
             }
             catch (final StorageException e) {
                 throw Utility.initIOException(e);
+            } catch (URISyntaxException e) {
+                throw Utility.initIOException(e);
             }
         }
         finally {
@@ -227,9 +230,10 @@ public class FileOutputStream extends OutputStream {
      * 
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
+     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    private void commit() throws StorageException {
+    private void commit() throws StorageException, URISyntaxException {
         if (this.options.getStoreFileContentMD5()) {
             this.parentFileRef.getProperties().setContentMD5(Base64.encode(this.md5Digest.digest()));
         }
@@ -271,7 +275,7 @@ public class FileOutputStream extends OutputStream {
 
         worker = new Callable<Void>() {
             @Override
-            public Void call() {
+            public Void call() throws URISyntaxException {
                 try {
                     fileRef.uploadRange(bufferRef, opOffset, opWriteLength, FileOutputStream.this.accessCondition,
                             FileOutputStream.this.options, FileOutputStream.this.opContext);

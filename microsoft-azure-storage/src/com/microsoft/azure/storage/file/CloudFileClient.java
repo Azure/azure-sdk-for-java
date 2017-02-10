@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.file;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
@@ -100,7 +101,29 @@ public final class CloudFileClient extends ServiceClient {
      */
     public CloudFileShare getShareReference(final String shareName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("shareName", shareName);
-        return new CloudFileShare(shareName, this);
+        return this.getShareReference(shareName, null);
+    }
+
+    /**
+     * Gets a {@link CloudFileShare} object with the specified name.
+     * 
+     * @param shareName
+     *            The name of the share, which must adhere to share naming rules. The share name should not
+     *            include any path separator characters (/).
+     *            Share names must be lowercase, between 3-63 characters long and must start with a letter or
+     *            number. Share names may contain only letters, numbers, and the dash (-) character.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot ID of the share.
+     * @return A reference to a {@link CloudFileShare} object.
+     * @throws StorageException
+     * @throws URISyntaxException
+     * 
+     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
+     *      Directories, Files, and Metadata</a>
+     */
+    public CloudFileShare getShareReference(final String shareName, String snapshotID) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("shareName", shareName);
+        return new CloudFileShare(shareName, snapshotID, this);
     }
 
     /**
@@ -111,7 +134,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public Iterable<CloudFileShare> listShares() {
-        return this.listSharesWithPrefix(null, ShareListingDetails.NONE, null /* options */, null /* opContext */);
+        return this.listSharesWithPrefix(null, EnumSet.noneOf(ShareListingDetails.class), null /* options */, null /* opContext */);
     }
 
     /**
@@ -126,7 +149,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public Iterable<CloudFileShare> listShares(final String prefix) {
-        return this.listSharesWithPrefix(prefix, ShareListingDetails.NONE, null /* options */, null /* opContext */);
+        return this.listSharesWithPrefix(prefix, EnumSet.noneOf(ShareListingDetails.class), null /* options */, null /* opContext */);
     }
 
     /**
@@ -136,7 +159,8 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the share name prefix.
      * @param detailsIncluded
-     *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
+     *            A <code>java.util.EnumSet</code> object that contains {@link ShareListingDetails} values that indicate
+     *            whether share snapshots and/or metadata will be returned.
      * @param options
      *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -150,7 +174,7 @@ public final class CloudFileClient extends ServiceClient {
      *         shares for this client.
      */
     @DoesServiceRequest
-    public Iterable<CloudFileShare> listShares(final String prefix, final ShareListingDetails detailsIncluded,
+    public Iterable<CloudFileShare> listShares(final String prefix, final EnumSet<ShareListingDetails> detailsIncluded,
             final FileRequestOptions options, final OperationContext opContext) {
         return this.listSharesWithPrefix(prefix, detailsIncluded, options, opContext);
     }
@@ -166,7 +190,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented() throws StorageException {
-        return this.listSharesSegmented(null, ShareListingDetails.NONE, null, null /* continuationToken */,
+        return this.listSharesSegmented(null, EnumSet.noneOf(ShareListingDetails.class), null, null /* continuationToken */,
                 null /* options */, null /* opContext */);
     }
 
@@ -186,7 +210,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented(final String prefix) throws StorageException {
-        return this.listSharesWithPrefixSegmented(prefix, ShareListingDetails.NONE, null, null /* continuationToken */,
+        return this.listSharesWithPrefixSegmented(prefix, EnumSet.noneOf(ShareListingDetails.class), null, null /* continuationToken */,
                 null /* options */, null /* opContext */);
     }
 
@@ -197,7 +221,8 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the prefix of the share name.
      * @param detailsIncluded
-     *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
+     *            A <code>java.util.EnumSet</code> object that contains {@link ShareListingDetails} values that indicate
+     *            whether share snapshots and/or metadata will be returned.
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater
      *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
@@ -221,7 +246,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented(final String prefix,
-            final ShareListingDetails detailsIncluded, final Integer maxResults,
+            final EnumSet<ShareListingDetails> detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, final FileRequestOptions options,
             final OperationContext opContext) throws StorageException {
         return this.listSharesWithPrefixSegmented(prefix, detailsIncluded, maxResults, continuationToken, options,
@@ -235,7 +260,8 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the prefix of the share name.
      * @param detailsIncluded
-     *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
+     *            A <code>java.util.EnumSet</code> object that contains {@link ShareListingDetails} 
+     *            values that indicate whether snapshots and/or metadata are returned.
      * @param options
      *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -249,7 +275,7 @@ public final class CloudFileClient extends ServiceClient {
      *         shares whose names begin with the specified prefix.
      */
     private Iterable<CloudFileShare> listSharesWithPrefix(final String prefix,
-            final ShareListingDetails detailsIncluded, FileRequestOptions options, OperationContext opContext) {
+            final EnumSet<ShareListingDetails> detailsIncluded, FileRequestOptions options, OperationContext opContext) {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -271,7 +297,8 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the prefix of the share name.
      * @param detailsIncluded
-     *            A {@link FileListingDetails} value that indicates whether share metadata will be returned.
+     *            A <code>java.util.EnumSet</code> object that contains {@link ShareListingDetails} values that indicate
+     *            whether share snapshots and/or metadata will be returned.
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater
      *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
@@ -294,7 +321,7 @@ public final class CloudFileClient extends ServiceClient {
      *             If a storage service error occurred.
      */
     private ResultSegment<CloudFileShare> listSharesWithPrefixSegmented(final String prefix,
-            final ShareListingDetails detailsIncluded, final Integer maxResults,
+            final EnumSet<ShareListingDetails> detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -315,7 +342,7 @@ public final class CloudFileClient extends ServiceClient {
     }
 
     private StorageRequest<CloudFileClient, Void, ResultSegment<CloudFileShare>> listSharesWithPrefixSegmentedImpl(
-            final String prefix, final ShareListingDetails detailsIncluded, final Integer maxResults,
+            final String prefix, final EnumSet<ShareListingDetails> detailsIncluded, final Integer maxResults,
             final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.SHARE);
