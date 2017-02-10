@@ -110,31 +110,6 @@
       <version>1.0.0-beta6-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-core</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-extensions</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-webkey</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
