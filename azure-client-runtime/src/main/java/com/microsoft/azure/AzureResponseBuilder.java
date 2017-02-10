@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure;
@@ -85,7 +84,11 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
 
     @Override
     public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException {
-        return baseBuilder.buildEmptyWithHeaders(response, headerType);
+        ServiceResponse<T> bodyResponse = buildEmpty(response);
+        ServiceResponseWithHeaders<T, THeader> baseResponse = baseBuilder.buildEmptyWithHeaders(response, headerType);
+        ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(baseResponse.headers(), bodyResponse.headResponse());
+        serviceResponse.withBody(bodyResponse.body());
+        return serviceResponse;
     }
 
     /**

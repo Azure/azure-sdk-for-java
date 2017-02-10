@@ -8,7 +8,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-client-authentication</artifactId>
-  <version>1.0.0-beta5-SNAPSHOT</version>
+  <version>1.0.0-beta6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Azure Java Client Authentication Library for AutoRest</name>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.0-beta5-SNAPSHOT</version>
+      <version>1.0.0-beta6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

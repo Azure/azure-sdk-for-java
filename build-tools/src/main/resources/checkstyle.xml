@@ -40,7 +40,11 @@
         <property name="file" value="${samedir}/suppressions.xml"/>
         <property name="optional" value="true"/>
     </module>
-
+    <module name="Header">
+        <property name="header" value="/**\n * Copyright (c) Microsoft Corporation. All rights reserved.\n * Licensed under the MIT License. See License.txt in the project root for\n * license information.\n"/>
+        <property name="fileExtensions" value="java"/>
+    </module>
+    
     <!--
         If you set the basedir property below, then all reported file
         names will be relative to the specified directory. See
@@ -86,7 +90,9 @@
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
         </module>
-        <module name="JavadocType"/>
+        <module name="JavadocType">
+            <property name="scope" value="public"/>
+        </module>
         <module name="JavadocVariable">
             <property name="scope" value="public"/>
         </module>

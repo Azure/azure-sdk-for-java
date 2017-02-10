@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.rest;
@@ -70,6 +69,10 @@ public final class Validator {
                     continue;
                 }
                 JsonProperty annotation = field.getAnnotation(JsonProperty.class);
+                // Skip read-only properties (WRITE_ONLY)
+                if (annotation != null && annotation.access().equals(JsonProperty.Access.WRITE_ONLY)) {
+                    continue;
+                }
                 Object property;
                 try {
                     property = field.get(parameter);
