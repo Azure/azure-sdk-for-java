@@ -226,7 +226,6 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
-            this.serializerAdapter = new JacksonAdapter();
             this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
         }
 
@@ -250,6 +249,28 @@ public final class RestClient {
          */
         public Builder withBaseUrl(Environment environment, Environment.Endpoint endpoint) {
             this.baseUrl = environment.url(endpoint);
+            return this;
+        }
+
+        /**
+         * Sets the serialization adapter.
+         *
+         * @param serializerAdapter the adapter to a serializer
+         * @return the builder itself for chaining
+         */
+        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+            return this;
+        }
+
+        /**
+         * Sets the response builder factory.
+         *
+         * @param responseBuilderFactory the response builder factory
+         * @return the builder itself for chaining
+         */
+        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
+            this.responseBuilderFactory = responseBuilderFactory;
             return this;
         }
 
@@ -391,28 +412,6 @@ public final class RestClient {
         }
 
         /**
-         * Sets the serialization adapter.
-         *
-         * @param serializerAdapter the adapter to a serializer
-         * @return the builder itself for chaining
-         */
-        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
-            this.serializerAdapter = serializerAdapter;
-            return this;
-        }
-
-        /**
-         * Sets the response builder factory.
-         *
-         * @param responseBuilderFactory the response builder factory
-         * @return the builder itself for chaining
-         */
-        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
-            this.responseBuilderFactory = responseBuilderFactory;
-            return this;
-        }
-
-        /**
          * Adds a retry strategy to the client.
          * @param strategy the retry strategy to add
          * @return the builder itself for chaining
@@ -428,17 +427,18 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            Logger logger = LoggerFactory.getLogger(getClass());
             UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
             if (userAgent != null) {
                 userAgentInterceptor.withUserAgent(userAgent);
             }
             if (baseUrl == null) {
-                baseUrl = "https://management.azure.com/";
-                logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
+                throw new IllegalArgumentException("Please set base URL.");
             }
             if (responseBuilderFactory == null) {
-                responseBuilderFactory = new ServiceResponseBuilder.Factory();
+                throw new IllegalArgumentException("Please set response builder factory.");
+            }
+            if (serializerAdapter == null) {
+                throw new IllegalArgumentException("Please set serializer adapter.");
             }
             RetryHandler retryHandler;
             if (retryStrategy == null) {
