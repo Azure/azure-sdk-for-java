@@ -1,3 +1,12 @@
+Changes in 6.0.0
+
+FILE
+ * Exists() calls on Shares and Directories now populates metadata. This was already being done for Files.
+ * CloudFileShare constructor now takes a snapshotID String which can be null.
+ * FileRequest get methods now takes a snapshotID String which can be null.
+ * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
+ * In CloudFileShareProperties, setShareQuota() no longer asserts in bounds. This check has been moved to create() and uploadProperties() in CloudFileShare.
+
 Changes in 5.0.0
 
 BLOB
@@ -5,7 +14,7 @@ BLOB
  * getQualifiedStorageUri() has been deprecated. Please use getSnapshotQualifiedStorageUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
  
- FILE
+FILE
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
  
 QUEUE

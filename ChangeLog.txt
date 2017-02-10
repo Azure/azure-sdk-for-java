@@ -1,3 +1,7 @@
+2017.XX.XX Version 6.0.0
+ * Added support for taking a snapshot of a share.
+ * Fixed Exists() calls on Shares and Directories to now populate metadata. This was already being done for Files.
+
 2017.01.18 Version 5.0.0
  * Prefix support for listing files and directories.
  * Added support for setting public access when creating a blob container
