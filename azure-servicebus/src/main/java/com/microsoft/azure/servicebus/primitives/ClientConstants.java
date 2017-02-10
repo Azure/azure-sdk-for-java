@@ -71,8 +71,9 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
 	public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 	public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
-	public static final String SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
-    public static final String CANCEL_CHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":cancel-scheduled-message";
+	public static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
+    public static final String REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":cancel-scheduled-message";
+    public static final String REQUEST_RESPONSE_PEEK_OPERATION = AmqpConstants.VENDOR + ":peek-message";
 	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
 	public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 	public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
@@ -82,12 +83,16 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
 	public static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
 	public static final String REQUEST_RESPONSE_PARTITION_KEY = "partition-key";
+	public static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMER = "from-sequence-number";
+	public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
 	public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
     public static final String REQUEST_RESPONSE_STATUS_DESCRIPTION = "statusDescription";
     public static final String REQUEST_RESPONSE_ERROR_CONDITION = "errorCondition";
     
     public static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+    public static final int REQUEST_RESPONSE_NOCONTENT_STATUS_CODE = 0xcc;
+    public static final int REQUEST_RESPONSE_NOTFOUND_STATUS_CODE = 0x194;
     public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
-    
+    public static final int REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE = 0x1f7;
 	
 }

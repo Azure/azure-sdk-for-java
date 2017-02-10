@@ -63,13 +63,22 @@ class MessageConverter
 		amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 		
 		return amqpMessage;
-	}	
-		
+	}
+	
+	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage)
+	{
+		return convertAmqpMessageToBrokeredMessage(amqpMessage, null);
+	}
+	
 	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag)
 	{
 		Message amqpMessage = amqpMessageWithDeliveryTag.getMessage();
 		byte[] deliveryTag = amqpMessageWithDeliveryTag.getDeliveryTag();
+		return convertAmqpMessageToBrokeredMessage(amqpMessage, deliveryTag);
+	}
 		
+	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage, byte[] deliveryTag)
+	{		
 		BrokeredMessage brokeredMessage;
 		Section body = amqpMessage.getBody();
 		if(body != null)

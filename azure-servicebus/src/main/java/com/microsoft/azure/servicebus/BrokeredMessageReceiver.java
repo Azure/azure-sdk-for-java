@@ -406,7 +406,7 @@ class BrokeredMessageReceiver extends InitializableEntity implements IMessageRec
 			lockTokens[messageIndex++] = lockToken;
 		}
 		
-		return this.internalReceiver.renewMessageLocksAsync(lockTokens, this.messagingFactory.getOperationTimeout()).thenApply(
+		return this.internalReceiver.renewMessageLocksAsync(lockTokens, null, this.messagingFactory.getOperationTimeout()).thenApply(
 				(newLockedUntilTimes) ->
 					{
 						// Assuming both collections are of same size and in same order (order doesn't really matter as all instants in the response are same).

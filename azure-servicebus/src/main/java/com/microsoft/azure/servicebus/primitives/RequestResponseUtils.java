@@ -42,6 +42,11 @@ public class RequestResponseUtils {
 		return statusCode;
 	}
 	
+	public static Symbol getResponseErrorCondition(Message responseMessage)
+	{
+		return (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
+	}
+	
 	public static Map getResponseBody(Message responseMessage)
 	{
 		return (Map)((AmqpValue)responseMessage.getBody()).getValue();				

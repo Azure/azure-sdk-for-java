@@ -280,12 +280,11 @@ public class RequestResponseLink extends ClientEntity{
 		if(workItem != null)
 		{
 			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode != ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			// Retry on server busy and other retry-able status codes (what are other codes??)
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE)
 			{			
 				// error response
 				Exception responseException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-				
-				// May be retry-able
 				Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(requestId, responseException, workItem.getTimeoutTracker().remaining());
 				if (retryInterval == null)
 				{

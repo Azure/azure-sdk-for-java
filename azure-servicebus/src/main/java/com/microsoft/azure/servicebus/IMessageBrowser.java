@@ -3,21 +3,23 @@ package com.microsoft.azure.servicebus;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+
 public interface IMessageBrowser extends IMessageEntity {
 	
-	IBrokeredMessage Peek();
+	IBrokeredMessage peek() throws InterruptedException, ServiceBusException;
 
-    IBrokeredMessage Peek(long fromSequenceNumber);
+    IBrokeredMessage peek(long fromSequenceNumber) throws InterruptedException, ServiceBusException;
 
-    Collection<IBrokeredMessage> PeekBatch(int messageCount);
+    Collection<IBrokeredMessage> peekBatch(int messageCount) throws InterruptedException, ServiceBusException;
 
-    Collection<IBrokeredMessage> PeekBatch(long fromSequenceNumber, int messageCount);
+    Collection<IBrokeredMessage> peekBatch(long fromSequenceNumber, int messageCount) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<IBrokeredMessage> PeekAsync();
+    CompletableFuture<IBrokeredMessage> peekAsync();
 
-    CompletableFuture<IBrokeredMessage> PeekAsync(long fromSequenceNumber);
+    CompletableFuture<IBrokeredMessage> peekAsync(long fromSequenceNumber);
 
-    CompletableFuture<Collection<IBrokeredMessage>> PeekBatchAsync(int messageCount);
+    CompletableFuture<Collection<IBrokeredMessage>> peekBatchAsync(int messageCount);
 
-    CompletableFuture<Collection<IBrokeredMessage>> PeekBatchAsync(long fromSequenceNumber, int messageCount);
+    CompletableFuture<Collection<IBrokeredMessage>> peekBatchAsync(long fromSequenceNumber, int messageCount);
 }

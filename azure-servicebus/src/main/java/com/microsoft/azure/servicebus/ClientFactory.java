@@ -89,8 +89,7 @@ public class ClientFactory {
 	{
 		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
 		return createMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
-	}
-	
+	}	
 	
 	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
 	{		
@@ -115,5 +114,42 @@ public class ClientFactory {
 		Utils.assertNonNull("messagingFactory", messagingFactory);
 		BrokeredMessageReceiver receiver = new BrokeredMessageReceiver(messagingFactory, entityPath, receiveMode);
 		return receiver.initializeAsync().thenApply((v) -> receiver);
+	}
+	
+	// Create browser
+	public static IMessageBrowser createMessageBrowserFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException, IOException
+	{		
+		return Utils.completeFuture(createMessageBrowserFromConnectionStringAsync(amqpConnectionString));
+	}
+	
+	public static IMessageBrowser createMessageBrowserFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException, IOException
+	{
+		return Utils.completeFuture(createMessageBrowserFromConnectionStringBuilderAsync(amqpConnectionStringBuilder));
+	}
+	
+	public static IMessageBrowser createMessageBrowserFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException, IOException
+	{
+		return Utils.completeFuture(createMessageBrowserFromFromEntityPathAsync(messagingFactory, entityPath));
+	}
+	
+	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromConnectionStringAsync(String amqpConnectionString) throws IOException
+	{
+		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
+		return createMessageBrowserFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
+	}
+	
+	// Throwing IOException is ugly in an async method. Change it
+	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
+	{
+		Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
+		BrokeredMessageBrowser browser = new BrokeredMessageBrowser(amqpConnectionStringBuilder);
+		return browser.initializeAsync().thenApply((v) -> browser);
+	}
+	
+	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) throws IOException
+	{
+		Utils.assertNonNull("messagingFactory", messagingFactory);
+		BrokeredMessageBrowser browser = new BrokeredMessageBrowser(messagingFactory, entityPath);
+		return browser.initializeAsync().thenApply((v) -> browser);
 	}
 }

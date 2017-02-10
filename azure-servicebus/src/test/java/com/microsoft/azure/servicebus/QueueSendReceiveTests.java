@@ -31,6 +31,7 @@ public class QueueSendReceiveTests {
 	private MessagingFactory factory;
 	private IMessageSender sender;
 	private IMessageReceiver receiver;
+	private IMessageBrowser browser;
 	
 	@Before // Fix this. something goes wrong when we do this setup.
 	public void setup() throws IOException, InterruptedException, ExecutionException, ServiceBusException
@@ -49,6 +50,8 @@ public class QueueSendReceiveTests {
 		this.sender.close();
 		if(this.receiver != null)
 			this.receiver.close();
+		if(this.browser != null)
+			this.browser.close();
 		this.factory.close();
 	}
 	
@@ -322,6 +325,44 @@ public class QueueSendReceiveTests {
 		
 		Assert.assertTrue("Scheduled messages not received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId1)));
 		Assert.assertFalse("Cancelled scheduled messages also received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)));
+	}
+	
+	@Test
+	public void testPeekMessage() throws InterruptedException, ServiceBusException, IOException
+	{			
+		this.sender.send(new BrokeredMessage("AMQP Scheduled message"));
+		this.sender.send(new BrokeredMessage("AMQP Scheduled message2"));
+		
+		this.browser = ClientFactory.createMessageBrowserFromEntityPath(factory, this.builder.getEntityPath());
+		IBrokeredMessage peekedMessage1 = this.browser.peek();
+		long firstMessageSequenceNumber = peekedMessage1.getSequenceNumber();
+		IBrokeredMessage peekedMessage2 = this.browser.peek();
+		Assert.assertNotEquals("Peek returned the same message again.", firstMessageSequenceNumber, peekedMessage2.getSequenceNumber());
+		IBrokeredMessage peekedMessage3 = this.browser.peek();
+		Assert.assertNull("Peek shouldn't return any message as all messages were already peeked.", peekedMessage3);
+		
+		// Now peek with fromSequnceNumber.. May not work for partitioned entities
+		IBrokeredMessage peekedMessage4 = this.browser.peek(firstMessageSequenceNumber + 1);
+		Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber + 1, peekedMessage4.getSequenceNumber());
+		IBrokeredMessage peekedMessage5 = this.browser.peek(firstMessageSequenceNumber);
+		Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber, peekedMessage5.getSequenceNumber());
+	}
+	
+	@Test
+	public void testPeekMessageBatch() throws InterruptedException, ServiceBusException, IOException
+	{			
+		this.sender.send(new BrokeredMessage("AMQP Scheduled message"));
+		this.sender.send(new BrokeredMessage("AMQP Scheduled message2"));
+		
+		this.browser = ClientFactory.createMessageBrowserFromEntityPath(factory, this.builder.getEntityPath());
+		Collection<IBrokeredMessage> peekedMessages = this.browser.peekBatch(10);
+		Assert.assertEquals("PeekBatch didnot return all messages.", 2, peekedMessages.size());
+		long firstMessageSequenceNumber = peekedMessages.iterator().next().getSequenceNumber();
+		
+		// Now peek with fromSequnceNumber.. May not work for partitioned entities
+		Collection<IBrokeredMessage> peekedMessagesBatch2 = this.browser.peekBatch(firstMessageSequenceNumber, 10);
+		Assert.assertEquals("PeekBatch with sequence number didnot return all messages.", 2, peekedMessagesBatch2.size());		
+		Assert.assertEquals("PeekBatch with sequence number failed.", firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber());
 	}
 	
 	private void drainAllMessages(ConnectionStringBuilder builder) throws IOException, InterruptedException, ExecutionException, ServiceBusException

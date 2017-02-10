@@ -231,7 +231,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if (returnMessages == null)
 			{
-				returnMessages = new LinkedList<MessageWithDeliveryTag>();
+				returnMessages = new ArrayList<MessageWithDeliveryTag>();
 			}
 
 			returnMessages.add(currentMessage);
@@ -884,12 +884,15 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return new ServiceBusException(false, operation + " failed while dispatching to Reactor, see cause for more details.", cause);
 	}
 	
-	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens, Duration timeout)
+	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens, String sessionId, Duration timeout)
 	{
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
-		// When Session support is added
-		//requestMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, "");
+		if(!StringUtil.isNullOrEmpty(sessionId))
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
+		}
+		
 		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
 		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
 		return responseFuture.thenCompose((responseMessage) -> {
