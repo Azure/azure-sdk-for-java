@@ -165,11 +165,11 @@ public final class RestClient {
             this(new OkHttpClient.Builder(), new Retrofit.Builder());
         }
 
-        private Builder(RestClient restClient) {
+        private Builder(final RestClient restClient) {
             this(restClient.httpClient.newBuilder(), new Retrofit.Builder());
             this.httpClientBuilder.interceptors().clear();
             this.httpClientBuilder.networkInterceptors().clear();
-            this.withBaseUrl(restClient.retrofit.baseUrl().toString());
+            this.baseUrl = restClient.retrofit.baseUrl().toString();
             this.responseBuilderFactory = restClient.responseBuilderFactory;
             this.serializerAdapter = restClient.serializerAdapter;
             if (restClient.credentials != null) {
