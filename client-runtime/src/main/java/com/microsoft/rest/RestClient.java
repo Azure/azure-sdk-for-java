@@ -159,6 +159,8 @@ public final class RestClient {
         private ResponseBuilder.Factory responseBuilderFactory;
         /** The logging interceptor to use. */
         private LoggingInterceptor loggingInterceptor;
+        /** The strategy used for retry failed requests. */
+        private RetryStrategy retryStrategy;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -168,21 +170,39 @@ public final class RestClient {
         }
 
         private Builder(RestClient restClient) {
-            this();
-            this.withBaseUrl(restClient.retrofit.baseUrl().toString())
-                    .withConnectionTimeout(restClient.httpClient.connectTimeoutMillis(), TimeUnit.MILLISECONDS)
-                    .withReadTimeout(restClient.httpClient.readTimeoutMillis(), TimeUnit.MILLISECONDS);
+            this(restClient.httpClient.newBuilder(), new Retrofit.Builder());
+            this.httpClientBuilder.interceptors().clear();
+            this.httpClientBuilder.networkInterceptors().clear();
+            this.withBaseUrl(restClient.retrofit.baseUrl().toString());
+            this.responseBuilderFactory = restClient.responseBuilderFactory;
+            this.serializerAdapter = restClient.serializerAdapter;
             if (restClient.credentials != null) {
-                this.withCredentials(restClient.credentials);
+                this.credentials = restClient.credentials;
             }
             if (restClient.retrofit.callbackExecutor() != null) {
                 this.withCallbackExecutor(restClient.retrofit.callbackExecutor());
             }
             for (Interceptor interceptor : restClient.httpClient.interceptors()) {
-                this.withInterceptor(interceptor);
+                if (interceptor instanceof UserAgentInterceptor) {
+                    this.userAgent = ((UserAgentInterceptor) interceptor).userAgent();
+                } else if (interceptor instanceof RetryHandler) {
+                    this.retryStrategy = ((RetryHandler) interceptor).strategy();
+                } else if (interceptor instanceof RequestIdHeaderInterceptor
+                    || interceptor instanceof BaseUrlHandler) {
+                } else if (interceptor instanceof CustomHeadersInterceptor) {
+                    this.customHeadersInterceptor = new CustomHeadersInterceptor();
+                    this.customHeadersInterceptor.addHeaderMultimap(((CustomHeadersInterceptor) interceptor).headers());
+                } else {
+                    this.withInterceptor(interceptor);
+                }
             }
             for (Interceptor interceptor : restClient.httpClient.networkInterceptors()) {
-                this.withNetworkInterceptor(interceptor);
+                if (interceptor instanceof LoggingInterceptor) {
+                    LoggingInterceptor old = (LoggingInterceptor) interceptor;
+                    this.loggingInterceptor = new LoggingInterceptor(old.logLevel());
+                } else {
+                    this.withNetworkInterceptor(interceptor);
+                }
             }
         }
 
@@ -399,7 +419,7 @@ public final class RestClient {
          * @return the builder itself for chaining
          */
         public Builder withRetryStrategy(RetryStrategy strategy) {
-            this.withInterceptor(new RetryHandler(strategy));
+            this.retryStrategy = retryStrategy;
             return this;
         }
 
@@ -421,12 +441,18 @@ public final class RestClient {
             if (responseBuilderFactory == null) {
                 responseBuilderFactory = new ServiceResponseBuilder.Factory();
             }
+            RetryHandler retryHandler;
+            if (retryStrategy == null) {
+                retryHandler = new RetryHandler();
+            } else {
+                retryHandler = new RetryHandler(retryStrategy);
+            }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
                     .addInterceptor(new RequestIdHeaderInterceptor())
                     .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
-                    .addInterceptor(new RetryHandler())
+                    .addInterceptor(retryHandler)
                     .addNetworkInterceptor(loggingInterceptor)
                     .build();
             return new RestClient(httpClient,

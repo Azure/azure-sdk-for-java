@@ -41,6 +41,13 @@ public class RetryHandler implements Interceptor {
     private RetryStrategy retryStrategy;
 
     /**
+     * @return the strategy used by this handler
+     */
+    public RetryStrategy strategy() {
+        return retryStrategy;
+    }
+
+    /**
      * Initialized an instance of {@link RetryHandler} class.
      * Sets default retry strategy base on Exponential Backoff.
      */

@@ -25,6 +25,13 @@ import java.util.Map;
  */
 public class CustomHeadersInterceptor implements Interceptor {
     /**
+     * @return the currently stored custom headers
+     */
+    public Map<String, List<String>> headers() {
+        return headers;
+    }
+
+    /**
      * A mapping of custom headers.
      */
     private Map<String, List<String>> headers;
