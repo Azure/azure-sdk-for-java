@@ -6,6 +6,7 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.retry.RetryHandler;
@@ -25,6 +26,8 @@ public class RequestIdHeaderInterceptorTests {
     public void newRequestIdForEachCall() throws Exception {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("http://localhost")
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new RequestIdHeaderInterceptor())
                 .withInterceptor(new Interceptor() {
                     private String firstRequestId = null;
@@ -59,6 +62,8 @@ public class RequestIdHeaderInterceptorTests {
     public void sameRequestIdForRetry() throws Exception {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("http://localhost")
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new RequestIdHeaderInterceptor())
                 .withInterceptor(new RetryHandler())
                 .withInterceptor(new Interceptor() {
