@@ -344,8 +344,7 @@ public final class ResourceGroupsInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName) {
-        Boolean result = checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
-        return (result != null) ? result.booleanValue() : false;
+        return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**

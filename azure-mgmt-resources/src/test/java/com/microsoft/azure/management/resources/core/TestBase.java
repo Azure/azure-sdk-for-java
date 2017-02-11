@@ -7,8 +7,10 @@
 package com.microsoft.azure.management.resources.core;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import org.junit.After;
@@ -38,6 +40,8 @@ public abstract class TestBase extends MockIntegrationTestBase {
             credentials = new AzureTestCredentials();
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(MOCK_URI + "/")
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptor), true);
@@ -57,6 +61,8 @@ public abstract class TestBase extends MockIntegrationTestBase {
             credentials = ApplicationTokenCredentials.fromFile(credFile);
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptor), false);
