@@ -13,7 +13,7 @@ import retrofit2.Response;
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public class CloudException extends RestException {
+public final class CloudException extends RestException {
     /**
      * Initializes a new instance of the CloudException class.
      *

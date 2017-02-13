@@ -20,7 +20,7 @@ import java.util.List;
  * status code for the failed request, and also includes error
  * information regarding the failure.
  */
-public class AzureAsyncOperation {
+public final class AzureAsyncOperation {
     /**
      * Default delay in seconds for long running operations.
      */
@@ -47,20 +47,16 @@ public class AzureAsyncOperation {
     static final String CANCELED_STATUS = "Canceled";
 
     /**
-     * Gets failed terminal statuses for long running operations.
-     *
-     * @return a list of statuses indicating a failed operation.
+     * @return a list of statuses indicating a failed operation
      */
-    public static List<String> getFailedStatuses() {
+    static List<String> failedStatuses() {
         return Arrays.asList(FAILED_STATUS, CANCELED_STATUS);
     }
 
     /**
-     * Gets terminal statuses for long running operations.
-     *
-     * @return a list of terminal statuses.
+     * @return a list of terminal statuses for long running operations
      */
-    public static List<String> getTerminalStatuses() {
+    static List<String> terminalStatuses() {
         return Arrays.asList(FAILED_STATUS, CANCELED_STATUS, SUCCESS_STATUS);
     }
 
@@ -70,11 +66,9 @@ public class AzureAsyncOperation {
     private String status;
 
     /**
-     * Gets the status of the asynchronous request.
-     *
-     * @return the status of the asynchronous request.
+     * @return the status of the asynchronous request
      */
-    public String getStatus() {
+    public String status() {
         return this.status;
     }
 
@@ -119,11 +113,9 @@ public class AzureAsyncOperation {
     private int retryAfter;
 
     /**
-     * Gets the delay in seconds.
-     *
-     * @return the delay in seconds.
+     * @return the delay in seconds
      */
-    public int getRetryAfter() {
+    public int retryAfter() {
         return this.retryAfter;
     }
 

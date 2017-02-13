@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * An instance of this class provides additional information about an http error response.
  */
-public class CloudError {
+public final class CloudError {
     /**
      * The error code parsed from the body of the http error response.
      */
