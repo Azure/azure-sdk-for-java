@@ -23,6 +23,9 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
 
     /**
      * Initializes a new instance of the AzureTokenCredentials.
+     *
+     * @param environment the Azure environment to use
+     * @param domain the tenant or domain the credential is authorized to
      */
     public AzureTokenCredentials(AzureEnvironment environment, String domain) {
         super("Bearer", null);

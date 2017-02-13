@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.credentials;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -9,7 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AzureCliSubscription {
+/**
+ * An instance of this class represents a subscription record in azureProfiles.json.
+ */
+final class AzureCliSubscription {
     private String environmentName;
     private String id;
     private String name;
@@ -24,19 +33,19 @@ public class AzureCliSubscription {
     private Map<String, AzureCliToken> userTokens = new ConcurrentHashMap<>();
     private AzureCliToken servicePrincipalToken;
 
-    public String id() {
+    String id() {
         return id;
     }
 
-    public boolean isDefault() {
+    boolean isDefault() {
         return isDefault;
     }
 
-    public String clientId() {
+    String clientId() {
         return clientId;
     }
 
-    public AzureCliSubscription withToken(AzureCliToken token) {
+    AzureCliSubscription withToken(AzureCliToken token) {
         if (isServicePrincipal()) {
             this.servicePrincipalToken = token;
         } else {
@@ -78,7 +87,7 @@ public class AzureCliSubscription {
         return user.name;
     }
 
-    public synchronized AzureTokenCredentials credentialInstance() {
+    synchronized AzureTokenCredentials credentialInstance() {
         if (credentialInstance != null) {
             return credentialInstance;
         }
@@ -130,7 +139,7 @@ public class AzureCliSubscription {
         return credentialInstance;
     }
 
-    public static class UserInfo {
+    private static class UserInfo {
         private String type;
         private String name;
     }

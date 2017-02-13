@@ -27,7 +27,7 @@ final class AzureTokenCredentialsInterceptor implements Interceptor {
      *
      * @param credentials a TokenCredentials instance
      */
-    public AzureTokenCredentialsInterceptor(AzureTokenCredentials credentials) {
+    AzureTokenCredentialsInterceptor(AzureTokenCredentials credentials) {
         this.credentials = credentials;
     }
 

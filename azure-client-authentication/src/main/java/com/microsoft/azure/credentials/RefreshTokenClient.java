@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,10 +22,13 @@ import rx.Observable;
 
 import java.util.Date;
 
-public class RefreshTokenClient {
+/**
+ * This class encloses a Retrofit client that refreshes a token from ADAL.
+ */
+final class RefreshTokenClient {
     private final RefreshTokenService service;
 
-    public RefreshTokenClient(String baseUrl) {
+    RefreshTokenClient(String baseUrl) {
         service = new Retrofit.Builder()
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(new JacksonAdapter().converterFactory())
@@ -28,7 +37,7 @@ public class RefreshTokenClient {
             .build().create(RefreshTokenService.class);
     }
 
-    public AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+    AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
         try {
             RefreshTokenResult result = service.refreshToken(tenant, clientId, "refresh_token", resource, refreshToken)
                 .toBlocking().single();
@@ -54,7 +63,7 @@ public class RefreshTokenClient {
         Observable<RefreshTokenResult> refreshToken(
             @Path("tenant") String tenant,
             @Field("client_id") String clientId,
-            @Field("grant_type") String grant_type,
+            @Field("grant_type") String grantType,
             @Field("resource") String resource,
             @Field("refresh_token") String refreshToken);
     }

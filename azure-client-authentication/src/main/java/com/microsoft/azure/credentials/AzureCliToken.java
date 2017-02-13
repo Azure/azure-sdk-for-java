@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +13,10 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.util.Date;
 
-public class AzureCliToken implements Cloneable {
+/**
+ * An instance of this class represents an entry in accessTokens.json.
+ */
+final class AzureCliToken implements Cloneable {
     @JsonProperty("_authority")
     private String authority;
     @JsonProperty("_clientId")
@@ -26,11 +35,11 @@ public class AzureCliToken implements Cloneable {
     private String refreshToken;
     private String identityProvider;
 
-    public boolean isServicePrincipal() {
+    boolean isServicePrincipal() {
         return servicePrincipalId != null;
     }
 
-    public String tenant() {
+    String tenant() {
         if (isServicePrincipal()) {
             return servicePrincipalTenant;
         } else {
@@ -39,7 +48,7 @@ public class AzureCliToken implements Cloneable {
         }
     }
 
-    public String clientId() {
+    String clientId() {
         if (isServicePrincipal()) {
             return servicePrincipalId;
         } else {
@@ -47,19 +56,19 @@ public class AzureCliToken implements Cloneable {
         }
     }
 
-    public String authority() {
+    String authority() {
         return authority;
     }
 
-    public boolean expired() {
+    boolean expired() {
         return expiresOn != null && expiresOn().before(new Date());
     }
 
-    public String accessToken() {
+    String accessToken() {
         return accessToken;
     }
 
-    public Date expiresOn() {
+    Date expiresOn() {
         if (expiresOnDate == null) {
             try {
                 expiresOnDate = DateTime.parse(expiresOn, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")).toDate();
@@ -83,7 +92,7 @@ public class AzureCliToken implements Cloneable {
         return this;
     }
 
-    public String refreshToken() {
+    String refreshToken() {
         return refreshToken;
     }
 
@@ -92,7 +101,7 @@ public class AzureCliToken implements Cloneable {
         return this;
     }
 
-    public String user() {
+    String user() {
         if (isServicePrincipal()) {
             return servicePrincipalId;
         } else {
@@ -100,15 +109,15 @@ public class AzureCliToken implements Cloneable {
         }
     }
 
-    public boolean isMRRT() {
+    boolean isMRRT() {
         return isMRRT;
     }
 
-    public String resource() {
+    String resource() {
         return resource;
     }
 
-    public AzureCliToken withResource(String resource) {
+    AzureCliToken withResource(String resource) {
         this.resource = resource;
         return this;
     }

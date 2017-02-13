@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.credentials;
@@ -26,8 +25,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Token based credentials for use with a REST Service Client.
  */
-public class AzureCliCredentials extends AzureTokenCredentials {
-    private static final ObjectMapper _mapper = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ssssss"));
+public final class AzureCliCredentials extends AzureTokenCredentials {
+    private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ssssss"));
     /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AzureCliSubscription> subscriptions;
     private String defaultSubscriptionId;
@@ -42,13 +41,13 @@ public class AzureCliCredentials extends AzureTokenCredentials {
 
     private synchronized void loadAccessTokens() throws IOException {
         try {
-            AzureCliSubscription.Wrapper wrapper = _mapper.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-            List<AzureCliToken> tokens = _mapper.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
+            AzureCliSubscription.Wrapper wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
+            List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
             while (wrapper == null || tokens == null || tokens.isEmpty() || wrapper.subscriptions == null || wrapper.subscriptions.isEmpty()) {
                 System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
                 System.in.read();
-                wrapper = _mapper.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-                tokens = _mapper.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
+                wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
+                tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
             }
             for (AzureCliSubscription subscription : wrapper.subscriptions) {
                 for (AzureCliToken token : tokens) {
@@ -69,12 +68,26 @@ public class AzureCliCredentials extends AzureTokenCredentials {
         }
     }
 
+    /**
+     * Creates an instance of AzureCliCredentials with the default Azure CLI configuration.
+     *
+     * @return an instance of AzureCliCredentials
+     * @throws IOException if the Azure CLI token files are not accessible
+     */
     public static AzureCliCredentials create() throws IOException {
         return create(
             Paths.get(System.getProperty("user.home"), ".azure", "azureProfile.json").toFile(),
             Paths.get(System.getProperty("user.home"), ".azure", "accessTokens.json").toFile());
     }
 
+    /**
+     * Creates an instance of AzureCliCredentials with custom locations of the token files.
+     *
+     * @param azureProfile the azureProfile.json file created by Azure CLI
+     * @param accessTokens the accessTokens.json file created by Azure CLI
+     * @return an instance of AzureCliCredentials
+     * @throws IOException if the Azure CLI token files are not accessible
+     */
     public static AzureCliCredentials create(File azureProfile, File accessTokens) throws IOException {
         AzureCliCredentials credentials = new AzureCliCredentials();
         credentials.azureProfile = azureProfile;
@@ -84,18 +97,14 @@ public class AzureCliCredentials extends AzureTokenCredentials {
     }
 
     /**
-     * Gets the active directory application client id.
-     *
-     * @return the active directory application client id.
+     * @return the active directory application client id
      */
     public String clientId() {
         return subscriptions.get(defaultSubscriptionId).clientId();
     }
 
     /**
-     * Gets the tenant or domain the containing the application.
-     *
-     * @return the tenant or domain the containing the application.
+     * @return the tenant or domain the containing the application
      */
     @Override
     public String domain() {
@@ -103,14 +112,15 @@ public class AzureCliCredentials extends AzureTokenCredentials {
     }
 
     /**
-     * Gets the Azure environment to authenticate with.
-     *
-     * @return the Azure environment to authenticate with.
+     * @return the Azure environment to authenticate with
      */
     public AzureEnvironment environment() {
         return subscriptions.get(defaultSubscriptionId).environment();
     }
 
+    /**
+     * @return the default subscription ID logged in in Azure CLI
+     */
     public String defaultSubscriptionId() {
         return defaultSubscriptionId;
     }
