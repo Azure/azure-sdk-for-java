@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Completable;
 import rx.Observable;
@@ -24,12 +26,12 @@ import java.util.List;
  * Implementation of the {@link GenericResources}.
  */
 final class GenericResourcesImpl
-    extends GroupableResourcesImpl<
-        GenericResource,
-        GenericResourceImpl,
-        GenericResourceInner,
-        ResourcesInner,
-        ResourceManager>
+    extends ListableGroupableResourcesPageImpl<
+            GenericResource,
+            GenericResourceImpl,
+            GenericResourceInner,
+            ResourcesInner,
+            ResourceManager>
     implements GenericResources {
 
     GenericResourcesImpl(ResourceManager resourceManager) {
@@ -201,5 +203,10 @@ final class GenericResourcesImpl
                         return ResourceUtils.defaultApiVersion(id, provider);
                     }
                 });
+    }
+
+    @Override
+    protected Observable<Page<GenericResourceInner>> listAsyncPage() {
+        return innerCollection.listAsync();
     }
 }

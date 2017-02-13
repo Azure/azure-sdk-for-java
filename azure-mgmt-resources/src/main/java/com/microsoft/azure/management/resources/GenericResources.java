@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingInGroupByTag;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsAsyncListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -29,7 +30,8 @@ public interface GenericResources extends
         SupportsGettingById<GenericResource>,
         SupportsCreating<GenericResource.DefinitionStages.Blank>,
         SupportsDeletingById,
-        HasManager<ResourceManager> {
+        HasManager<ResourceManager>,
+        SupportsAsyncListing<GenericResource> {
     /**
      * Checks if a resource exists in a resource group.
      *
