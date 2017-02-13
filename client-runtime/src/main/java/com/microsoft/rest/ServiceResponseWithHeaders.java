@@ -15,9 +15,9 @@ import retrofit2.Response;
  * @param <TBody> the type of the response
  * @param <THeader> the type of the response header object
  */
-public class ServiceResponseWithHeaders<TBody, THeader> extends ServiceResponse<TBody> {
+public final class ServiceResponseWithHeaders<TBody, THeader> extends ServiceResponse<TBody> {
     /**
-     * The response header headers.
+     * The response headers object.
      */
     private THeader headers;
 

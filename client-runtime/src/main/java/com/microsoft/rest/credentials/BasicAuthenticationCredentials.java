@@ -35,20 +35,16 @@ public class BasicAuthenticationCredentials implements ServiceClientCredentials 
     }
 
     /**
-     * Get the user name of the credential.
-     *
-     * @return the user name
+     * @return the user name of the credential
      */
     public String getUserName() {
         return userName;
     }
 
     /**
-     * Get the password of the credential.
-     *
-     * @return the password
+     * @return the password of the credential
      */
-    public String getPassword() {
+    protected String getPassword() {
         return password;
     }
 
