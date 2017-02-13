@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Custom serializer for serializing {@link CloudError} objects.
  */
-public class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
+final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
     /** Object mapper for default deserializations. */
     private ObjectMapper mapper;
 
@@ -30,7 +30,7 @@ public class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
      *
      * @param mapper the object mapper for default deserializations.
      */
-    protected CloudErrorDeserializer(ObjectMapper mapper) {
+    private CloudErrorDeserializer(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -41,7 +41,7 @@ public class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
      * @param mapper the object mapper for default deserializations.
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
-    public static SimpleModule getModule(ObjectMapper mapper) {
+    static SimpleModule getModule(ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(CloudError.class, new CloudErrorDeserializer(mapper));
         return module;

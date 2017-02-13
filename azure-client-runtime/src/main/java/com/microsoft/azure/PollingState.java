@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
  *
  * @param <T> the type of the resource the operation returns.
  */
-class PollingState<T> {
+final class PollingState<T> {
     /** The Retrofit response object. */
     private Response<ResponseBody> response;
     /** The polling status. */

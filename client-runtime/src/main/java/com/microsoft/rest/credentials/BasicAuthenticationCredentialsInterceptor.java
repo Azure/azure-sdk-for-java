@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Basic Auth credentials interceptor for placing a basic auth credential into request headers.
  */
-public class BasicAuthenticationCredentialsInterceptor implements Interceptor {
+final class BasicAuthenticationCredentialsInterceptor implements Interceptor {
     /**
      * The credentials instance to apply to the HTTP client pipeline.
      */
@@ -28,7 +28,7 @@ public class BasicAuthenticationCredentialsInterceptor implements Interceptor {
      *
      * @param credentials a BasicAuthenticationCredentials instance
      */
-    public BasicAuthenticationCredentialsInterceptor(BasicAuthenticationCredentials credentials) {
+    BasicAuthenticationCredentialsInterceptor(BasicAuthenticationCredentials credentials) {
         this.credentials = credentials;
     }
 

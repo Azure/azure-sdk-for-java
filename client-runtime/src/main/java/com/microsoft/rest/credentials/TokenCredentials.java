@@ -7,6 +7,7 @@
 package com.microsoft.rest.credentials;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import java.io.IOException;
 
@@ -35,30 +36,15 @@ public class TokenCredentials implements ServiceClientCredentials {
     }
 
     /**
-     * Get the secure token.
+     * Get the secure token. Override this method to provide a mechanism
+     * for acquiring tokens.
      *
+     * @param request the context of the HTTP request
      * @return the secure token.
      * @throws IOException exception thrown from token acquisition operations.
      */
-    public String getToken() throws IOException {
+    protected String getToken(Request request) throws IOException {
         return token;
-    }
-
-    /**
-     * Refresh the secure token.
-     * @throws IOException exception thrown from token acquisition operations.
-     */
-    public void refreshToken() throws IOException {
-        // do nothing
-    }
-
-    /**
-     * Set the secure token.
-     *
-     * @param token the token string
-     */
-    public void setToken(String token) {
-        this.token = token;
     }
 
     /**
@@ -66,7 +52,7 @@ public class TokenCredentials implements ServiceClientCredentials {
      *
      * @return the authentication scheme
      */
-    public String getScheme() {
+    protected String getScheme() {
         return scheme;
     }
 

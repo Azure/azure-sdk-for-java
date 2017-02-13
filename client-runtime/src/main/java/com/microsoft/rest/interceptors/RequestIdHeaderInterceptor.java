@@ -17,7 +17,7 @@ import java.util.UUID;
  * An instance of this class puts an UUID in the request header. Azure uses
  * the request id as the unique identifier for
  */
-public class RequestIdHeaderInterceptor implements Interceptor {
+public final class RequestIdHeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();

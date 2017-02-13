@@ -13,7 +13,6 @@ import com.microsoft.rest.interceptors.UserAgentInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import com.microsoft.rest.serializer.JacksonConverterFactory;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 import org.junit.Assert;
@@ -110,7 +109,7 @@ public class RestClientTests {
 
                 @Override
                 public Converter.Factory converterFactory() {
-                    return JacksonConverterFactory.create();
+                    return retrofit2.converter.jackson.JacksonConverterFactory.create();
                 }
 
                 @Override

@@ -22,7 +22,7 @@ import java.util.Map;
  * An instance of this class enables adding custom headers in client requests
  * when added to the {@link okhttp3.OkHttpClient} interceptors.
  */
-public class CustomHeadersInterceptor implements Interceptor {
+public final class CustomHeadersInterceptor implements Interceptor {
     /**
      * @return the currently stored custom headers
      */

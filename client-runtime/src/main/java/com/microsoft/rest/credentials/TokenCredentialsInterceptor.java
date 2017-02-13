@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Token credentials filter for placing a token credential into request headers.
  */
-public class TokenCredentialsInterceptor implements Interceptor {
+final class TokenCredentialsInterceptor implements Interceptor {
     /**
      * The credentials instance to apply to the HTTP client pipeline.
      */
@@ -27,24 +27,15 @@ public class TokenCredentialsInterceptor implements Interceptor {
      *
      * @param credentials a TokenCredentials instance
      */
-    public TokenCredentialsInterceptor(TokenCredentials credentials) {
+    TokenCredentialsInterceptor(TokenCredentials credentials) {
         this.credentials = credentials;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Response response = sendRequestWithAuthorization(chain);
-        if (response == null || response.code() == 401) {
-            credentials.refreshToken();
-            response = sendRequestWithAuthorization(chain);
-        }
-        return response;
-    }
-
-    private Response sendRequestWithAuthorization(Chain chain) throws IOException {
         Request newRequest = chain.request().newBuilder()
-                .header("Authorization", credentials.getScheme() + " " + credentials.getToken())
-                .build();
+            .header("Authorization", credentials.getScheme() + " " + credentials.getToken(chain.request()))
+            .build();
         return chain.proceed(newRequest);
     }
 }

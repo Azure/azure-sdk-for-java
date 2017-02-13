@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
  * For example, a property with annotation @JsonProperty(value = "properties.name")
  * will be mapped to a top level "name" property in the POJO model.
  */
-public class FlatteningDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
+public final class FlatteningDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     /**
      * The default mapperAdapter for the current type.
      */

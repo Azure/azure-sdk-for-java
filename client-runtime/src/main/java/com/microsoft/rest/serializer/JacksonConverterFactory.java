@@ -24,24 +24,14 @@ import java.lang.reflect.Type;
 /**
  * A similar implementation of {@link retrofit2.converter.jackson.JacksonConverterFactory} which supports polymorphism.
  */
-public final class JacksonConverterFactory extends Converter.Factory {
-    /**
-     * Create an instance using a default {@link ObjectMapper} instance for conversion.
-     *
-     * @return an instance of JacksonConverterFactory
-     */
-    public static JacksonConverterFactory create() {
-        return create(new ObjectMapper());
-    }
-
-
+final class JacksonConverterFactory extends Converter.Factory {
     /**
      * Create an instance using {@code mapper} for conversion.
      *
      * @param mapper a user-provided {@link ObjectMapper} to use
      * @return an instance of JacksonConverterFactory
      */
-    public static JacksonConverterFactory create(ObjectMapper mapper) {
+    static JacksonConverterFactory create(ObjectMapper mapper) {
         return new JacksonConverterFactory(mapper);
     }
 

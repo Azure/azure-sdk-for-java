@@ -9,32 +9,29 @@ package com.microsoft.azure.credentials;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.rest.credentials.TokenCredentials;
-import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  * Token based credentials for use with a REST Service Client.
  */
-public class UserTokenCredentials extends TokenCredentials implements AzureTokenCredentials {
+public class UserTokenCredentials extends AzureTokenCredentials {
     /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AuthenticationResult> tokens;
     /** The Active Directory application client id. */
     private String clientId;
-    /** The domain or tenant id containing this application. */
-    private String domain;
     /** The user name for the Organization Id account. */
     private String username;
     /** The password for the Organization Id account. */
     private String password;
-    /** The Azure environment to authenticate with. */
-    private AzureEnvironment environment;
+
+    private RefreshTokenClient refreshTokenClient;
 
     /**
      * Initializes a new instance of the UserTokenCredentials.
@@ -47,13 +44,12 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *                    If null is provided, AzureEnvironment.AZURE will be used.
      */
     public UserTokenCredentials(String clientId, String domain, String username, String password, AzureEnvironment environment) {
-        super(null, null); // defer token acquisition
+        super(environment, domain); // defer token acquisition
         this.clientId = clientId;
-        this.domain = domain;
         this.username = username;
         this.password = password;
-        this.environment = (environment == null) ? AzureEnvironment.AZURE : environment;
-        this.tokens = new HashMap<>();
+        this.tokens = new ConcurrentHashMap<>();
+        this.refreshTokenClient = new RefreshTokenClient(environment.authenticationEndpoint());
     }
 
     /**
@@ -61,18 +57,8 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *
      * @return the active directory application client id.
      */
-    public String getClientId() {
+    public String clientId() {
         return clientId;
-    }
-
-    /**
-     * Gets the tenant or domain the containing the application.
-     *
-     * @return the tenant or domain the containing the application.
-     */
-    @Override
-    public String domain() {
-        return domain;
     }
 
     /**
@@ -80,7 +66,7 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *
      * @return the user name.
      */
-    public String getUsername() {
+    public String username() {
         return username;
     }
 
@@ -89,41 +75,48 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *
      * @return the password.
      */
-    public String getPassword() {
+    public String password() {
         return password;
     }
 
     @Override
-    public String getToken(String resource) throws IOException {
+    public synchronized String getToken(String resource) throws IOException {
+        // Find exact match for the resource
         AuthenticationResult authenticationResult = tokens.get(resource);
-        if (authenticationResult == null || authenticationResult.getExpiresOnDate().before(new Date())) {
-            authenticationResult = acquireAccessToken(resource);
+        // Return if found and not expired
+        if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
+            return authenticationResult.getAccessToken();
         }
+        // If found then refresh
+        boolean shouldRefresh = authenticationResult != null;
+        // If not found for the resource, but is MRRT then also refresh
+        if (authenticationResult == null && !tokens.isEmpty()) {
+            authenticationResult = new ArrayList<>(tokens.values()).get(0);
+            shouldRefresh = authenticationResult.isMultipleResourceRefreshToken();
+        }
+        // Refresh
+        if (shouldRefresh) {
+            authenticationResult = acquireAccessTokenFromRefreshToken(resource, authenticationResult.getRefreshToken(), authenticationResult.isMultipleResourceRefreshToken());
+        }
+        // If refresh fails or not refreshable, acquire new token
+        if (authenticationResult == null) {
+            authenticationResult = acquireNewAccessToken(resource);
+        }
+        tokens.put(resource, authenticationResult);
         return authenticationResult.getAccessToken();
     }
 
-    /**
-     * Gets the Azure environment to authenticate with.
-     *
-     * @return the Azure environment to authenticate with.
-     */
-    public AzureEnvironment environment() {
-        return environment;
-    }
-
-    private AuthenticationResult acquireAccessToken(String resource) throws IOException {
+    AuthenticationResult acquireNewAccessToken(String resource) throws IOException {
         String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
-            AuthenticationResult result = context.acquireToken(
+            return context.acquireToken(
                     resource,
-                    this.getClientId(),
-                    this.getUsername(),
-                    this.getPassword(),
+                    this.clientId(),
+                    this.username(),
+                    this.password(),
                     null).get();
-            tokens.put(resource, result);
-            return result;
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         } finally {
@@ -132,26 +125,14 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
     }
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
-    private AuthenticationResult acquireAccessTokenFromRefreshToken(String resource) throws IOException {
-        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
+    AuthenticationResult acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) throws IOException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
-            AuthenticationResult result = context.acquireTokenByRefreshToken(
-                    tokens.get(resource).getRefreshToken(),
-                    this.getClientId(),
-                    null, null).get();
-            tokens.put(resource, result);
-            return result;
+            return refreshTokenClient.refreshToken(domain(), clientId(), resource, refreshToken, isMultipleResourceRefreshToken);
         } catch (Exception e) {
-            throw new IOException(e.getMessage(), e);
+            return null;
         } finally {
             executor.shutdown();
         }
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }

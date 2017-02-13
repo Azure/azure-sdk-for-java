@@ -17,22 +17,22 @@ public final class AzureEnvironment implements Environment {
     /**
      * Base URL for calls to Azure management API.
      */
-    private String resourceManagerEndpoint;
+    private final String resourceManagerEndpoint;
 
     /**
      * ActiveDirectory Endpoint for the authentications.
      */
-    private String authenticationEndpoint;
+    private final String authenticationEndpoint;
 
     /**
      * Base URL for calls to service management and authentications to Active Directory.
      */
-    private String managementEndpoint;
+    private final String managementEndpoint;
 
     /**
      * Base URL for calls to graph API.
      */
-    private String graphEndpoint;
+    private final String graphEndpoint;
 
     /**
      * Initializes an instance of AzureEnvironment class.

@@ -19,7 +19,7 @@ import java.io.IOException;
  * part as replacements[i+1]. E.g. {subdomain}.microsoft.com can be set
  * dynamically by setting header x-ms-parameterized-host: "{subdomain}, azure"
  */
-public class BaseUrlHandler implements Interceptor {
+public final class BaseUrlHandler implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();

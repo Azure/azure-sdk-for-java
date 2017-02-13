@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * Custom serializer for serializing {@link DateTime} object into ISO8601 formats.
  */
-public class DateTimeSerializer extends JsonSerializer<DateTime> {
+public final class DateTimeSerializer extends JsonSerializer<DateTime> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.

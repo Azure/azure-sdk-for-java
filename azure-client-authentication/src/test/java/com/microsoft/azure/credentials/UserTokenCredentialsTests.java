@@ -25,10 +25,10 @@ public class UserTokenCredentialsTests {
 
     @Test
     public void testAcquireToken() throws Exception {
-        credentials.refreshToken();
-        Assert.assertEquals("token1", credentials.getToken());
+        credentials.acquireAccessToken();
+        Assert.assertEquals("token1", credentials.getToken((String)null));
         Thread.sleep(1500);
-        Assert.assertEquals("token2", credentials.getToken());
+        Assert.assertEquals("token2", credentials.getToken((String)null));
     }
 
     public static class MockUserTokenCredentials extends UserTokenCredentials {
@@ -39,7 +39,7 @@ public class UserTokenCredentialsTests {
         }
 
         @Override
-        public String getToken() throws IOException {
+        public String getToken(String resource) throws IOException {
             if (authenticationResult != null
                 && authenticationResult.getExpiresOnDate().before(new Date())) {
                 acquireAccessTokenFromRefreshToken();
@@ -47,11 +47,6 @@ public class UserTokenCredentialsTests {
                 acquireAccessToken();
             }
             return authenticationResult.getAccessToken();
-        }
-
-        @Override
-        public void refreshToken() throws IOException {
-            acquireAccessToken();
         }
 
         private void acquireAccessToken() throws IOException {
