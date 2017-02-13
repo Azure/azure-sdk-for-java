@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Error reponse indicates CDN service is not able to process the incoming
@@ -17,11 +18,13 @@ public class ErrorResponse {
     /**
      * Error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * Error message indicating why the operation failed.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

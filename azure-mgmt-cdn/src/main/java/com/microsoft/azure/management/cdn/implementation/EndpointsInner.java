@@ -44,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Endpoints.
  */
-public final class EndpointsInner {
+public class EndpointsInner {
     /** The Retrofit service to perform REST calls. */
     private EndpointsService service;
     /** The service client containing this operation class. */

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Output of check resource usage API.
@@ -16,21 +17,25 @@ public class ResourceUsageInner {
     /**
      * Resource type of the usages.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * Unit of the usage. e.g. Count.
      */
+    @JsonProperty(value = "unit")
     private String unit;
 
     /**
      * Actual value of the resource type.
      */
+    @JsonProperty(value = "currentValue")
     private Integer currentValue;
 
     /**
      * Quota of the resource type.
      */
+    @JsonProperty(value = "limit")
     private Integer limit;
 
     /**

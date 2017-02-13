@@ -8,6 +8,7 @@ package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
@@ -66,6 +67,20 @@ public interface CdnProfiles extends
      * @return list of available CDN REST operations.
      */
     PagedList<Operation> listOperations();
+
+    /**
+     * Check the quota and actual usage of the CDN profiles under the current subscription.
+     *
+     * @return quotas and actual usages of the CDN profiles under the current subscription.
+     */
+    PagedList<ResourceUsage> listResourceUsage();
+
+    /**
+     * Lists all the edge nodes of a CDN service.
+     *
+     * @return list of all the edge nodes of a CDN service.
+     */
+    PagedList<EdgeNode> listEdgeNodes();
 
     /**
      * Starts an existing stopped CDN endpoint.

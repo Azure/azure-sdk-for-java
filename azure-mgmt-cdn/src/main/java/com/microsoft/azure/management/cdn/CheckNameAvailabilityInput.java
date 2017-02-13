@@ -17,13 +17,13 @@ public class CheckNameAvailabilityInput {
     /**
      * The resource name to validate.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * The type of the resource whose name is to be validated.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private String type;
 
     /**
