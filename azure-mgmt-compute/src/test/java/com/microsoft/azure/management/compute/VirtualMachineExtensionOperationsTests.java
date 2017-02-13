@@ -113,8 +113,8 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .attach()
                 .apply();
 
-        Assert.assertTrue(vm.extensions().size() > 0);
-        Assert.assertTrue(vm.extensions().containsKey("VMAccessForLinux"));
+        Assert.assertTrue(vm.getExtensions().size() > 0);
+        Assert.assertTrue(vm.getExtensions().containsKey("VMAccessForLinux"));
 
         // Update the VMAccess Linux extension to reset password again for the user 'Foo12'
         //
@@ -159,9 +159,9 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .attach()
                 .create();
 
-        Assert.assertTrue(vm.extensions().size() > 0);
-        Assert.assertTrue(vm.extensions().containsKey("CustomScriptForLinux"));
-        VirtualMachineExtension customScriptExtension = vm.extensions().get("CustomScriptForLinux");
+        Assert.assertTrue(vm.getExtensions().size() > 0);
+        Assert.assertTrue(vm.getExtensions().containsKey("CustomScriptForLinux"));
+        VirtualMachineExtension customScriptExtension = vm.getExtensions().get("CustomScriptForLinux");
         Assert.assertEquals(customScriptExtension.publisherName(), "Microsoft.OSTCExtensions");
         Assert.assertEquals(customScriptExtension.typeName(), "CustomScriptForLinux");
         Assert.assertEquals(customScriptExtension.autoUpgradeMinorVersionEnabled(), true);
@@ -172,7 +172,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutExtension("CustomScriptForLinux")
                 .apply();
 
-        Assert.assertTrue(vm.extensions().size() == 0);
+        Assert.assertTrue(vm.getExtensions().size() == 0);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .attach()
                 .create();
 
-        Assert.assertTrue(vm.extensions().size() > 0);
+        Assert.assertTrue(vm.getExtensions().size() > 0);
 
         // Get the created virtual machine via VM List not by VM GET
         List<VirtualMachine> virtualMachines = computeManager.virtualMachines()
@@ -236,13 +236,13 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         Assert.assertNotNull(vmWithExtensionReference);
 
         VirtualMachineExtension accessExtension = null;
-        for (VirtualMachineExtension extension : vmWithExtensionReference.extensions().values()) {
+        for (VirtualMachineExtension extension : vmWithExtensionReference.getExtensions().values()) {
             if (extension.name().equalsIgnoreCase("VMAccessForLinux")) {
                 accessExtension = extension;
                 break;
             }
         }
-        // Even though VM's inner contain just extension reference VirtualMachine::extensions()
+        // Even though VM's inner contain just extension reference VirtualMachine::getExtensions()
         // should resolve the reference and get full extension.
         Assert.assertNotNull(accessExtension);
         Assert.assertNotNull(accessExtension.publisherName());

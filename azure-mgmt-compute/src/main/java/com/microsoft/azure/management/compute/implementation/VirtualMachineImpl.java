@@ -1270,7 +1270,12 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> extensions() {
+    public Observable<VirtualMachineExtension> getExtensionsAsync() {
+        return this.virtualMachineExtensions.listAsync();
+    }
+
+    @Override
+    public Map<String, VirtualMachineExtension> getExtensions() {
         return this.virtualMachineExtensions.asMap();
     }
 

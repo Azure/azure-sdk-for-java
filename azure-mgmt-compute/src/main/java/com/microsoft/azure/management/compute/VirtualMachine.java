@@ -204,9 +204,14 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return the extensions attached to the Azure Virtual Machine
+     * @return an observable that emits extensions attached to the virtual machine
      */
-    Map<String, VirtualMachineExtension> extensions();
+    Observable<VirtualMachineExtension> getExtensionsAsync();
+
+    /**
+     * @return the extensions attached to the Virtual Machine
+     */
+    Map<String, VirtualMachineExtension> getExtensions();
 
     /**
      * @return the plan value
