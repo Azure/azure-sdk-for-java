@@ -178,4 +178,10 @@ public class VirtualMachineScaleSetExtensionImpl
         nullifySettingsIfEmpty();
         return this.parent().withExtension(this);
     }
+
+    @Override
+    public VirtualMachineScaleSetImpl parent() {
+        nullifySettingsIfEmpty();
+        return super.parent();
+    }
 }
