@@ -240,10 +240,21 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() {
-        this.virtualMachineInstanceView = this.manager().inner().virtualMachines().get(this.resourceGroupName(),
+        return refreshInstanceViewAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineInstanceView> refreshInstanceViewAsync() {
+        return this.manager().inner().virtualMachines().getAsync(this.resourceGroupName(),
                 this.name(),
-                InstanceViewTypes.INSTANCE_VIEW).instanceView();
-        return this.virtualMachineInstanceView;
+                InstanceViewTypes.INSTANCE_VIEW)
+                .map(new Func1<VirtualMachineInner, VirtualMachineInstanceView>() {
+                    @Override
+                    public VirtualMachineInstanceView call(VirtualMachineInner virtualMachineInner) {
+                        virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        return virtualMachineInstanceView;
+                    }
+                });
     }
 
     // SETTERS

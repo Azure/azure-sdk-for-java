@@ -22,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Observable;
 
 import java.util.Map;
 
@@ -102,6 +103,13 @@ public interface VirtualMachine extends
      */
     @Method
     VirtualMachineInstanceView refreshInstanceView();
+
+    /**
+     * Refreshes the virtual machine instance view to sync with Azure.
+     *
+     * @return an observable that emits the instance view of the virtual machine.
+     */
+    Observable<VirtualMachineInstanceView> refreshInstanceViewAsync();
 
     // Getters
     //
