@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
@@ -114,7 +115,8 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
             for (int i = 0; i != ((ParameterizedType) type).getActualTypeArguments().length; ++i) {
                 javaTypeArgs[i] = constructJavaType(((ParameterizedType) type).getActualTypeArguments()[i]);
             }
-            return mapper.getTypeFactory().constructParametricType((Class<?>) ((ParameterizedType) type).getRawType(), javaTypeArgs);
+            return mapper.getTypeFactory().constructType(type,
+                TypeBindings.create((Class<?>) ((ParameterizedType) type).getRawType(), javaTypeArgs));
         } else {
             return mapper.getTypeFactory().constructType(type);
         }
