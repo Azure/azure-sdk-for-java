@@ -11,16 +11,18 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
+import rx.Observable;
 
+// TODO - ans - Fix batch list. Remove change in Inner Class.
 /**
  * Implementation for BatchAccounts and its parent interfaces.
  */
 @LangDefinition
 public class BatchAccountsImpl
-        extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
+        extends ListableGroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
 
@@ -49,6 +51,11 @@ public class BatchAccountsImpl
     @Override
     public PagedList<BatchAccount> listByGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<BatchAccount> listByGroupAsync(String resourceGroupName) {
+        return convertPageToIndividualResourcesAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override

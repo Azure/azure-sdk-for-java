@@ -11,6 +11,7 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageTypes;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation for VirtualMachineExtensionImageTypes.
@@ -30,6 +31,12 @@ class VirtualMachineExtensionImageTypesImpl
     @Override
     public PagedList<VirtualMachineExtensionImageType> list() {
         return wrapList(this.client.listTypes(this.publisher.region().toString(), this.publisher.name()));
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionImageType> listAsync() {
+        return convertListToIndividualResourcesAsync(this.client.listTypesAsync(
+                this.publisher.region().toString(), this.publisher.name()));
     }
 
     @Override

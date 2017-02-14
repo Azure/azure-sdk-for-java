@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of ARecordSets.
@@ -39,6 +40,14 @@ class ARecordSetsImpl
     @Override
     public PagedList<ARecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.A));
+    }
+
+    @Override
+    public Observable<ARecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
                 RecordType.A));
     }

@@ -52,6 +52,11 @@ class ServicePrincipalsImpl
     }
 
     @Override
+    public Observable<ServicePrincipal> listAsync() {
+        return convertPageToIndividualResourcesAsync(inner().listAsync());
+    }
+
+    @Override
     protected ServicePrincipalImpl wrapModel(ServicePrincipalInner servicePrincipalInner) {
         if (servicePrincipalInner == null) {
             return null;

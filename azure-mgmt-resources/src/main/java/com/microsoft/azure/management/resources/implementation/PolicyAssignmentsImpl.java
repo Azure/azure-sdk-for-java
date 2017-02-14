@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -34,6 +35,11 @@ final class PolicyAssignmentsImpl
     @Override
     public PagedList<PolicyAssignment> list() {
         return wrapList(client.list());
+    }
+
+    @Override
+    public Observable<PolicyAssignment> listAsync() {
+        return convertPageToIndividualResourcesAsync(client.listAsync());
     }
 
     @Override
@@ -77,5 +83,10 @@ final class PolicyAssignmentsImpl
     @Override
     public PagedList<PolicyAssignment> listByGroup(String resourceGroupName) {
         return wrapList(client.listForResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<PolicyAssignment> listByGroupAsync(String resourceGroupName) {
+        return convertPageToIndividualResourcesAsync(client.listForResourceGroupAsync(resourceGroupName));
     }
 }

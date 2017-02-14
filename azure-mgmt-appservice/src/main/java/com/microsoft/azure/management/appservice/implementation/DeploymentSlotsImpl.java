@@ -16,6 +16,10 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * The implementation DeploymentSlots.
@@ -110,6 +114,24 @@ class DeploymentSlotsImpl
     @Override
     public PagedList<DeploymentSlot> list() {
         return listByParent(parent.resourceGroupName(), parent.name());
+    }
+
+    @Override
+    public Observable<DeploymentSlot> listAsync() {
+        return convertPageToListAsync(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name()))
+                .flatMap(new Func1<List<SiteInner>, Observable<DeploymentSlot>>() {
+                    @Override
+                    public Observable<DeploymentSlot> call(List<SiteInner> siteInners) {
+                        return Observable.from(siteInners).flatMap(new Func1<SiteInner, Observable<DeploymentSlot>>() {
+                            @Override
+                            public Observable<DeploymentSlot> call(SiteInner siteInner) {
+                                siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(),
+                                        parent.name(), siteInner.name().replaceAll(".*/", "")));
+                                return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings();
+                            }
+                        });
+                    }
+        });
     }
 
     @Override

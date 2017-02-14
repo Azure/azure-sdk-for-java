@@ -5,20 +5,23 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for {@link PublicIPAddresses}.
  */
 @LangDefinition
 class PublicIPAddressesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             PublicIPAddress,
             PublicIPAddressImpl,
             PublicIPAddressInner,
@@ -74,5 +77,15 @@ class PublicIPAddressesImpl
             return null;
         }
         return new PublicIPAddressImpl(inner.id(), inner, this.manager());
+    }
+
+    @Override
+    protected Observable<Page<PublicIPAddressInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<PublicIPAddressInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

@@ -6,19 +6,22 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
 @LangDefinition
 class RedisCachesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
                 RedisCache,
                 RedisCacheImpl,
                 RedisResourceInner,
@@ -72,5 +75,15 @@ class RedisCachesImpl
                 redisResourceInner.name(),
                 redisResourceInner,
                 this.manager());
+    }
+
+    @Override
+    protected Observable<Page<RedisResourceInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<RedisResourceInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

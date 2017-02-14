@@ -5,19 +5,22 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for RouteTables.
  */
 @LangDefinition
 class RouteTablesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             RouteTable,
             RouteTableImpl,
             RouteTableInner,
@@ -66,5 +69,15 @@ class RouteTablesImpl
     @Override
     protected RouteTableImpl wrapModel(RouteTableInner inner) {
         return new RouteTableImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    protected Observable<Page<RouteTableInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<RouteTableInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

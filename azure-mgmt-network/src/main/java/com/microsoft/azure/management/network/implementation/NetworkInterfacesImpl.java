@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -14,7 +15,9 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -23,7 +26,7 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworkInterfacesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             NetworkInterface,
             NetworkInterfaceImpl,
             NetworkInterfaceInner,
@@ -113,5 +116,15 @@ class NetworkInterfacesImpl
             return null;
         }
         return new NetworkInterfaceImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    protected Observable<Page<NetworkInterfaceInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<NetworkInterfaceInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

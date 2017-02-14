@@ -15,6 +15,7 @@ import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.UUID;
 
@@ -45,6 +46,11 @@ class VaultsImpl
     @Override
     public PagedList<Vault> listByGroup(String groupName) {
         return wrapList(this.inner().listByResourceGroup(groupName));
+    }
+
+    @Override
+    public Observable<Vault> listByGroupAsync(String resourceGroupName) {
+        return convertPageToIndividualResourcesAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override

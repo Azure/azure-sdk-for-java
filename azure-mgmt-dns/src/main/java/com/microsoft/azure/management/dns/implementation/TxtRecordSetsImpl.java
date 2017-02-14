@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of TxtRecordSets.
@@ -39,6 +40,12 @@ class TxtRecordSetsImpl
     @Override
     public PagedList<TxtRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
+    }
+
+    @Override
+    public Observable<TxtRecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
     }
 

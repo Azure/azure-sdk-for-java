@@ -6,20 +6,23 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebApps;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for WebApps.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             WebApp,
             WebAppImpl,
             SiteInner,
@@ -83,5 +86,20 @@ class WebAppsImpl
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public PagedList<WebApp> list() {
+        return wrapList(inner().list());
+    }
+
+    @Override
+    protected Observable<Page<SiteInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<SiteInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

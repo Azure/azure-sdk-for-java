@@ -31,6 +31,11 @@ final class ProvidersImpl
     }
 
     @Override
+    public Observable<Provider> listAsync() {
+        return convertPageToIndividualResourcesAsync(client.listAsync());
+    }
+
+    @Override
     public Provider unregister(String resourceProviderNamespace) {
         return wrapModel(client.unregister(resourceProviderNamespace));
     }

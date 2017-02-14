@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DataDisk;
@@ -20,8 +21,10 @@ import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
+import rx.Observable;
 import rx.exceptions.Exceptions;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class VirtualMachinesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
         VirtualMachine,
         VirtualMachineImpl,
         VirtualMachineInner,
@@ -168,5 +171,15 @@ class VirtualMachinesImpl
                 this.manager(),
                 this.storageManager,
                 this.networkManager);
+    }
+
+    @Override
+    protected Observable<Page<VirtualMachineInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<VirtualMachineInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

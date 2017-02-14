@@ -6,21 +6,24 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServiceDomains;
 import com.microsoft.azure.management.appservice.DomainLegalAgreement;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for AppServiceDomains.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainsImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
         AppServiceDomain,
         AppServiceDomainImpl,
         DomainInner,
@@ -78,5 +81,15 @@ class AppServiceDomainsImpl
                 return new DomainLegalAgreementImpl(tldLegalAgreementInner);
             }
         }.convert(this.manager().inner().topLevelDomains().listAgreements(topLevelExtension));
+    }
+
+    @Override
+    protected Observable<Page<DomainInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<DomainInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

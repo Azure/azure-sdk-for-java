@@ -10,7 +10,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
+import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppServicePlansTests extends AppServiceTest {
@@ -42,8 +44,17 @@ public class AppServicePlansTests extends AppServiceTest {
         // GET
         Assert.assertNotNull(appServiceManager.appServicePlans().getByGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
         // LIST
-        List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByGroup(RG_NAME);
+        final List<AppServicePlan> appServicePlans =  new ArrayList<>();
+        appServiceManager.appServicePlans().listByGroupAsync(RG_NAME).map(new Func1<AppServicePlan, Object>() {
+            @Override
+            public Object call(AppServicePlan appServicePlan) {
+                appServicePlans.add(appServicePlan);
+                return null;
+            }
+        }).toBlocking().last();
+
         boolean found = false;
+
         for (AppServicePlan asp : appServicePlans) {
             if (APP_SERVICE_PLAN_NAME.equals(asp.name())) {
                 found = true;

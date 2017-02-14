@@ -13,7 +13,10 @@ import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.fail;
@@ -91,5 +94,47 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withSku(SkuName.STANDARD_LRS)
                 .apply();
         Assert.assertEquals(SkuName.STANDARD_LRS, storageAccount.sku().name());
+    }
+
+    @Test
+    public void storageAccountsAsyncTest() throws Exception {
+        // Name available
+        CheckNameAvailabilityResult result = storageManager.storageAccounts()
+                .checkNameAvailability(SA_NAME);
+        Assert.assertEquals(true, result.isAvailable());
+        // Create
+        Observable<Indexable> resourceStream = storageManager.storageAccounts()
+                .define(SA_NAME)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(RG_NAME)
+                .createAsync();
+        final List<StorageAccount> storageAccounts = new ArrayList<>();
+        final List<StorageAccount> createdStorageAccounts  = new ArrayList<>();
+        final Action1<StorageAccount> onListStorageAccount = new Action1<StorageAccount>() {
+            @Override
+            public void call(StorageAccount storageAccountInList) {
+                storageAccounts.add(storageAccountInList);
+            }
+        };
+
+        final Func1<StorageAccount, Observable<StorageAccount>> onCreateStorageAccount = new Func1<StorageAccount, Observable<StorageAccount>>() {
+            @Override
+            public Observable<StorageAccount> call(final StorageAccount createdStorageAccount) {
+                createdStorageAccounts.add(createdStorageAccount);
+                return storageManager.storageAccounts().listAsync().doOnNext(onListStorageAccount);
+            }
+        };
+
+        Utils.<StorageAccount>rootResource(resourceStream).flatMap(onCreateStorageAccount).toBlocking().last();
+        Assert.assertEquals(1, createdStorageAccounts.size());
+        boolean accountExists = false;
+        for (StorageAccount storageAccountInList: storageAccounts) {
+            if (createdStorageAccounts.get(0).id().equalsIgnoreCase(storageAccountInList.id())) {
+                accountExists = true;
+            }
+            Assert.assertNotNull(storageAccountInList.id());
+        }
+        Assert.assertTrue(accountExists);
+
     }
 }
