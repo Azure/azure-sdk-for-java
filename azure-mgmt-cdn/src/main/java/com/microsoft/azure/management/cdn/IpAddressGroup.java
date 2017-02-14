@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cdn;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * CDN Ip address group.
@@ -17,16 +18,19 @@ public class IpAddressGroup {
     /**
      * The delivery region of the ip address group.
      */
+    @JsonProperty(value = "deliveryRegion")
     private String deliveryRegion;
 
     /**
      * The list of ip v4 addresses.
      */
+    @JsonProperty(value = "ipv4Addresses")
     private List<CidrIpAddress> ipv4Addresses;
 
     /**
      * The list of ip v6 addresses.
      */
+    @JsonProperty(value = "ipv6Addresses")
     private List<CidrIpAddress> ipv6Addresses;
 
     /**

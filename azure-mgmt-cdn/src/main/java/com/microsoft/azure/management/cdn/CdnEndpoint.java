@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.cdn.implementation.EndpointInner;
@@ -135,6 +136,13 @@ public interface CdnEndpoint extends
      * @return the CustomDomainValidationResult object if successful.
      */
     CustomDomainValidationResult validateCustomDomain(String hostName);
+
+    /**
+     * Checks the quota and usage of geo filters and custom domains under the current endpoint.
+     *
+     * @return list of quotas and usages of geo filters and custom domains under the current endpoint
+     */
+    PagedList<ResourceUsage> listResourceUsage();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.

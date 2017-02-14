@@ -18,7 +18,7 @@ public class ProfileUpdateParameters {
     /**
      * Profile tags.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tags", required = true)
     private Map<String, String> tags;
 
     /**

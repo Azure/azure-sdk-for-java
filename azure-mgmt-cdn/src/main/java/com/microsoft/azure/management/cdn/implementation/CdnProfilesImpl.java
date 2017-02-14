@@ -11,7 +11,9 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
+import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.Operation;
+import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Completable;
@@ -87,6 +89,26 @@ class CdnProfilesImpl
                 return new Operation(inner);
             }
         }).convert(this.manager().inner().listOperations());
+    }
+
+    @Override
+    public PagedList<ResourceUsage> listResourceUsage() {
+        return (new PagedListConverter<ResourceUsageInner, ResourceUsage>() {
+            @Override
+            public ResourceUsage typeConvert(ResourceUsageInner inner) {
+                return new ResourceUsage(inner);
+            }
+        }).convert(this.manager().inner().checkResourceUsage());
+    }
+
+    @Override
+    public PagedList<EdgeNode> listEdgeNodes() {
+        return (new PagedListConverter<EdgeNodeInner, EdgeNode>() {
+            @Override
+            public EdgeNode typeConvert(EdgeNodeInner inner) {
+                return new EdgeNode(inner);
+            }
+        }).convert(this.manager().inner().edgeNodes().list());
     }
 
     @Override

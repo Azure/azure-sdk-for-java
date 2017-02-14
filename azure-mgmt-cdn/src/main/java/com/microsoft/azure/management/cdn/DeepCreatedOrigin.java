@@ -19,7 +19,7 @@ public class DeepCreatedOrigin {
     /**
      * Origin name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**

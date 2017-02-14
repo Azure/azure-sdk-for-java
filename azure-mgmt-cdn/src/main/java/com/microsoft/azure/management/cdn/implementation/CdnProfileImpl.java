@@ -6,14 +6,17 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
+import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.cdn.Sku;
 import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -66,6 +69,18 @@ class CdnProfileImpl
     @Override
     public void stopEndpoint(String endpointName) {
         this.manager().inner().endpoints().stop(this.resourceGroupName(), this.name(), endpointName);
+    }
+
+    @Override
+    public PagedList<ResourceUsage> listResourceUsage() {
+        return (new PagedListConverter<ResourceUsageInner, ResourceUsage>() {
+            @Override
+            public ResourceUsage typeConvert(ResourceUsageInner inner) {
+                return new ResourceUsage(inner);
+            }
+        }).convert(this.manager().inner().profiles().listResourceUsage(
+                this.resourceGroupName(),
+                this.name()));
     }
 
     @Override

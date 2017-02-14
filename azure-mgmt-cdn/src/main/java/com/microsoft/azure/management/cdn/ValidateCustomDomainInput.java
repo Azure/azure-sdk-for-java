@@ -17,7 +17,7 @@ public class ValidateCustomDomainInput {
     /**
      * The host name of the custom domain. Must be a domain name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "hostName", required = true)
     private String hostName;
 
     /**

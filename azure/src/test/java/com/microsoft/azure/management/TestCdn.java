@@ -9,9 +9,11 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CdnProfiles;
+import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.GeoFilter;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -64,6 +66,27 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         Assert.assertNotNull(endpoint.geoFilters());
         Assert.assertEquals(QueryStringCachingBehavior.BYPASS_CACHING, endpoint.queryStringCachingBehavior());
 
+        for (ResourceUsage usage : profiles.listResourceUsage()) {
+            Assert.assertNotNull(usage);
+            Assert.assertEquals("profile", usage.resourceType());
+        }
+
+        for (EdgeNode node : profiles.listEdgeNodes()) {
+            Assert.assertNotNull(node);
+        }
+
+        for (ResourceUsage usage : cdnProfile.listResourceUsage()) {
+            Assert.assertNotNull(usage);
+            Assert.assertEquals("endpoint", usage.resourceType());
+        }
+
+        for( CdnEndpoint ep : cdnProfile.endpoints().values()) {
+            for (ResourceUsage usage : ep.listResourceUsage()) {
+                Assert.assertNotNull(usage);
+                Assert.assertTrue("customdomain".equals(usage.resourceType())
+                                    || "geofilter".equals(usage.resourceType()));
+            }
+        }
         return cdnProfile;
     }
 

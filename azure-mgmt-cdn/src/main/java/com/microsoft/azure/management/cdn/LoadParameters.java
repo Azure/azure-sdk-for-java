@@ -19,7 +19,7 @@ public class LoadParameters {
      * The path to the content to be loaded. Path should be a relative file URL
      * of the origin.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
 
     /**

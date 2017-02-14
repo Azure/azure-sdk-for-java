@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Output of custom domain validation.
@@ -16,16 +17,19 @@ public class ValidateCustomDomainOutputInner {
     /**
      * Indicates whether the custom domain is validated or not.
      */
+    @JsonProperty(value = "customDomainValidated")
     private Boolean customDomainValidated;
 
     /**
      * The reason why the custom domain is not valid.
      */
+    @JsonProperty(value = "reason")
     private String reason;
 
     /**
      * Error message describing why the custom domain is not valid.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

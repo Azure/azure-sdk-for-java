@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The pricing tier (defines a CDN provider, feature list and rate) of the CDN
@@ -19,6 +20,7 @@ public class Sku {
      * 'Premium_Verizon', 'Custom_Verizon', 'Standard_Akamai',
      * 'Standard_ChinaCdn'.
      */
+    @JsonProperty(value = "name")
     private SkuName name;
 
     /**
