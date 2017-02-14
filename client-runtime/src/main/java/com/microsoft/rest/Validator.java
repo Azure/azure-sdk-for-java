@@ -48,11 +48,11 @@ public final class Validator {
         }
         if (parameterToken.isPrimitive()
                 || parameterType.isEnum()
-                || parameterToken.isAssignableFrom(LocalDate.class)
-                || parameterToken.isAssignableFrom(DateTime.class)
-                || parameterToken.isAssignableFrom(String.class)
-                || parameterToken.isAssignableFrom(DateTimeRfc1123.class)
-                || parameterToken.isAssignableFrom(Period.class)) {
+                || parameterToken.isSupertypeOf(LocalDate.class)
+                || parameterToken.isSupertypeOf(DateTime.class)
+                || parameterToken.isSupertypeOf(String.class)
+                || parameterToken.isSupertypeOf(DateTimeRfc1123.class)
+                || parameterToken.isSupertypeOf(Period.class)) {
             return;
         }
 
@@ -86,13 +86,13 @@ public final class Validator {
                 } else {
                     try {
                         Class<?> propertyType = property.getClass();
-                        if (TypeToken.of(List.class).isAssignableFrom(propertyType)) {
+                        if (TypeToken.of(List.class).isSupertypeOf(propertyType)) {
                             List<?> items = (List<?>) property;
                             for (Object item : items) {
                                 Validator.validate(item);
                             }
                         }
-                        else if (TypeToken.of(Map.class).isAssignableFrom(propertyType)) {
+                        else if (TypeToken.of(Map.class).isSupertypeOf(propertyType)) {
                             Map<?, ?> entries = (Map<?, ?>) property;
                             for (Map.Entry<?, ?> entry : entries.entrySet()) {
                                 Validator.validate(entry.getKey());
