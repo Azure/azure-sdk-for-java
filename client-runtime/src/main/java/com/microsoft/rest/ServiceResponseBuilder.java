@@ -88,7 +88,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public ServiceResponse<T> build(Response<ResponseBody> response) throws E, IOException {
+    public ServiceResponse<T> build(Response<ResponseBody> response) throws IOException {
         if (response == null) {
             return null;
         }
@@ -122,7 +122,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public ServiceResponse<T> buildEmpty(Response<Void> response) throws E, IOException {
+    public ServiceResponse<T> buildEmpty(Response<Void> response) throws IOException {
         int statusCode = response.code();
         if (responseTypes.containsKey(statusCode)) {
             return new ServiceResponse<>(response);
@@ -140,7 +140,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
     }
 
     @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws E, IOException {
+    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws IOException {
         ServiceResponse<T> bodyResponse = build(response);
         THeader headers = serializerAdapter.deserialize(
                 serializerAdapter.serialize(response.headers()),
@@ -149,7 +149,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
     }
 
     @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws E, IOException {
+    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException {
         ServiceResponse<T> bodyResponse = buildEmpty(response);
         THeader headers = serializerAdapter.deserialize(
                 serializerAdapter.serialize(response.headers()),

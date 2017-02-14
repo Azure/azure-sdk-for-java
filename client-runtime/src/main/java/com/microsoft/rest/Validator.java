@@ -35,7 +35,7 @@ public final class Validator {
      * @param parameter the parameter to validate
      * @throws IllegalArgumentException thrown when the Validator determines the argument is invalid
      */
-    public static void validate(Object parameter) throws IllegalArgumentException {
+    public static void validate(Object parameter) {
         // Validation of top level payload is done outside
         if (parameter == null) {
             return;

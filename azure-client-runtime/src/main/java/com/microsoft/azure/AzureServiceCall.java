@@ -79,7 +79,7 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
      *
      * @param <E> the element type
      */
-    private static class PagingSubscriber<E> extends Subscriber<ServiceResponse<Page<E>>> {
+    private static final class PagingSubscriber<E> extends Subscriber<ServiceResponse<Page<E>>> {
         private AzureServiceCall<List<E>> serviceCall;
         private Func1<String, Observable<ServiceResponse<Page<E>>>> next;
         private ListOperationCallback<E> callback;

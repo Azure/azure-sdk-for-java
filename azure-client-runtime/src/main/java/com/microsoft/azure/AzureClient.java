@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * An instance of this class defines a ServiceClient that handles polling and
  * retrying for long running operations when accessing Azure resources.
  */
-public class AzureClient extends AzureServiceClient {
+public final class AzureClient extends AzureServiceClient {
     private static final String LOGGING_HEADER = "x-ms-logging-context";
 
     /**
@@ -154,7 +154,7 @@ public class AzureClient extends AzureServiceClient {
                             .flatMap(new Func1<PollingState<T>, Observable<PollingState<T>>>() {
                                 @Override
                                 public Observable<PollingState<T>> call(PollingState<T> pollingState) {
-                                    for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
+                                    for (String terminalStatus : AzureAsyncOperation.terminalStatuses()) {
                                         if (terminalStatus.equalsIgnoreCase(pollingState.status())) {
                                             return Observable.just(pollingState);
                                         }
@@ -166,7 +166,7 @@ public class AzureClient extends AzureServiceClient {
                             .filter(new Func1<PollingState<T>, Boolean>() {
                                 @Override
                                 public Boolean call(PollingState<T> pollingState) {
-                                    for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
+                                    for (String terminalStatus : AzureAsyncOperation.terminalStatuses()) {
                                         if (terminalStatus.equalsIgnoreCase(pollingState.status())) {
                                             return true;
                                         }
@@ -182,7 +182,7 @@ public class AzureClient extends AzureServiceClient {
                                     if (AzureAsyncOperation.SUCCESS_STATUS.equalsIgnoreCase(pollingState.status()) && pollingState.resource() == null) {
                                         return updateStateFromGetResourceOperationAsync(pollingState, url);
                                     }
-                                    for (String failedStatus : AzureAsyncOperation.getFailedStatuses()) {
+                                    for (String failedStatus : AzureAsyncOperation.failedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.status())) {
                                             return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(), pollingState.response()));
                                         }
@@ -308,7 +308,7 @@ public class AzureClient extends AzureServiceClient {
                             .flatMap(new Func1<PollingState<T>, Observable<PollingState<T>>>() {
                                 @Override
                                 public Observable<PollingState<T>> call(PollingState<T> pollingState) {
-                                    for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
+                                    for (String terminalStatus : AzureAsyncOperation.terminalStatuses()) {
                                         if (terminalStatus.equalsIgnoreCase(pollingState.status())) {
                                             return Observable.just(pollingState);
                                         }
@@ -320,7 +320,7 @@ public class AzureClient extends AzureServiceClient {
                             .filter(new Func1<PollingState<T>, Boolean>() {
                                 @Override
                                 public Boolean call(PollingState<T> pollingState) {
-                                    for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
+                                    for (String terminalStatus : AzureAsyncOperation.terminalStatuses()) {
                                         if (terminalStatus.equalsIgnoreCase(pollingState.status())) {
                                             return true;
                                         }
@@ -332,7 +332,7 @@ public class AzureClient extends AzureServiceClient {
                             .flatMap(new Func1<PollingState<T>, Observable<ServiceResponse<T>>>() {
                                 @Override
                                 public Observable<ServiceResponse<T>> call(PollingState<T> pollingState) {
-                                    for (String failedStatus : AzureAsyncOperation.getFailedStatuses()) {
+                                    for (String failedStatus : AzureAsyncOperation.failedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.status())) {
                                             return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(), pollingState.response()));
                                         }
@@ -481,12 +481,12 @@ public class AzureClient extends AzureServiceClient {
                         }
                     }
 
-                    if (body == null || body.getStatus() == null) {
+                    if (body == null || body.status() == null) {
                         CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString, response);
                         return Observable.error(exception);
                     }
 
-                    pollingState.withStatus(body.getStatus());
+                    pollingState.withStatus(body.status());
                     pollingState.withResponse(response);
                     pollingState.withResource(null);
                     return Observable.just(pollingState);
@@ -519,12 +519,12 @@ public class AzureClient extends AzureServiceClient {
                         }
                     }
 
-                    if (body == null || body.getStatus() == null) {
+                    if (body == null || body.status() == null) {
                         CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString, response);
                         return Observable.error(exception);
                     }
 
-                    pollingState.withStatus(body.getStatus());
+                    pollingState.withStatus(body.status());
                     pollingState.withResponse(response);
                     T resource = null;
                     try {

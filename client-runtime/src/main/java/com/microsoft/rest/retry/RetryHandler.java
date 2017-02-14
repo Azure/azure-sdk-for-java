@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * An instance of this interceptor placed in the request pipeline handles retriable errors.
  */
-public class RetryHandler implements Interceptor {
+public final class RetryHandler implements Interceptor {
     /**
      * Represents the default number of retries.
      */
