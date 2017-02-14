@@ -194,21 +194,36 @@ public class TestLoadBalancer {
             resource =  resource.update()
                     .withoutFrontend("default")
                     .withoutBackend("default")
+                    .withoutBackend("backend1")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatPool("natpool1")
+                    .withoutProbe("httpProbe1")
+                    .withoutProbe("tcpProbe1")
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
+
+            resource.refresh();
             Assert.assertTrue(resource.tags().containsKey("tag1"));
 
             // Verify frontends
             Assert.assertFalse(resource.frontends().containsKey("default"));
+            Assert.assertEquals(1, resource.frontends().size());
+
+            // Verify probes
+            Assert.assertFalse(resource.httpProbes().containsKey("httpProbe1"));
+            Assert.assertFalse(resource.httpProbes().containsKey("tcpProbe1"));
+            Assert.assertEquals(0, resource.httpProbes().size());
+            Assert.assertEquals(0, resource.tcpProbes().size());
 
             // Verify backends
             Assert.assertFalse(resource.backends().containsKey("default"));
+            Assert.assertFalse(resource.backends().containsKey("backend1"));
+            Assert.assertEquals(0, resource.backends().size());
 
             // Verify rules
             Assert.assertFalse(resource.loadBalancingRules().containsKey("rule1"));
+            Assert.assertEquals(0, resource.loadBalancingRules().size());
 
             // Verify NAT pools
             Assert.assertFalse(resource.inboundNatPools().containsKey("natpool1"));
