@@ -7,8 +7,10 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import okhttp3.Authenticator;
@@ -29,7 +31,9 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     protected RestClient.Builder restClientBuilder;
 
     protected AzureConfigurableImpl() {
-        this.restClientBuilder = new RestClient.Builder(); // default to public cloud
+        this.restClientBuilder = new RestClient.Builder()
+            .withSerializerAdapter(new AzureJacksonAdapter())
+            .withResponseBuilderFactory(new AzureResponseBuilder.Factory());
     }
 
     @SuppressWarnings("unchecked")
