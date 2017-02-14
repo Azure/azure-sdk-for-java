@@ -109,6 +109,11 @@
         <artifactId>azure-client-authentication</artifactId>
         <version>1.0.0-beta6-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>20.0</version>
+      </dependency>
       <!-- Test dependencies -->
       <dependency>
         <groupId>junit</groupId>
