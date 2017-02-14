@@ -40,7 +40,7 @@ import rx.Observable;
 /**
  * Initializes a new instance of the CdnManagementClientImpl class.
  */
-public final class CdnManagementClientImpl extends AzureServiceClient {
+public class CdnManagementClientImpl extends AzureServiceClient {
     /** The Retrofit service to perform REST calls. */
     private CdnManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */

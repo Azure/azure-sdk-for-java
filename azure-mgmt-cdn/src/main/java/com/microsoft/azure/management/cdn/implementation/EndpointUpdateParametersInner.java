@@ -23,6 +23,7 @@ public class EndpointUpdateParametersInner {
     /**
      * Endpoint tags.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

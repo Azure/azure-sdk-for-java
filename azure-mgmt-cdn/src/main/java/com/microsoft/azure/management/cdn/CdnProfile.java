@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
@@ -105,6 +106,13 @@ public interface CdnProfile extends
      * @return true if current instance of CDN Profile Sku is of Premium Verizon, false otherwise.
      */
     boolean isPremiumVerizon();
+
+    /**
+     * Checks the quota and actual usage of endpoints under the current CDN profile.
+     *
+     * @return quotas and actual usages of endpoints under the current CDN profile.
+     */
+    PagedList<ResourceUsage> listResourceUsage();
 
     /**************************************************************
      * Fluent interfaces to provision a CDN.

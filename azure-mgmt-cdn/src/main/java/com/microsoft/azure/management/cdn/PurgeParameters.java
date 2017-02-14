@@ -19,7 +19,7 @@ public class PurgeParameters {
      * The path to the content to be purged. Can describe a file path or a wild
      * card directory.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
 
     /**

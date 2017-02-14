@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The object that represents the operation.
@@ -16,16 +17,19 @@ public class OperationDisplay {
     /**
      * Service provider: Microsoft.Cdn.
      */
+    @JsonProperty(value = "provider")
     private String provider;
 
     /**
      * Resource on which the operation is performed: Profile, endpoint, etc.
      */
+    @JsonProperty(value = "resource")
     private String resource;
 
     /**
      * Operation type: Read, write, delete, etc.
      */
+    @JsonProperty(value = "operation")
     private String operation;
 
     /**
