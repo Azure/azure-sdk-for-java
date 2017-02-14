@@ -1668,6 +1668,14 @@ public interface VirtualMachine extends
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension {
         /**
+         * Specifies the encryption settings for the OS Disk.
+         *
+         * @param settings the encryption settings.
+         * @return the stage representing creatable VM update
+         */
+        Update withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
+
+        /**
          * Specifies the default caching type for the managed data disks.
          *
          * @param cachingType the caching type
