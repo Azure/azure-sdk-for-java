@@ -27,7 +27,11 @@ import java.util.concurrent.TimeUnit;
 public class RestClientTests {
     @Test
     public void defaultConfigs() {
-        RestClient restClient = new RestClient.Builder().build();
+        RestClient restClient = new RestClient.Builder()
+                .withBaseUrl("https://management.azure.com/")
+                .withSerializerAdapter(new JacksonAdapter())
+                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
+                .build();
         Assert.assertEquals("https://management.azure.com/", restClient.retrofit().baseUrl().toString());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
         Assert.assertTrue(restClient.responseBuilderFactory() instanceof ServiceResponseBuilder.Factory);
@@ -39,6 +43,8 @@ public class RestClientTests {
     public void newBuilderKeepsConfigs() {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
+            .withSerializerAdapter(new JacksonAdapter())
+            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC)
             .withInterceptor(new Interceptor() {
@@ -78,6 +84,8 @@ public class RestClientTests {
     public void newBuilderClonesProperties() {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
+            .withSerializerAdapter(new JacksonAdapter())
+            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
             .withInterceptor(new Interceptor() {

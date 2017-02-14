@@ -17,14 +17,11 @@ import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
 import com.microsoft.rest.retry.RetryStrategy;
-import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
@@ -168,11 +165,11 @@ public final class RestClient {
             this(new OkHttpClient.Builder(), new Retrofit.Builder());
         }
 
-        private Builder(RestClient restClient) {
+        private Builder(final RestClient restClient) {
             this(restClient.httpClient.newBuilder(), new Retrofit.Builder());
             this.httpClientBuilder.interceptors().clear();
             this.httpClientBuilder.networkInterceptors().clear();
-            this.withBaseUrl(restClient.retrofit.baseUrl().toString());
+            this.baseUrl = restClient.retrofit.baseUrl().toString();
             this.responseBuilderFactory = restClient.responseBuilderFactory;
             this.serializerAdapter = restClient.serializerAdapter;
             if (restClient.credentials != null) {
@@ -226,7 +223,6 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
-            this.serializerAdapter = new JacksonAdapter();
             this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
         }
 
@@ -250,6 +246,28 @@ public final class RestClient {
          */
         public Builder withBaseUrl(Environment environment, Environment.Endpoint endpoint) {
             this.baseUrl = environment.url(endpoint);
+            return this;
+        }
+
+        /**
+         * Sets the serialization adapter.
+         *
+         * @param serializerAdapter the adapter to a serializer
+         * @return the builder itself for chaining
+         */
+        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+            return this;
+        }
+
+        /**
+         * Sets the response builder factory.
+         *
+         * @param responseBuilderFactory the response builder factory
+         * @return the builder itself for chaining
+         */
+        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
+            this.responseBuilderFactory = responseBuilderFactory;
             return this;
         }
 
@@ -391,28 +409,6 @@ public final class RestClient {
         }
 
         /**
-         * Sets the serialization adapter.
-         *
-         * @param serializerAdapter the adapter to a serializer
-         * @return the builder itself for chaining
-         */
-        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
-            this.serializerAdapter = serializerAdapter;
-            return this;
-        }
-
-        /**
-         * Sets the response builder factory.
-         *
-         * @param responseBuilderFactory the response builder factory
-         * @return the builder itself for chaining
-         */
-        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
-            this.responseBuilderFactory = responseBuilderFactory;
-            return this;
-        }
-
-        /**
          * Adds a retry strategy to the client.
          * @param strategy the retry strategy to add
          * @return the builder itself for chaining
@@ -428,17 +424,18 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            Logger logger = LoggerFactory.getLogger(getClass());
             UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
             if (userAgent != null) {
                 userAgentInterceptor.withUserAgent(userAgent);
             }
             if (baseUrl == null) {
-                baseUrl = "https://management.azure.com/";
-                logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
+                throw new IllegalArgumentException("Please set base URL.");
             }
             if (responseBuilderFactory == null) {
-                responseBuilderFactory = new ServiceResponseBuilder.Factory();
+                throw new IllegalArgumentException("Please set response builder factory.");
+            }
+            if (serializerAdapter == null) {
+                throw new IllegalArgumentException("Please set serializer adapter.");
             }
             RetryHandler retryHandler;
             if (retryStrategy == null) {

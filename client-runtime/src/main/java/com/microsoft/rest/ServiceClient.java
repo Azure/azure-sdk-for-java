@@ -7,6 +7,7 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -36,7 +37,11 @@ public abstract class ServiceClient {
      * @param restBuilder the retrofit rest client builder
      */
     protected ServiceClient(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this(new RestClient.Builder(clientBuilder, restBuilder).withBaseUrl(baseUrl).build());
+        this(new RestClient.Builder(clientBuilder, restBuilder)
+                .withBaseUrl(baseUrl)
+                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
+                .withSerializerAdapter(new JacksonAdapter())
+                .build());
     }
 
     /**
