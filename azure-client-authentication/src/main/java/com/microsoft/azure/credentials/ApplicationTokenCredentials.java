@@ -121,7 +121,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     public static ApplicationTokenCredentials fromFile(File credentialsFile) throws IOException {
         // Set defaults
         Properties authSettings = new Properties();
-        authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.authenticationEndpoint());
+        authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.activeDirectoryEndpoint());
         authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.resourceManagerEndpoint());
         authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.managementEndpoint());
         authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.graphEndpoint());
@@ -144,12 +144,13 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                 clientId,
                 tenantId,
                 clientKey,
-                new AzureEnvironment(
-                    authUrl,
-                    mgmtUri,
-                    baseUrl,
-                    graphUrl)
-                ).withDefaultSubscriptionId(defaultSubscriptionId);
+                new AzureEnvironment(new HashMap<String, String>() {{
+                    put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl);
+                    put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
+                    put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
+                    put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
+                }}
+                )).withDefaultSubscriptionId(defaultSubscriptionId);
     }
 
     /**
@@ -181,7 +182,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     }
 
     private AuthenticationResult acquireAccessToken(String resource) throws IOException {
-        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
+        String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
