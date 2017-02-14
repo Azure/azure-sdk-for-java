@@ -49,7 +49,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
         this.username = username;
         this.password = password;
         this.tokens = new ConcurrentHashMap<>();
-        this.refreshTokenClient = new RefreshTokenClient(environment.authenticationEndpoint());
+        this.refreshTokenClient = new RefreshTokenClient(environment.activeDirectoryEndpoint());
     }
 
     /**
@@ -107,7 +107,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
     }
 
     AuthenticationResult acquireNewAccessToken(String resource) throws IOException {
-        String authorityUrl = this.environment().authenticationEndpoint() + this.domain();
+        String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
