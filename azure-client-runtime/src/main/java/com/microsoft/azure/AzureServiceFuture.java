@@ -6,7 +6,7 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import rx.Observable;
@@ -22,8 +22,8 @@ import java.util.List;
  *
  * @param <T> the type of the returning object
  */
-public final class AzureServiceCall<T> extends ServiceCall<T> {
-    private AzureServiceCall() {
+public final class AzureServiceFuture<T> extends ServiceFuture<T> {
+    private AzureServiceFuture() {
     }
 
     /**
@@ -35,8 +35,8 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
      * @param <E> the element type
      * @return the future based ServiceCall
      */
-    public static <E> ServiceCall<List<E>> fromPageResponse(Observable<ServiceResponse<Page<E>>> first, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
-        final AzureServiceCall<List<E>> serviceCall = new AzureServiceCall<>();
+    public static <E> ServiceFuture<List<E>> fromPageResponse(Observable<ServiceResponse<Page<E>>> first, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
+        final AzureServiceFuture<List<E>> serviceCall = new AzureServiceFuture<>();
         final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, next, callback);
         serviceCall.setSubscription(first
             .single()
@@ -54,8 +54,8 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
      * @param <V> the header object type
      * @return the future based ServiceCall
      */
-    public static <E, V> ServiceCall<List<E>> fromHeaderPageResponse(Observable<ServiceResponseWithHeaders<Page<E>, V>> first, final Func1<String, Observable<ServiceResponseWithHeaders<Page<E>, V>>> next, final ListOperationCallback<E> callback) {
-        final AzureServiceCall<List<E>> serviceCall = new AzureServiceCall<>();
+    public static <E, V> ServiceFuture<List<E>> fromHeaderPageResponse(Observable<ServiceResponseWithHeaders<Page<E>, V>> first, final Func1<String, Observable<ServiceResponseWithHeaders<Page<E>, V>>> next, final ListOperationCallback<E> callback) {
+        final AzureServiceFuture<List<E>> serviceCall = new AzureServiceFuture<>();
         final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, new Func1<String, Observable<ServiceResponse<Page<E>>>>() {
             @Override
             public Observable<ServiceResponse<Page<E>>> call(String s) {
@@ -80,12 +80,12 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
      * @param <E> the element type
      */
     private static final class PagingSubscriber<E> extends Subscriber<ServiceResponse<Page<E>>> {
-        private AzureServiceCall<List<E>> serviceCall;
+        private AzureServiceFuture<List<E>> serviceCall;
         private Func1<String, Observable<ServiceResponse<Page<E>>>> next;
         private ListOperationCallback<E> callback;
         private ServiceResponse<Page<E>> lastResponse;
 
-        PagingSubscriber(final AzureServiceCall<List<E>> serviceCall, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
+        PagingSubscriber(final AzureServiceFuture<List<E>> serviceCall, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
             this.serviceCall = serviceCall;
             this.next = next;
             this.callback = callback;
