@@ -6,14 +6,17 @@
 package com.microsoft.azure.management;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NicIPConfiguration;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -21,7 +24,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
         final String newName = "nic" + this.testId;
-        return networkInterfaces.define(newName)
+        NetworkInterface nic = networkInterfaces.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -29,6 +32,21 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withNewPrimaryPublicIPAddress("pipdns" + this.testId)
                 .withIpForwarding()
                 .create();
+
+        // Verify NIC is properly referenced by subnet
+        Network network = nic.primaryIPConfiguration().getNetwork();
+        Assert.assertNotNull(network);
+        NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
+        Assert.assertNotNull(ipConfig);
+        Subnet subnet = network.subnets().get(ipConfig.subnetName());
+        Assert.assertNotNull(subnet);
+        Assert.assertEquals(1, subnet.networkInterfaceIPConfigurationCount());
+        Set<NicIPConfiguration> ipConfigs = subnet.getNetworkInterfaceIPConfigurations();
+        Assert.assertNotNull(ipConfigs);
+        Assert.assertEquals(1, ipConfigs.size());
+        NicIPConfiguration ipConfig2 = ipConfigs.iterator().next();
+        Assert.assertEquals(ipConfig.name().toLowerCase(), ipConfig2.name().toLowerCase());
+        return nic;
     }
 
     @Override
@@ -100,7 +118,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             }
         }
 
-        System.out.println(info.toString());        
+        System.out.println(info.toString());
     }
 
     @Override

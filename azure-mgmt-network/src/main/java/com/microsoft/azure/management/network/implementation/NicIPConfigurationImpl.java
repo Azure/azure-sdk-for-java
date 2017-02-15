@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *  Implementation for {@link NicIPConfiguration} and its create and update interfaces.
+ *  Implementation for NicIPConfiguration and its create and update interfaces.
  */
 @LangDefinition
 class NicIPConfigurationImpl
