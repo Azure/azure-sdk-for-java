@@ -9,6 +9,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import rx.Observable;
 
 /**
  * Type represents encryption status of a virtual machine.
@@ -29,4 +30,9 @@ public interface DiskVolumeEncryptionStatus
      * @return data disks encryption status
      */
     EncryptionStatuses dataDiskStatus();
+
+    /**
+     * @return observable that emits encryption status once the refresh is done
+     */
+    Observable<DiskVolumeEncryptionStatus> refreshAsync();
 }

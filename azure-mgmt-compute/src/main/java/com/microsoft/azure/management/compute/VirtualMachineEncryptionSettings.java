@@ -65,8 +65,8 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
      * @return url to the key vault to store the disk encryption key
      */
     public String keyVaultUrl() {
-        String keyvaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
-        return String.format("https://%s.vault.azure.net/", keyvaultName.toLowerCase());
+        String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
+        return String.format("https://%s.vault.azure.net/", keyVaultName.toLowerCase());
     }
 
     /**

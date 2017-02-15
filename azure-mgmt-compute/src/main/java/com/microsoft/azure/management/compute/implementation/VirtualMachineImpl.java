@@ -38,6 +38,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineEncryptionOperations;
 import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
@@ -204,6 +205,11 @@ class VirtualMachineImpl
     public void convertToManaged() {
         this.manager().inner().virtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
+    }
+
+    @Override
+    public VirtualMachineEncryptionOperations diskEncryption() {
+        return new VirtualMachineEncryptionOperationsImpl(this);
     }
 
     @Override

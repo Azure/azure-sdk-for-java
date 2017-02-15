@@ -19,6 +19,8 @@ import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,20 +35,22 @@ class DiskVolumeEncryptionStatusImpl
         extends WrapperImpl<VirtualMachineExtensionInner>
         implements DiskVolumeEncryptionStatus {
     private final OperatingSystemTypes osType;
-    private VirtualMachineExtensionInner encryptionExtensionInner;
     private final VirtualMachine virtualMachine;
-    private VirtualMachineExtensionInstanceView instanceView;
     private final String extensionName;
 
     DiskVolumeEncryptionStatusImpl(final OperatingSystemTypes osType,
-            final VirtualMachineExtension encryptionExtension,
-            final VirtualMachineExtensionInstanceView instanceView) {
+            final VirtualMachineExtension encryptionExtension) {
         super(encryptionExtension.inner());
         this.osType = osType;
-        this.encryptionExtensionInner = encryptionExtension.inner();
         this.virtualMachine = encryptionExtension.parent();
-        this.instanceView = instanceView;
         this.extensionName = encryptionExtension.name();
+    }
+
+    DiskVolumeEncryptionStatusImpl(VirtualMachine virtualMachine, String extensionName) {
+        super(null);
+        this.osType = virtualMachine.osType();
+        this.virtualMachine = virtualMachine;
+        this.extensionName = extensionName;
     }
 
     @Override
@@ -59,7 +63,12 @@ class DiskVolumeEncryptionStatusImpl
 
     @Override
     public EncryptionStatuses osDiskStatus() {
+        if (this.inner() == null) {
+            return EncryptionStatuses.NOT_ENCRYPTED;
+        }
         if (osType == OperatingSystemTypes.LINUX) {
+            // Linux - get OS volume encryption state from the instance view status message
+            //
             final JsonNode subStatusNode = instanceViewFirstSubStatus();
             if (subStatusNode == null) {
                 return EncryptionStatuses.UNKNOWN;
@@ -71,29 +80,36 @@ class DiskVolumeEncryptionStatusImpl
             return new EncryptionStatuses(diskNode.asText());
         }
         if (osType == OperatingSystemTypes.WINDOWS) {
+            // Windows - get OS volume encryption state from the vm model
+            //
             if (this.virtualMachine.inner().storageProfile() == null
                     || this.virtualMachine.inner().storageProfile().osDisk() == null
                     || this.virtualMachine.inner().storageProfile().osDisk().encryptionSettings() == null) {
-                return EncryptionStatuses.UNKNOWN;
+                return EncryptionStatuses.NOT_ENCRYPTED;
             }
             DiskEncryptionSettings encryptionSettings = this.virtualMachine
                     .inner()
                     .storageProfile()
                     .osDisk()
                     .encryptionSettings();
-            if (encryptionSettings.diskEncryptionKey() == null || encryptionSettings.diskEncryptionKey().secretUrl() == null) {
-                return EncryptionStatuses.UNKNOWN;
-            }
-            if (Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
+            if (encryptionSettings.diskEncryptionKey() != null
+                    && encryptionSettings.diskEncryptionKey().secretUrl() != null
+                    && Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
                 return EncryptionStatuses.ENCRYPTED;
             }
+            return EncryptionStatuses.NOT_ENCRYPTED;
         }
         return EncryptionStatuses.UNKNOWN;
     }
 
     @Override
     public EncryptionStatuses dataDiskStatus() {
+        if (this.inner() == null) {
+            return EncryptionStatuses.NOT_ENCRYPTED;
+        }
         if (osType == OperatingSystemTypes.LINUX) {
+            // Linux - get Data volume encryption state from the encryption extension instance view status message
+            //
             final JsonNode subStatusNode = instanceViewFirstSubStatus();
             if (subStatusNode == null) {
                 return EncryptionStatuses.UNKNOWN;
@@ -105,30 +121,26 @@ class DiskVolumeEncryptionStatusImpl
             return new EncryptionStatuses(diskNode.asText());
         }
         if (osType == OperatingSystemTypes.WINDOWS) {
-            if (this.encryptionExtensionInner.provisioningState() == null
-                    || !this.encryptionExtensionInner.provisioningState().equalsIgnoreCase("Succeeded")) {
-                return EncryptionStatuses.UNKNOWN;
+            // Windows - get Data volume encryption state from the encryption extension model
+            //
+            if (this.inner().provisioningState() == null
+                    || !this.inner().provisioningState().equalsIgnoreCase("Succeeded")) {
+                return EncryptionStatuses.NOT_ENCRYPTED;
             }
-            HashMap<String, Object> publicSettings = publicSettings();
-            if (!publicSettings.containsKey("VolumeType")) {
-                return EncryptionStatuses.UNKNOWN;
+            HashMap<String, Object> publicSettings = new LinkedHashMap<>();
+            if (this.inner().settings() == null) {
+                publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
             }
-            String volumeType = (String) publicSettings.get("VolumeType");
-            if (volumeType == null) {
-                return EncryptionStatuses.UNKNOWN;
-            }
-            if (!volumeType.equalsIgnoreCase("All") && !volumeType.equalsIgnoreCase("Data")) {
-                return EncryptionStatuses.UNKNOWN;
-            }
-            if (!publicSettings.containsKey("EncryptionOperation")) {
-                return EncryptionStatuses.UNKNOWN;
-            }
-            String encryptionOperation = (String) publicSettings.get("EncryptionOperation");
-            if (encryptionOperation == null) {
-                return EncryptionStatuses.UNKNOWN;
-            }
-            if (encryptionOperation.equalsIgnoreCase("EnableEncryption")) {
-                return EncryptionStatuses.ENCRYPTED;
+            if (!publicSettings.containsKey("VolumeType")
+                    || publicSettings.get("VolumeType") == null
+                    || ((String) publicSettings.get("VolumeType")).isEmpty()
+                    || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("All")
+                    || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("Data")) {
+                String encryptionOperation = (String) publicSettings.get("EncryptionOperation");
+                if (encryptionOperation != null && encryptionOperation.equalsIgnoreCase("EnableEncryption")) {
+                    return EncryptionStatuses.ENCRYPTED;
+                }
+                return EncryptionStatuses.NOT_ENCRYPTED;
             }
         }
         return EncryptionStatuses.UNKNOWN;
@@ -136,31 +148,50 @@ class DiskVolumeEncryptionStatusImpl
 
     @Override
     public DiskVolumeEncryptionStatus refresh() {
-        this.encryptionExtensionInner = this.virtualMachine
+        return refreshAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<DiskVolumeEncryptionStatus> refreshAsync() {
+        final DiskVolumeEncryptionStatusImpl self = this;
+        return this.virtualMachine
                 .manager()
                 .inner()
-                .virtualMachineExtensions().get(this.virtualMachine.resourceGroupName(),
-                        this.virtualMachine.name(),
-                        this.extensionName,
-                        "instanceView");
-        this.instanceView = this.encryptionExtensionInner.instanceView();
-        return this;
+                .virtualMachineExtensions().getAsync(this.virtualMachine.resourceGroupName(),
+                this.virtualMachine.name(),
+                this.extensionName,
+                "instanceView")
+                .map(new Func1<VirtualMachineExtensionInner, DiskVolumeEncryptionStatus>() {
+                    @Override
+                    public DiskVolumeEncryptionStatus call(VirtualMachineExtensionInner virtualMachineExtensionInner) {
+                        self.setInner(virtualMachineExtensionInner);
+                        return self;
+                    }
+                });
     }
 
     private List<InstanceViewStatus> instanceViewStatuses() {
-        if (this.instanceView == null
-                || this.instanceView.statuses() == null) {
+        if (this.inner() == null) {
             return new ArrayList<>();
         }
-        return this.instanceView.statuses();
+        VirtualMachineExtensionInstanceView instanceView = this.inner().instanceView();
+        if (instanceView == null
+                || instanceView.statuses() == null) {
+            return new ArrayList<>();
+        }
+        return instanceView.statuses();
     }
 
     private List<InstanceViewStatus> instanceViewSubStatuses() {
-        if (this.inner() == null
-                || this.instanceView.substatuses() == null) {
+        if (this.inner() == null) {
             return new ArrayList<>();
         }
-        return this.instanceView.substatuses();
+        VirtualMachineExtensionInstanceView instanceView = this.inner().instanceView();
+        if (instanceView == null
+                || instanceView.substatuses() == null) {
+            return new ArrayList<>();
+        }
+        return instanceView.substatuses();
     }
 
     private JsonNode instanceViewFirstSubStatus() {
@@ -175,13 +206,5 @@ class DiskVolumeEncryptionStatusImpl
             return null;
         }
         return rootNode;
-    }
-
-    private HashMap<String, Object> publicSettings() {
-        if (this.inner().settings() == null) {
-            return new LinkedHashMap<>();
-        } else {
-            return (LinkedHashMap<String, Object>) this.inner().settings();
-        }
     }
 }

@@ -71,6 +71,11 @@ public interface VirtualMachine extends
     void redeploy();
 
     /**
+     * @return entry point to enabling, disabling and querying disk encryption
+     */
+    VirtualMachineEncryptionOperations diskEncryption();
+
+    /**
      * Convert (migrate) the virtual machine with un-managed disks to use managed disk.
      */
     void convertToManaged();

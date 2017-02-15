@@ -16,6 +16,15 @@ public class EncryptionStatuses {
     /** Static value Encrypted for EncryptionStatuses. */
     public static final EncryptionStatuses ENCRYPTED = new EncryptionStatuses("Encrypted");
 
+    /** Static value NotEncrypted for EncryptionStatuses. */
+    public static final EncryptionStatuses NOT_ENCRYPTED = new EncryptionStatuses("NotEncrypted");
+
+    /** Static value VMRestartPending for EncryptionStatuses. */
+    public static final EncryptionStatuses VM_RESTART_PENDING = new EncryptionStatuses("VMRestartPending");
+
+    /** Static value NotMounted for EncryptionStatuses. */
+    public static final EncryptionStatuses NOT_MOUNTED = new EncryptionStatuses("NotMounted");
+
     /** Static value Unknown for EncryptionStatuses. */
     public static final EncryptionStatuses UNKNOWN = new EncryptionStatuses("Unknown");
 
