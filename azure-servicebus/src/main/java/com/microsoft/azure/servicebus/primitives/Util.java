@@ -17,13 +17,21 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Decimal128;
+import org.apache.qpid.proton.amqp.Decimal32;
+import org.apache.qpid.proton.amqp.Decimal64;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedByte;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
+import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.UnsignedShort;
 import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.codec.UnsignedIntegerType;
 import org.apache.qpid.proton.message.Message;
 
 public class Util
@@ -52,24 +60,29 @@ public class Util
 			return ((Symbol) obj).length() << 1;
 		}
 		
-		if (obj instanceof Integer)
+		if (obj instanceof Byte || obj instanceof UnsignedByte)
+		{
+			return Byte.BYTES;
+		}
+		
+		if (obj instanceof Integer || obj instanceof UnsignedInteger)
 		{
 			return Integer.BYTES;
 		}
 		
-		if (obj instanceof Long || obj instanceof Date)
+		if (obj instanceof Long || obj instanceof UnsignedLong || obj instanceof Date)
 		{
 			return Long.BYTES;
 		}
 		
-		if (obj instanceof Short)
+		if (obj instanceof Short || obj instanceof UnsignedShort)
 		{
 			return Short.BYTES;
 		}
 		
 		if (obj instanceof Character)
 		{
-			return Character.BYTES;
+			return 4;
 		}
 		
 		if (obj instanceof Float)
@@ -84,9 +97,25 @@ public class Util
 		
 		if (obj instanceof UUID)
 		{
-			// UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe.. treat it as a string of 36 chars = 72 bytes.
-			return 72;
+			// UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe..we can treat it as a string of 36 chars = 72 bytes.
+			//return 72;
+			return 16;
 		}
+		
+		if(obj instanceof Decimal32)
+		{
+			return 4;
+		}
+		
+		if(obj instanceof Decimal64)
+		{
+			return 8;
+		}
+		
+		if(obj instanceof Decimal128)
+		{
+			return 16;
+		}		
 		
 		if (obj instanceof Binary)
 		{
@@ -95,7 +124,8 @@ public class Util
 		
 		if (obj instanceof Map)
 		{
-			int size = 0;
+			// Size and Count each take a max of 4 bytes
+			int size = 8;
 			Map map = (Map) obj;
 			for(Object value: map.keySet())
 			{
@@ -112,7 +142,8 @@ public class Util
 		
 		if (obj instanceof Iterable)
 		{
-			int size = 0;
+			// Size and Count each take a max of 4 bytes
+			int size = 8;
 			for(Object innerObject : (Iterable)obj)
 			{
 				size += Util.sizeof(innerObject);
@@ -123,7 +154,8 @@ public class Util
 		
 		if(obj.getClass().isArray())
 		{
-			int size = 0;
+			// Size and Count each take a max of 4 bytes
+			int size = 8;
 			int length = Array.getLength(obj);
 			for(int i=0; i<length; i++)
 			{
@@ -137,7 +169,7 @@ public class Util
 	}
 	
 	// Unused now.. ServiceBus service serializes DateTime types as java time as per AMQP spec 
-		// .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
+	// .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
 	public static Instant convertDotNetTicksToInstant(long dotNetTicks)
 	{
 		long ticksFromEpoch = dotNetTicks - EPOCHINDOTNETTICKS;
@@ -201,6 +233,58 @@ public class Util
 		long mostSignificantBits = buffer.getLong();
 		long leastSignificantBits = buffer.getLong();
 		return new UUID(mostSignificantBits, leastSignificantBits);
+	}
+	
+	public static byte[] convertUUIDToDotNetBytes(UUID uniqueId)
+	{
+		if(uniqueId == null || uniqueId.equals(ClientConstants.ZEROLOCKTOKEN))
+		{
+			return new byte[GUIDSIZE];
+		}
+				
+		ByteBuffer buffer = ByteBuffer.allocate(GUIDSIZE);
+		buffer.putLong(uniqueId.getMostSignificantBits());
+		buffer.putLong(uniqueId.getLeastSignificantBits());
+		byte[] javaBytes = buffer.array();
+		
+		byte[] dotNetBytes = new byte[GUIDSIZE];
+		for(int i=0; i<GUIDSIZE; i++)
+		{
+			int indexInReorderedBytes;
+			switch(i)
+			{
+				case 0:
+					indexInReorderedBytes = 3;
+					break;
+				case 1:
+					indexInReorderedBytes = 2;
+					break;
+				case 2:
+					indexInReorderedBytes = 1;
+					break;
+				case 3:
+					indexInReorderedBytes = 0;
+					break;
+				case 4:
+					indexInReorderedBytes = 5;
+					break;
+				case 5:
+					indexInReorderedBytes = 4;
+					break;
+				case 6:
+					indexInReorderedBytes = 7;
+					break;
+				case 7:
+					indexInReorderedBytes = 6;
+					break;
+				default:
+					indexInReorderedBytes = i;
+			}
+			
+			dotNetBytes[indexInReorderedBytes] = javaBytes[i];
+		}	
+		
+		return dotNetBytes;
 	}
 	
 	private static int getPayloadSize(Message msg)

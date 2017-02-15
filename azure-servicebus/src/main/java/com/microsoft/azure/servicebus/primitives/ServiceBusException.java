@@ -16,13 +16,13 @@ public class ServiceBusException extends Exception
 	private boolean isTransient;
 	private ErrorContext errorContext;
 
-	ServiceBusException(final boolean isTransient)
+	public ServiceBusException(final boolean isTransient)
 	{
 		super();
 		this.isTransient = isTransient;
 	}
 
-	ServiceBusException(final boolean isTransient, final String message)
+	public ServiceBusException(final boolean isTransient, final String message)
 	{
 		super(message);
 		this.isTransient = isTransient;
@@ -34,7 +34,7 @@ public class ServiceBusException extends Exception
 		this.isTransient = isTransient;
 	}
 
-	ServiceBusException(final boolean isTransient, final String message, final Throwable cause)
+	public ServiceBusException(final boolean isTransient, final String message, final Throwable cause)
 	{
 		super(message, cause);
 		this.isTransient = isTransient;

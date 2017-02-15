@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ import com.microsoft.azure.servicebus.IMessageReceiver;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -125,7 +127,7 @@ public class QueueSendReceiveTests {
 		IBrokeredMessage receivedMessage = this.receiver.receive();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-		this.receiver.complete(receivedMessage);
+		this.receiver.complete(receivedMessage.getLockToken());
 		receivedMessage = this.receiver.receive();
 		Assert.assertNull("Message was not properly completed", receivedMessage);
 	}
@@ -143,11 +145,11 @@ public class QueueSendReceiveTests {
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
 		long deliveryCount = receivedMessage.getDeliveryCount();		
-		this.receiver.abandon(receivedMessage);
+		this.receiver.abandon(receivedMessage.getLockToken());
 		receivedMessage = this.receiver.receive();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("DeliveryCount not incremented", deliveryCount+1, receivedMessage.getDeliveryCount());
-		this.receiver.complete(receivedMessage);
+		this.receiver.complete(receivedMessage.getLockToken());
 	}
 	
 	@Test
@@ -163,7 +165,7 @@ public class QueueSendReceiveTests {
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
 		String deadLetterReason = "java client deadletter test";
-		this.receiver.deadLetter(receivedMessage, deadLetterReason, null);
+		this.receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
 		receivedMessage = this.receiver.receive();
 		Assert.assertNull("Message was not properly deadlettered", receivedMessage);
 	}
@@ -185,7 +187,7 @@ public class QueueSendReceiveTests {
 		Instant newLockedUntilUtc = this.receiver.renewMessageLock(receivedMessage);
 		Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockedUntilTime.toString() + ", newLockedUntilUtc:" + newLockedUntilUtc, newLockedUntilUtc.isAfter(oldLockedUntilTime));
 		Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockedUntilUtc, receivedMessage.getLockedUntilUtc());
-		this.receiver.complete(receivedMessage);
+		this.receiver.complete(receivedMessage.getLockToken());
 	}
 	
 	@Test
@@ -228,7 +230,7 @@ public class QueueSendReceiveTests {
 			Instant newLockTime = newLockTimeIterator.next();
 			Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockTime.toString() + ", newLockedUntilUtc:" + newLockTime.toString(), newLockTime.isAfter(oldLockTime));
 			Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockTime, message.getLockedUntilUtc());
-			this.receiver.complete(message);			
+			this.receiver.complete(message.getLockToken());			
 		}		
 	}
 	
@@ -252,7 +254,7 @@ public class QueueSendReceiveTests {
 			for(IBrokeredMessage message : receivedMessages)
 			{
 				//System.out.println(message.getLockToken());
-				this.receiver.complete(message);
+				this.receiver.complete(message.getLockToken());
 			}
 			receivedMessages = this.receiver.receiveBatch(numMessages);
 		}
@@ -337,13 +339,9 @@ public class QueueSendReceiveTests {
 		IBrokeredMessage peekedMessage1 = this.browser.peek();
 		long firstMessageSequenceNumber = peekedMessage1.getSequenceNumber();
 		IBrokeredMessage peekedMessage2 = this.browser.peek();
-		Assert.assertNotEquals("Peek returned the same message again.", firstMessageSequenceNumber, peekedMessage2.getSequenceNumber());
-		IBrokeredMessage peekedMessage3 = this.browser.peek();
-		Assert.assertNull("Peek shouldn't return any message as all messages were already peeked.", peekedMessage3);
+		Assert.assertNotEquals("Peek returned the same message again.", firstMessageSequenceNumber, peekedMessage2.getSequenceNumber());		
 		
 		// Now peek with fromSequnceNumber.. May not work for partitioned entities
-		IBrokeredMessage peekedMessage4 = this.browser.peek(firstMessageSequenceNumber + 1);
-		Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber + 1, peekedMessage4.getSequenceNumber());
 		IBrokeredMessage peekedMessage5 = this.browser.peek(firstMessageSequenceNumber);
 		Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber, peekedMessage5.getSequenceNumber());
 	}
@@ -363,6 +361,118 @@ public class QueueSendReceiveTests {
 		Collection<IBrokeredMessage> peekedMessagesBatch2 = this.browser.peekBatch(firstMessageSequenceNumber, 10);
 		Assert.assertEquals("PeekBatch with sequence number didnot return all messages.", 2, peekedMessagesBatch2.size());		
 		Assert.assertEquals("PeekBatch with sequence number failed.", firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber());
+	}
+	
+	@Test
+	public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException, IOException
+	{			
+		this.sender.send(new BrokeredMessage("AMQP message"));
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		long sequenceNumber = receivedMessage.getSequenceNumber();
+		String messageId = receivedMessage.getMessageId();
+		this.receiver.defer(receivedMessage.getLockToken());		
+		
+		// Now receive by sequence number
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());		
+		this.receiver.complete(receivedMessage.getLockToken());
+		
+		// Try to receive by sequence number again
+		try
+		{
+			receivedMessage = this.receiver.receive(sequenceNumber);
+			Assert.fail("Message recieved by sequnce number was not properly completed.");
+		}
+		catch(MessageNotFoundException e)
+		{
+			// Expected
+		}		
+	}
+	
+	@Test
+	public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException, IOException
+	{			
+		this.sender.send(new BrokeredMessage("AMQP message"));
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		long sequenceNumber = receivedMessage.getSequenceNumber();
+		String messageId = receivedMessage.getMessageId();
+		this.receiver.defer(receivedMessage.getLockToken());		
+		
+		// Now receive by sequence number
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
+		long deliveryCount = receivedMessage.getDeliveryCount();
+		this.receiver.abandon(receivedMessage.getLockToken());
+		
+		// Try to receive by sequence number again
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("Abandon didn't increase the delivery count for the message received by sequence number.", deliveryCount + 1, receivedMessage.getDeliveryCount());
+		this.receiver.complete(receivedMessage.getLockToken());		
+	}
+	
+	@Test
+	public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException, IOException
+	{			
+		BrokeredMessage sentMessage = new BrokeredMessage("AMQP message");
+		HashMap customProperties = new HashMap();
+		customProperties.put("phase", "before defer");
+		sentMessage.setProperties(customProperties);
+		this.sender.send(sentMessage);
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		long sequenceNumber = receivedMessage.getSequenceNumber();
+		String messageId = receivedMessage.getMessageId();
+		this.receiver.defer(receivedMessage.getLockToken());	
+		
+		// Now receive by sequence number
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());		
+		customProperties.put("phase", "after defer");
+		this.receiver.defer(receivedMessage.getLockToken(), customProperties);
+		
+		// Try to receive by sequence number again
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message after deferrring", sequenceNumber, receivedMessage.getSequenceNumber());
+		Assert.assertEquals("Defer didn't update properties of the message received by sequence number", "after defer", receivedMessage.getProperties().get("phase"));
+		this.receiver.complete(receivedMessage.getLockToken());		
+	}
+	
+	@Test
+	public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException, IOException
+	{			
+		this.sender.send(new BrokeredMessage("AMQP message"));
+		
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.builder.getEntityPath(), ReceiveMode.PeekLock);
+		IBrokeredMessage receivedMessage = this.receiver.receive();
+		long sequenceNumber = receivedMessage.getSequenceNumber();
+		String messageId = receivedMessage.getMessageId();
+		this.receiver.defer(receivedMessage.getLockToken());		
+		
+		// Now receive by sequence number
+		receivedMessage = this.receiver.receive(sequenceNumber);
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
+		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
+		String deadLetterReason = "java client deadletter test";		
+		this.receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
+				
+		// Try to receive by sequence number again
+		try
+		{
+			receivedMessage = this.receiver.receive(sequenceNumber);
+			Assert.fail("Message received by sequence number was not properly deadlettered");
+		}
+		catch(MessageNotFoundException e)
+		{
+			// Expected
+		}
 	}
 	
 	private void drainAllMessages(ConnectionStringBuilder builder) throws IOException, InterruptedException, ExecutionException, ServiceBusException

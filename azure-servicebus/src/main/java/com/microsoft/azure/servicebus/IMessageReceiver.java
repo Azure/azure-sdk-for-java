@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -11,45 +12,45 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 public interface IMessageReceiver extends IMessageEntity{
 	ReceiveMode getReceiveMode();
 
-    void abandon(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
+    void abandon(UUID lockToken) throws InterruptedException, ServiceBusException;
 
-    void abandon(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
+    void abandon(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
     
-    CompletableFuture<Void> abandonAsync(IBrokeredMessage message);
+    CompletableFuture<Void> abandonAsync(UUID lockToken);
 
-    CompletableFuture<Void> abandonAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify);
     
-    void complete(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
+    void complete(UUID lockToken) throws InterruptedException, ServiceBusException;
 
     void completeBatch(Collection<? extends IBrokeredMessage> messages);
 
-    CompletableFuture<Void> completeAsync(IBrokeredMessage message);
+    CompletableFuture<Void> completeAsync(UUID lockToken);
 
     CompletableFuture<Void> completeBatchAsync(Collection<? extends IBrokeredMessage> messages);
 
-    void defer(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
+    void defer(UUID lockToken) throws InterruptedException, ServiceBusException;
 
-    void defer(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
+    void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<Void> deferAsync(IBrokeredMessage message);
+    CompletableFuture<Void> deferAsync(UUID lockToken);
 
-    CompletableFuture<Void> deferAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify);
     
-    void deadLetter(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
+    void deadLetter(UUID lockToken) throws InterruptedException, ServiceBusException;
 
-    void deadLetter(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
+    void deadLetter(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription) throws InterruptedException, ServiceBusException;
+    void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription) throws InterruptedException, ServiceBusException;
     
-    void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
+    void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message);
+    CompletableFuture<Void> deadLetterAsync(UUID lockToken);
 
-    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify);
 
-    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription);
+    CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription);
     
-    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
 
     IBrokeredMessage receive() throws InterruptedException, ServiceBusException;
     

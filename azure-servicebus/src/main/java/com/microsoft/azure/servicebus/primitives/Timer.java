@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
  */
-final class Timer
+final public class Timer
 {
 	private static ScheduledThreadPoolExecutor executor = null;
 

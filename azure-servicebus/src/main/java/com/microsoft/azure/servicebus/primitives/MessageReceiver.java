@@ -32,6 +32,7 @@ import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -40,12 +41,18 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 
+import com.microsoft.azure.servicebus.BrokeredMessage;
+import com.microsoft.azure.servicebus.IBrokeredMessage;
+import com.microsoft.azure.servicebus.MessageConverter;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
@@ -736,6 +743,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return this.updateMessageStateAsync(deliveryTag, outcome);
 	}
 	
+	public CompletableFuture<Void> completeMessageAsync(UUID lockToken)
+	{		
+		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_COMPLETED, null, null, null);
+	}
+	
 	public CompletableFuture<Void> abandonMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
 	{		
 		Modified outcome = new Modified();
@@ -744,6 +756,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			outcome.setMessageAnnotations(propertiesToModify);
 		}		
 		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> abandonMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify)
+	{
+		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_ABANDONED, null, null, propertiesToModify);
 	}
 	
 	public CompletableFuture<Void> deferMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
@@ -755,6 +772,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			outcome.setMessageAnnotations(propertiesToModify);
 		}
 		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> deferMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify)
+	{		
+		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_DEFERED, null, null, propertiesToModify);
 	}
 	
 	public CompletableFuture<Void> deadLetterMessageAsync(byte[] deliveryTag, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
@@ -778,6 +800,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		outcome.setError(error);
 		
 		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> deadLetterMessageAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
+	{
+		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_SUSPENDED, deadLetterReason, deadLetterErrorDescription, propertiesToModify);
 	}
 	
 	private CompletableFuture<Void> updateMessageStateAsync(byte[] deliveryTag, Outcome outcome)
@@ -910,5 +937,93 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			}
 			return returningFuture;
 		});				
+	}
+	
+	public CompletableFuture<Collection<MessageWithLockToken>> receiveBySequenceNumbersAsync(Long[] sequenceNumbers)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RECEIVER_SETTLE_MODE, UnsignedInteger.valueOf(this.settleModePair.getReceiverSettleMode() == ReceiverSettleMode.FIRST ? 0 : 1));		
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, RequestResponseUtils.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				List<MessageWithLockToken> receivedMessages = new ArrayList<MessageWithLockToken>();
+				Object responseBodyMap = ((AmqpValue)responseMessage.getBody()).getValue();
+				if(responseBodyMap != null && responseBodyMap instanceof Map)
+				{					
+					Object messages = ((Map)responseBodyMap).get(ClientConstants.REQUEST_RESPONSE_MESSAGES);
+					if(messages != null && messages instanceof Iterable)
+					{
+						for(Object message : (Iterable)messages)
+						{
+							if(message instanceof Map)
+							{
+								Message receivedMessage = Message.Factory.create();
+								Binary messagePayLoad = (Binary)((Map)message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
+								receivedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());								
+								UUID lockToken = ClientConstants.ZEROLOCKTOKEN;
+								if(((Map)message).containsKey(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN))
+								{
+									lockToken = (UUID)((Map)message).get(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN);									
+								}								
+																
+								receivedMessages.add(new MessageWithLockToken(receivedMessage, lockToken));
+							}
+						}
+					}
+				}				
+				returningFuture.complete(receivedMessages);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	public CompletableFuture<Void> updateDispositionAsync(UUID[] lockTokens, String dispositionStatus, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DISPOSITION_STATUS, dispositionStatus);
+		
+		if(deadLetterReason != null)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_REASON, deadLetterReason);
+		}
+		
+		if(deadLetterErrorDescription != null)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_DESCRIPTION, deadLetterErrorDescription);
+		}
+		
+		if(propertiesToModify != null && propertiesToModify.size() > 0)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_PROPERTIES_TO_MODIFY, propertiesToModify);
+		}		
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				returningFuture.complete(null);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
 	}
 }

@@ -13,12 +13,22 @@ public class UtilsTests {
 	@Test
 	public void testGuidConversionFromDotNetToJava()
 	{
-		String dotNetGuidString = "b5dc4a70-ac5d-43b3-b132-ec8fcdac3a9d";
+		String guidString = "b5dc4a70-ac5d-43b3-b132-ec8fcdac3a9d";
 		// Java bytes are signed where as dotNet bytes are unsigned. No problem type casting larger than 127 unsigned bytes to java signed bytes
 		// as we are interested only in the individual bits for UUID conversion.
 		byte[] dotNetGuidBytes = {112, 74, (byte)220, (byte)181, 93, (byte)172, (byte)179, 67, (byte)177, 50, (byte)236, (byte)143, (byte)205, (byte)172, 58, (byte)157};		
 		UUID convertedGuid = Util.convertDotNetBytesToUUID(dotNetGuidBytes);
-		Assert.assertEquals("UUID conversion from DotNet to Java failed", dotNetGuidString, convertedGuid.toString());
+		Assert.assertEquals("UUID conversion from DotNet to Java failed", guidString, convertedGuid.toString());
+	}
+	
+	@Test
+	public void testGuidConversionFromJavaToDotNet()
+	{
+		String guidString = "b5dc4a70-ac5d-43b3-b132-ec8fcdac3a9d";
+		UUID javaGuid = UUID.fromString(guidString);		
+		byte[] dotNetGuidBytes = {112, 74, (byte)220, (byte)181, 93, (byte)172, (byte)179, 67, (byte)177, 50, (byte)236, (byte)143, (byte)205, (byte)172, 58, (byte)157};		
+		byte[] convertedBytes = Util.convertUUIDToDotNetBytes(javaGuid);		
+		Assert.assertArrayEquals("UUID conversion from Java to DotNet failed", dotNetGuidBytes, convertedBytes);
 	}
 	
 	@Test

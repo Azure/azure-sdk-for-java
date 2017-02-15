@@ -17,10 +17,11 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
+import com.microsoft.azure.servicebus.primitives.MessageWithLockToken;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
 
-class MessageConverter
+public class MessageConverter
 {	
 	public static Message convertBrokeredMessageToAmqpMessage(BrokeredMessage brokeredMessage)	
 	{
@@ -67,7 +68,7 @@ class MessageConverter
 	
 	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage)
 	{
-		return convertAmqpMessageToBrokeredMessage(amqpMessage, null);
+		return convertAmqpMessageToBrokeredMessage(amqpMessage, (byte[])null);
 	}
 	
 	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag)
@@ -75,6 +76,13 @@ class MessageConverter
 		Message amqpMessage = amqpMessageWithDeliveryTag.getMessage();
 		byte[] deliveryTag = amqpMessageWithDeliveryTag.getDeliveryTag();
 		return convertAmqpMessageToBrokeredMessage(amqpMessage, deliveryTag);
+	}
+	
+	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(MessageWithLockToken amqpMessageWithLockToken)
+	{
+		BrokeredMessage convertedMessage = convertAmqpMessageToBrokeredMessage(amqpMessageWithLockToken.getMessage(), (byte[])null);
+		convertedMessage.setLockToken(amqpMessageWithLockToken.getLockToken());
+		return convertedMessage;		
 	}
 		
 	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage, byte[] deliveryTag)
@@ -175,5 +183,5 @@ class MessageConverter
 		brokeredMessage.setDeliveryTag(deliveryTag);
 		
 		return brokeredMessage;
-	}
+	}	
 }

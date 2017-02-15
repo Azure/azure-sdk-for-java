@@ -27,7 +27,7 @@ public class RequestResponseUtils {
 	// Pass one second less to the server so client doesn't time out before server times out
 	public static Duration adjustServerTimeout(Duration clientTimeout)
 	{
-		return clientTimeout.minusSeconds(1);
+		return clientTimeout.minusMillis(100);
 	}
 	
 	public static int getResponseStatusCode(Message responseMessage)

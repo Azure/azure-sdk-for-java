@@ -71,13 +71,17 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
 	public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 	public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+	public static final String REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER = AmqpConstants.VENDOR + ":receive-by-sequence-number";
 	public static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
     public static final String REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":cancel-scheduled-message";
     public static final String REQUEST_RESPONSE_PEEK_OPERATION = AmqpConstants.VENDOR + ":peek-message";
+    public static final String REQUEST_RESPONSE_UPDATE_DISPOSTION = AmqpConstants.VENDOR + ":update-disposition";
 	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
+	public static final String REQUEST_RESPONSE_LOCKTOKEN = "lock-token";
 	public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 	public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
 	public static final String REQUEST_RESPONSE_SEQUENCE_NUMBERS = "sequence-numbers";
+	public static final String REQUEST_RESPONSE_RECEIVER_SETTLE_MODE = "receiver-settle-mode";
 	public static final String REQUEST_RESPONSE_MESSAGES = "messages";
 	public static final String REQUEST_RESPONSE_MESSAGE = "message";
 	public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
@@ -88,6 +92,17 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
     public static final String REQUEST_RESPONSE_STATUS_DESCRIPTION = "statusDescription";
     public static final String REQUEST_RESPONSE_ERROR_CONDITION = "errorCondition";
+    public static final String REQUEST_RESPONSE_DISPOSITION_STATUS = "disposition-status";
+    public static final String REQUEST_RESPONSE_DEADLETTER_REASON = "deadletter-reason";
+    public static final String REQUEST_RESPONSE_DEADLETTER_DESCRIPTION = "deadletter-description";
+    public static final String REQUEST_RESPONSE_PROPERTIES_TO_MODIFY = "properties-to-modify";
+    
+    public static final String DISPOSITION_STATUS_COMPLETED = "completed";
+    public static final String DISPOSITION_STATUS_DEFERED = "defered";
+    public static final String DISPOSITION_STATUS_SUSPENDED = "suspended";
+    public static final String DISPOSITION_STATUS_ABANDONED = "abandoned";
+//    public static final String DISPOSITION_STATUS_RENEWED = "renewed";
+//    public static final String DISPOSITION_STATUS_UNLOCKED = "unlocked";
     
     public static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
     public static final int REQUEST_RESPONSE_NOCONTENT_STATUS_CODE = 0xcc;
