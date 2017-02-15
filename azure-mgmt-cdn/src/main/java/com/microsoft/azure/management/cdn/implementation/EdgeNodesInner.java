@@ -10,12 +10,12 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -84,10 +84,10 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<EdgeNodeInner>> listAsync(final ListOperationCallback<EdgeNodeInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<EdgeNodeInner>> listAsync(final ListOperationCallback<EdgeNodeInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<EdgeNodeInner>>>>() {
                 @Override
@@ -182,12 +182,12 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<EdgeNodeInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<EdgeNodeInner>> serviceCall, final ListOperationCallback<EdgeNodeInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<EdgeNodeInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<EdgeNodeInner>> serviceFuture, final ListOperationCallback<EdgeNodeInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<EdgeNodeInner>>>>() {
                 @Override

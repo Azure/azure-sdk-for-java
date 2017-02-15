@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.model;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
@@ -39,7 +39,7 @@ public interface Creatable<T> extends
      * @return a handle to cancel the request
      */
     @Method
-    ServiceCall<T> createAsync(final ServiceCallback<T> callback);
+    ServiceFuture<T> createAsync(final ServiceCallback<T> callback);
 
     /**
      * Puts the request into the queue and allow the HTTP client to execute

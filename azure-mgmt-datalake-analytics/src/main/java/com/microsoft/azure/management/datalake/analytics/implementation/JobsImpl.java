@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.Jobs;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.JobDataPath;
@@ -21,7 +21,7 @@ import com.microsoft.azure.management.datalake.analytics.models.JobStatistics;
 import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -119,10 +119,10 @@ public class JobsImpl implements Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity Job Information ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) {
-        return ServiceCall.fromResponse(getStatisticsWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
+    public ServiceFuture<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) {
+        return ServiceFuture.fromResponse(getStatisticsWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
     }
 
     /**
@@ -200,10 +200,10 @@ public class JobsImpl implements Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) {
-        return ServiceCall.fromResponse(getDebugDataPathWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
+    public ServiceFuture<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) {
+        return ServiceFuture.fromResponse(getDebugDataPathWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
     }
 
     /**
@@ -281,10 +281,10 @@ public class JobsImpl implements Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param parameters The parameters to build a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) {
-        return ServiceCall.fromResponse(buildWithServiceResponseAsync(accountName, parameters), serviceCallback);
+    public ServiceFuture<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) {
+        return ServiceFuture.fromResponse(buildWithServiceResponseAsync(accountName, parameters), serviceCallback);
     }
 
     /**
@@ -362,10 +362,10 @@ public class JobsImpl implements Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(cancelWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
+    public ServiceFuture<Void> cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(cancelWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
     }
 
     /**
@@ -442,10 +442,10 @@ public class JobsImpl implements Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<JobInformation> getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
+    public ServiceFuture<JobInformation> getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(accountName, jobIdentity), serviceCallback);
     }
 
     /**
@@ -525,10 +525,10 @@ public class JobsImpl implements Jobs {
      * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(accountName, jobIdentity, parameters), serviceCallback);
+    public ServiceFuture<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(accountName, jobIdentity, parameters), serviceCallback);
     }
 
     /**
@@ -616,10 +616,10 @@ public class JobsImpl implements Jobs {
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(accountName),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {
                 @Override
@@ -736,10 +736,10 @@ public class JobsImpl implements Jobs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(accountName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {
                 @Override
@@ -862,12 +862,12 @@ public class JobsImpl implements Jobs {
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<List<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceFuture<List<JobInformation>> serviceFuture, final ListOperationCallback<JobInformation> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {
                 @Override

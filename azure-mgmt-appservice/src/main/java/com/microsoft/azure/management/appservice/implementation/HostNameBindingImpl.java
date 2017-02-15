@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.functions.Func1;
@@ -153,9 +153,9 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public ServiceCall<HostNameBinding> createAsync(ServiceCallback<HostNameBinding> callback) {
+    public ServiceFuture<HostNameBinding> createAsync(ServiceCallback<HostNameBinding> callback) {
         Observable<Indexable> indexableObservable = createAsync();
-        return ServiceCall.fromBody(Utils.<HostNameBinding>rootResource(indexableObservable), callback);
+        return ServiceFuture.fromBody(Utils.<HostNameBinding>rootResource(indexableObservable), callback);
     }
 
     @Override

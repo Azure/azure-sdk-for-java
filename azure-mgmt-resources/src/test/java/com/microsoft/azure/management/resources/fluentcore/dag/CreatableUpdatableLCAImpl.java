@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.functions.Func1;
@@ -88,7 +88,7 @@ abstract class CreatableUpdatableLCAImpl<
     public abstract Observable<FluentModelT> createResourceAsync();
 
     @Override
-    public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
         throw new NotImplementedException();
     }
 }

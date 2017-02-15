@@ -11,14 +11,14 @@ package com.microsoft.azure.management.datalake.store.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.store.FirewallRules;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.FirewallRule;
 import com.microsoft.azure.management.datalake.store.models.PageImpl;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -107,10 +107,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters), serviceCallback);
+    public ServiceFuture<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters), serviceCallback);
     }
 
     /**
@@ -199,10 +199,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -286,10 +286,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName), serviceCallback);
+    public ServiceFuture<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -377,10 +377,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<FirewallRule>>>>() {
                 @Override
@@ -490,12 +490,12 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FirewallRule>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FirewallRule>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<FirewallRule>> serviceFuture, final ListOperationCallback<FirewallRule> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FirewallRule>>>>() {
                 @Override

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -96,10 +96,10 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listAsync(final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeletedSiteInner>> listAsync(final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -201,10 +201,10 @@ public final class DeletedWebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeletedSiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -311,12 +311,12 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeletedSiteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DeletedSiteInner>> serviceFuture, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -420,12 +420,12 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeletedSiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DeletedSiteInner>> serviceFuture, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override

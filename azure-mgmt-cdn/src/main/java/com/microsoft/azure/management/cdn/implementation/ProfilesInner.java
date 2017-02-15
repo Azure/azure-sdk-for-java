@@ -10,13 +10,13 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -142,10 +142,10 @@ public class ProfilesInner {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listAsync(final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProfileInner>> listAsync(final ListOperationCallback<ProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -244,10 +244,10 @@ public class ProfilesInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProfileInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -348,10 +348,10 @@ public class ProfilesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -430,10 +430,10 @@ public class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
+    public ServiceFuture<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
     }
 
     /**
@@ -501,10 +501,10 @@ public class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> beginCreateAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
+    public ServiceFuture<ProfileInner> beginCreateAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, profile), serviceCallback);
     }
 
     /**
@@ -591,10 +591,10 @@ public class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
+    public ServiceFuture<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
     }
 
     /**
@@ -664,10 +664,10 @@ public class ProfilesInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> beginUpdateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
+    public ServiceFuture<ProfileInner> beginUpdateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, tags), serviceCallback);
     }
 
     /**
@@ -752,10 +752,10 @@ public class ProfilesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -814,10 +814,10 @@ public class ProfilesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -895,10 +895,10 @@ public class ProfilesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName, final ServiceCallback<SsoUriInner> serviceCallback) {
-        return ServiceCall.fromResponse(generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName, final ServiceCallback<SsoUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(generateSsoUriWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -981,10 +981,10 @@ public class ProfilesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourceUsageSinglePageAsync(resourceGroupName, profileName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
@@ -1094,12 +1094,12 @@ public class ProfilesInner {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ProfileInner>> serviceCall, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProfileInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ProfileInner>> serviceFuture, final ListOperationCallback<ProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -1198,12 +1198,12 @@ public class ProfilesInner {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ProfileInner>> serviceCall, final ListOperationCallback<ProfileInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProfileInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ProfileInner>> serviceFuture, final ListOperationCallback<ProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProfileInner>>>>() {
                 @Override
@@ -1302,12 +1302,12 @@ public class ProfilesInner {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceCall<List<ResourceUsageInner>> serviceCall, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceUsageInner>> serviceFuture, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourceUsageNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override

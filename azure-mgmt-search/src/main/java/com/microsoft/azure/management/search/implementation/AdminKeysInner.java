@@ -11,7 +11,7 @@ package com.microsoft.azure.management.search.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -74,10 +74,10 @@ public final class AdminKeysInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service for which to list admin keys.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<AdminKeyResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<AdminKeyResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**

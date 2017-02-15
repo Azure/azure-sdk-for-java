@@ -14,7 +14,7 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -483,10 +483,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -550,10 +550,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
+    public ServiceFuture<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
     }
 
     /**

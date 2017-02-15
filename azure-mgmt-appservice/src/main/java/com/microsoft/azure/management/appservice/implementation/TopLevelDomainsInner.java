@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.TopLevelDomainAgreementOption;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -103,10 +103,10 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TopLevelDomainInner>> listAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TopLevelDomainInner>> listAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
@@ -202,10 +202,10 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TopLevelDomainInner> getAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(name), serviceCallback);
+    public ServiceFuture<TopLevelDomainInner> getAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -283,10 +283,10 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAgreementsSinglePageAsync(name),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
@@ -392,10 +392,10 @@ public final class TopLevelDomainsInner {
      * @param name Name of the top-level domain.
      * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAgreementsSinglePageAsync(name, includePrivacy),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
@@ -507,12 +507,12 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TopLevelDomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TopLevelDomainInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<TopLevelDomainInner>> serviceFuture, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
@@ -616,12 +616,12 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink, final ServiceCall<List<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink, final ServiceFuture<List<TldLegalAgreementInner>> serviceFuture, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAgreementsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override

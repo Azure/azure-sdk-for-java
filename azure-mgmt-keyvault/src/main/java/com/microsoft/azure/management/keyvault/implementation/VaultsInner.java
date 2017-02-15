@@ -10,13 +10,13 @@ package com.microsoft.azure.management.keyvault.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -111,10 +111,10 @@ public final class VaultsInner {
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters, final ServiceCallback<VaultInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters), serviceCallback);
+    public ServiceFuture<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters, final ServiceCallback<VaultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters), serviceCallback);
     }
 
     /**
@@ -197,10 +197,10 @@ public final class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String vaultName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String vaultName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
     }
 
     /**
@@ -276,10 +276,10 @@ public final class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VaultInner> getAsync(String resourceGroupName, String vaultName, final ServiceCallback<VaultInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
+    public ServiceFuture<VaultInner> getAsync(String resourceGroupName, String vaultName, final ServiceCallback<VaultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
     }
 
     /**
@@ -360,10 +360,10 @@ public final class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VaultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -464,10 +464,10 @@ public final class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<VaultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, top),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -573,10 +573,10 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Resource>> listAsync(final ListOperationCallback<Resource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<Resource>> listAsync(final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
@@ -668,10 +668,10 @@ public final class VaultsInner {
      *
      * @param top Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Resource>> listAsync(final Integer top, final ListOperationCallback<Resource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<Resource>> listAsync(final Integer top, final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(top),
             new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override
@@ -771,12 +771,12 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VaultInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<VaultInner>> serviceCall, final ListOperationCallback<VaultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VaultInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VaultInner>> serviceFuture, final ListOperationCallback<VaultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VaultInner>>>>() {
                 @Override
@@ -875,12 +875,12 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Resource>> listNextAsync(final String nextPageLink, final ServiceCall<List<Resource>> serviceCall, final ListOperationCallback<Resource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<Resource>> listNextAsync(final String nextPageLink, final ServiceFuture<List<Resource>> serviceFuture, final ListOperationCallback<Resource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<Resource>>>>() {
                 @Override

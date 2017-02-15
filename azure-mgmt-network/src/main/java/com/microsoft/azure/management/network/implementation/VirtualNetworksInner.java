@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -119,10 +119,10 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
     }
 
     /**
@@ -179,10 +179,10 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
     }
 
     /**
@@ -258,10 +258,10 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
     }
 
     /**
@@ -332,10 +332,10 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, String expand, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, String expand, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand), serviceCallback);
     }
 
     /**
@@ -414,10 +414,10 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters), serviceCallback);
     }
 
     /**
@@ -483,10 +483,10 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters), serviceCallback);
     }
 
     /**
@@ -570,10 +570,10 @@ public final class VirtualNetworksInner {
      * Gets all virtual networks in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkInner>> listAllAsync(final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkInner>> listAllAsync(final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
@@ -670,10 +670,10 @@ public final class VirtualNetworksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
@@ -772,10 +772,10 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    public ServiceFuture<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
     }
 
     /**
@@ -846,10 +846,10 @@ public final class VirtualNetworksInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress), serviceCallback);
+    public ServiceFuture<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress), serviceCallback);
     }
 
     /**
@@ -929,12 +929,12 @@ public final class VirtualNetworksInner {
      * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkInner>> serviceFuture, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
@@ -1033,12 +1033,12 @@ public final class VirtualNetworksInner {
      * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkInner>> serviceFuture, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override

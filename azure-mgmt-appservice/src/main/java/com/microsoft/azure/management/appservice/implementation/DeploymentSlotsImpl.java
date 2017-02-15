@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 
@@ -98,7 +98,7 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
         return deleteByParentAsync(parent.resourceGroupName(), parent.name(), name, callback);
     }
 

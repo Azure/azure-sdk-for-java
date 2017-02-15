@@ -12,7 +12,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.FirewallRule;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -42,9 +42,9 @@ public interface FirewallRules {
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback);
+    ServiceFuture<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback);
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this new firewall rule.
@@ -84,9 +84,9 @@ public interface FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
@@ -125,9 +125,9 @@ public interface FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback);
+    ServiceFuture<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback);
 
     /**
      * Gets the specified Data Lake Store firewall rule.
@@ -164,9 +164,9 @@ public interface FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback);
+    ServiceFuture<List<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback);
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
@@ -198,11 +198,11 @@ public interface FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<FirewallRule>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback);
+    ServiceFuture<List<FirewallRule>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<FirewallRule>> serviceFuture, final ListOperationCallback<FirewallRule> serviceCallback);
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.

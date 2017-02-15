@@ -10,7 +10,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.management.cdn.LoadParameters;
@@ -18,7 +18,7 @@ import com.microsoft.azure.management.cdn.PurgeParameters;
 import com.microsoft.azure.management.cdn.ValidateCustomDomainInput;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -171,10 +171,10 @@ public class EndpointsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<EndpointInner>> listByProfileAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<EndpointInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<EndpointInner>> listByProfileAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<EndpointInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByProfileSinglePageAsync(resourceGroupName, profileName),
             new Func1<String, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
@@ -283,10 +283,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -372,10 +372,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpoint Endpoint properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> createAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
+    public ServiceFuture<EndpointInner> createAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
     }
 
     /**
@@ -450,10 +450,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpoint Endpoint properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> beginCreateAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
+    public ServiceFuture<EndpointInner> beginCreateAsync(String resourceGroupName, String profileName, String endpointName, EndpointInner endpoint, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpoint), serviceCallback);
     }
 
     /**
@@ -547,10 +547,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
+    public ServiceFuture<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
     }
 
     /**
@@ -625,10 +625,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
+    public ServiceFuture<EndpointInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, EndpointUpdateParametersInner endpointUpdateProperties, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties), serviceCallback);
     }
 
     /**
@@ -718,10 +718,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -787,10 +787,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -875,10 +875,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> startAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> startAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(startWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -945,10 +945,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> beginStartAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> beginStartAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -1032,10 +1032,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> stopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> stopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(stopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -1102,10 +1102,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> beginStopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> beginStopAsync(String resourceGroupName, String profileName, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, profileName, endpointName), serviceCallback);
     }
 
     /**
@@ -1190,10 +1190,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> purgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+    public ServiceFuture<Void> purgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(purgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
@@ -1269,10 +1269,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginPurgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+    public ServiceFuture<Void> beginPurgeContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginPurgeContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
@@ -1365,10 +1365,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> loadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+    public ServiceFuture<Void> loadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(loadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
@@ -1444,10 +1444,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contentPaths The path to the content to be loaded. Path should be a relative file URL of the origin.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginLoadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
+    public ServiceFuture<Void> beginLoadContentAsync(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginLoadContentWithServiceResponseAsync(resourceGroupName, profileName, endpointName, contentPaths), serviceCallback);
     }
 
     /**
@@ -1541,10 +1541,10 @@ public class EndpointsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param hostName The host name of the custom domain. Must be a domain name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ValidateCustomDomainOutputInner> validateCustomDomainAsync(String resourceGroupName, String profileName, String endpointName, String hostName, final ServiceCallback<ValidateCustomDomainOutputInner> serviceCallback) {
-        return ServiceCall.fromResponse(validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName), serviceCallback);
+    public ServiceFuture<ValidateCustomDomainOutputInner> validateCustomDomainAsync(String resourceGroupName, String profileName, String endpointName, String hostName, final ServiceCallback<ValidateCustomDomainOutputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(validateCustomDomainWithServiceResponseAsync(resourceGroupName, profileName, endpointName, hostName), serviceCallback);
     }
 
     /**
@@ -1641,10 +1641,10 @@ public class EndpointsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourceUsageSinglePageAsync(resourceGroupName, profileName, endpointName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
@@ -1760,12 +1760,12 @@ public class EndpointsInner {
      * Lists existing CDN endpoints.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<EndpointInner>> listByProfileNextAsync(final String nextPageLink, final ServiceCall<List<EndpointInner>> serviceCall, final ListOperationCallback<EndpointInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<EndpointInner>> listByProfileNextAsync(final String nextPageLink, final ServiceFuture<List<EndpointInner>> serviceFuture, final ListOperationCallback<EndpointInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByProfileNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<EndpointInner>>>>() {
                 @Override
@@ -1864,12 +1864,12 @@ public class EndpointsInner {
      * Checks the quota and usage of geo filters and custom domains under the given endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceCall<List<ResourceUsageInner>> serviceCall, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceUsageInner>> serviceFuture, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourceUsageNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override

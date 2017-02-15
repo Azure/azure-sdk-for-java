@@ -11,7 +11,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -103,10 +103,10 @@ public final class ProfilesInner {
      *
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, final ServiceCallback<TrafficManagerNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, final ServiceCallback<TrafficManagerNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -177,10 +177,10 @@ public final class ProfilesInner {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listAllInResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listAllInResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<ProfileInner>> listAllInResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listAllInResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -249,10 +249,10 @@ public final class ProfilesInner {
      * Lists all Traffic Manager profiles within a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProfileInner>> listAllAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listAllWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<ProfileInner>> listAllAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listAllWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -320,10 +320,10 @@ public final class ProfilesInner {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -402,10 +402,10 @@ public final class ProfilesInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
+    public ServiceFuture<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
     }
 
     /**
@@ -488,10 +488,10 @@ public final class ProfilesInner {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -570,10 +570,10 @@ public final class ProfilesInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
+    public ServiceFuture<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, parameters), serviceCallback);
     }
 
     /**

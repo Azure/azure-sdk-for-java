@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.batch.ActivateApplicationPackageParameters;
 import com.microsoft.azure.management.batch.ErrorBodyException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -96,10 +96,10 @@ public final class ApplicationPackagesInner {
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format), serviceCallback);
+    public ServiceFuture<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format), serviceCallback);
     }
 
     /**
@@ -197,10 +197,10 @@ public final class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**
@@ -290,10 +290,10 @@ public final class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**
@@ -384,10 +384,10 @@ public final class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -41,9 +41,9 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeStoreAccount> createAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<DataLakeStoreAccount> createAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Store account.
@@ -82,9 +82,9 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeStoreAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<DataLakeStoreAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Store account.
@@ -123,9 +123,9 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -164,9 +164,9 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -202,9 +202,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified Data Lake Store account.
@@ -238,9 +238,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified Data Lake Store account.
@@ -275,9 +275,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeStoreAccount> getAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<DataLakeStoreAccount> getAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Gets the specified Data Lake Store account.
@@ -311,9 +311,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account to attempt to enable the Key Vault for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> enableKeyVaultAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> enableKeyVaultAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
@@ -346,9 +346,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -390,9 +390,9 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -433,9 +433,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -473,9 +473,9 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -515,11 +515,11 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -549,11 +549,11 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceFuture<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.

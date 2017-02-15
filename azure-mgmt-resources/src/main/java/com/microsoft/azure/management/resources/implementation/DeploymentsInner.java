@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -127,10 +127,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
      * @param deploymentName The name of the deployment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -193,10 +193,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
      * @param deploymentName The name of the deployment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -275,10 +275,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
      * @param deploymentName The name of the deployment to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -360,10 +360,10 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -435,10 +435,10 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -524,10 +524,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -605,10 +605,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> cancelAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(cancelWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> cancelAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(cancelWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -688,10 +688,10 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentValidateResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentValidateResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -775,10 +775,10 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment from which to get the template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -859,10 +859,10 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
@@ -966,10 +966,10 @@ public final class DeploymentsInner {
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
@@ -1079,12 +1079,12 @@ public final class DeploymentsInner {
      * Get all the deployments for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentExtendedInner>> serviceCall, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentExtendedInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentExtendedInner>> serviceFuture, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override

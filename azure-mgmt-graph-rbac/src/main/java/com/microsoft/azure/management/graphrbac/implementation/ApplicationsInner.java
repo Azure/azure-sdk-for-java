@@ -10,14 +10,14 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -121,10 +121,10 @@ public final class ApplicationsInner {
      *
      * @param parameters The parameters for creating an application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationInner> createAsync(ApplicationCreateParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<ApplicationInner> createAsync(ApplicationCreateParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -199,10 +199,10 @@ public final class ApplicationsInner {
      * Lists applications by filter parameters.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listAsync(final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listAsync(final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override
@@ -295,10 +295,10 @@ public final class ApplicationsInner {
      *
      * @param filter The filters to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listAsync(final String filter, final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listAsync(final String filter, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override
@@ -393,10 +393,10 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(applicationObjectId), serviceCallback);
     }
 
     /**
@@ -466,10 +466,10 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationInner> getAsync(String applicationObjectId, final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    public ServiceFuture<ApplicationInner> getAsync(String applicationObjectId, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(applicationObjectId), serviceCallback);
     }
 
     /**
@@ -540,10 +540,10 @@ public final class ApplicationsInner {
      * @param applicationObjectId Application object ID.
      * @param parameters Parameters to update an existing application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> patchAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(patchWithServiceResponseAsync(applicationObjectId, parameters), serviceCallback);
+    public ServiceFuture<Void> patchAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(patchWithServiceResponseAsync(applicationObjectId, parameters), serviceCallback);
     }
 
     /**
@@ -619,10 +619,10 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyCredentialInner>> listKeyCredentialsAsync(String applicationObjectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listKeyCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    public ServiceFuture<List<KeyCredentialInner>> listKeyCredentialsAsync(String applicationObjectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listKeyCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
     }
 
     /**
@@ -694,10 +694,10 @@ public final class ApplicationsInner {
      * @param applicationObjectId Application object ID.
      * @param value A collection of KeyCredentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
+    public ServiceFuture<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
     }
 
     /**
@@ -775,10 +775,10 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String applicationObjectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listPasswordCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    public ServiceFuture<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String applicationObjectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPasswordCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
     }
 
     /**
@@ -850,10 +850,10 @@ public final class ApplicationsInner {
      * @param applicationObjectId Application object ID.
      * @param value A collection of PasswordCredentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
+    public ServiceFuture<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
     }
 
     /**
@@ -936,12 +936,12 @@ public final class ApplicationsInner {
      * Gets a list of applications from the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listNextAsync(final String nextLink, final ServiceCall<List<ApplicationInner>> serviceCall, final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listNextAsync(final String nextLink, final ServiceFuture<List<ApplicationInner>> serviceFuture, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -92,10 +92,10 @@ public final class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<LocationInner>> listLocationsAsync(String subscriptionId, final ServiceCallback<List<LocationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listLocationsWithServiceResponseAsync(subscriptionId), serviceCallback);
+    public ServiceFuture<List<LocationInner>> listLocationsAsync(String subscriptionId, final ServiceCallback<List<LocationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listLocationsWithServiceResponseAsync(subscriptionId), serviceCallback);
     }
 
     /**
@@ -165,10 +165,10 @@ public final class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SubscriptionInner> getAsync(String subscriptionId, final ServiceCallback<SubscriptionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(subscriptionId), serviceCallback);
+    public ServiceFuture<SubscriptionInner> getAsync(String subscriptionId, final ServiceCallback<SubscriptionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(subscriptionId), serviceCallback);
     }
 
     /**
@@ -239,10 +239,10 @@ public final class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SubscriptionInner>> listAsync(final ListOperationCallback<SubscriptionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SubscriptionInner>> listAsync(final ListOperationCallback<SubscriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
@@ -337,12 +337,12 @@ public final class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SubscriptionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SubscriptionInner>> serviceCall, final ListOperationCallback<SubscriptionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SubscriptionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SubscriptionInner>> serviceFuture, final ListOperationCallback<SubscriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
