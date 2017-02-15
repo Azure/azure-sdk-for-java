@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Set;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -19,6 +21,18 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface Subnet extends
     HasInner<SubnetInner>,
     ChildResource<Network> {
+
+    /**
+     * @return network interface IP configurations that are associated with this subnet
+     * <p>
+     * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
+     */
+    Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations();
+
+    /**
+     * @return number of network interface IP configurations associated with this subnet
+     */
+    int networkInterfaceIPConfigurationCount();
 
     /**
      * @return the address space prefix, in CIDR notation, assigned to this subnet
