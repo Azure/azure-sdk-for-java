@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -115,10 +115,10 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
     }
 
     /**
@@ -175,10 +175,10 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
     }
 
     /**
@@ -254,10 +254,10 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
+    public ServiceFuture<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName), serviceCallback);
     }
 
     /**
@@ -328,10 +328,10 @@ public final class NetworkSecurityGroupsInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String expand, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand), serviceCallback);
+    public ServiceFuture<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String expand, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand), serviceCallback);
     }
 
     /**
@@ -410,10 +410,10 @@ public final class NetworkSecurityGroupsInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters), serviceCallback);
+    public ServiceFuture<NetworkSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters), serviceCallback);
     }
 
     /**
@@ -479,10 +479,10 @@ public final class NetworkSecurityGroupsInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters), serviceCallback);
+    public ServiceFuture<NetworkSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters, final ServiceCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters), serviceCallback);
     }
 
     /**
@@ -566,10 +566,10 @@ public final class NetworkSecurityGroupsInner {
      * Gets all network security groups in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NetworkSecurityGroupInner>> listAllAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listAllAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
@@ -666,10 +666,10 @@ public final class NetworkSecurityGroupsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
@@ -771,12 +771,12 @@ public final class NetworkSecurityGroupsInner {
      * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<NetworkSecurityGroupInner>> serviceFuture, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
@@ -875,12 +875,12 @@ public final class NetworkSecurityGroupsInner {
      * Gets all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NetworkSecurityGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<NetworkSecurityGroupInner>> serviceFuture, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override

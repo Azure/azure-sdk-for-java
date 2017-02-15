@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -144,10 +144,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param snapshot Snapshot object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SnapshotInner> createOrUpdateAsync(String resourceGroupName, String snapshotName, SnapshotInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
+    public ServiceFuture<SnapshotInner> createOrUpdateAsync(String resourceGroupName, String snapshotName, SnapshotInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
     }
 
     /**
@@ -213,10 +213,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param snapshot Snapshot object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SnapshotInner> beginCreateOrUpdateAsync(String resourceGroupName, String snapshotName, SnapshotInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
+    public ServiceFuture<SnapshotInner> beginCreateOrUpdateAsync(String resourceGroupName, String snapshotName, SnapshotInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
     }
 
     /**
@@ -300,10 +300,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param snapshot Snapshot object supplied in the body of the Patch snapshot operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SnapshotInner> updateAsync(String resourceGroupName, String snapshotName, SnapshotUpdateInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
+    public ServiceFuture<SnapshotInner> updateAsync(String resourceGroupName, String snapshotName, SnapshotUpdateInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
     }
 
     /**
@@ -369,10 +369,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param snapshot Snapshot object supplied in the body of the Patch snapshot operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SnapshotInner> beginUpdateAsync(String resourceGroupName, String snapshotName, SnapshotUpdateInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
+    public ServiceFuture<SnapshotInner> beginUpdateAsync(String resourceGroupName, String snapshotName, SnapshotUpdateInner snapshot, final ServiceCallback<SnapshotInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, snapshotName, snapshot), serviceCallback);
     }
 
     /**
@@ -454,10 +454,10 @@ public final class SnapshotsInner {
      * @param resourceGroupName The name of the resource group.
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SnapshotInner> getAsync(String resourceGroupName, String snapshotName, final ServiceCallback<SnapshotInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
+    public ServiceFuture<SnapshotInner> getAsync(String resourceGroupName, String snapshotName, final ServiceCallback<SnapshotInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
     }
 
     /**
@@ -532,10 +532,10 @@ public final class SnapshotsInner {
      * @param resourceGroupName The name of the resource group.
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
     }
 
     /**
@@ -593,10 +593,10 @@ public final class SnapshotsInner {
      * @param resourceGroupName The name of the resource group.
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
     }
 
     /**
@@ -677,10 +677,10 @@ public final class SnapshotsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -781,10 +781,10 @@ public final class SnapshotsInner {
      * Lists snapshots under a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listAsync(final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listAsync(final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -879,10 +879,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get snapshot access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AccessUriInner> grantAccessAsync(String resourceGroupName, String snapshotName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceCall.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, snapshotName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> grantAccessAsync(String resourceGroupName, String snapshotName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, snapshotName, grantAccessData), serviceCallback);
     }
 
     /**
@@ -948,10 +948,10 @@ public final class SnapshotsInner {
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get snapshot access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String snapshotName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, snapshotName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String snapshotName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, snapshotName, grantAccessData), serviceCallback);
     }
 
     /**
@@ -1033,10 +1033,10 @@ public final class SnapshotsInner {
      * @param resourceGroupName The name of the resource group.
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(revokeAccessWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(revokeAccessWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
     }
 
     /**
@@ -1094,10 +1094,10 @@ public final class SnapshotsInner {
      * @param resourceGroupName The name of the resource group.
      * @param snapshotName The name of the snapshot within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRevokeAccessWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String snapshotName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRevokeAccessWithServiceResponseAsync(resourceGroupName, snapshotName), serviceCallback);
     }
 
     /**
@@ -1176,12 +1176,12 @@ public final class SnapshotsInner {
      * Lists snapshots under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -1280,12 +1280,12 @@ public final class SnapshotsInner {
      * Lists snapshots under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override

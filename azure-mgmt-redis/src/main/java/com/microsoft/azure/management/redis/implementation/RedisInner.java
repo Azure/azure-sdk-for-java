@@ -10,14 +10,14 @@ package com.microsoft.azure.management.redis.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.redis.RedisKeyType;
 import com.microsoft.azure.management.redis.RedisRegenerateKeyParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -154,10 +154,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisResourceInner> createAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<RedisResourceInner> createAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -225,10 +225,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisResourceInner> beginCreateAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<RedisResourceInner> beginCreateAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -314,10 +314,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisResourceInner> updateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<RedisResourceInner> updateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -399,10 +399,10 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -461,10 +461,10 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -541,10 +541,10 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisResourceInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<RedisResourceInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -625,10 +625,10 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RedisResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RedisResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RedisResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -731,10 +731,10 @@ public final class RedisInner {
      * Gets all Redis caches in the specified subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RedisResourceInner>> listAsync(final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RedisResourceInner>> listAsync(final ListOperationCallback<RedisResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -829,10 +829,10 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
-        return ServiceCall.fromResponse(listKeysWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listKeysWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -911,10 +911,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param keyType The Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
-        return ServiceCall.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType), serviceCallback);
+    public ServiceFuture<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType, final ServiceCallback<RedisAccessKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType), serviceCallback);
     }
 
     /**
@@ -999,10 +999,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1086,10 +1086,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> importDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(importDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<Void> importDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(importDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1156,10 +1156,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginImportDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<Void> beginImportDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1242,10 +1242,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> exportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(exportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<Void> exportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(exportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1312,10 +1312,10 @@ public final class RedisInner {
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginExportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
+    public ServiceFuture<Void> beginExportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -1400,12 +1400,12 @@ public final class RedisInner {
      * Lists all Redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RedisResourceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<RedisResourceInner>> serviceCall, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RedisResourceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<RedisResourceInner>> serviceFuture, final ListOperationCallback<RedisResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override
@@ -1504,12 +1504,12 @@ public final class RedisInner {
      * Gets all Redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RedisResourceInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RedisResourceInner>> serviceCall, final ListOperationCallback<RedisResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RedisResourceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RedisResourceInner>> serviceFuture, final ListOperationCallback<RedisResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RedisResourceInner>>>>() {
                 @Override

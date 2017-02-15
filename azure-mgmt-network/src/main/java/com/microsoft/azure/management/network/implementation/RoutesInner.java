@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -109,10 +109,10 @@ public final class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
@@ -176,10 +176,10 @@ public final class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
@@ -262,10 +262,10 @@ public final class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
@@ -349,10 +349,10 @@ public final class RoutesInner {
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
+    public ServiceFuture<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
     }
 
     /**
@@ -425,10 +425,10 @@ public final class RoutesInner {
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
+    public ServiceFuture<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
     }
 
     /**
@@ -521,10 +521,10 @@ public final class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName, final ListOperationCallback<RouteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName, final ListOperationCallback<RouteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, routeTableName),
             new Func1<String, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
@@ -632,12 +632,12 @@ public final class RoutesInner {
      * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RouteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RouteInner>> serviceCall, final ListOperationCallback<RouteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RouteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RouteInner>> serviceFuture, final ListOperationCallback<RouteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override

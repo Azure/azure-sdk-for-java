@@ -12,7 +12,7 @@ import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipals
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
@@ -55,7 +55,7 @@ public interface ServicePrincipals extends
      * @param callback the call back to handle response
      * @return the Future based service call
      */
-    ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback);
+    ServiceFuture<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback);
 
     /**
      * Gets the information about a service principal.

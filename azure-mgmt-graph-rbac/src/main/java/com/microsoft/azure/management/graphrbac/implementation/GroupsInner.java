@@ -10,14 +10,14 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.GroupAddMemberParameters;
 import com.microsoft.azure.management.graphrbac.GroupGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -124,10 +124,10 @@ public final class GroupsInner {
      *
      * @param parameters The check group membership parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters, final ServiceCallback<CheckGroupMembershipResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(isMemberOfWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters, final ServiceCallback<CheckGroupMembershipResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(isMemberOfWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -199,10 +199,10 @@ public final class GroupsInner {
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> removeMemberAsync(String groupObjectId, String memberObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId), serviceCallback);
+    public ServiceFuture<Void> removeMemberAsync(String groupObjectId, String memberObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId), serviceCallback);
     }
 
     /**
@@ -278,10 +278,10 @@ public final class GroupsInner {
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addMemberAsync(String groupObjectId, String url, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(addMemberWithServiceResponseAsync(groupObjectId, url), serviceCallback);
+    public ServiceFuture<Void> addMemberAsync(String groupObjectId, String url, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addMemberWithServiceResponseAsync(groupObjectId, url), serviceCallback);
     }
 
     /**
@@ -357,10 +357,10 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String groupObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(groupObjectId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String groupObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(groupObjectId), serviceCallback);
     }
 
     /**
@@ -430,10 +430,10 @@ public final class GroupsInner {
      *
      * @param parameters The parameters for the group to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ADGroupInner> createAsync(GroupCreateParametersInner parameters, final ServiceCallback<ADGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<ADGroupInner> createAsync(GroupCreateParametersInner parameters, final ServiceCallback<ADGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -508,10 +508,10 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ADGroupInner>> listAsync(final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ADGroupInner>> listAsync(final ListOperationCallback<ADGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -604,10 +604,10 @@ public final class GroupsInner {
      *
      * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ADGroupInner>> listAsync(final String filter, final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ADGroupInner>> listAsync(final String filter, final ListOperationCallback<ADGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -709,10 +709,10 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AADObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<AADObjectInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AADObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<AADObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getGroupMembersSinglePageAsync(objectId),
             new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override
@@ -811,10 +811,10 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the user for which to get group information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ADGroupInner> getAsync(String objectId, final ServiceCallback<ADGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(objectId), serviceCallback);
+    public ServiceFuture<ADGroupInner> getAsync(String objectId, final ServiceCallback<ADGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
@@ -886,10 +886,10 @@ public final class GroupsInner {
      * @param objectId The object ID of the group for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceCall.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
+    public ServiceFuture<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
+        return ServiceFuture.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
     }
 
     /**
@@ -969,12 +969,12 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ADGroupInner>> listNextAsync(final String nextLink, final ServiceCall<List<ADGroupInner>> serviceCall, final ListOperationCallback<ADGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ADGroupInner>> listNextAsync(final String nextLink, final ServiceFuture<List<ADGroupInner>> serviceFuture, final ListOperationCallback<ADGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<ADGroupInner>>>>() {
                 @Override
@@ -1079,12 +1079,12 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AADObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceCall<List<AADObjectInner>> serviceCall, final ListOperationCallback<AADObjectInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AADObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceFuture<List<AADObjectInner>> serviceFuture, final ListOperationCallback<AADObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getGroupMembersNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
                 @Override

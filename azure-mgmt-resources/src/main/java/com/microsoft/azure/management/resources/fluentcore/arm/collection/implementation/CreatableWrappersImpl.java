@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 
 /**
@@ -33,7 +33,7 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
     }
 
     @Override
-    public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+    public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
     }
 }

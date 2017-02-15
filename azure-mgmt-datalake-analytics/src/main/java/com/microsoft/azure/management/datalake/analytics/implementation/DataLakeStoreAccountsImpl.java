@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.AddDataLakeStoreParameters;
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAcc
 import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -106,10 +106,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
+    public ServiceFuture<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
     }
 
     /**
@@ -192,10 +192,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
     }
 
     /**
@@ -277,10 +277,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
+    public ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
     }
 
     /**
@@ -359,10 +359,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
      * @param parameters The details of the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName, parameters), serviceCallback);
+    public ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName, parameters), serviceCallback);
     }
 
     /**
@@ -452,10 +452,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account for which to list Data Lake Store accounts.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DataLakeStoreAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DataLakeStoreAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>>>() {
                 @Override
@@ -579,10 +579,10 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DataLakeStoreAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DataLakeStoreAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>>>() {
                 @Override
@@ -710,12 +710,12 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DataLakeStoreAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccountInfo>> serviceCall, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DataLakeStoreAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccountInfo>> serviceFuture, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>>>() {
                 @Override

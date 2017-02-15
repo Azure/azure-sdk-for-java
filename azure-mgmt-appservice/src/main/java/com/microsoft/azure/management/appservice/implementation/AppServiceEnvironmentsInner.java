@@ -10,12 +10,12 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -353,10 +353,10 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listAsync(final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listAsync(final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -458,10 +458,10 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -565,10 +565,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -649,10 +649,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -722,10 +722,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -813,10 +813,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -879,10 +879,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -945,10 +945,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1022,10 +1022,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -1115,10 +1115,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StampCapacityInner>> listCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StampCapacityInner>> listCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCapacitiesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
@@ -1228,10 +1228,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AddressResponseInner> listVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(listVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AddressResponseInner> listVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1310,10 +1310,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listDiagnosticsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listDiagnosticsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1394,10 +1394,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
+    public ServiceFuture<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
     }
 
     /**
@@ -1481,10 +1481,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
-        return ServiceCall.fromResponse(listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1569,10 +1569,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1687,10 +1687,10 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1812,10 +1812,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
@@ -1925,10 +1925,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2009,10 +2009,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -2082,10 +2082,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -2182,10 +2182,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -2309,10 +2309,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2432,10 +2432,10 @@ public final class AppServiceEnvironmentsInner {
      * @param instance Name of the instance in the multi-role pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final Boolean details, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final Boolean details, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance, details),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2560,10 +2560,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -2679,10 +2679,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2806,10 +2806,10 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2940,10 +2940,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SkuInfoInner>> listMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -3059,10 +3059,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UsageInner>> listMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -3172,10 +3172,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name, final ServiceCallback<List<OperationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listOperationsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name, final ServiceCallback<List<OperationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listOperationsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3253,10 +3253,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> rebootAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(rebootWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> rebootAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(rebootWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3343,10 +3343,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> resumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> resumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             resumeSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3463,10 +3463,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginResumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> beginResumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginResumeSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3583,10 +3583,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAppServicePlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listAppServicePlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAppServicePlansSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3702,10 +3702,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3817,10 +3817,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3939,10 +3939,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> suspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> suspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             suspendSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -4059,10 +4059,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginSuspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> beginSuspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginSuspendSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -4179,10 +4179,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -4294,10 +4294,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -4416,10 +4416,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
@@ -4531,10 +4531,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
     }
 
     /**
@@ -4622,10 +4622,10 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -4702,10 +4702,10 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -4809,10 +4809,10 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -4944,10 +4944,10 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5078,10 +5078,10 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5217,10 +5217,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -5344,10 +5344,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5470,10 +5470,10 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5603,10 +5603,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SkuInfoInner>> listWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -5730,10 +5730,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UsageInner>> listWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -5852,12 +5852,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceEnvironmentInner>> serviceCall, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceEnvironmentInner>> serviceFuture, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -5961,12 +5961,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceEnvironmentInner>> serviceCall, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceEnvironmentInner>> serviceFuture, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -6070,12 +6070,12 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StampCapacityInner>> listCapacitiesNextAsync(final String nextPageLink, final ServiceCall<List<StampCapacityInner>> serviceCall, final ListOperationCallback<StampCapacityInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StampCapacityInner>> listCapacitiesNextAsync(final String nextPageLink, final ServiceFuture<List<StampCapacityInner>> serviceFuture, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCapacitiesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
@@ -6179,12 +6179,12 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6288,12 +6288,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolInner>> serviceFuture, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
@@ -6397,12 +6397,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -6506,12 +6506,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6615,12 +6615,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -6724,12 +6724,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6833,12 +6833,12 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SkuInfoInner>> listMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceFuture<List<SkuInfoInner>> serviceFuture, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -6942,12 +6942,12 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UsageInner>> listMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<UsageInner>> serviceFuture, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -7051,12 +7051,12 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> resumeNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> resumeNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             resumeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7161,12 +7161,12 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginResumeNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> beginResumeNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginResumeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7271,12 +7271,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAppServicePlansNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listAppServicePlansNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAppServicePlansNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -7380,12 +7380,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7489,12 +7489,12 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> suspendNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> suspendNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             suspendNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7599,12 +7599,12 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginSuspendNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> beginSuspendNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginSuspendNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7709,12 +7709,12 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -7818,12 +7818,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolInner>> serviceFuture, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
@@ -7927,12 +7927,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -8036,12 +8036,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8145,12 +8145,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -8254,12 +8254,12 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8363,12 +8363,12 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SkuInfoInner>> listWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceFuture<List<SkuInfoInner>> serviceFuture, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -8472,12 +8472,12 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UsageInner>> listWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<UsageInner>> serviceFuture, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override

@@ -10,13 +10,13 @@ package com.microsoft.azure.management.dns.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -120,10 +120,10 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
+    public ServiceFuture<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
     }
 
     /**
@@ -218,10 +218,10 @@ public final class RecordSetsInner {
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch), serviceCallback);
+    public ServiceFuture<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch), serviceCallback);
     }
 
     /**
@@ -322,10 +322,10 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
+    public ServiceFuture<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
     }
 
     /**
@@ -423,10 +423,10 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch), serviceCallback);
     }
 
     /**
@@ -527,10 +527,10 @@ public final class RecordSetsInner {
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
     }
 
     /**
@@ -616,10 +616,10 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch), serviceCallback);
     }
 
     /**
@@ -713,10 +713,10 @@ public final class RecordSetsInner {
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> getAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
+    public ServiceFuture<RecordSetInner> getAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
     }
 
     /**
@@ -811,10 +811,10 @@ public final class RecordSetsInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -931,10 +931,10 @@ public final class RecordSetsInner {
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -1056,10 +1056,10 @@ public final class RecordSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByDnsZoneSinglePageAsync(resourceGroupName, zoneName),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -1168,10 +1168,10 @@ public final class RecordSetsInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -1284,12 +1284,12 @@ public final class RecordSetsInner {
      * Lists the record sets of a specified type in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeNextAsync(final String nextPageLink, final ServiceCall<List<RecordSetInner>> serviceCall, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByTypeNextAsync(final String nextPageLink, final ServiceFuture<List<RecordSetInner>> serviceFuture, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -1388,12 +1388,12 @@ public final class RecordSetsInner {
      * Lists all record sets in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByDnsZoneNextAsync(final String nextPageLink, final ServiceCall<List<RecordSetInner>> serviceCall, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneNextAsync(final String nextPageLink, final ServiceFuture<List<RecordSetInner>> serviceFuture, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByDnsZoneNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override

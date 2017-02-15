@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 import rx.Observable;
@@ -57,8 +57,8 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromResponse(client.deleteWithServiceResponseAsync(name), callback);
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromResponse(client.deleteWithServiceResponseAsync(name), callback);
     }
 
     @Override
@@ -97,8 +97,8 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public ServiceCall<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(beginDeleteByNameAsync(name), callback);
+    public ServiceFuture<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(beginDeleteByNameAsync(name), callback);
     }
 
     @Override

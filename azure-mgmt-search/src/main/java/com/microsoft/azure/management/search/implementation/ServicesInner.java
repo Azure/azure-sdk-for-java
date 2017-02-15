@@ -11,7 +11,7 @@ package com.microsoft.azure.management.search.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -88,10 +88,10 @@ public final class ServicesInner {
      * @param serviceName The name of the Search service to create or update.
      * @param parameters The properties to set or update on the Search service.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters, final ServiceCallback<SearchServiceResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
+    public ServiceFuture<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters, final ServiceCallback<SearchServiceResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
     }
 
     /**
@@ -174,10 +174,10 @@ public final class ServicesInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serviceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String serviceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -253,10 +253,10 @@ public final class ServicesInner {
      *
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SearchServiceListResultInner> listAsync(String resourceGroupName, final ServiceCallback<SearchServiceListResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<SearchServiceListResultInner> listAsync(String resourceGroupName, final ServiceCallback<SearchServiceListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**

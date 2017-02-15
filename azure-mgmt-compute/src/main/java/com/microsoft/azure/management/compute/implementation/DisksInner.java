@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -144,10 +144,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
+    public ServiceFuture<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
     }
 
     /**
@@ -213,10 +213,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DiskInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
+    public ServiceFuture<DiskInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
     }
 
     /**
@@ -300,10 +300,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
+    public ServiceFuture<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
     }
 
     /**
@@ -369,10 +369,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DiskInner> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
+    public ServiceFuture<DiskInner> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk), serviceCallback);
     }
 
     /**
@@ -454,10 +454,10 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DiskInner> getAsync(String resourceGroupName, String diskName, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<DiskInner> getAsync(String resourceGroupName, String diskName, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -532,10 +532,10 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -593,10 +593,10 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -677,10 +677,10 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DiskInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DiskInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DiskInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DiskInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DiskInner>>>>() {
                 @Override
@@ -781,10 +781,10 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DiskInner>> listAsync(final ListOperationCallback<DiskInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DiskInner>> listAsync(final ListOperationCallback<DiskInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DiskInner>>>>() {
                 @Override
@@ -879,10 +879,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceCall.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
     }
 
     /**
@@ -948,10 +948,10 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
     }
 
     /**
@@ -1033,10 +1033,10 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(revokeAccessWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(revokeAccessWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -1094,10 +1094,10 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRevokeAccessWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRevokeAccessWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -1176,12 +1176,12 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DiskInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DiskInner>> serviceCall, final ListOperationCallback<DiskInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DiskInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DiskInner>> serviceFuture, final ListOperationCallback<DiskInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DiskInner>>>>() {
                 @Override
@@ -1280,12 +1280,12 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DiskInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DiskInner>> serviceCall, final ListOperationCallback<DiskInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DiskInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DiskInner>> serviceFuture, final ListOperationCallback<DiskInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DiskInner>>>>() {
                 @Override

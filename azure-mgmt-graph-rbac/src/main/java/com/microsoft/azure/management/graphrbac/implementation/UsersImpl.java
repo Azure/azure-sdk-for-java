@@ -13,7 +13,7 @@ import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.functions.Func1;
@@ -65,8 +65,8 @@ class UsersImpl
     }
 
     @Override
-    public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
-        return ServiceCall.fromBody(getByUserPrincipalNameAsync(upn), callback);
+    public ServiceFuture<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
+        return ServiceFuture.fromBody(getByUserPrincipalNameAsync(upn), callback);
     }
 
     @Override

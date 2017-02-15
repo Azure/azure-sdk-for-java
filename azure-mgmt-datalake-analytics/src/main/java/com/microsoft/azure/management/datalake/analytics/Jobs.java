@@ -14,7 +14,7 @@ import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
 import com.microsoft.azure.management.datalake.analytics.models.JobStatistics;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -41,9 +41,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity Job Information ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback);
+    ServiceFuture<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback);
 
     /**
      * Gets statistics of the specified job.
@@ -78,9 +78,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback);
+    ServiceFuture<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback);
 
     /**
      * Gets the job debug data information specified by the job ID.
@@ -115,9 +115,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param parameters The parameters to build a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
+    ServiceFuture<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -151,9 +151,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Cancels the running job specified by the job ID.
@@ -188,9 +188,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobInformation> getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback);
+    ServiceFuture<JobInformation> getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback);
 
     /**
      * Gets the job information for the specified job ID.
@@ -227,9 +227,9 @@ public interface Jobs {
      * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
+    ServiceFuture<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
 
     /**
      * Submits a job to the specified Data Lake Analytics account.
@@ -264,9 +264,9 @@ public interface Jobs {
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -308,9 +308,9 @@ public interface Jobs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -352,11 +352,11 @@ public interface Jobs {
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<List<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceFuture<List<JobInformation>> serviceFuture, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.

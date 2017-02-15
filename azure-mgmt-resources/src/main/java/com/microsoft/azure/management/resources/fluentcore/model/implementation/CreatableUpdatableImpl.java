@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.functions.Func1;
@@ -109,8 +109,8 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        return ServiceCall.fromBody(Utils.<FluentModelT>rootResource(createAsync()), callback);
+    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        return ServiceFuture.fromBody(Utils.<FluentModelT>rootResource(createAsync()), callback);
     }
 
     @Override
@@ -135,8 +135,8 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    public ServiceCall<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
-        return ServiceCall.fromBody(applyAsync(), callback);
+    public ServiceFuture<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
+        return ServiceFuture.fromBody(applyAsync(), callback);
     }
 
     @Override

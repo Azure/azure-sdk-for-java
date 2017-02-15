@@ -10,13 +10,13 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -184,10 +184,10 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(captureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
+    public ServiceFuture<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(captureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -253,10 +253,10 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
+    public ServiceFuture<VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -340,10 +340,10 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
+    public ServiceFuture<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -409,10 +409,10 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
+    public ServiceFuture<VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -494,10 +494,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -555,10 +555,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -635,10 +635,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, final ServiceCallback<VirtualMachineInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -709,10 +709,10 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, vmName, expand), serviceCallback);
+    public ServiceFuture<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand, final ServiceCallback<VirtualMachineInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, vmName, expand), serviceCallback);
     }
 
     /**
@@ -789,10 +789,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> convertToManagedDisksAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(convertToManagedDisksWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> convertToManagedDisksAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(convertToManagedDisksWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -850,10 +850,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginConvertToManagedDisksWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginConvertToManagedDisksWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -929,10 +929,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(deallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -990,10 +990,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1069,10 +1069,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> generalizeAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(generalizeWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> generalizeAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(generalizeWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1151,10 +1151,10 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualMachineInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
@@ -1255,10 +1255,10 @@ public final class VirtualMachinesInner {
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineInner>> listAllAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualMachineInner>> listAllAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
@@ -1351,10 +1351,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String vmName, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String vmName, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1430,10 +1430,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(powerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(powerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1491,10 +1491,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1570,10 +1570,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(restartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1631,10 +1631,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRestartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRestartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1710,10 +1710,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(startWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1771,10 +1771,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1850,10 +1850,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> redeployAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(redeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> redeployAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(redeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1911,10 +1911,10 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginRedeployAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRedeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginRedeployAsync(String resourceGroupName, String vmName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRedeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1993,12 +1993,12 @@ public final class VirtualMachinesInner {
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualMachineInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineInner>> serviceFuture, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
@@ -2097,12 +2097,12 @@ public final class VirtualMachinesInner {
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualMachineInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineInner>> serviceFuture, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override

@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.CsmPublishingProfileOptions;
 import com.microsoft.azure.management.appservice.PublishingProfileFormat;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -1044,10 +1044,10 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listAsync(final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listAsync(final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1149,10 +1149,10 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1256,10 +1256,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, includeSlots),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -1366,10 +1366,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> getAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteInner> getAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1450,10 +1450,10 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+    public ServiceFuture<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -1536,10 +1536,10 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+    public ServiceFuture<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -1619,10 +1619,10 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+    public ServiceFuture<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -1716,10 +1716,10 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+    public ServiceFuture<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -1814,10 +1814,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1897,10 +1897,10 @@ public final class WebAppsInner {
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
     }
 
     /**
@@ -1985,10 +1985,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2063,10 +2063,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param hostName Custom hostname
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+    public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeCustomHostnameWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -2148,10 +2148,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -2237,10 +2237,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> backupAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(backupWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+    public ServiceFuture<BackupItemInner> backupAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(backupWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -2331,10 +2331,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BackupItemInner>> listBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BackupItemInner>> listBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listBackupsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -2446,10 +2446,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+    public ServiceFuture<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -2536,10 +2536,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> getBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
+    public ServiceFuture<BackupItemInner> getBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -2624,10 +2624,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
+    public ServiceFuture<Void> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -2715,10 +2715,10 @@ public final class WebAppsInner {
      * @param backupId Id of backup
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+    public ServiceFuture<BackupItemInner> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2812,10 +2812,10 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreResponseInner> restoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+    public ServiceFuture<RestoreResponseInner> restoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2892,10 +2892,10 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreResponseInner> beginRestoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
+    public ServiceFuture<RestoreResponseInner> beginRestoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRestoreWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -2987,10 +2987,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> updateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> updateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateApplicationSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings), serviceCallback);
     }
 
     /**
@@ -3075,10 +3075,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> listApplicationSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> listApplicationSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listApplicationSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3159,10 +3159,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteAuthSettingsInner> updateAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
+    public ServiceFuture<SiteAuthSettingsInner> updateAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -3247,10 +3247,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteAuthSettingsInner> getAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(getAuthSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteAuthSettingsInner> getAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getAuthSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3331,10 +3331,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request Edited backup configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupRequestInner> updateBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+    public ServiceFuture<BackupRequestInner> updateBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -3418,10 +3418,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3499,10 +3499,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupRequestInner> getBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<BackupRequestInner> getBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3583,10 +3583,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ConnectionStringDictionaryInner> updateConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings), serviceCallback);
+    public ServiceFuture<ConnectionStringDictionaryInner> updateConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings), serviceCallback);
     }
 
     /**
@@ -3671,10 +3671,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ConnectionStringDictionaryInner> listConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listConnectionStringsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<ConnectionStringDictionaryInner> listConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listConnectionStringsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3753,10 +3753,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteLogsConfigInner> getDiagnosticLogsConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteLogsConfigInner> getDiagnosticLogsConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDiagnosticLogsConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3837,10 +3837,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteLogsConfigInner> updateDiagnosticLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
+    public ServiceFuture<SiteLogsConfigInner> updateDiagnosticLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateDiagnosticLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -3927,10 +3927,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> updateMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> updateMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateMetadataWithServiceResponseAsync(resourceGroupName, name, metadata), serviceCallback);
     }
 
     /**
@@ -4015,10 +4015,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> listMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> listMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4097,10 +4097,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> listPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<UserInner> listPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4162,10 +4162,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> beginListPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<UserInner> beginListPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginListPublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4246,10 +4246,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param pushSettings Push settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PushSettingsInner> updateSitePushSettingsAsync(String resourceGroupName, String name, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings), serviceCallback);
+    public ServiceFuture<PushSettingsInner> updateSitePushSettingsAsync(String resourceGroupName, String name, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSitePushSettingsWithServiceResponseAsync(resourceGroupName, name, pushSettings), serviceCallback);
     }
 
     /**
@@ -4334,10 +4334,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PushSettingsInner> listSitePushSettingsAsync(String resourceGroupName, String name, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<PushSettingsInner> listSitePushSettingsAsync(String resourceGroupName, String name, final ServiceCallback<PushSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listSitePushSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4416,10 +4416,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SlotConfigNamesResourceInner> listSlotConfigurationNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SlotConfigNamesResourceInner> listSlotConfigurationNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4500,10 +4500,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SlotConfigNamesResourceInner> updateSlotConfigurationNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
+    public ServiceFuture<SlotConfigNamesResourceInner> updateSlotConfigurationNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSlotConfigurationNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
     }
 
     /**
@@ -4588,10 +4588,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(getConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4672,10 +4672,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
+    public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -4762,10 +4762,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
+    public ServiceFuture<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -4856,10 +4856,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDeploymentsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -4971,10 +4971,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
+    public ServiceFuture<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -5062,10 +5062,10 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment), serviceCallback);
+    public ServiceFuture<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment), serviceCallback);
     }
 
     /**
@@ -5156,10 +5156,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
+    public ServiceFuture<Void> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -5249,10 +5249,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<IdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDomainOwnershipIdentifiersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -5364,10 +5364,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
+    public ServiceFuture<IdentifierInner> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
     }
 
     /**
@@ -5455,10 +5455,10 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> createOrUpdateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<IdentifierInner> createOrUpdateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -5549,10 +5549,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
+    public ServiceFuture<Void> deleteDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName), serviceCallback);
     }
 
     /**
@@ -5640,10 +5640,10 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> updateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<IdentifierInner> updateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -5739,10 +5739,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHostNameBindingsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -5854,10 +5854,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostNameBindingInner> getHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+    public ServiceFuture<HostNameBindingInner> getHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -5945,10 +5945,10 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostNameBindingInner> createOrUpdateHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
+    public ServiceFuture<HostNameBindingInner> createOrUpdateHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -6039,10 +6039,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
+    public ServiceFuture<Void> deleteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -6130,10 +6130,10 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6228,10 +6228,10 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> createOrUpdateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> createOrUpdateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6329,10 +6329,10 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6427,10 +6427,10 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6529,10 +6529,10 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -6621,10 +6621,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -6703,10 +6703,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> listRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> listRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -6787,10 +6787,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> getRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> getRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -6878,10 +6878,10 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -6972,10 +6972,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
+    public ServiceFuture<Void> deleteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -7063,10 +7063,10 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> updateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> updateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -7162,10 +7162,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceIdentifiersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -7283,10 +7283,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -7406,10 +7406,10 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+    public ServiceFuture<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -7504,10 +7504,10 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
+    public ServiceFuture<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -7605,10 +7605,10 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+    public ServiceFuture<Void> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -7697,10 +7697,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteCloneabilityInner> isCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.fromResponse(isCloneableWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteCloneabilityInner> isCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(isCloneableWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -7785,10 +7785,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -7904,10 +7904,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8022,10 +8022,10 @@ public final class WebAppsInner {
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8145,10 +8145,10 @@ public final class WebAppsInner {
      * @param subscriptionName Azure subscription
      * @param options Migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+    public ServiceFuture<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
     }
 
     /**
@@ -8225,10 +8225,10 @@ public final class WebAppsInner {
      * @param subscriptionName Azure subscription
      * @param options Migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+    public ServiceFuture<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
     }
 
     /**
@@ -8320,10 +8320,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationInner> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
-        return ServiceCall.fromResponse(migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
+    public ServiceFuture<OperationInner> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
     }
 
     /**
@@ -8393,10 +8393,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationInner> beginMigrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
+    public ServiceFuture<OperationInner> beginMigrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateMySqlWithServiceResponseAsync(resourceGroupName, name, migrationRequestEnvelope), serviceCallback);
     }
 
     /**
@@ -8483,10 +8483,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkFeaturesInner> listNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.fromResponse(listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view), serviceCallback);
+    public ServiceFuture<NetworkFeaturesInner> listNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view), serviceCallback);
     }
 
     /**
@@ -8571,10 +8571,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8649,10 +8649,10 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param durationInSeconds The duration to keep capturing in seconds
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -8733,10 +8733,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8814,10 +8814,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8901,10 +8901,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -9016,10 +9016,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -9132,10 +9132,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagAsync(String resourceGroupName, String name, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
-        return ServiceCall.fromResponse(getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagAsync(String resourceGroupName, String name, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSitePhpErrorLogFlagWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9214,10 +9214,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> listPremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> listPremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listPremierAddOnsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9298,10 +9298,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -9389,10 +9389,10 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param premierAddOn A JSON representation of the edited premier add-on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> addPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> addPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addPremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
     }
 
     /**
@@ -9483,10 +9483,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deletePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+    public ServiceFuture<Void> deletePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -9569,10 +9569,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9655,10 +9655,10 @@ public final class WebAppsInner {
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
     }
 
     /**
@@ -9749,10 +9749,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+    public ServiceFuture<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -9822,10 +9822,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+    public ServiceFuture<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -9909,10 +9909,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9989,10 +9989,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> restartAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -10069,10 +10069,10 @@ public final class WebAppsInner {
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
+    public ServiceFuture<Void> restartAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -10161,10 +10161,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSlotsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -10276,10 +10276,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> getSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(getSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteInner> getSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10367,10 +10367,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+    public ServiceFuture<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -10460,10 +10460,10 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+    public ServiceFuture<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -10550,10 +10550,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+    public ServiceFuture<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -10654,10 +10654,10 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+    public ServiceFuture<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -10759,10 +10759,10 @@ public final class WebAppsInner {
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10849,10 +10849,10 @@ public final class WebAppsInner {
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
+    public ServiceFuture<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration), serviceCallback);
     }
 
     /**
@@ -10944,10 +10944,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -11029,10 +11029,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Custom hostname
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+    public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeCustomHostnameSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -11121,10 +11121,10 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> applySlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> applySlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -11217,10 +11217,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> backupSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+    public ServiceFuture<BackupItemInner> backupSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(backupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11318,10 +11318,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BackupItemInner>> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BackupItemInner>> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listBackupsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -11441,10 +11441,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+    public ServiceFuture<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11538,10 +11538,10 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> getBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+    public ServiceFuture<BackupItemInner> getBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11633,10 +11633,10 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+    public ServiceFuture<Void> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11731,10 +11731,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupItemInner> listBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.fromResponse(listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+    public ServiceFuture<BackupItemInner> listBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11835,10 +11835,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreResponseInner> restoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+    public ServiceFuture<RestoreResponseInner> restoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11922,10 +11922,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RestoreResponseInner> beginRestoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+    public ServiceFuture<RestoreResponseInner> beginRestoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRestoreSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -12024,10 +12024,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production slot.
      * @param appSettings Application settings of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> updateApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> updateApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
     }
 
     /**
@@ -12119,10 +12119,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> listApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> listApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listApplicationSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12210,10 +12210,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteAuthSettingsInner> updateAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
+    public ServiceFuture<SiteAuthSettingsInner> updateAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -12305,10 +12305,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteAuthSettingsInner> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteAuthSettingsInner> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12396,10 +12396,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production slot.
      * @param request Edited backup configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupRequestInner> updateBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+    public ServiceFuture<BackupRequestInner> updateBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -12490,10 +12490,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> deleteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12578,10 +12578,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupRequestInner> getBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<BackupRequestInner> getBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12669,10 +12669,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production slot.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ConnectionStringDictionaryInner> updateConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
+    public ServiceFuture<ConnectionStringDictionaryInner> updateConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
     }
 
     /**
@@ -12764,10 +12764,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ConnectionStringDictionaryInner> listConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<ConnectionStringDictionaryInner> listConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12853,10 +12853,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -12944,10 +12944,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production slot.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
+    public ServiceFuture<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateDiagnosticLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -13041,10 +13041,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
      * @param metadata Edited metadata of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> updateMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> updateMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata), serviceCallback);
     }
 
     /**
@@ -13136,10 +13136,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StringDictionaryInner> listMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.fromResponse(listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<StringDictionaryInner> listMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13225,10 +13225,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> listPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<UserInner> listPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13297,10 +13297,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> beginListPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<UserInner> beginListPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginListPublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13388,10 +13388,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param pushSettings Push settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PushSettingsInner> updateSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings), serviceCallback);
+    public ServiceFuture<PushSettingsInner> updateSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, pushSettings), serviceCallback);
     }
 
     /**
@@ -13483,10 +13483,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PushSettingsInner> listSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PushSettingsInner> serviceCallback) {
-        return ServiceCall.fromResponse(listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<PushSettingsInner> listSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PushSettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listSitePushSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13572,10 +13572,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13663,10 +13663,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+    public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -13760,10 +13760,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+    public ServiceFuture<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -13861,10 +13861,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -13984,10 +13984,10 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
+    public ServiceFuture<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -14082,10 +14082,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
+    public ServiceFuture<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
     }
 
     /**
@@ -14183,10 +14183,10 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
+    public ServiceFuture<Void> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -14283,10 +14283,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<IdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDomainOwnershipIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -14406,10 +14406,10 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> getDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
+    public ServiceFuture<IdentifierInner> getDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
     }
 
     /**
@@ -14504,10 +14504,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -14605,10 +14605,10 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
+    public ServiceFuture<Void> deleteDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot), serviceCallback);
     }
 
     /**
@@ -14703,10 +14703,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IdentifierInner> updateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<IdentifierInner> updateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -14809,10 +14809,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -14932,10 +14932,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostNameBindingInner> getHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+    public ServiceFuture<HostNameBindingInner> getHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -15030,10 +15030,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostNameBindingInner> createOrUpdateHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
+    public ServiceFuture<HostNameBindingInner> createOrUpdateHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -15131,10 +15131,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+    public ServiceFuture<Void> deleteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -15229,10 +15229,10 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> getHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> getHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15334,10 +15334,10 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> createOrUpdateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> createOrUpdateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15442,10 +15442,10 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+    public ServiceFuture<Void> deleteHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15547,10 +15547,10 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> updateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> updateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15656,10 +15656,10 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.fromResponse(listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
+    public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionKeysSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot), serviceCallback);
     }
 
     /**
@@ -15755,10 +15755,10 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> listHybridConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> listHybridConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15844,10 +15844,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15935,10 +15935,10 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -16033,10 +16033,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -16134,10 +16134,10 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+    public ServiceFuture<Void> deleteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -16232,10 +16232,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -16338,10 +16338,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -16467,10 +16467,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -16598,10 +16598,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+    public ServiceFuture<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -16703,10 +16703,10 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
+    public ServiceFuture<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -16811,10 +16811,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+    public ServiceFuture<Void> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -16910,10 +16910,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteCloneabilityInner> isCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.fromResponse(isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteCloneabilityInner> isCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(isCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17005,10 +17005,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -17132,10 +17132,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -17258,10 +17258,10 @@ public final class WebAppsInner {
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -17387,10 +17387,10 @@ public final class WebAppsInner {
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<NetworkFeaturesInner> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.fromResponse(listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot), serviceCallback);
+    public ServiceFuture<NetworkFeaturesInner> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot), serviceCallback);
     }
 
     /**
@@ -17482,10 +17482,10 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17567,10 +17567,10 @@ public final class WebAppsInner {
      * @param slot The name of the slot for this web app.
      * @param durationInSeconds The duration to keep capturing in seconds
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -17658,10 +17658,10 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17746,10 +17746,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -17840,10 +17840,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -17963,10 +17963,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersSlotSinglePageAsync(resourceGroupName, name, slot, filter),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -18087,10 +18087,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
-        return ServiceCall.fromResponse(getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSitePhpErrorLogFlagSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18176,10 +18176,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> listPremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> listPremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listPremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18267,10 +18267,10 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> getPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> getPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -18365,10 +18365,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
      * @param premierAddOn A JSON representation of the edited premier add-on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PremierAddOnInner> addPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
-        return ServiceCall.fromResponse(addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
+    public ServiceFuture<PremierAddOnInner> addPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addPremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
     }
 
     /**
@@ -18466,10 +18466,10 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+    public ServiceFuture<Void> deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -18559,10 +18559,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -18652,10 +18652,10 @@ public final class WebAppsInner {
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
     }
 
     /**
@@ -18753,10 +18753,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+    public ServiceFuture<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -18833,10 +18833,10 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+    public ServiceFuture<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -18927,10 +18927,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetSlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> resetSlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19014,10 +19014,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> restartSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19101,10 +19101,10 @@ public final class WebAppsInner {
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
+    public ServiceFuture<Void> restartSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -19202,10 +19202,10 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -19331,10 +19331,10 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -19410,10 +19410,10 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginSwapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> beginSwapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -19511,10 +19511,10 @@ public final class WebAppsInner {
      * @param name Website Name
      * @param slot Website Slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listSnapshotsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSnapshotsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -19632,10 +19632,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> getSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> getSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19723,10 +19723,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> createOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> createOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -19803,10 +19803,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -19899,10 +19899,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -19989,10 +19989,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> startSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(startSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> startSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20077,10 +20077,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> stopSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(stopSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> stopSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(stopSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20165,10 +20165,10 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> syncRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<Void> syncRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20259,10 +20259,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -20382,10 +20382,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -20506,10 +20506,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listVnetConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -20597,10 +20597,10 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+    public ServiceFuture<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -20695,10 +20695,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -20796,10 +20796,10 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+    public ServiceFuture<Void> deleteVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -20894,10 +20894,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> updateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetInfoInner> updateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -20998,10 +20998,10 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
     }
 
     /**
@@ -21104,10 +21104,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -21215,10 +21215,10 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> updateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> updateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -21326,10 +21326,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -21447,10 +21447,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -21519,10 +21519,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+    public ServiceFuture<Void> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -21613,10 +21613,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listSnapshotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSnapshotsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -21726,10 +21726,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> getSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(getSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> getSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -21810,10 +21810,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> createOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> createOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -21883,10 +21883,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+    public ServiceFuture<SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -21972,10 +21972,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Object> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Object> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22055,10 +22055,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> startAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> startAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22136,10 +22136,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> stopAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> stopAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(stopWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22217,10 +22217,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> syncRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(syncRepositoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> syncRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(syncRepositoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22304,10 +22304,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -22419,10 +22419,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -22535,10 +22535,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listVnetConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -22619,10 +22619,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -22710,10 +22710,10 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> createOrUpdateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetInfoInner> createOrUpdateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -22804,10 +22804,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<Void> deleteVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -22895,10 +22895,10 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> updateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetInfoInner> updateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -22992,10 +22992,10 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> getVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> getVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -23091,10 +23091,10 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> createOrUpdateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> createOrUpdateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -23195,10 +23195,10 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> updateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> updateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -23296,12 +23296,12 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -23405,12 +23405,12 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -23514,12 +23514,12 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BackupItemInner>> listBackupsNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BackupItemInner>> listBackupsNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listBackupsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -23623,12 +23623,12 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listDeploymentsNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -23732,12 +23732,12 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<IdentifierInner>> serviceCall, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<IdentifierInner>> serviceFuture, final ListOperationCallback<IdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDomainOwnershipIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -23841,12 +23841,12 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsNextAsync(final String nextPageLink, final ServiceFuture<List<HostNameBindingInner>> serviceFuture, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHostNameBindingsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -23950,12 +23950,12 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInstanceInner>> serviceFuture, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -24059,12 +24059,12 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -24168,12 +24168,12 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -24277,12 +24277,12 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -24386,12 +24386,12 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersNextAsync(final String nextPageLink, final ServiceCall<List<PerfMonResponseInner>> serviceCall, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersNextAsync(final String nextPageLink, final ServiceFuture<List<PerfMonResponseInner>> serviceFuture, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -24495,12 +24495,12 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listSlotsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listSlotsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSlotsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -24604,12 +24604,12 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BackupItemInner>> listBackupsSlotNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BackupItemInner>> listBackupsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listBackupsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
@@ -24713,12 +24713,12 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listDeploymentsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -24822,12 +24822,12 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<List<IdentifierInner>> serviceCall, final ListOperationCallback<IdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<IdentifierInner>> serviceFuture, final ListOperationCallback<IdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDomainOwnershipIdentifiersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<IdentifierInner>>>>() {
                 @Override
@@ -24931,12 +24931,12 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostNameBindingInner>> listHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<HostNameBindingInner>> serviceFuture, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHostNameBindingsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
@@ -25040,12 +25040,12 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInstanceInner>> listInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInstanceInner>> serviceFuture, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
@@ -25149,12 +25149,12 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentInner>> listInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
@@ -25258,12 +25258,12 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefinitionsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -25367,12 +25367,12 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsSlotNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -25476,12 +25476,12 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PerfMonResponseInner>> listPerfMonCountersSlotNextAsync(final String nextPageLink, final ServiceCall<List<PerfMonResponseInner>> serviceCall, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<PerfMonResponseInner>> serviceFuture, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPerfMonCountersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PerfMonResponseInner>>>>() {
                 @Override
@@ -25585,12 +25585,12 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -25694,12 +25694,12 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listSnapshotsSlotNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSnapshotsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -25803,12 +25803,12 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesSlotNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -25912,12 +25912,12 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
@@ -26021,12 +26021,12 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SnapshotInner>> listSnapshotsNextAsync(final String nextPageLink, final ServiceCall<List<SnapshotInner>> serviceCall, final ListOperationCallback<SnapshotInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSnapshotsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
                 @Override
@@ -26130,12 +26130,12 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -109,10 +109,10 @@ public final class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -176,10 +176,10 @@ public final class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -262,10 +262,10 @@ public final class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+    public ServiceFuture<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<SecurityRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -349,10 +349,10 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
+    public ServiceFuture<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
     }
 
     /**
@@ -425,10 +425,10 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
+    public ServiceFuture<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
     }
 
     /**
@@ -521,10 +521,10 @@ public final class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, networkSecurityGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
@@ -632,12 +632,12 @@ public final class SecurityRulesInner {
      * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecurityRuleInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SecurityRuleInner>> serviceCall, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecurityRuleInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SecurityRuleInner>> serviceFuture, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override

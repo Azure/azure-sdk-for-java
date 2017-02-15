@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -100,10 +100,10 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters), serviceCallback);
+    public ServiceFuture<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters), serviceCallback);
     }
 
     /**
@@ -178,10 +178,10 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(policyDefinitionName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(policyDefinitionName), serviceCallback);
     }
 
     /**
@@ -251,10 +251,10 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyDefinitionInner> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(policyDefinitionName), serviceCallback);
+    public ServiceFuture<PolicyDefinitionInner> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(policyDefinitionName), serviceCallback);
     }
 
     /**
@@ -328,10 +328,10 @@ public final class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyDefinitionInner>> listAsync(final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override
@@ -424,10 +424,10 @@ public final class PolicyDefinitionsInner {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyDefinitionInner>> listAsync(final String filter, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final String filter, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override
@@ -528,12 +528,12 @@ public final class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyDefinitionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<PolicyDefinitionInner>> serviceCall, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyDefinitionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyDefinitionInner>> serviceFuture, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
                 @Override

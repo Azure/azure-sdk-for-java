@@ -11,7 +11,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -70,10 +70,10 @@ public final class ObjectsInner {
      * Gets the details for the currently logged-in user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
-        return ServiceCall.fromResponse(getCurrentUserWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCurrentUserWithServiceResponseAsync(), serviceCallback);
     }
 
     /**

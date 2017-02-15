@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionStates;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -172,10 +172,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database that has the replication link to be dropped.
      * @param linkId The ID of the replication link to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<Void> deleteReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -264,10 +264,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database to get the link for.
      * @param linkId The replication link ID to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ReplicationLinkInner> getReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<ReplicationLinkInner> serviceCallback) {
-        return ServiceCall.fromResponse(getReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<ReplicationLinkInner> getReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<ReplicationLinkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -355,10 +355,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> failoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<Void> failoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -429,10 +429,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginFailoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<Void> beginFailoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -520,10 +520,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> failoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<Void> failoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -594,10 +594,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginFailoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    public ServiceFuture<Void> beginFailoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
     }
 
     /**
@@ -684,10 +684,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database to retrieve links for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ReplicationLinkInner>> listReplicationLinksAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ReplicationLinkInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listReplicationLinksWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<List<ReplicationLinkInner>> listReplicationLinksAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ReplicationLinkInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listReplicationLinksWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -769,10 +769,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -836,10 +836,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -920,10 +920,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -987,10 +987,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1072,10 +1072,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database from which to retrieve available restore points.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1160,10 +1160,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    public ServiceFuture<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
@@ -1236,10 +1236,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    public ServiceFuture<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
@@ -1328,10 +1328,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1413,10 +1413,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1494,10 +1494,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand), serviceCallback);
+    public ServiceFuture<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand), serviceCallback);
     }
 
     /**
@@ -1579,10 +1579,10 @@ public final class DatabasesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -1660,10 +1660,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1748,10 +1748,10 @@ public final class DatabasesInner {
      * @param databaseName The name of database.
      * @param serviceTierAdvisorName The name of service tier advisor.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName, final ServiceCallback<ServiceTierAdvisorInner> serviceCallback) {
-        return ServiceCall.fromResponse(getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName), serviceCallback);
+    public ServiceFuture<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName, final ServiceCallback<ServiceTierAdvisorInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName), serviceCallback);
     }
 
     /**
@@ -1838,10 +1838,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ServiceTierAdvisorInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ServiceTierAdvisorInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1924,10 +1924,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -2007,10 +2007,10 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param status The status of the Azure SQL Database Transparent Data Encryption. Possible values include: 'Enabled', 'Disabled'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStates status, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, status), serviceCallback);
+    public ServiceFuture<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStates status, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, status), serviceCallback);
     }
 
     /**
@@ -2097,10 +2097,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -2182,10 +2182,10 @@ public final class DatabasesInner {
      * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<TransparentDataEncryptionActivityInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceFuture<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<TransparentDataEncryptionActivityInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.StorageAccounts;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.AddStorageAccountParameters;
@@ -22,7 +22,7 @@ import com.microsoft.azure.management.datalake.analytics.models.StorageContainer
 import com.microsoft.azure.management.datalake.analytics.models.UpdateStorageAccountParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -135,10 +135,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
      * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
+    public ServiceFuture<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
     }
 
     /**
@@ -221,10 +221,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
      * @param storageAccountName The name of the Azure Storage account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
     }
 
     /**
@@ -306,10 +306,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account to modify storage accounts in
      * @param storageAccountName The Azure Storage account to modify
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
     }
 
     /**
@@ -388,10 +388,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param storageAccountName The Azure Storage account to modify
      * @param parameters The parameters containing the access key and suffix to update the storage account with, if any. Passing nothing results in no change.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, UpdateStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, UpdateStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
     }
 
     /**
@@ -478,10 +478,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param storageAccountName The name of the Azure Storage account to add
      * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
+    public ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
     }
 
     /**
@@ -572,10 +572,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
      * @param containerName The name of the Azure storage container to retrieve
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<StorageContainer> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<StorageContainer> serviceCallback) {
-        return ServiceCall.fromResponse(getStorageContainerWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, containerName), serviceCallback);
+    public ServiceFuture<StorageContainer> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<StorageContainer> serviceCallback) {
+        return ServiceFuture.fromResponse(getStorageContainerWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, containerName), serviceCallback);
     }
 
     /**
@@ -670,10 +670,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
      * @param storageAccountName The name of the Azure storage account from which to list blob containers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StorageContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<StorageContainer> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StorageContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<StorageContainer> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listStorageContainersSinglePageAsync(resourceGroupName, accountName, storageAccountName),
             new Func1<String, Observable<ServiceResponse<Page<StorageContainer>>>>() {
                 @Override
@@ -796,10 +796,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
      * @param containerName The name of the Azure storage container for which the SAS token is being requested.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSasTokensSinglePageAsync(resourceGroupName, accountName, storageAccountName, containerName),
             new Func1<String, Observable<ServiceResponse<Page<SasTokenInfo>>>>() {
                 @Override
@@ -924,10 +924,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<StorageAccountInfo>>>>() {
                 @Override
@@ -1051,10 +1051,10 @@ public class StorageAccountsImpl implements StorageAccounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<StorageAccountInfo>>>>() {
                 @Override
@@ -1182,12 +1182,12 @@ public class StorageAccountsImpl implements StorageAccounts {
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StorageContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceCall<List<StorageContainer>> serviceCall, final ListOperationCallback<StorageContainer> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StorageContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceFuture<List<StorageContainer>> serviceFuture, final ListOperationCallback<StorageContainer> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listStorageContainersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<StorageContainer>>>>() {
                 @Override
@@ -1286,12 +1286,12 @@ public class StorageAccountsImpl implements StorageAccounts {
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceCall<List<SasTokenInfo>> serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceFuture<List<SasTokenInfo>> serviceFuture, final ListOperationCallback<SasTokenInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSasTokensNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SasTokenInfo>>>>() {
                 @Override
@@ -1390,12 +1390,12 @@ public class StorageAccountsImpl implements StorageAccounts {
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StorageAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<StorageAccountInfo>> serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<StorageAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<StorageAccountInfo>> serviceFuture, final ListOperationCallback<StorageAccountInfo> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<StorageAccountInfo>>>>() {
                 @Override

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityInput;
@@ -19,7 +19,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -325,10 +325,10 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      *
      * @param name The resource name to validate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityOutputInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    public ServiceFuture<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityOutputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -401,10 +401,10 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> checkResourceUsageAsync(final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> checkResourceUsageAsync(final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             checkResourceUsageSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
@@ -501,10 +501,10 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OperationInner>> listOperationsAsync(final ListOperationCallback<OperationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<OperationInner>> listOperationsAsync(final ListOperationCallback<OperationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOperationsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<OperationInner>>>>() {
                 @Override
@@ -599,12 +599,12 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceUsageInner>> checkResourceUsageNextAsync(final String nextPageLink, final ServiceCall<List<ResourceUsageInner>> serviceCall, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceUsageInner>> checkResourceUsageNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceUsageInner>> serviceFuture, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             checkResourceUsageNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceUsageInner>>>>() {
                 @Override
@@ -703,12 +703,12 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OperationInner>> listOperationsNextAsync(final String nextPageLink, final ServiceCall<List<OperationInner>> serviceCall, final ListOperationCallback<OperationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<OperationInner>> listOperationsNextAsync(final String nextPageLink, final ServiceFuture<List<OperationInner>> serviceFuture, final ListOperationCallback<OperationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOperationsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<OperationInner>>>>() {
                 @Override

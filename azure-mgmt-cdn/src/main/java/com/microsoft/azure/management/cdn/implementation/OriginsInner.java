@@ -10,12 +10,12 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -107,10 +107,10 @@ public class OriginsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OriginInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<OriginInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<OriginInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<OriginInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
             new Func1<String, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override
@@ -227,10 +227,10 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OriginInner> getAsync(String resourceGroupName, String profileName, String endpointName, String originName, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName), serviceCallback);
+    public ServiceFuture<OriginInner> getAsync(String resourceGroupName, String profileName, String endpointName, String originName, final ServiceCallback<OriginInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName), serviceCallback);
     }
 
     /**
@@ -323,10 +323,10 @@ public class OriginsInner {
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
+    public ServiceFuture<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
     }
 
     /**
@@ -408,10 +408,10 @@ public class OriginsInner {
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OriginInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
+    public ServiceFuture<OriginInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointName, originName, originUpdateProperties), serviceCallback);
     }
 
     /**
@@ -508,12 +508,12 @@ public class OriginsInner {
      * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OriginInner>> listByEndpointNextAsync(final String nextPageLink, final ServiceCall<List<OriginInner>> serviceCall, final ListOperationCallback<OriginInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<OriginInner>> listByEndpointNextAsync(final String nextPageLink, final ServiceFuture<List<OriginInner>> serviceFuture, final ListOperationCallback<OriginInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByEndpointNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<OriginInner>>>>() {
                 @Override

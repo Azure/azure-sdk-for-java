@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -131,10 +131,10 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The resource group with the resources to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourcesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -241,10 +241,10 @@ public final class ResourceGroupsInner {
      * @param expand The $expand query parameter
      * @param top The number of results to return. If null is passed, returns all resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourcesSinglePageAsync(resourceGroupName, filter, expand, top),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -352,10 +352,10 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Boolean> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -428,10 +428,10 @@ public final class ResourceGroupsInner {
      * @param resourceGroupName The name of the resource group to create or update.
      * @param parameters Parameters supplied to the create or update a resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
@@ -509,10 +509,10 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -568,10 +568,10 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -643,10 +643,10 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -720,10 +720,10 @@ public final class ResourceGroupsInner {
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Parameters supplied to update a resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> patchAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.fromResponse(patchWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> patchAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(patchWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
@@ -803,10 +803,10 @@ public final class ResourceGroupsInner {
      * @param resourceGroupName The name of the resource group to export as a template.
      * @param parameters Parameters for exporting the template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupExportResultInner> exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters, final ServiceCallback<ResourceGroupExportResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupExportResultInner> exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters, final ServiceCallback<ResourceGroupExportResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
@@ -886,10 +886,10 @@ public final class ResourceGroupsInner {
      * Gets all the resource groups for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
@@ -985,10 +985,10 @@ public final class ResourceGroupsInner {
      * @param filter The filter to apply on the operation.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter, top),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
@@ -1092,12 +1092,12 @@ public final class ResourceGroupsInner {
      * Get all the resources for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink, final ServiceCall<List<GenericResourceInner>> serviceCall, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink, final ServiceFuture<List<GenericResourceInner>> serviceFuture, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listResourcesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
@@ -1196,12 +1196,12 @@ public final class ResourceGroupsInner {
      * Gets all the resource groups for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ResourceGroupInner>> serviceCall, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceGroupInner>> serviceFuture, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override

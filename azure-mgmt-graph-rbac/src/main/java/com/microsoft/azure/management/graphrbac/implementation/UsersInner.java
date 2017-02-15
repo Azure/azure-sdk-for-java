@@ -10,13 +10,13 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -108,10 +108,10 @@ public final class UsersInner {
      *
      * @param parameters Parameters to create a user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -186,10 +186,10 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -282,10 +282,10 @@ public final class UsersInner {
      *
      * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -381,10 +381,10 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+    public ServiceFuture<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(upnOrObjectId), serviceCallback);
     }
 
     /**
@@ -455,10 +455,10 @@ public final class UsersInner {
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Parameters to update an existing user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(upnOrObjectId, parameters), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(upnOrObjectId, parameters), serviceCallback);
     }
 
     /**
@@ -533,10 +533,10 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(upnOrObjectId), serviceCallback);
     }
 
     /**
@@ -608,10 +608,10 @@ public final class UsersInner {
      * @param objectId The object ID of the user for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceCall.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
+    public ServiceFuture<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
+        return ServiceFuture.fromResponse(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
     }
 
     /**
@@ -691,12 +691,12 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UserInner>> listNextAsync(final String nextLink, final ServiceCall<List<UserInner>> serviceCall, final ListOperationCallback<UserInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<UserInner>> listNextAsync(final String nextLink, final ServiceFuture<List<UserInner>> serviceFuture, final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override

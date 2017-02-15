@@ -11,14 +11,14 @@ package com.microsoft.azure.management.datalake.store.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.store.TrustedIdProviders;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.PageImpl;
 import com.microsoft.azure.management.datalake.store.models.TrustedIdProvider;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -107,10 +107,10 @@ public class TrustedIdProvidersImpl implements TrustedIdProviders {
      * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of providers in the account.
      * @param parameters Parameters supplied to create the create the trusted identity provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TrustedIdProvider> createOrUpdateAsync(String resourceGroupName, String accountName, String trustedIdProviderName, TrustedIdProvider parameters, final ServiceCallback<TrustedIdProvider> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters), serviceCallback);
+    public ServiceFuture<TrustedIdProvider> createOrUpdateAsync(String resourceGroupName, String accountName, String trustedIdProviderName, TrustedIdProvider parameters, final ServiceCallback<TrustedIdProvider> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters), serviceCallback);
     }
 
     /**
@@ -199,10 +199,10 @@ public class TrustedIdProvidersImpl implements TrustedIdProviders {
      * @param accountName The name of the Data Lake Store account from which to delete the trusted identity provider.
      * @param trustedIdProviderName The name of the trusted identity provider to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName), serviceCallback);
     }
 
     /**
@@ -286,10 +286,10 @@ public class TrustedIdProvidersImpl implements TrustedIdProviders {
      * @param accountName The name of the Data Lake Store account from which to get the trusted identity provider.
      * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TrustedIdProvider> getAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<TrustedIdProvider> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName), serviceCallback);
+    public ServiceFuture<TrustedIdProvider> getAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<TrustedIdProvider> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, trustedIdProviderName), serviceCallback);
     }
 
     /**
@@ -377,10 +377,10 @@ public class TrustedIdProvidersImpl implements TrustedIdProviders {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the trusted identity providers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TrustedIdProvider>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<TrustedIdProvider> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TrustedIdProvider>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<TrustedIdProvider> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<TrustedIdProvider>>>>() {
                 @Override
@@ -490,12 +490,12 @@ public class TrustedIdProvidersImpl implements TrustedIdProviders {
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TrustedIdProvider>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<TrustedIdProvider>> serviceCall, final ListOperationCallback<TrustedIdProvider> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TrustedIdProvider>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<TrustedIdProvider>> serviceFuture, final ListOperationCallback<TrustedIdProvider> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByAccountNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TrustedIdProvider>>>>() {
                 @Override

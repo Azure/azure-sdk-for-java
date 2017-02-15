@@ -11,7 +11,7 @@ package com.microsoft.azure.management.batch.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.batch.ErrorBodyException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -72,10 +72,10 @@ public final class LocationsInner {
      *
      * @param locationName The desired region for the quotas.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchLocationQuotaInner> getQuotasAsync(String locationName, final ServiceCallback<BatchLocationQuotaInner> serviceCallback) {
-        return ServiceCall.fromResponse(getQuotasWithServiceResponseAsync(locationName), serviceCallback);
+    public ServiceFuture<BatchLocationQuotaInner> getQuotasAsync(String locationName, final ServiceCallback<BatchLocationQuotaInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getQuotasWithServiceResponseAsync(locationName), serviceCallback);
     }
 
     /**

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -93,10 +93,10 @@ public final class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecommendedElasticPoolInner> getAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<RecommendedElasticPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
+    public ServiceFuture<RecommendedElasticPoolInner> getAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<RecommendedElasticPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
     }
 
     /**
@@ -180,10 +180,10 @@ public final class RecommendedElasticPoolsInner {
      * @param recommendedElasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName, databaseName), serviceCallback);
+    public ServiceFuture<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName, databaseName), serviceCallback);
     }
 
     /**
@@ -268,10 +268,10 @@ public final class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendedElasticPoolInner>> listAsync(String resourceGroupName, String serverName, final ServiceCallback<List<RecommendedElasticPoolInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<RecommendedElasticPoolInner>> listAsync(String resourceGroupName, String serverName, final ServiceCallback<List<RecommendedElasticPoolInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -349,10 +349,10 @@ public final class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
+    public ServiceFuture<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
     }
 
     /**
@@ -435,10 +435,10 @@ public final class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendedElasticPoolMetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<RecommendedElasticPoolMetricInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listMetricsWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
+    public ServiceFuture<List<RecommendedElasticPoolMetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<RecommendedElasticPoolMetricInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetricsWithServiceResponseAsync(resourceGroupName, serverName, recommendedElasticPoolName), serviceCallback);
     }
 
     /**

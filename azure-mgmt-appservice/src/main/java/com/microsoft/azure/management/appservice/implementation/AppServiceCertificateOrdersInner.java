@@ -10,12 +10,12 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -169,10 +169,10 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listAsync(final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listAsync(final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -267,10 +267,10 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
+    public ServiceFuture<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
     }
 
     /**
@@ -348,10 +348,10 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -461,10 +461,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override
@@ -576,10 +576,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+    public ServiceFuture<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -667,10 +667,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+    public ServiceFuture<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -747,10 +747,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+    public ServiceFuture<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -842,10 +842,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+    public ServiceFuture<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -929,10 +929,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1013,10 +1013,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+    public ServiceFuture<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -1086,10 +1086,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+    public ServiceFuture<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -1174,10 +1174,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1257,10 +1257,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
+    public ServiceFuture<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1345,10 +1345,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
+    public ServiceFuture<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1431,10 +1431,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resendEmailAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> resendEmailAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1512,10 +1512,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
-        return ServiceCall.fromResponse(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1594,10 +1594,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
-        return ServiceCall.fromResponse(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1675,10 +1675,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1759,12 +1759,12 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateOrderInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1868,12 +1868,12 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateOrderInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1977,12 +1977,12 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateInner>> listCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateInner>> serviceCall, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServiceCertificateInner>> listCertificatesNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override

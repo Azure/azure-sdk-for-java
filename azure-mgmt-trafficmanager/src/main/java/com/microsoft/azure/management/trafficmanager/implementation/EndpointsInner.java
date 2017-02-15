@@ -11,7 +11,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -97,10 +97,10 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+    public ServiceFuture<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -197,10 +197,10 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
@@ -293,10 +293,10 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+    public ServiceFuture<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -393,10 +393,10 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
