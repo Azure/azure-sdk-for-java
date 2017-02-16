@@ -10,6 +10,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 /**
  * Type representing encryption settings to be applied to a virtual machine.
+ *
+ * @param <T> type presenting Windows or Linux specific settings
  */
 public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineEncryptionSettings> {
     protected final String keyVaultId;

@@ -34,7 +34,7 @@ public class LinuxVMDiskEncryptionSettings
     }
 
     /**
-     * Specifies the pass phrase for encrypting Linux OS or data disks
+     * Specifies the pass phrase for encrypting Linux OS or data disks.
      *
      * @param passPhrase the pass phrase
      * @return LinuxVMDiskEncryptionSettings

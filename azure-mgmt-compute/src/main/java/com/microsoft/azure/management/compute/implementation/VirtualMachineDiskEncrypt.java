@@ -46,7 +46,7 @@ class VirtualMachineDiskEncrypt {
      *
      * @param virtualMachine the virtual machine to enable or disable encryption
      */
-    public VirtualMachineDiskEncrypt(final VirtualMachine virtualMachine) {
+    VirtualMachineDiskEncrypt(final VirtualMachine virtualMachine) {
         this.virtualMachine = virtualMachine;
         this.osType = this.virtualMachine.osType();
     }
@@ -229,7 +229,7 @@ class VirtualMachineDiskEncrypt {
                             .withType(encryptionExtensionType())
                             .withVersion(encryptionExtensionVersion())
                             .withPublicSettings(encryptConfig.extensionPublicSettings())
-                            .withProtectedSettings( encryptConfig.extensionProtectedSettings())
+                            .withProtectedSettings(encryptConfig.extensionProtectedSettings())
                             .withMinorVersionAutoUpgrade()
                             .attach()
                         .applyAsync();
@@ -353,15 +353,15 @@ class VirtualMachineDiskEncrypt {
         /**
          * @return encryption specific settings to be set on virtual machine storage profile
          */
-        abstract public DiskEncryptionSettings storageProfileEncryptionSettings();
+        public abstract DiskEncryptionSettings storageProfileEncryptionSettings();
         /**
          * @return encryption extension public settings
          */
-        abstract public HashMap<String, Object> extensionPublicSettings();
+        public abstract HashMap<String, Object> extensionPublicSettings();
         /**
          * @return encryption extension protected settings
          */
-        abstract public HashMap<String, Object> extensionProtectedSettings();
+        public abstract HashMap<String, Object> extensionProtectedSettings();
     }
 
     /**
