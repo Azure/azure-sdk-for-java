@@ -17,6 +17,7 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
     protected final String aadSecret;
     protected DiskVolumeTypes volumeType = DiskVolumeTypes.ALL;
     protected String keyEncryptionKeyURL;
+    protected String keyEncryptionKeyVaultId;
     protected String encryptionAlgorithm = "RSA-OAEP";
     protected String passPhrase;
 
@@ -51,7 +52,10 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
      * @return type of the volume to perform encryption operation
      */
     public DiskVolumeTypes volumeType() {
-        return this.volumeType;
+        if (this.volumeType != null) {
+            return this.volumeType;
+        }
+        return DiskVolumeTypes.ALL;
     }
 
     /**
@@ -70,7 +74,14 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
     }
 
     /**
-     * @return key vault url to the key to protect (encrypt) the disk-encryption key
+     * @return resource id of the key vault holding key encryption key (KEK)
+     */
+    public String keyEncryptionKeyVaultId() {
+        return this.keyEncryptionKeyVaultId;
+    }
+
+    /**
+     * @return key vault url to the key (KEK) to protect (encrypt) the disk-encryption key
      */
     public String keyEncryptionKeyURL() {
         return this.keyEncryptionKeyURL;
@@ -90,14 +101,26 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
         return this.passPhrase;
     }
 
+    /**
+     * Specifies the volume to encrypt.
+     *
+     * @param volumeType the volume type
+     * @return VirtualMachineEncryptionSettings
+     */
+    public T withVolumeType(DiskVolumeTypes volumeType) {
+        this.volumeType = volumeType;
+        return (T) this;
+    }
 
     /**
      * Specifies the key vault url to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyURL the key url
-     * @return LinuxVMDiskEncryptionSettings
+     * @param keyEncryptionKeyKevVaultId resource id of the keyVault storing KEK
+     * @param keyEncryptionKeyURL the key (KEK) url
+     * @return VirtualMachineEncryptionSettings
      */
-    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL) {
+    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyKevVaultId, String keyEncryptionKeyURL) {
+        this.keyEncryptionKeyVaultId = keyEncryptionKeyKevVaultId;
         this.keyEncryptionKeyURL = keyEncryptionKeyURL;
         return (T) this;
     }
@@ -105,11 +128,11 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
     /**
      * Specifies the algorithm used to encrypt the disk-encryption key.
      *
-     * @param encryptionAlgoritm the algorithm
-     * @return LinuxVMDiskEncryptionSettings
+     * @param encryptionAlgorithm the algorithm
+     * @return VirtualMachineEncryptionSettings
      */
-    public T withVolumeEncryptionKeyEncryptAlgorithm(String encryptionAlgoritm) {
-        this.encryptionAlgorithm = encryptionAlgoritm;
+    public T withVolumeEncryptionKeyEncryptAlgorithm(String encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
         return (T) this;
     }
 }

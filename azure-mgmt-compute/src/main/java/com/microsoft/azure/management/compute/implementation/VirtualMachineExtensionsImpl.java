@@ -70,7 +70,7 @@ class VirtualMachineExtensionsImpl extends
     }
 
     /**
-     * @return @return an observable emits extensions in this collection
+     * @return an observable emits extensions in this collection
      */
     public Observable<VirtualMachineExtension> listAsync() {
         Observable<VirtualMachineExtensionImpl> extensions = Observable.from(this.collection().values());

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.DiskVolumeEncryptionStatus;
+import com.microsoft.azure.management.compute.DiskVolumeTypes;
 import com.microsoft.azure.management.compute.LinuxVMDiskEncryptionSettings;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -18,17 +19,22 @@ import rx.Observable;
  * Implementation of VirtualMachineEncryptionOperations.
  */
 class VirtualMachineEncryptionOperationsImpl implements VirtualMachineEncryptionOperations {
+    private final VirtualMachine virtualMachine;
     private final VirtualMachineDiskEncrypt virtualMachineDiskEncrypt;
-    private final OperatingSystemTypes osType;
 
+    /**
+     * Creates VirtualMachineEncryptionOperationsImpl.
+     *
+     * @param virtualMachine virtual machine on which encryption related operations to be performed
+     */
     VirtualMachineEncryptionOperationsImpl(final VirtualMachine virtualMachine) {
+        this.virtualMachine = virtualMachine;
         this.virtualMachineDiskEncrypt = new VirtualMachineDiskEncrypt(virtualMachine);
-        this.osType = virtualMachine.osType();
     }
 
     @Override
     public Observable<DiskVolumeEncryptionStatus> enableAsync(String keyVaultId, String aadClientId, String aadSecret) {
-        if (this.osType == OperatingSystemTypes.LINUX) {
+        if (this.virtualMachine.osType() == OperatingSystemTypes.LINUX) {
             return enableAsync(new LinuxVMDiskEncryptionSettings(keyVaultId, aadClientId, aadSecret));
         } else {
             return enableAsync(new WindowsVMDiskEncryptionSettings(keyVaultId, aadClientId, aadSecret));
@@ -46,13 +52,17 @@ class VirtualMachineEncryptionOperationsImpl implements VirtualMachineEncryption
     }
 
     @Override
-    public Observable<DiskVolumeEncryptionStatus> disableAsync() {
-        return virtualMachineDiskEncrypt.disableEncryptionAsync();
+    public Observable<DiskVolumeEncryptionStatus> disableAsync(final DiskVolumeTypes volumeType) {
+        return virtualMachineDiskEncrypt.disableEncryptionAsync(volumeType);
     }
 
     @Override
     public Observable<DiskVolumeEncryptionStatus> getStatusAsync() {
-        return virtualMachineDiskEncrypt.getEncryptionStatusAsync();
+        if (this.virtualMachine.osType() == OperatingSystemTypes.LINUX) {
+            return new LinuxDiskVolumeEncryptionStatusImpl(virtualMachine.id(), virtualMachine.manager()).refreshAsync();
+        } else {
+            return new WindowsVolumeEncryptionStatusImpl(virtualMachine.id(), virtualMachine.manager()).refreshAsync();
+        }
     }
 
     @Override
@@ -71,8 +81,8 @@ class VirtualMachineEncryptionOperationsImpl implements VirtualMachineEncryption
     }
 
     @Override
-    public DiskVolumeEncryptionStatus disable() {
-        return disableAsync().toBlocking().last();
+    public DiskVolumeEncryptionStatus disable(final DiskVolumeTypes volumeType) {
+        return disableAsync(volumeType).toBlocking().last();
     }
 
     @Override

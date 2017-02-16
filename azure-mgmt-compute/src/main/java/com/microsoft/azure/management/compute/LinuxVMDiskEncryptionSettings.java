@@ -33,11 +33,6 @@ public class LinuxVMDiskEncryptionSettings
         return OperatingSystemTypes.LINUX;
     }
 
-    @Override
-    public DiskVolumeTypes volumeType() {
-        return DiskVolumeTypes.ALL;
-    }
-
     /**
      * Specifies the pass phrase for encrypting Linux OS or data disks
      *

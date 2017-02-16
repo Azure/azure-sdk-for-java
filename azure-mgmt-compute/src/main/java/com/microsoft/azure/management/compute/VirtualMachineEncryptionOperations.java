@@ -43,10 +43,11 @@ public interface VirtualMachineEncryptionOperations {
 
     /**
      * Disable encryption for virtual machine disks.
+     * @param volumeType volume type to disable encryption
      *
      * @return observable that emits current volume decryption status
      */
-    Observable<DiskVolumeEncryptionStatus> disableAsync();
+    Observable<DiskVolumeEncryptionStatus> disableAsync(final DiskVolumeTypes volumeType);
 
     /**
      * @return observable that emits current volume decryption status
@@ -84,10 +85,11 @@ public interface VirtualMachineEncryptionOperations {
 
     /**
      * Disable encryption for virtual machine disks.
+     * @param volumeType volume type to disable encryption
      *
      * @return current volume encryption status
      */
-    DiskVolumeEncryptionStatus disable();
+    DiskVolumeEncryptionStatus disable(final DiskVolumeTypes volumeType);
 
     /**
      * @return current volume decryption status

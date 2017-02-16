@@ -31,23 +31,4 @@ public class WindowsVMDiskEncryptionSettings
     public OperatingSystemTypes osType() {
         return OperatingSystemTypes.WINDOWS;
     }
-
-    @Override
-    public DiskVolumeTypes volumeType() {
-        if (super.volumeType() != null) {
-            return super.volumeType();
-        }
-        return DiskVolumeTypes.ALL;
-    }
-
-    /**
-     * Specifies the volume to encrypt.
-     *
-     * @param volumeType the volume type
-     * @return WindowsVMDiskEncryptionSettings
-     */
-    public WindowsVMDiskEncryptionSettings withVolumeType(DiskVolumeTypes volumeType) {
-        this.volumeType = volumeType;
-        return this;
-    }
 }

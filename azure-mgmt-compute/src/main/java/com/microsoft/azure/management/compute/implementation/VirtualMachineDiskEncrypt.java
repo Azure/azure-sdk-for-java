@@ -9,6 +9,9 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.DiskVolumeEncryptionStatus;
+import com.microsoft.azure.management.compute.DiskVolumeTypes;
+import com.microsoft.azure.management.compute.EncryptionStatuses;
+import com.microsoft.azure.management.compute.KeyVaultKeyReference;
 import com.microsoft.azure.management.compute.KeyVaultSecretReference;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -23,7 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
- * Type to perform virtual machine disk (OS, Data) encryption.
+ * Type to enable or disable virtual machine disk (OS, Data) encryption.
  */
 class VirtualMachineDiskEncrypt {
     private final String encryptionExtensionPublisher = "Microsoft.Azure.Security";
@@ -31,26 +34,36 @@ class VirtualMachineDiskEncrypt {
     private final VirtualMachine virtualMachine;
     // Error messages
     private static final String ERROR_ENCRYPTION_EXTENSION_NOT_FOUND = "Expected encryption extension not found in the VM";
-    private static final String ERROR_NON_SUCCESS_PROVISIONING_STATE = "ProvisioningState of Encryption extension is not 'Succeeded', found %s";
-    private static final String ERROR_EXPECTED_KEY_VAULT_URL_NOT_FOUND = "Encryption extension status is empty, it should be valid keyVault URL";
+    private static final String ERROR_NON_SUCCESS_PROVISIONING_STATE = "Extension needed for disk encryption was not provisioned correctly, found ProvisioningState as '%s'";
+    private static final String ERROR_EXPECTED_KEY_VAULT_URL_NOT_FOUND = "Could not found URL pointing to the secret for disk encryption";
     private static final String ERROR_EXPECTED_ENCRYPTION_EXTENSION_STATUS_NOT_FOUND = "Encryption extension with successful status not found in the VM";
     private static final String ERROR_ENCRYPTION_EXTENSION_STATUS_IS_EMPTY = "Encryption extension status is empty";
+    private static final String ERROR_ON_LINUX_DECRYPTING_NON_DATA_DISK_IS_NOT_SUPPORTED = "Only data disk is supported to disable encryption on Linux VM";
+    private static final String ERROR_ON_LINUX_DATA_DISK_DECRYPT_NOT_ALLOWED_IF_OS_DISK_IS_ENCRYPTED = "On Linux VM disabling data disk encryption is allowed only if OS disk is not encrypted";
 
+    /**
+     * Creates VirtualMachineDiskEncrypt.
+     *
+     * @param virtualMachine the virtual machine to enable or disable encryption
+     */
     public VirtualMachineDiskEncrypt(final VirtualMachine virtualMachine) {
         this.virtualMachine = virtualMachine;
         this.osType = this.virtualMachine.osType();
     }
 
-    public Observable<DiskVolumeEncryptionStatus> getEncryptionStatusAsync() {
-        return this.getEncryptionStatusAsync(false);
-    }
-
+    /**
+     * Enables encryption.
+     *
+     * @param encryptionSettings the settings to be used for encryption extension
+     * @param <T> the Windows or Linux encryption settings
+     * @return an observable that emits the encryption status
+     */
     public <T extends VirtualMachineEncryptionSettings<T>> Observable<DiskVolumeEncryptionStatus> enableEncryptionAsync(final VirtualMachineEncryptionSettings<T> encryptionSettings) {
         final EnableDisableEncryptConfig encryptConfig = new EnableEncryptConfig(encryptionSettings);
                 // Update the encryption extension if already installed
         return updateEncryptionExtensionAsync(encryptConfig)
                 // If encryption extension is not installed then install it
-                .switchIfEmpty(installingEncryptionExtensionAsync(encryptConfig))
+                .switchIfEmpty(installEncryptionExtensionAsync(encryptConfig))
                 // Retrieve the encryption key URL after extension install or update
                 .flatMap(new Func1<VirtualMachine, Observable<String>>() {
                     @Override
@@ -62,24 +75,36 @@ class VirtualMachineDiskEncrypt {
                 .flatMap(new Func1<String, Observable<VirtualMachine>>() {
                     @Override
                     public Observable<VirtualMachine> call(String keyVaultSecretUrl) {
-                        return updateVMOSProfileAsync(encryptConfig, keyVaultSecretUrl);
+                        return updateVMStorageProfileAsync(encryptConfig, keyVaultSecretUrl);
                     }
                 })
                 // Gets the encryption status
                 .flatMap(new Func1<VirtualMachine, Observable<DiskVolumeEncryptionStatus>>() {
                     @Override
                     public Observable<DiskVolumeEncryptionStatus> call(VirtualMachine virtualMachine) {
-                        return getEncryptionStatusAsync(true);
+                        return getDiskVolumeEncryptDecryptStatusAsync(virtualMachine);
                     }
                 });
     }
 
-    public Observable<DiskVolumeEncryptionStatus> disableEncryptionAsync() {
-        final EnableDisableEncryptConfig encryptConfig = new DisableEncryptConfig();
-        // Update the encryption extension if already installed
-        return updateEncryptionExtensionAsync(encryptConfig)
+    /**
+     * Disables encryption on the given disk volume.
+     *
+     * @param volumeType the disk volume
+     * @return an observable that emits the decryption status
+     */
+    public Observable<DiskVolumeEncryptionStatus> disableEncryptionAsync(final DiskVolumeTypes volumeType) {
+        final EnableDisableEncryptConfig encryptConfig = new DisableEncryptConfig(volumeType);
+        return validateBeforeDecryptAsync(volumeType)
+                // Update the encryption extension if already installed
+                .flatMap(new Func1<Boolean, Observable<VirtualMachine>>() {
+                    @Override
+                    public Observable<VirtualMachine> call(Boolean aBoolean) {
+                        return updateEncryptionExtensionAsync(encryptConfig);
+                    }
+                })
                 // If encryption extension is not then install it
-                .switchIfEmpty(installingEncryptionExtensionAsync(encryptConfig))
+                .switchIfEmpty(installEncryptionExtensionAsync(encryptConfig))
                 // Validate and retrieve the encryption extension status
                 .flatMap(new Func1<VirtualMachine, Observable<String>>() {
                     @Override
@@ -91,18 +116,21 @@ class VirtualMachineDiskEncrypt {
                 .flatMap(new Func1<String, Observable<VirtualMachine>>() {
                     @Override
                     public Observable<VirtualMachine> call(String status) {
-                        return updateVMOSProfileAsync(encryptConfig);
+                        return updateVMStorageProfileAsync(encryptConfig);
                     }
                 })
                 // Gets the encryption status
                 .flatMap(new Func1<VirtualMachine, Observable<DiskVolumeEncryptionStatus>>() {
                     @Override
                     public Observable<DiskVolumeEncryptionStatus> call(VirtualMachine virtualMachine) {
-                        return getEncryptionStatusAsync(true);
+                        return getDiskVolumeEncryptDecryptStatusAsync(virtualMachine);
                     }
                 });
     }
 
+    /**
+     * @return OS specific encryption extension type
+     */
     private String encryptionExtensionType() {
         if (this.osType == OperatingSystemTypes.LINUX) {
             return "AzureDiskEncryptionForLinux";
@@ -111,6 +139,9 @@ class VirtualMachineDiskEncrypt {
         }
     }
 
+    /**
+     * @return OS specific encryption extension version
+     */
     private String encryptionExtensionVersion() {
         if (this.osType == OperatingSystemTypes.LINUX) {
             return "0.1";
@@ -119,6 +150,34 @@ class VirtualMachineDiskEncrypt {
         }
     }
 
+    /**
+     * Checks the given volume type in the virtual machine can be decrypted.
+     *
+     * @param volumeType the volume type to decrypt
+     * @return observable that emit true if no validation error otherwise error observable
+     */
+    private Observable<Boolean> validateBeforeDecryptAsync(final DiskVolumeTypes volumeType) {
+        if (osType == OperatingSystemTypes.LINUX) {
+            if (volumeType != DiskVolumeTypes.DATA) {
+                return toErrorObservable(ERROR_ON_LINUX_DECRYPTING_NON_DATA_DISK_IS_NOT_SUPPORTED);
+            }
+            return getDiskVolumeEncryptDecryptStatusAsync(virtualMachine)
+                    .flatMap(new Func1<DiskVolumeEncryptionStatus, Observable<Boolean>>() {
+                        @Override
+                        public Observable<Boolean> call(DiskVolumeEncryptionStatus status) {
+                            if (status.osDiskStatus() == EncryptionStatuses.ENCRYPTED) {
+                                return toErrorObservable(ERROR_ON_LINUX_DATA_DISK_DECRYPT_NOT_ALLOWED_IF_OS_DISK_IS_ENCRYPTED);
+                            }
+                            return Observable.just(true);
+                        }
+                    });
+        }
+        return Observable.just(true);
+    }
+
+    /**
+     * @return an observable that emits the encryption extension installed in the virtual machine
+     */
     private Observable<VirtualMachineExtension> getEncryptionExtensionInstalledInVMAsync() {
         return virtualMachine.getExtensionsAsync()
                 .first(new Func1<VirtualMachineExtension, Boolean>() {
@@ -130,6 +189,12 @@ class VirtualMachineDiskEncrypt {
                 });
     }
 
+    /**
+     * Updates the encryption extension in the virtual machine using provided configuration.
+     *
+     * @param encryptConfig the volume encryption configuration
+     * @return an observable that emits updated virtual machine
+     */
     private Observable<VirtualMachine> updateEncryptionExtensionAsync(final EnableDisableEncryptConfig encryptConfig) {
         final HashMap<String, Object> publicSettings = encryptConfig.extensionPublicSettings();
         return getEncryptionExtensionInstalledInVMAsync()
@@ -147,7 +212,13 @@ class VirtualMachineDiskEncrypt {
                 });
     }
 
-    private Observable<VirtualMachine> installingEncryptionExtensionAsync(final EnableDisableEncryptConfig encryptConfig) {
+    /**
+     * Prepare encryption extension using provided configuration and install it in the virtual machine.
+     *
+     * @param encryptConfig the volume encryption configuration
+     * @return an observable that emits updated virtual machine
+     */
+    private Observable<VirtualMachine> installEncryptionExtensionAsync(final EnableDisableEncryptConfig encryptConfig) {
         return Observable.defer(new Func0<Observable<VirtualMachine>>() {
             final String extensionName = encryptionExtensionType();
             @Override
@@ -166,6 +237,12 @@ class VirtualMachineDiskEncrypt {
         });
     }
 
+    /**
+     * Retrieves the encryption extension status from the extension instance view.
+     *
+     * @param statusEmptyErrorMessage the error message to emit if unable to locate the status
+     * @return an observable that emits status message
+     */
     private Observable<String> retrieveEncryptionExtensionStatusStringAsync(final String statusEmptyErrorMessage) {
         final VirtualMachineDiskEncrypt self = this;
         return getEncryptionExtensionInstalledInVMAsync()
@@ -196,35 +273,17 @@ class VirtualMachineDiskEncrypt {
                 });
     }
 
-    private Observable<DiskVolumeEncryptionStatus> getEncryptionStatusAsync(boolean emitErrorIfExtensionNotFound) {
-        final VirtualMachineDiskEncrypt self = this;
-        if (emitErrorIfExtensionNotFound) {
-            return getEncryptionExtensionInstalledInVMAsync()
-                    .switchIfEmpty(self.<VirtualMachineExtension>toErrorObservable(ERROR_ENCRYPTION_EXTENSION_NOT_FOUND))
-                    .map(new Func1<VirtualMachineExtension, DiskVolumeEncryptionStatus>() {
-                        @Override
-                        public DiskVolumeEncryptionStatus call(VirtualMachineExtension extension) {
-                            return new DiskVolumeEncryptionStatusImpl(self.osType,
-                                    extension);
-                        }
-                    });
-        } else {
-            return getEncryptionExtensionInstalledInVMAsync()
-                    .map(new Func1<VirtualMachineExtension, DiskVolumeEncryptionStatus>() {
-                        @Override
-                        public DiskVolumeEncryptionStatus call(VirtualMachineExtension extension) {
-                            return new DiskVolumeEncryptionStatusImpl(self.osType,
-                                    extension);
-                        }
-                    })
-                    .switchIfEmpty(Observable.<DiskVolumeEncryptionStatus>just(new DiskVolumeEncryptionStatusImpl(self.virtualMachine,
-                            self.encryptionExtensionType())));
-        }
-    }
-
-    private Observable<VirtualMachine> updateVMOSProfileAsync(final EnableDisableEncryptConfig encryptConfig,
-                                                              final String encryptionSecretKeyVaultUrl) {
-        DiskEncryptionSettings diskEncryptionSettings = encryptConfig.osProfileEncryptionSettings();
+    /**
+     * Updates the virtual machine's OS Disk model with the encryption specific details so that platform can
+     * use it while booting the virtual machine.
+     *
+     * @param encryptConfig the configuration specific to enabling the encryption
+     * @param encryptionSecretKeyVaultUrl the keyVault URL pointing to secret holding disk encryption key
+     * @return an observable that emits updated virtual machine
+     */
+    private Observable<VirtualMachine> updateVMStorageProfileAsync(final EnableDisableEncryptConfig encryptConfig,
+                                                                   final String encryptionSecretKeyVaultUrl) {
+        DiskEncryptionSettings diskEncryptionSettings = encryptConfig.storageProfileEncryptionSettings();
         diskEncryptionSettings.diskEncryptionKey()
                 .withSecretUrl(encryptionSecretKeyVaultUrl);
         return virtualMachine.update()
@@ -232,17 +291,50 @@ class VirtualMachineDiskEncrypt {
                 .applyAsync();
     }
 
-    private Observable<VirtualMachine> updateVMOSProfileAsync(final EnableDisableEncryptConfig encryptConfig) {
-        DiskEncryptionSettings diskEncryptionSettings = encryptConfig.osProfileEncryptionSettings();
+    /**
+     * Updates the virtual machine's OS Disk model with the encryption specific details.
+     *
+     * @param encryptConfig the configuration specific to disabling the encryption
+     * @return an observable that emits updated virtual machine
+     */
+    private Observable<VirtualMachine> updateVMStorageProfileAsync(final EnableDisableEncryptConfig encryptConfig) {
+        DiskEncryptionSettings diskEncryptionSettings = encryptConfig.storageProfileEncryptionSettings();
         return virtualMachine.update()
                 .withOsDiskEncryptionSettings(diskEncryptionSettings)
                 .applyAsync();
     }
 
+    /**
+     * Gets status object that describes the current status of the volume encryption or decryption process.
+     *
+     * @param virtualMachine the virtual machine on which encryption or decryption is running
+     * @return an observable that emits current encrypt or decrypt status
+     */
+    private Observable<DiskVolumeEncryptionStatus> getDiskVolumeEncryptDecryptStatusAsync(VirtualMachine virtualMachine) {
+        if (osType == OperatingSystemTypes.LINUX) {
+            return new LinuxDiskVolumeEncryptionStatusImpl(virtualMachine.id(), virtualMachine.manager()).refreshAsync();
+        } else {
+            return new WindowsVolumeEncryptionStatusImpl(virtualMachine.id(), virtualMachine.manager()).refreshAsync();
+        }
+    }
+
+    /**
+     * Wraps the given message in an error observable.
+     *
+     * @param message the error message
+     * @param <ResultT> observable type
+     * @return error observable with message wrapped
+     */
     private <ResultT> Observable<ResultT> toErrorObservable(String message) {
         return Observable.error(new Exception(message));
     }
 
+    /**
+     * Gets the next sequence version to be used while updating encryption extension.
+     *
+     * @param encryptionExtension the extension
+     * @return next sequence version
+     */
     private String nextSequenceVersion(final VirtualMachineExtension encryptionExtension) {
         String nextSequenceVersion = "1";
         if (encryptionExtension.publicSettings().containsKey("SequenceVersion")) {
@@ -258,8 +350,17 @@ class VirtualMachineDiskEncrypt {
      * Base type representing configuration for enabling and disabling disk encryption.
      */
     private abstract class EnableDisableEncryptConfig {
-        abstract public DiskEncryptionSettings osProfileEncryptionSettings();
+        /**
+         * @return encryption specific settings to be set on virtual machine storage profile
+         */
+        abstract public DiskEncryptionSettings storageProfileEncryptionSettings();
+        /**
+         * @return encryption extension public settings
+         */
         abstract public HashMap<String, Object> extensionPublicSettings();
+        /**
+         * @return encryption extension protected settings
+         */
         abstract public HashMap<String, Object> extensionProtectedSettings();
     }
 
@@ -276,10 +377,19 @@ class VirtualMachineDiskEncrypt {
         }
 
         @Override
-        public DiskEncryptionSettings osProfileEncryptionSettings() {
+        public DiskEncryptionSettings storageProfileEncryptionSettings() {
+            KeyVaultKeyReference keyEncryptionKey = null;
+            if (settings.keyEncryptionKeyURL() != null) {
+                keyEncryptionKey = new KeyVaultKeyReference();
+                keyEncryptionKey.withKeyUrl(settings.keyEncryptionKeyURL());
+                if (settings.keyEncryptionKeyVaultId() != null) {
+                    keyEncryptionKey.withSourceVault(new SubResource().withId(settings.keyEncryptionKeyVaultId()));
+                }
+            }
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
             diskEncryptionSettings
                     .withEnabled(true)
+                    .withKeyEncryptionKey(keyEncryptionKey)
                     .withDiskEncryptionKey(new KeyVaultSecretReference())
                     .diskEncryptionKey()
                     .withSourceVault(new SubResource().withId(settings.keyVaultId()));
@@ -316,8 +426,14 @@ class VirtualMachineDiskEncrypt {
      * Base type representing configuration for disabling disk encryption.
      */
     private class DisableEncryptConfig extends EnableDisableEncryptConfig {
+        private final DiskVolumeTypes volumeType;
+
+        DisableEncryptConfig(final DiskVolumeTypes volumeType) {
+            this.volumeType = volumeType;
+        }
+
         @Override
-        public DiskEncryptionSettings osProfileEncryptionSettings() {
+        public DiskEncryptionSettings storageProfileEncryptionSettings() {
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
             diskEncryptionSettings
                     .withEnabled(false);
@@ -328,6 +444,7 @@ class VirtualMachineDiskEncrypt {
         public HashMap<String, Object> extensionPublicSettings() {
             HashMap<String, Object> publicSettings = new LinkedHashMap<>();
             publicSettings.put("EncryptionOperation", "DisableEncryption");
+            publicSettings.put("VolumeType", this.volumeType);
             return publicSettings;
         }
 
