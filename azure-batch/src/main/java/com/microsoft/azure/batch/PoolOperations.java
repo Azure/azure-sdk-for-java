@@ -6,9 +6,41 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.azure.batch.protocol.models.ApplicationPackageReference;
+import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CertificateReference;
+import com.microsoft.azure.batch.protocol.models.CloudPool;
+import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
+import com.microsoft.azure.batch.protocol.models.ComputeNode;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocationOption;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.NodeRemoveParameter;
+import com.microsoft.azure.batch.protocol.models.PoolAddOptions;
+import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
+import com.microsoft.azure.batch.protocol.models.PoolDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.PoolDisableAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolEnableAutoScaleParameter;
+import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
+import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllPoolsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolPatchOptions;
+import com.microsoft.azure.batch.protocol.models.PoolPatchParameter;
+import com.microsoft.azure.batch.protocol.models.PoolRemoveNodesOptions;
+import com.microsoft.azure.batch.protocol.models.PoolResizeOptions;
+import com.microsoft.azure.batch.protocol.models.PoolResizeParameter;
+import com.microsoft.azure.batch.protocol.models.PoolStatistics;
+import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
+import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesOptions;
+import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesParameter;
+import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSOptions;
+import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
+import com.microsoft.azure.batch.protocol.models.StartTask;
+import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
@@ -93,9 +125,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> response = this._parentBatchClient.protocolLayer().pools().list(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().list(options);
     }
 
     /**
@@ -139,9 +169,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> response = this._parentBatchClient.protocolLayer().pools().get(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().get(poolId, options);
     }
 
     /**
@@ -476,8 +504,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> response = this._parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().evaluateAutoScale(poolId, autoScaleFormula, options);
     }
 
     /**
@@ -637,9 +664,7 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> response = this._parentBatchClient.protocolLayer().pools().exists(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().exists(poolId, options);
     }
 
     /**
@@ -786,9 +811,7 @@ public class PoolOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = this._parentBatchClient.protocolLayer().pools().listPoolUsageMetrics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().listPoolUsageMetrics(options);
     }
 
     /**
@@ -817,8 +840,6 @@ public class PoolOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> response = this._parentBatchClient.protocolLayer().pools().getAllPoolsLifetimeStatistics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().pools().getAllPoolsLifetimeStatistics(options);
     }
 }

@@ -6,9 +6,24 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudJobSchedule;
+import com.microsoft.azure.batch.protocol.models.JobScheduleAddOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleAddParameter;
+import com.microsoft.azure.batch.protocol.models.JobScheduleDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleDisableOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleEnableOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleExistsOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleListOptions;
+import com.microsoft.azure.batch.protocol.models.JobSchedulePatchOptions;
+import com.microsoft.azure.batch.protocol.models.JobSchedulePatchParameter;
+import com.microsoft.azure.batch.protocol.models.JobScheduleTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateOptions;
+import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateParameter;
+import com.microsoft.azure.batch.protocol.models.JobSpecification;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.Schedule;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -78,9 +93,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
     }
 
     /**
@@ -151,9 +164,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
     }
 
     /**
@@ -433,9 +444,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().list(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().list(options);
     }
 
 }

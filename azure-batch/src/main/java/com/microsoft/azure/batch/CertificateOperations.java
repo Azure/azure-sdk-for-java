@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
 import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
@@ -14,11 +13,8 @@ import com.microsoft.azure.batch.protocol.models.CertificateAddParameter;
 import com.microsoft.azure.batch.protocol.models.CertificateCancelDeletionOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateDeleteOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateFormat;
-import com.microsoft.azure.batch.protocol.models.CertificateGetHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
@@ -263,8 +259,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getCertificateOptions);
 
-        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response = this._parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
     }
 
     /**
@@ -306,8 +301,6 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(certificateListOptions);
 
-        ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> response = this._parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
     }
 }

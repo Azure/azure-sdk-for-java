@@ -6,9 +6,32 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudJob;
+import com.microsoft.azure.batch.protocol.models.DisableJobOption;
+import com.microsoft.azure.batch.protocol.models.JobAddOptions;
+import com.microsoft.azure.batch.protocol.models.JobAddParameter;
+import com.microsoft.azure.batch.protocol.models.JobConstraints;
+import com.microsoft.azure.batch.protocol.models.JobDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
+import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetAllJobsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleOptions;
+import com.microsoft.azure.batch.protocol.models.JobListOptions;
+import com.microsoft.azure.batch.protocol.models.JobListPreparationAndReleaseTaskStatusOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchParameter;
+import com.microsoft.azure.batch.protocol.models.JobPreparationAndReleaseTaskExecutionInformation;
+import com.microsoft.azure.batch.protocol.models.JobPreparationTask;
+import com.microsoft.azure.batch.protocol.models.JobReleaseTask;
+import com.microsoft.azure.batch.protocol.models.JobStatistics;
+import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.OnAllTasksComplete;
+import com.microsoft.azure.batch.protocol.models.PoolInformation;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -78,9 +101,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> response = this._parentBatchClient.protocolLayer().jobs().getAllJobsLifetimeStatistics(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().getAllJobsLifetimeStatistics(options);
     }
 
     /**
@@ -125,8 +146,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getJobOptions);
 
-        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response = this._parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().get(jobId, getJobOptions);
     }
 
     /**
@@ -168,9 +188,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> response = this._parentBatchClient.protocolLayer().jobs().list(jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().list(jobListOptions);
     }
 
     /**
@@ -215,9 +233,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> response = this._parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
     }
 
     /**
@@ -247,9 +263,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = this._parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
     }
 
     /**

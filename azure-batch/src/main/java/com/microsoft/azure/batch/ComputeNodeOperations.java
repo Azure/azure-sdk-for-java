@@ -7,9 +7,25 @@
 package com.microsoft.azure.batch;
 
 import com.google.common.io.CharStreams;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.ComputeNode;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeAddUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDisableSchedulingOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeUser;
+import com.microsoft.azure.batch.protocol.models.DisableComputeNodeSchedulingOption;
+import com.microsoft.azure.batch.protocol.models.NodeUpdateUserParameter;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
@@ -250,9 +266,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
     }
 
     /**
@@ -441,10 +455,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
+        InputStream response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
 
-        if (response.getBody() != null) {
-            return CharStreams.toString(new InputStreamReader(response.getBody(), "UTF-8"));
+        if (response != null) {
+            return CharStreams.toString(new InputStreamReader(response, "UTF-8"));
         }
         else {
             return null;
@@ -479,9 +493,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
     }
 
     /**
@@ -525,9 +537,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
     }
 
 }

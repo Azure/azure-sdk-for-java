@@ -25,7 +25,7 @@ public class CreateTasksTerminatedException extends BatchErrorException {
      * @param pendingList The list of pending tasks
      */
     public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
-        super(message);
+        super(message, null, null);
         this.failureTasks = failureTasks;
     }
 

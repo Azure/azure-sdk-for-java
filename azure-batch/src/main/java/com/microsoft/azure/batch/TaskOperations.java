@@ -6,13 +6,34 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudTask;
+import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
+import com.microsoft.azure.batch.protocol.models.SubtaskInformation;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
+import com.microsoft.azure.batch.protocol.models.TaskAddOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
+import com.microsoft.azure.batch.protocol.models.TaskAddResult;
+import com.microsoft.azure.batch.protocol.models.TaskAddStatus;
+import com.microsoft.azure.batch.protocol.models.TaskConstraints;
+import com.microsoft.azure.batch.protocol.models.TaskDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.TaskGetOptions;
+import com.microsoft.azure.batch.protocol.models.TaskListOptions;
+import com.microsoft.azure.batch.protocol.models.TaskListSubtasksOptions;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateOptions;
+import com.microsoft.azure.batch.protocol.models.TaskTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.TaskUpdateOptions;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -145,10 +166,10 @@ public class TaskOperations implements IInheritedBehaviors {
                 this.bhMgr.applyRequestBehaviors(options);
 
                 try {
-                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
+                    TaskAddCollectionResult response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
 
-                    if (response.getBody() != null && response.getBody().value() != null) {
-                        for (TaskAddResult result : response.getBody().value()) {
+                    if (response != null && response.value() != null) {
+                        for (TaskAddResult result : response.value()) {
                             if (result.error() != null) {
                                 if (result.status() == TaskAddStatus.SERVERERROR) {
                                     // Server error will be retried
@@ -165,7 +186,7 @@ public class TaskOperations implements IInheritedBehaviors {
                             }
                         }
                     }
-                } catch (BatchErrorException | IOException e) {
+                } catch (BatchErrorException e) {
                     // Any exception will stop further call
                     exception = e;
                     pendingList.addAll(taskList);
@@ -325,9 +346,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> response = this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
     }
 
     /**
@@ -374,10 +393,10 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId, taskId, options);
+        CloudTaskListSubtasksResult response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId, taskId, options);
 
-        if (response.getBody() != null) {
-            return response.getBody().value();
+        if (response != null) {
+            return response.value();
         }
         else {
             return null;
@@ -457,9 +476,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> response = this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
     }
 
     /**
