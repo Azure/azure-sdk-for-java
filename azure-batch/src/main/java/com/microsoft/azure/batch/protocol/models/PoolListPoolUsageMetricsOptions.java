@@ -13,31 +13,37 @@ import com.microsoft.rest.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Pool_ListPoolUsageMetrics operation.
+ * Additional parameters for the Pool_listPoolUsageMetrics operation.
  */
 public class PoolListPoolUsageMetricsOptions {
     /**
      * The earliest time from which to include metrics. This must be at least
-     * two and a half hours before the current time.
+     * two and a half hours before the current time. If not specified this
+     * defaults to the start time of the last aggregation interval currently
+     * available.
      */
     @JsonProperty(value = "")
     private DateTime startTime;
 
     /**
-     * The latest time from which to include metrics. This must be at least
-     * two hours before the current time.
+     * The latest time from which to include metrics. This must be at least two
+     * hours before the current time. If not specified this defaults to the end
+     * time of the last aggregation interval currently available.
      */
     @JsonProperty(value = "")
     private DateTime endTime;
 
     /**
-     * An OData $filter clause.
+     * An OData $filter clause. If this is not specified the response includes
+     * all pools that existed in the account in the time range of the returned
+     * aggregation intervals.
      */
     @JsonProperty(value = "")
     private String filter;
 
     /**
-     * The maximum number of items to return in the response.
+     * The maximum number of items to return in the response. A maximum of 1000
+     * results will be returned.
      */
     @JsonProperty(value = "")
     private Integer maxResults;
@@ -58,8 +64,7 @@ public class PoolListPoolUsageMetricsOptions {
     private String clientRequestId;
 
     /**
-     * Whether the server should return the client-request-id identifier in
-     * the response.
+     * Whether the server should return the client-request-id in the response.
      */
     @JsonProperty(value = "")
     private Boolean returnClientRequestId;
@@ -220,7 +225,7 @@ public class PoolListPoolUsageMetricsOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**

@@ -8,31 +8,36 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The status of the Job Preparation and Job Release tasks on a compute node.
  */
 public class JobPreparationAndReleaseTaskExecutionInformation {
     /**
-     * The id of the pool containing the compute node to which this entry
+     * The ID of the pool containing the compute node to which this entry
      * refers.
      */
+    @JsonProperty(value = "poolId")
     private String poolId;
 
     /**
-     * The id of the compute node to which this entry refers.
+     * The ID of the compute node to which this entry refers.
      */
+    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /**
      * The URL of the compute node to which this entry refers.
      */
+    @JsonProperty(value = "nodeUrl")
     private String nodeUrl;
 
     /**
      * Information about the execution status of the Job Preparation task on
      * this compute node.
      */
+    @JsonProperty(value = "jobPreparationTaskExecutionInfo")
     private JobPreparationTaskExecutionInformation jobPreparationTaskExecutionInfo;
 
     /**
@@ -40,6 +45,7 @@ public class JobPreparationAndReleaseTaskExecutionInformation {
      * compute node.
      * This property is set only if the Job Release task has run on the node.
      */
+    @JsonProperty(value = "jobReleaseTaskExecutionInfo")
     private JobReleaseTaskExecutionInformation jobReleaseTaskExecutionInfo;
 
     /**

@@ -16,48 +16,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PoolUsageMetrics {
     /**
-     * The id of the pool whose metrics are being aggregated.
+     * The ID of the pool whose metrics are aggregated in this entry.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "poolId", required = true)
     private String poolId;
 
     /**
-     * The start time of the aggregation interval.
+     * The start time of the aggregation interval covered by this entry.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
-     * The end time of the aggregation interval.
+     * The end time of the aggregation interval covered by this entry.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "endTime", required = true)
     private DateTime endTime;
 
     /**
-     * The size of virtual machines in the pool. All VMs in a pool are the
-     * same size.
+     * The size of virtual machines in the pool. All VMs in a pool are the same
+     * size.
+     * For information about available sizes of virtual machines for Cloud
+     * Services pools (pools created with cloudServiceConfiguration), see Sizes
+     * for Cloud Services
+     * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
+     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
+     * information about available VM sizes for pools using images from the
+     * Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
+     * or Sizes for Virtual Machines (Windows)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+     * Batch supports all Azure VM sizes except STANDARD_A0 and those with
+     * premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /**
      * The total core hours used in the pool during this aggregation interval.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "totalCoreHours", required = true)
     private double totalCoreHours;
 
     /**
-     * The cross data center network ingress in GiB to the pool during this
-     * interval.
+     * The cross data center network ingress to the pool during this interval,
+     * in GiB.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dataIngressGiB", required = true)
     private double dataIngressGiB;
 
     /**
-     * The cross data center network egress in GiB from the pool during this
-     * interval.
+     * The cross data center network egress from the pool during this interval,
+     * in GiB.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dataEgressGiB", required = true)
     private double dataEgressGiB;
 
     /**

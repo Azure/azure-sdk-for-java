@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An item of additional information included in an Azure Batch error response.
@@ -16,11 +17,13 @@ public class BatchErrorDetail {
     /**
      * An identifier specifying the meaning of the Value property.
      */
+    @JsonProperty(value = "key")
     private String key;
 
     /**
      * The additional information included with the error response.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

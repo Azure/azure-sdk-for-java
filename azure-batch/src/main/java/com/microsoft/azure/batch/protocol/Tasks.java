@@ -8,10 +8,8 @@
 
 package com.microsoft.azure.batch.protocol;
 
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.batch.protocol.models.TaskAddCollectionHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
 import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
@@ -35,12 +33,13 @@ import com.microsoft.azure.batch.protocol.models.TaskTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.TaskUpdateHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskUpdateOptions;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
 import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -50,471 +49,815 @@ public interface Tasks {
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskAddHeaders> add(String jobId, TaskAddParameter task) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(String jobId, TaskAddParameter task);
 
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback);
+
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
+     * @param task The task to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(String jobId, TaskAddParameter task);
+
+    /**
+     * Adds a task to the specified job.
+     *
+     * @param jobId The ID of the job to which the task is to be added.
+     * @param task The task to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskAddHeaders>> addWithServiceResponseAsync(String jobId, TaskAddParameter task);
+    /**
+     * Adds a task to the specified job.
+     *
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskAddHeaders> add(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void add(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
 
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a task to the specified job.
+     *
+     * @param jobId The ID of the job to which the task is to be added.
+     * @param task The task to be added.
+     * @param taskAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
+
+    /**
+     * Adds a task to the specified job.
+     *
+     * @param jobId The ID of the job to which the task is to be added.
+     * @param task The task to be added.
+     * @param taskAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskAddHeaders>> addWithServiceResponseAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param jobId The ID of the job.
+     * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> list(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudTask> list(final String jobId);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback);
+
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<Page<CloudTask>> listAsync(final String jobId);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job.
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listWithServiceResponseAsync(final String jobId);
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> list(final String jobId, final TaskListOptions taskListOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudTask> list(final String jobId, final TaskListOptions taskListOptions);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job.
+     * @param taskListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<Page<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job.
+     * @param taskListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listWithServiceResponseAsync(final String jobId, final TaskListOptions taskListOptions);
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add. 
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @return the TaskAddCollectionResult object if successful.
      */
-    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value) throws BatchErrorException, IOException, IllegalArgumentException;
+    TaskAddCollectionResult addCollection(String jobId, List<TaskAddParameter> value);
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add. 
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
+
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add. 
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @return the observable to the TaskAddCollectionResult object
+     */
+    Observable<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value);
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     *
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @return the observable to the TaskAddCollectionResult object
+     */
+    Observable<ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders>> addCollectionWithServiceResponseAsync(String jobId, List<TaskAddParameter> value);
+    /**
+     * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     *
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the TaskAddCollectionResult object if successful.
      */
-    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    TaskAddCollectionResult addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add. 
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     *
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @return the observable to the TaskAddCollectionResult object
+     */
+    Observable<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     *
+     * @param jobId The ID of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @return the observable to the TaskAddCollectionResult object
+     */
+    Observable<ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders>> addCollectionWithServiceResponseAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
+     */
+    void delete(String jobId, String taskId);
+
+    /**
+     * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskDeleteHeaders> delete(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> deleteAsync(String jobId, String taskId);
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceCall deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, TaskDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, String taskId);
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskDeleteHeaders> delete(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void delete(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Gets information about the specified task.
+     * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudTask object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> get(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
-
-    /**
-     * Gets information about the specified task.
-     *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Gets information about the specified task.
-     *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
-     * @param taskGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudTask object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> get(String jobId, String taskId, TaskGetOptions taskGetOptions) throws BatchErrorException, IOException, IllegalArgumentException;
-
-    /**
-     * Gets information about the specified task.
-     *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
-     * @param taskGetOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
-
-    /**
-     * Updates the properties of the specified task.
-     *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
+     * @param taskDeleteOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskUpdateHeaders> update(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
+
+    /**
+     * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
+     * @param taskDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @return the CloudTask object if successful.
+     */
+    CloudTask get(String jobId, String taskId);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<CloudTask> getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @return the observable to the CloudTask object
+     */
+    Observable<CloudTask> getAsync(String jobId, String taskId);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @return the observable to the CloudTask object
+     */
+    Observable<ServiceResponseWithHeaders<CloudTask, TaskGetHeaders>> getWithServiceResponseAsync(String jobId, String taskId);
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @param taskGetOptions Additional parameters for the operation
+     * @return the CloudTask object if successful.
+     */
+    CloudTask get(String jobId, String taskId, TaskGetOptions taskGetOptions);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @param taskGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @param taskGetOptions Additional parameters for the operation
+     * @return the observable to the CloudTask object
+     */
+    Observable<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions);
+
+    /**
+     * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
+     * @param taskGetOptions Additional parameters for the operation
+     * @return the observable to the CloudTask object
+     */
+    Observable<ServiceResponseWithHeaders<CloudTask, TaskGetHeaders>> getWithServiceResponseAsync(String jobId, String taskId, TaskGetOptions taskGetOptions);
 
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      */
-    ServiceCall updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    void update(String jobId, String taskId);
+
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified task.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> updateAsync(String jobId, String taskId);
+
+    /**
+     * Updates the properties of the specified task.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskUpdateHeaders>> updateWithServiceResponseAsync(String jobId, String taskId);
+    /**
+     * Updates the properties of the specified task.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskUpdateHeaders> update(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void update(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
 
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the properties of the specified task.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param taskUpdateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
+
+    /**
+     * Updates the properties of the specified task.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param taskUpdateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskUpdateHeaders>> updateWithServiceResponseAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudTaskListSubtasksResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
+     * @return the CloudTaskListSubtasksResult object if successful.
      */
-    ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> listSubtasks(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudTaskListSubtasksResult listSubtasks(String jobId, String taskId);
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
+
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
+     * @return the observable to the CloudTaskListSubtasksResult object
+     */
+    Observable<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId);
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
+     *
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
+     * @return the observable to the CloudTaskListSubtasksResult object
+     */
+    Observable<ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders>> listSubtasksWithServiceResponseAsync(String jobId, String taskId);
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
+     *
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudTaskListSubtasksResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the CloudTaskListSubtasksResult object if successful.
      */
-    ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> listSubtasks(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    CloudTaskListSubtasksResult listSubtasks(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
+     *
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
+     * @param taskListSubtasksOptions Additional parameters for the operation
+     * @return the observable to the CloudTaskListSubtasksResult object
+     */
+    Observable<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
+     *
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
+     * @param taskListSubtasksOptions Additional parameters for the operation
+     * @return the observable to the CloudTaskListSubtasksResult object
+     */
+    Observable<ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders>> listSubtasksWithServiceResponseAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
+     */
+    void terminate(String jobId, String taskId);
+
+    /**
+     * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskTerminateHeaders> terminate(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> terminateAsync(String jobId, String taskId);
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceCall terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String taskId);
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskTerminateHeaders> terminate(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    void terminate(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
+     * @param taskTerminateOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
-    /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
-     *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
-     * @param taskReactivateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
+     * @param taskTerminateOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
 
     /**
      * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     */
+    void reactivate(String jobId, String taskId);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> reactivateAsync(String jobId, String taskId);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateWithServiceResponseAsync(String jobId, String taskId);
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     */
+    void reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateWithServiceResponseAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudTask> listNext(final String nextPageLink);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudTask>> serviceFuture, final ListOperationCallback<CloudTask> serviceCallback);
+
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<Page<CloudTask>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> listNext(final String nextPageLink, final TaskListNextOptions taskListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<CloudTask> listNext(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceFuture<List<CloudTask>> serviceFuture, final ListOperationCallback<CloudTask> serviceCallback);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param taskListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<Page<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
+
+    /**
+     * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param taskListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudTask&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
 
 }

@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An error that occurred when executing or evaluating a pool autoscale
@@ -19,17 +20,20 @@ public class AutoScaleRunError {
      * An identifier for the autoscale error. Codes are invariant and are
      * intended to be consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * A message describing the autoscale error, intended to be suitable for
      * display in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * A list of additional error details related to the autoscale error.
      */
+    @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
     /**

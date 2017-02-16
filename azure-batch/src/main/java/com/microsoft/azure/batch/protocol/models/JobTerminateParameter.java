@@ -8,15 +8,17 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudJobOperations.Terminate request.
+ * Options when terminating a job.
  */
 public class JobTerminateParameter {
     /**
-     * The text you want to appear as the job's TerminateReason. The default
-     * is 'UserTerminate'.
+     * The text you want to appear as the job's TerminateReason. The default is
+     * 'UserTerminate'.
      */
+    @JsonProperty(value = "terminateReason")
     private String terminateReason;
 
     /**

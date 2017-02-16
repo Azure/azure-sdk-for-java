@@ -9,23 +9,27 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies any dependencies of a task. Any task that is explicitly specified
- * or within a dependency range must complete before the dependant task will
- * be scheduled.
+ * or within a dependency range must complete before the dependant task will be
+ * scheduled.
  */
 public class TaskDependencies {
     /**
-     * The list of task ids that must complete before this task can be
-     * scheduled.
+     * The list of task IDs that this task depends on. All tasks in this list
+     * must complete successfully before the dependent task can be scheduled.
      */
+    @JsonProperty(value = "taskIds")
     private List<String> taskIds;
 
     /**
-     * The list of task ranges that must complete before this task can be
+     * The list of task ID ranges that this task depends on. All tasks in all
+     * ranges must complete successfully before the dependent task can be
      * scheduled.
      */
+    @JsonProperty(value = "taskIdRanges")
     private List<TaskIdRange> taskIdRanges;
 
     /**

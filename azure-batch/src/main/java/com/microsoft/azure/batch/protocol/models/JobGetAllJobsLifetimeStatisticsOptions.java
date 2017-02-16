@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Job_GetAllJobsLifetimeStatistics operation.
+ * Additional parameters for the Job_getAllJobsLifetimeStatistics operation.
  */
 public class JobGetAllJobsLifetimeStatisticsOptions {
     /**
@@ -32,8 +32,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
     private String clientRequestId;
 
     /**
-     * Whether the server should return the client-request-id identifier in
-     * the response.
+     * Whether the server should return the client-request-id in the response.
      */
     @JsonProperty(value = "")
     private Boolean returnClientRequestId;
@@ -114,7 +113,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**

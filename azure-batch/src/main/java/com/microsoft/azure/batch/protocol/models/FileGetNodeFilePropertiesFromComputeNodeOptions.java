@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the File_GetNodeFilePropertiesFromComputeNode
+ * Additional parameters for the File_getNodeFilePropertiesFromComputeNode
  * operation.
  */
 public class FileGetNodeFilePropertiesFromComputeNodeOptions {
@@ -33,8 +33,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
     private String clientRequestId;
 
     /**
-     * Whether the server should return the client-request-id identifier in
-     * the response.
+     * Whether the server should return the client-request-id in the response.
      */
     @JsonProperty(value = "")
     private Boolean returnClientRequestId;
@@ -129,7 +128,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
@@ -156,7 +155,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ifModifiedSince == null) {
             return null;
         }
-        return this.ifModifiedSince.getDateTime();
+        return this.ifModifiedSince.dateTime();
     }
 
     /**
@@ -183,7 +182,7 @@ public class FileGetNodeFilePropertiesFromComputeNodeOptions {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
-        return this.ifUnmodifiedSince.getDateTime();
+        return this.ifUnmodifiedSince.dateTime();
     }
 
     /**

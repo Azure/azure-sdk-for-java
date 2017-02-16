@@ -8,17 +8,19 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a ComputeNodeOperations.DisableScheduling request.
+ * Options for disabling scheduling on a compute node.
  */
 public class NodeDisableSchedulingParameter {
     /**
-     * What to do with currently running tasks when disable task scheduling on
-     * the compute node.
+     * What to do with currently running tasks when disabling task scheduling
+     * on the compute node.
      * The default value is requeue. Possible values include: 'requeue',
      * 'terminate', 'taskcompletion'.
      */
+    @JsonProperty(value = "nodeDisableSchedulingOption")
     private DisableComputeNodeSchedulingOption nodeDisableSchedulingOption;
 
     /**

@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Task_Terminate operation.
+ * Additional parameters for the Task_terminate operation.
  */
 public class TaskTerminateOptions {
     /**
@@ -32,8 +32,7 @@ public class TaskTerminateOptions {
     private String clientRequestId;
 
     /**
-     * Whether the server should return the client-request-id identifier in
-     * the response.
+     * Whether the server should return the client-request-id in the response.
      */
     @JsonProperty(value = "")
     private Boolean returnClientRequestId;
@@ -142,7 +141,7 @@ public class TaskTerminateOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
@@ -209,7 +208,7 @@ public class TaskTerminateOptions {
         if (this.ifModifiedSince == null) {
             return null;
         }
-        return this.ifModifiedSince.getDateTime();
+        return this.ifModifiedSince.dateTime();
     }
 
     /**
@@ -236,7 +235,7 @@ public class TaskTerminateOptions {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
-        return this.ifUnmodifiedSince.getDateTime();
+        return this.ifUnmodifiedSince.dateTime();
     }
 
     /**

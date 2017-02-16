@@ -18,85 +18,85 @@ public class ResourceStatistics {
     /**
      * The start time of the time range covered by the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the statistics were last updated. All statistics are
      * limited to the range between startTime and lastUpdateTime.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true)
     private DateTime lastUpdateTime;
 
     /**
      * The average CPU usage across all nodes in the pool (percentage per
      * node).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "avgCPUPercentage", required = true)
     private double avgCPUPercentage;
 
     /**
      * The average memory usage in GiB across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "avgMemoryGiB", required = true)
     private double avgMemoryGiB;
 
     /**
      * The peak memory usage in GiB across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "peakMemoryGiB", required = true)
     private double peakMemoryGiB;
 
     /**
      * The average used disk space in GiB across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "avgDiskGiB", required = true)
     private double avgDiskGiB;
 
     /**
      * The peak used disk space in GiB across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "peakDiskGiB", required = true)
     private double peakDiskGiB;
 
     /**
      * The total number of disk read operations across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "diskReadIOps", required = true)
     private long diskReadIOps;
 
     /**
      * The total number of disk write operations across all nodes in the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "diskWriteIOps", required = true)
     private long diskWriteIOps;
 
     /**
      * The total amount of data in GiB of disk reads across all nodes in the
      * pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "diskReadGiB", required = true)
     private double diskReadGiB;
 
     /**
      * The total amount of data in GiB of disk writes across all nodes in the
      * pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "diskWriteGiB", required = true)
     private double diskWriteGiB;
 
     /**
-     * The total amount of data in GiB of network reads across all nodes in
-     * the pool.
+     * The total amount of data in GiB of network reads across all nodes in the
+     * pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "networkReadGiB", required = true)
     private double networkReadGiB;
 
     /**
      * The total amount of data in GiB of network writes across all nodes in
      * the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "networkWriteGiB", required = true)
     private double networkWriteGiB;
 
     /**
