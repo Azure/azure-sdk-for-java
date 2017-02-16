@@ -13,7 +13,7 @@ package com.microsoft.azure.keyvault;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
@@ -63,7 +63,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -461,10 +461,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name for the new key. The system will generate the version name for the new key.
      * @param kty The type of key to create. For valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(createKeyWithServiceResponseAsync(vaultBaseUrl, keyName, kty), serviceCallback);
+    public ServiceFuture<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(createKeyWithServiceResponseAsync(vaultBaseUrl, keyName, kty), serviceCallback);
     }
 
     /**
@@ -557,10 +557,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(createKeyWithServiceResponseAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags), serviceCallback);
+    public ServiceFuture<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(createKeyWithServiceResponseAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags), serviceCallback);
     }
 
     /**
@@ -659,10 +659,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName Name for the imported key.
      * @param key The Json web key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(importKeyWithServiceResponseAsync(vaultBaseUrl, keyName, key), serviceCallback);
+    public ServiceFuture<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(importKeyWithServiceResponseAsync(vaultBaseUrl, keyName, key), serviceCallback);
     }
 
     /**
@@ -752,10 +752,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyAttributes The key management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(importKeyWithServiceResponseAsync(vaultBaseUrl, keyName, key, hsm, keyAttributes, tags), serviceCallback);
+    public ServiceFuture<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(importKeyWithServiceResponseAsync(vaultBaseUrl, keyName, key, hsm, keyAttributes, tags), serviceCallback);
     }
 
     /**
@@ -849,10 +849,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(deleteKeyWithServiceResponseAsync(vaultBaseUrl, keyName), serviceCallback);
+    public ServiceFuture<KeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteKeyWithServiceResponseAsync(vaultBaseUrl, keyName), serviceCallback);
     }
 
     /**
@@ -929,10 +929,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
+    public ServiceFuture<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
     }
 
     /**
@@ -1020,10 +1020,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, keyOps, keyAttributes, tags), serviceCallback);
+    public ServiceFuture<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, keyOps, keyAttributes, tags), serviceCallback);
     }
 
     /**
@@ -1118,10 +1118,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(getKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
+    public ServiceFuture<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(getKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
     }
 
     /**
@@ -1207,10 +1207,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -1317,10 +1317,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -1432,10 +1432,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeysSinglePageAsync(vaultBaseUrl),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -1534,10 +1534,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeysSinglePageAsync(vaultBaseUrl, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -1639,10 +1639,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupKeyResult> backupKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<BackupKeyResult> serviceCallback) {
-        return ServiceCall.fromResponse(backupKeyWithServiceResponseAsync(vaultBaseUrl, keyName), serviceCallback);
+    public ServiceFuture<BackupKeyResult> backupKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<BackupKeyResult> serviceCallback) {
+        return ServiceFuture.fromResponse(backupKeyWithServiceResponseAsync(vaultBaseUrl, keyName), serviceCallback);
     }
 
     /**
@@ -1717,10 +1717,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup, final ServiceCallback<KeyBundle> serviceCallback) {
-        return ServiceCall.fromResponse(restoreKeyWithServiceResponseAsync(vaultBaseUrl, keyBundleBackup), serviceCallback);
+    public ServiceFuture<KeyBundle> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreKeyWithServiceResponseAsync(vaultBaseUrl, keyBundleBackup), serviceCallback);
     }
 
     /**
@@ -1803,10 +1803,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> encryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
-        return ServiceCall.fromResponse(encryptWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    public ServiceFuture<KeyOperationResult> encryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(encryptWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
     }
 
     /**
@@ -1905,10 +1905,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> decryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
-        return ServiceCall.fromResponse(decryptWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    public ServiceFuture<KeyOperationResult> decryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(decryptWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
     }
 
     /**
@@ -2007,10 +2007,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> signAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
-        return ServiceCall.fromResponse(signWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    public ServiceFuture<KeyOperationResult> signAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(signWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
     }
 
     /**
@@ -2111,10 +2111,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyVerifyResult> verifyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
-        return ServiceCall.fromResponse(verifyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, digest, signature), serviceCallback);
+    public ServiceFuture<KeyVerifyResult> verifyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
+        return ServiceFuture.fromResponse(verifyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, digest, signature), serviceCallback);
     }
 
     /**
@@ -2219,10 +2219,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> wrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
-        return ServiceCall.fromResponse(wrapKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    public ServiceFuture<KeyOperationResult> wrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(wrapKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
     }
 
     /**
@@ -2321,10 +2321,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
-        return ServiceCall.fromResponse(unwrapKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    public ServiceFuture<KeyOperationResult> unwrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(unwrapKeyWithServiceResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
     }
 
     /**
@@ -2419,10 +2419,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret.
      * @param value The value of the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(setSecretWithServiceResponseAsync(vaultBaseUrl, secretName, value), serviceCallback);
+    public ServiceFuture<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(setSecretWithServiceResponseAsync(vaultBaseUrl, secretName, value), serviceCallback);
     }
 
     /**
@@ -2511,10 +2511,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param contentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(setSecretWithServiceResponseAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes), serviceCallback);
+    public ServiceFuture<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(setSecretWithServiceResponseAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes), serviceCallback);
     }
 
     /**
@@ -2607,10 +2607,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSecretWithServiceResponseAsync(vaultBaseUrl, secretName), serviceCallback);
+    public ServiceFuture<SecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSecretWithServiceResponseAsync(vaultBaseUrl, secretName), serviceCallback);
     }
 
     /**
@@ -2687,10 +2687,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
+    public ServiceFuture<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
     }
 
     /**
@@ -2778,10 +2778,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes, tags), serviceCallback);
+    public ServiceFuture<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes, tags), serviceCallback);
     }
 
     /**
@@ -2875,10 +2875,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
-        return ServiceCall.fromResponse(getSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
+    public ServiceFuture<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(getSecretWithServiceResponseAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
     }
 
     /**
@@ -2962,10 +2962,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretsSinglePageAsync(vaultBaseUrl),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -3064,10 +3064,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretsSinglePageAsync(vaultBaseUrl, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -3175,10 +3175,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -3285,10 +3285,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -3400,10 +3400,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificatesSinglePageAsync(vaultBaseUrl),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override
@@ -3502,10 +3502,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificatesSinglePageAsync(vaultBaseUrl, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override
@@ -3607,10 +3607,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<CertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
 
     /**
@@ -3685,10 +3685,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, final ServiceCallback<Contacts> serviceCallback) {
-        return ServiceCall.fromResponse(setCertificateContactsWithServiceResponseAsync(vaultBaseUrl, contacts), serviceCallback);
+    public ServiceFuture<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceFuture.fromResponse(setCertificateContactsWithServiceResponseAsync(vaultBaseUrl, contacts), serviceCallback);
     }
 
     /**
@@ -3762,10 +3762,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> getCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificateContactsWithServiceResponseAsync(vaultBaseUrl), serviceCallback);
+    public ServiceFuture<Contacts> getCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateContactsWithServiceResponseAsync(vaultBaseUrl), serviceCallback);
     }
 
     /**
@@ -3833,10 +3833,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateContactsWithServiceResponseAsync(vaultBaseUrl), serviceCallback);
+    public ServiceFuture<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateContactsWithServiceResponseAsync(vaultBaseUrl), serviceCallback);
     }
 
     /**
@@ -3910,10 +3910,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateIssuersSinglePageAsync(vaultBaseUrl),
             new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
                 @Override
@@ -4012,10 +4012,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
                 @Override
@@ -4119,10 +4119,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(setCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider), serviceCallback);
+    public ServiceFuture<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(setCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider), serviceCallback);
     }
 
     /**
@@ -4211,10 +4211,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(setCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
+    public ServiceFuture<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(setCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
     }
 
     /**
@@ -4308,10 +4308,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
+    public ServiceFuture<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
     }
 
     /**
@@ -4396,10 +4396,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
+    public ServiceFuture<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
     }
 
     /**
@@ -4490,10 +4490,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
+    public ServiceFuture<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
     }
 
     /**
@@ -4568,10 +4568,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
+    public ServiceFuture<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateIssuerWithServiceResponseAsync(vaultBaseUrl, issuerName), serviceCallback);
     }
 
     /**
@@ -4646,10 +4646,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
-        return ServiceCall.fromResponse(createCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceFuture.fromResponse(createCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
 
     /**
@@ -4730,10 +4730,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateOperation> serviceCallback) {
-        return ServiceCall.fromResponse(createCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    public ServiceFuture<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceFuture.fromResponse(createCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags), serviceCallback);
     }
 
     /**
@@ -4823,10 +4823,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(importCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate), serviceCallback);
+    public ServiceFuture<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(importCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate), serviceCallback);
     }
 
     /**
@@ -4919,10 +4919,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(importCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    public ServiceFuture<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(importCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password, certificatePolicy, certificateAttributes, tags), serviceCallback);
     }
 
     /**
@@ -5025,10 +5025,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override
@@ -5135,10 +5135,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override
@@ -5246,10 +5246,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificatePolicy> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificatePolicyWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificatePolicy> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificatePolicyWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
 
     /**
@@ -5326,10 +5326,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificatePolicy> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, final ServiceCallback<CertificatePolicy> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificatePolicyWithServiceResponseAsync(vaultBaseUrl, certificateName, certificatePolicy), serviceCallback);
+    public ServiceFuture<CertificatePolicy> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, final ServiceCallback<CertificatePolicy> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificatePolicyWithServiceResponseAsync(vaultBaseUrl, certificateName, certificatePolicy), serviceCallback);
     }
 
     /**
@@ -5412,10 +5412,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
+    public ServiceFuture<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
     }
 
     /**
@@ -5503,10 +5503,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    public ServiceFuture<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy, certificateAttributes, tags), serviceCallback);
     }
 
     /**
@@ -5601,10 +5601,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
+    public ServiceFuture<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
     }
 
     /**
@@ -5686,10 +5686,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName, boolean cancellationRequested, final ServiceCallback<CertificateOperation> serviceCallback) {
-        return ServiceCall.fromResponse(updateCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName, cancellationRequested), serviceCallback);
+    public ServiceFuture<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName, boolean cancellationRequested, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName, cancellationRequested), serviceCallback);
     }
 
     /**
@@ -5768,10 +5768,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
-        return ServiceCall.fromResponse(getCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
 
     /**
@@ -5846,10 +5846,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateOperationWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
 
     /**
@@ -5926,10 +5926,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(mergeCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, x509Certificates), serviceCallback);
+    public ServiceFuture<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(mergeCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, x509Certificates), serviceCallback);
     }
 
     /**
@@ -6015,10 +6015,10 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
-        return ServiceCall.fromResponse(mergeCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags), serviceCallback);
+    public ServiceFuture<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(mergeCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags), serviceCallback);
     }
 
     /**
@@ -6112,12 +6112,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeyVersionsNextAsync(final String nextPageLink, final ServiceCall<List<KeyItem>> serviceCall, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeyVersionsNextAsync(final String nextPageLink, final ServiceFuture<List<KeyItem>> serviceFuture, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeyVersionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -6216,12 +6216,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List keys in the specified vault.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> getKeysNextAsync(final String nextPageLink, final ServiceCall<List<KeyItem>> serviceCall, final ListOperationCallback<KeyItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<KeyItem>> getKeysNextAsync(final String nextPageLink, final ServiceFuture<List<KeyItem>> serviceFuture, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getKeysNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
                 @Override
@@ -6320,12 +6320,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List secrets in a specified key vault.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretsNextAsync(final String nextPageLink, final ServiceCall<List<SecretItem>> serviceCall, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretsNextAsync(final String nextPageLink, final ServiceFuture<List<SecretItem>> serviceFuture, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -6424,12 +6424,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List the versions of the specified secret.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> getSecretVersionsNextAsync(final String nextPageLink, final ServiceCall<List<SecretItem>> serviceCall, final ListOperationCallback<SecretItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SecretItem>> getSecretVersionsNextAsync(final String nextPageLink, final ServiceFuture<List<SecretItem>> serviceFuture, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getSecretVersionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
                 @Override
@@ -6528,12 +6528,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List certificates in a specified key vault.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateItem>> serviceCall, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificatesNextAsync(final String nextPageLink, final ServiceFuture<List<CertificateItem>> serviceFuture, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override
@@ -6632,12 +6632,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List certificate issuers for a specified key vault.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersNextAsync(final String nextPageLink, final ServiceCall<List<CertificateIssuerItem>> serviceCall, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateIssuerItem>> getCertificateIssuersNextAsync(final String nextPageLink, final ServiceFuture<List<CertificateIssuerItem>> serviceFuture, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateIssuersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
                 @Override
@@ -6736,12 +6736,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * List the versions of a certificate.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> getCertificateVersionsNextAsync(final String nextPageLink, final ServiceCall<List<CertificateItem>> serviceCall, final ListOperationCallback<CertificateItem> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<CertificateItem>> getCertificateVersionsNextAsync(final String nextPageLink, final ServiceFuture<List<CertificateItem>> serviceFuture, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             getCertificateVersionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
                 @Override

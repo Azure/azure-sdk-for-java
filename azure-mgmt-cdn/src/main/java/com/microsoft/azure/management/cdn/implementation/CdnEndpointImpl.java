@@ -8,6 +8,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
@@ -17,8 +18,10 @@ import com.microsoft.azure.management.cdn.EndpointResourceState;
 import com.microsoft.azure.management.cdn.GeoFilter;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
@@ -197,6 +200,19 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                 this.parent().name(),
                 this.name()));
         return this;
+    }
+
+    @Override
+    public PagedList<ResourceUsage> listResourceUsage() {
+        return (new PagedListConverter<ResourceUsageInner, ResourceUsage>() {
+            @Override
+            public ResourceUsage typeConvert(ResourceUsageInner inner) {
+                return new ResourceUsage(inner);
+            }
+        }).convert(this.parent().manager().inner().endpoints().listResourceUsage(
+                    this.parent().resourceGroupName(),
+                    this.parent().name(),
+                    this.name()));
     }
 
     @Override

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -103,10 +103,10 @@ public final class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -205,10 +205,10 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceProviderNamespace),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -309,10 +309,10 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
+    public ServiceFuture<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
@@ -389,10 +389,10 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(registerWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
+    public ServiceFuture<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(registerWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
@@ -472,12 +472,12 @@ public final class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<FeatureResultInner>> serviceFuture, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
@@ -576,12 +576,12 @@ public final class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<FeatureResultInner>> serviceFuture, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override

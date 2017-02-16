@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 
@@ -87,8 +87,8 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public ServiceCall<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
+    public ServiceFuture<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
     }
 
     @Override

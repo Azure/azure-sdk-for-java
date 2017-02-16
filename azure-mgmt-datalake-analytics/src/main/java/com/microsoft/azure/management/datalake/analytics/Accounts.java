@@ -13,7 +13,7 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalytic
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccountUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -37,9 +37,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -81,9 +81,9 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -124,9 +124,9 @@ public interface Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -164,9 +164,9 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -209,9 +209,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets details of the specified Data Lake Analytics account.
@@ -245,9 +245,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
@@ -281,9 +281,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
@@ -320,9 +320,9 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
@@ -361,9 +361,9 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
@@ -400,9 +400,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -438,9 +438,9 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -477,9 +477,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -515,9 +515,9 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -551,11 +551,11 @@ public interface Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeAnalyticsAccount>> serviceFuture, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -585,11 +585,11 @@ public interface Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceFuture<List<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeAnalyticsAccount>> serviceFuture, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.

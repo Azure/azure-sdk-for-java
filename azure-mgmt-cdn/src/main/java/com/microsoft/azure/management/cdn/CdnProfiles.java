@@ -68,6 +68,20 @@ public interface CdnProfiles extends
     PagedList<Operation> listOperations();
 
     /**
+     * Check the quota and actual usage of the CDN profiles under the current subscription.
+     *
+     * @return quotas and actual usages of the CDN profiles under the current subscription.
+     */
+    PagedList<ResourceUsage> listResourceUsage();
+
+    /**
+     * Lists all the edge nodes of a CDN service.
+     *
+     * @return list of all the edge nodes of a CDN service.
+     */
+    PagedList<EdgeNode> listEdgeNodes();
+
+    /**
      * Starts an existing stopped CDN endpoint.
      *
      * @param resourceGroupName name of the resource group within the Azure subscription.

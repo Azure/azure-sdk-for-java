@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -140,10 +140,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -200,10 +200,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -279,10 +279,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -359,10 +359,10 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+    public ServiceFuture<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -428,10 +428,10 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+    public ServiceFuture<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -517,10 +517,10 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -621,10 +621,10 @@ public final class ApplicationGatewaysInner {
      * Gets all the application gateways in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -716,10 +716,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> startAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(startWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> startAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -776,10 +776,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -853,10 +853,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> stopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> stopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -913,10 +913,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -991,10 +991,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceFuture.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -1054,10 +1054,10 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+    public ServiceFuture<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceFuture.fromResponse(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
     }
 
     /**
@@ -1117,10 +1117,10 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -1191,10 +1191,10 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+    public ServiceFuture<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
     }
 
     /**
@@ -1275,12 +1275,12 @@ public final class ApplicationGatewaysInner {
      * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
@@ -1379,12 +1379,12 @@ public final class ApplicationGatewaysInner {
      * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override

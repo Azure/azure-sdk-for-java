@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -95,10 +95,10 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProviderInner> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.fromResponse(unregisterWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
+    public ServiceFuture<ProviderInner> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(unregisterWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -168,10 +168,10 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProviderInner> registerAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.fromResponse(registerWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
+    public ServiceFuture<ProviderInner> registerAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(registerWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -245,10 +245,10 @@ public final class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProviderInner>> listAsync(final ListOperationCallback<ProviderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProviderInner>> listAsync(final ListOperationCallback<ProviderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {
                 @Override
@@ -344,10 +344,10 @@ public final class ProvidersInner {
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProviderInner>> listAsync(final Integer top, final String expand, final ListOperationCallback<ProviderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProviderInner>> listAsync(final Integer top, final String expand, final ListOperationCallback<ProviderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(top, expand),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {
                 @Override
@@ -446,10 +446,10 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProviderInner> getAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
+    public ServiceFuture<ProviderInner> getAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -515,10 +515,10 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ProviderInner> getAsync(String resourceProviderNamespace, String expand, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace, expand), serviceCallback);
+    public ServiceFuture<ProviderInner> getAsync(String resourceProviderNamespace, String expand, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceProviderNamespace, expand), serviceCallback);
     }
 
     /**
@@ -595,12 +595,12 @@ public final class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ProviderInner>> serviceCall, final ListOperationCallback<ProviderInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ProviderInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ProviderInner>> serviceFuture, final ListOperationCallback<ProviderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {
                 @Override

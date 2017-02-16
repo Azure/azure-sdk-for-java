@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.management.cdn.OperationDisplay;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * CDN REST API operation.
@@ -17,11 +18,13 @@ public class OperationInner {
     /**
      * Operation name: {provider}/{resource}/{operation}.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The object that represents the operation.
      */
+    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /**

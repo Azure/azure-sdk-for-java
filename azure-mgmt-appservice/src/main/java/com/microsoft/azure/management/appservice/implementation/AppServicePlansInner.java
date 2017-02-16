@@ -10,12 +10,12 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -226,10 +226,10 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAsync(final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listAsync(final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -327,10 +327,10 @@ public final class AppServicePlansInner {
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAsync(final Boolean detailed, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listAsync(final Boolean detailed, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(detailed),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -438,10 +438,10 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -545,10 +545,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -629,10 +629,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -702,10 +702,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -790,10 +790,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -871,10 +871,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, final ServiceCallback<List<CapabilityInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, final ServiceCallback<List<CapabilityInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -957,10 +957,10 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1055,10 +1055,10 @@ public final class AppServicePlansInner {
      * @param relayName Name of the Service Bus relay.
      * @param connection The Hybrid Connection entity.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection), serviceCallback);
     }
 
     /**
@@ -1156,10 +1156,10 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1252,10 +1252,10 @@ public final class AppServicePlansInner {
      * @param namespaceName The name of the Service Bus namespace.
      * @param relayName The name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1354,10 +1354,10 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Hybrid Connection namespace.
      * @param relayName Name of the Hybrid Connection relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -1479,10 +1479,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
-        return ServiceCall.fromResponse(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1567,10 +1567,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHybridConnectionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -1686,10 +1686,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefintionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -1805,10 +1805,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1923,10 +1923,10 @@ public final class AppServicePlansInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2041,10 +2041,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2118,10 +2118,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
+    public ServiceFuture<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
     }
 
     /**
@@ -2207,10 +2207,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2328,10 +2328,10 @@ public final class AppServicePlansInner {
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2450,10 +2450,10 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2534,10 +2534,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2626,10 +2626,10 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -2724,10 +2724,10 @@ public final class AppServicePlansInner {
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param connectionEnvelope Definition of the gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -2824,10 +2824,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2915,10 +2915,10 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.fromResponse(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    public ServiceFuture<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -3014,10 +3014,10 @@ public final class AppServicePlansInner {
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    public ServiceFuture<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3117,10 +3117,10 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    public ServiceFuture<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -3215,10 +3215,10 @@ public final class AppServicePlansInner {
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    public ServiceFuture<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3316,10 +3316,10 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
+    public ServiceFuture<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
     }
 
     /**
@@ -3405,12 +3405,12 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3514,12 +3514,12 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3623,12 +3623,12 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceCall<List<String>> serviceCall, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceFuture<List<String>> serviceFuture, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -3732,12 +3732,12 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceCall<List<HybridConnectionInner>> serviceCall, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceFuture<List<HybridConnectionInner>> serviceFuture, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHybridConnectionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -3841,12 +3841,12 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefintionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -3950,12 +3950,12 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -4059,12 +4059,12 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override

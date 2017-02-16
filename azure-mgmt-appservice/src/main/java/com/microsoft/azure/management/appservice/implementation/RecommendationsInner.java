@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -98,10 +98,10 @@ public final class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -165,10 +165,10 @@ public final class RecommendationsInner {
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(featured, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(featured, filter), serviceCallback);
     }
 
     /**
@@ -236,10 +236,10 @@ public final class RecommendationsInner {
      * Reset all recommendation opt-out settings for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -307,10 +307,10 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -385,10 +385,10 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
     }
 
     /**
@@ -469,10 +469,10 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -559,10 +559,10 @@ public final class RecommendationsInner {
      * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
     }
 
     /**
@@ -650,10 +650,10 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -730,10 +730,10 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -813,10 +813,10 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
     }
 
     /**
@@ -898,10 +898,10 @@ public final class RecommendationsInner {
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
     }
 
     /**

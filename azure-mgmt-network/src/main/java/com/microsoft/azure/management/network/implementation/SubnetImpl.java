@@ -5,16 +5,26 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link Subnet} and its create and update interfaces.
+ *  Implementation for Subnet and its create and update interfaces.
  */
 @LangDefinition
 class SubnetImpl
@@ -30,6 +40,16 @@ class SubnetImpl
     }
 
     // Getters
+    @Override
+    public int networkInterfaceIPConfigurationCount() {
+        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        if (ipConfigRefs != null) {
+            return ipConfigRefs.size();
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     public String addressPrefix() {
         return this.inner().addressPrefix();
@@ -109,5 +129,45 @@ class SubnetImpl
         return (nsgId != null)
                 ? this.parent().manager().networkSecurityGroups().getById(nsgId)
                 : null;
+    }
+
+    @Override
+    public Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations() {
+        Set<NicIPConfiguration> ipConfigs = new HashSet<>();
+        Map<String, NetworkInterface> nics = new HashMap<>();
+        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        if (ipConfigRefs == null) {
+            return ipConfigs;
+        }
+
+        for (IPConfigurationInner ipConfigRef : ipConfigRefs) {
+            String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.id());
+            String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.id());
+            // Check if NIC already cached
+            NetworkInterface nic = nics.get(nicID.toLowerCase());
+            if (nic == null) {
+                //  NIC not previously found, so ask Azure for it
+                nic = this.parent().manager().networkInterfaces().getById(nicID);
+            }
+
+            if (nic == null) {
+                // NIC doesn't exist so ignore this bad reference
+                continue;
+            }
+
+            // Cache the NIC
+            nics.put(nic.id().toLowerCase(), nic);
+
+            // Get the IP config
+            NicIPConfiguration ipConfig = nic.ipConfigurations().get(ipConfigName);
+            if (ipConfig == null) {
+                // IP config not found, so ignore this bad reference
+                continue;
+            }
+
+            ipConfigs.add(ipConfig);
+        }
+
+        return Collections.unmodifiableSet(ipConfigs);
     }
 }

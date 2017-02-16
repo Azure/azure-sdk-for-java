@@ -107,14 +107,26 @@ class LoadBalancerImpl
         this.creatablePIPKeys.clear();
 
         // Reset and update probes
-        this.inner().withProbes(innersFromWrappers(this.httpProbes.values()));
-        this.inner().withProbes(innersFromWrappers(this.tcpProbes.values(), this.inner().probes()));
+        List<ProbeInner> innerProbes = innersFromWrappers(this.httpProbes.values());
+        innerProbes = innersFromWrappers(this.tcpProbes.values(), innerProbes);
+        if (innerProbes == null) {
+            innerProbes = new ArrayList<>();
+        }
+        this.inner().withProbes(innerProbes);
 
         // Reset and update backends
-        this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
+        List<BackendAddressPoolInner> innerBackends = innersFromWrappers(this.backends.values());
+        if (null == innerBackends) {
+            innerBackends = new ArrayList<>();
+        }
+        this.inner().withBackendAddressPools(innerBackends);
 
         // Reset and update frontends
-        this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
+        List<FrontendIPConfigurationInner> innerFrontends = innersFromWrappers(this.frontends.values());
+        if (null == innerFrontends) {
+            innerFrontends = new ArrayList<>();
+        }
+        this.inner().withFrontendIPConfigurations(innerFrontends);
 
         // Reset and update inbound NAT rules
         List<InboundNatRuleInner> innerNatRules = innersFromWrappers(this.inboundNatRules.values());
@@ -122,6 +134,7 @@ class LoadBalancerImpl
             innerNatRules = new ArrayList<>();
         }
         this.inner().withInboundNatRules(innerNatRules);
+
         for (LoadBalancerInboundNatRule natRule : this.inboundNatRules.values()) {
             // Clear deleted frontend references
             SubResource ref = natRule.inner().frontendIPConfiguration();

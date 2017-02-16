@@ -26,7 +26,7 @@ public class ProfileInner extends Resource {
      * The pricing tier (defines a CDN provider, feature list and rate) of the
      * CDN profile.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /**

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 
@@ -83,8 +83,8 @@ final class DeploymentsImpl
     }
 
     @Override
-    public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
+    public ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
@@ -127,8 +127,8 @@ final class DeploymentsImpl
     }
 
     @Override
-    public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+    public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
     }
 
     @Override

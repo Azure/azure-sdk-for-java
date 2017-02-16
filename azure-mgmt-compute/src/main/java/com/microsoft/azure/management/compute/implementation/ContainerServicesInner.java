@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -120,10 +120,10 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ContainerServiceInner>> listAsync(final ListOperationCallback<ContainerServiceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ContainerServiceInner>> listAsync(final ListOperationCallback<ContainerServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override
@@ -223,10 +223,10 @@ public final class ContainerServicesInner {
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, containerServiceName, parameters), serviceCallback);
+    public ServiceFuture<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, containerServiceName, parameters), serviceCallback);
     }
 
     /**
@@ -296,10 +296,10 @@ public final class ContainerServicesInner {
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, containerServiceName, parameters), serviceCallback);
+    public ServiceFuture<ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, containerServiceName, parameters), serviceCallback);
     }
 
     /**
@@ -386,10 +386,10 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ContainerServiceInner> getAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<ContainerServiceInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
+    public ServiceFuture<ContainerServiceInner> getAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<ContainerServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
     }
 
     /**
@@ -467,10 +467,10 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
     }
 
     /**
@@ -531,10 +531,10 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
     }
 
     /**
@@ -617,10 +617,10 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ContainerServiceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ContainerServiceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override
@@ -727,12 +727,12 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ContainerServiceInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ContainerServiceInner>> serviceCall, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ContainerServiceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ContainerServiceInner>> serviceFuture, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override
@@ -836,12 +836,12 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ContainerServiceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ContainerServiceInner>> serviceCall, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ContainerServiceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ContainerServiceInner>> serviceFuture, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override

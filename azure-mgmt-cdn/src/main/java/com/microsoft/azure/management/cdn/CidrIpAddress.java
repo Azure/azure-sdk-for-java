@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * CIDR Ip address.
@@ -16,11 +17,13 @@ public class CidrIpAddress {
     /**
      * Ip adress itself.
      */
+    @JsonProperty(value = "baseIpAddress")
     private String baseIpAddress;
 
     /**
      * The length of the prefix of the ip address.
      */
+    @JsonProperty(value = "prefixLength")
     private Integer prefixLength;
 
     /**

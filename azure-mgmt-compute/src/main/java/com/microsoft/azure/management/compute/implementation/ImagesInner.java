@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -118,10 +118,10 @@ public final class ImagesInner {
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, imageName, parameters), serviceCallback);
+    public ServiceFuture<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, imageName, parameters), serviceCallback);
     }
 
     /**
@@ -187,10 +187,10 @@ public final class ImagesInner {
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, imageName, parameters), serviceCallback);
+    public ServiceFuture<ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, imageName, parameters), serviceCallback);
     }
 
     /**
@@ -272,10 +272,10 @@ public final class ImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
     }
 
     /**
@@ -333,10 +333,10 @@ public final class ImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
+    public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
     }
 
     /**
@@ -413,10 +413,10 @@ public final class ImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ImageInner> getAsync(String resourceGroupName, String imageName, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
+    public ServiceFuture<ImageInner> getAsync(String resourceGroupName, String imageName, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
     }
 
     /**
@@ -487,10 +487,10 @@ public final class ImagesInner {
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ImageInner> getAsync(String resourceGroupName, String imageName, String expand, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName, expand), serviceCallback);
+    public ServiceFuture<ImageInner> getAsync(String resourceGroupName, String imageName, String expand, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName, expand), serviceCallback);
     }
 
     /**
@@ -571,10 +571,10 @@ public final class ImagesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ImageInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ImageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ImageInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ImageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override
@@ -675,10 +675,10 @@ public final class ImagesInner {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ImageInner>> listAsync(final ListOperationCallback<ImageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ImageInner>> listAsync(final ListOperationCallback<ImageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override
@@ -774,12 +774,12 @@ public final class ImagesInner {
      * Gets the list of images under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ImageInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ImageInner>> serviceCall, final ListOperationCallback<ImageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ImageInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ImageInner>> serviceFuture, final ListOperationCallback<ImageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override
@@ -878,12 +878,12 @@ public final class ImagesInner {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ImageInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ImageInner>> serviceCall, final ListOperationCallback<ImageInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ImageInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ImageInner>> serviceFuture, final ListOperationCallback<ImageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override

@@ -10,14 +10,14 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.ProcessorArchitecture;
 import com.microsoft.azure.management.network.VpnClientParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -125,10 +125,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -194,10 +194,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -279,10 +279,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> getAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> getAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -356,10 +356,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -416,10 +416,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -499,10 +499,10 @@ public final class VirtualNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayInner>>>>() {
                 @Override
@@ -601,10 +601,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(resetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(resetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -664,10 +664,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature enabled gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(resetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(resetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip), serviceCallback);
     }
 
     /**
@@ -727,10 +727,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> beginResetAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginResetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> beginResetAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginResetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -801,10 +801,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature enabled gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkGatewayInner> beginResetAsync(String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginResetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip), serviceCallback);
+    public ServiceFuture<VirtualNetworkGatewayInner> beginResetAsync(String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, final ServiceCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginResetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip), serviceCallback);
     }
 
     /**
@@ -884,10 +884,10 @@ public final class VirtualNetworkGatewaysInner {
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param processorArchitecture VPN client Processor Architecture. Possible values are: 'AMD64' and 'X86'. Possible values include: 'Amd64', 'X86'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.fromResponse(generatevpnclientpackageWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, processorArchitecture), serviceCallback);
+    public ServiceFuture<String> generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(generatevpnclientpackageWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, processorArchitecture), serviceCallback);
     }
 
     /**
@@ -972,12 +972,12 @@ public final class VirtualNetworkGatewaysInner {
      * Gets all virtual network gateways by resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkGatewayInner>> serviceCall, final ListOperationCallback<VirtualNetworkGatewayInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkGatewayInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkGatewayInner>> serviceFuture, final ListOperationCallback<VirtualNetworkGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayInner>>>>() {
                 @Override

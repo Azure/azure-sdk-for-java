@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -109,10 +109,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -176,10 +176,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -262,10 +262,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+    public ServiceFuture<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -349,10 +349,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
@@ -425,10 +425,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+    public ServiceFuture<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
@@ -521,10 +521,10 @@ public final class VirtualNetworkPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, virtualNetworkName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
@@ -632,12 +632,12 @@ public final class VirtualNetworkPeeringsInner {
      * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkPeeringInner>> serviceCall, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkPeeringInner>> serviceFuture, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override

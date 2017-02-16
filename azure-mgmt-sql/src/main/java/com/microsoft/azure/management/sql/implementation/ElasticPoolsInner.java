@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -115,10 +115,10 @@ public final class ElasticPoolsInner {
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
      * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
+    public ServiceFuture<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
     }
 
     /**
@@ -191,10 +191,10 @@ public final class ElasticPoolsInner {
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
      * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
+    public ServiceFuture<ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters, final ServiceCallback<ElasticPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, parameters), serviceCallback);
     }
 
     /**
@@ -283,10 +283,10 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -368,10 +368,10 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ElasticPoolInner> getAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<ElasticPoolInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    public ServiceFuture<ElasticPoolInner> getAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<ElasticPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -451,10 +451,10 @@ public final class ElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -532,10 +532,10 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ElasticPoolActivityInner>> listActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolActivityInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    public ServiceFuture<List<ElasticPoolActivityInner>> listActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolActivityInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -618,10 +618,10 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    public ServiceFuture<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
@@ -706,10 +706,10 @@ public final class ElasticPoolsInner {
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.fromResponse(getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
+    public ServiceFuture<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
     }
 
     /**
@@ -796,10 +796,10 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    public ServiceFuture<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**

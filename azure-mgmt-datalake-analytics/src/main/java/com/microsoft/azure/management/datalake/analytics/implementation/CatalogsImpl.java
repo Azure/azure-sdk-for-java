@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.Catalogs;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsCatalogCredentialCreateParameters;
@@ -37,7 +37,7 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -291,10 +291,10 @@ public class CatalogsImpl implements Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
+    public ServiceFuture<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
     }
 
     /**
@@ -385,10 +385,10 @@ public class CatalogsImpl implements Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
+    public ServiceFuture<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSecretWithServiceResponseAsync(accountName, databaseName, secretName, parameters), serviceCallback);
     }
 
     /**
@@ -478,10 +478,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) {
-        return ServiceCall.fromResponse(getSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
+    public ServiceFuture<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) {
+        return ServiceFuture.fromResponse(getSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
     }
 
     /**
@@ -565,10 +565,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
+    public ServiceFuture<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
     }
 
     /**
@@ -649,10 +649,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteAllSecretsWithServiceResponseAsync(accountName, databaseName), serviceCallback);
+    public ServiceFuture<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteAllSecretsWithServiceResponseAsync(accountName, databaseName), serviceCallback);
     }
 
     /**
@@ -732,10 +732,10 @@ public class CatalogsImpl implements Catalogs {
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> createCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
+    public ServiceFuture<Void> createCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
     }
 
     /**
@@ -826,10 +826,10 @@ public class CatalogsImpl implements Catalogs {
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to modify the credential (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
+    public ServiceFuture<Void> updateCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters), serviceCallback);
     }
 
     /**
@@ -919,10 +919,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) {
-        return ServiceCall.fromResponse(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
+    public ServiceFuture<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) {
+        return ServiceFuture.fromResponse(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
     }
 
     /**
@@ -1006,10 +1006,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
+    public ServiceFuture<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
     }
 
     /**
@@ -1092,10 +1092,10 @@ public class CatalogsImpl implements Catalogs {
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
      * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters, cascade), serviceCallback);
+    public ServiceFuture<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCredentialWithServiceResponseAsync(accountName, databaseName, credentialName, parameters, cascade), serviceCallback);
     }
 
     /**
@@ -1188,10 +1188,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCredentialsSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -1316,10 +1316,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCredentialsSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -1447,10 +1447,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) {
-        return ServiceCall.fromResponse(getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName), serviceCallback);
+    public ServiceFuture<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) {
+        return ServiceFuture.fromResponse(getExternalDataSourceWithServiceResponseAsync(accountName, databaseName, externalDataSourceName), serviceCallback);
     }
 
     /**
@@ -1539,10 +1539,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the external data sources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -1667,10 +1667,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -1800,10 +1800,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) {
-        return ServiceCall.fromResponse(getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName), serviceCallback);
+    public ServiceFuture<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) {
+        return ServiceFuture.fromResponse(getProcedureWithServiceResponseAsync(accountName, databaseName, schemaName, procedureName), serviceCallback);
     }
 
     /**
@@ -1899,10 +1899,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -2035,10 +2035,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -2174,10 +2174,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) {
-        return ServiceCall.fromResponse(getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName), serviceCallback);
+    public ServiceFuture<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableWithServiceResponseAsync(accountName, databaseName, schemaName, tableName), serviceCallback);
     }
 
     /**
@@ -2273,10 +2273,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -2409,10 +2409,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -2548,10 +2548,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the table type.
      * @param tableTypeName The name of the table type to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) {
-        return ServiceCall.fromResponse(getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName), serviceCallback);
+    public ServiceFuture<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableTypeWithServiceResponseAsync(accountName, databaseName, schemaName, tableTypeName), serviceCallback);
     }
 
     /**
@@ -2647,10 +2647,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the table types.
      * @param schemaName The name of the schema containing the table types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -2783,10 +2783,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -2922,10 +2922,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) {
-        return ServiceCall.fromResponse(getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName), serviceCallback);
+    public ServiceFuture<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) {
+        return ServiceFuture.fromResponse(getViewWithServiceResponseAsync(accountName, databaseName, schemaName, viewName), serviceCallback);
     }
 
     /**
@@ -3021,10 +3021,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listViewsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -3157,10 +3157,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listViewsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -3298,10 +3298,10 @@ public class CatalogsImpl implements Catalogs {
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) {
-        return ServiceCall.fromResponse(getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName), serviceCallback);
+    public ServiceFuture<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableStatisticWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, statisticsName), serviceCallback);
     }
 
     /**
@@ -3404,10 +3404,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -3548,10 +3548,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -3695,10 +3695,10 @@ public class CatalogsImpl implements Catalogs {
      * @param tableName The name of the table containing the partition.
      * @param partitionName The name of the table partition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) {
-        return ServiceCall.fromResponse(getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName), serviceCallback);
+    public ServiceFuture<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) {
+        return ServiceFuture.fromResponse(getTablePartitionWithServiceResponseAsync(accountName, databaseName, schemaName, tableName, partitionName), serviceCallback);
     }
 
     /**
@@ -3801,10 +3801,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the partitions.
      * @param tableName The name of the table containing the partitions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -3945,10 +3945,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -4094,10 +4094,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -4230,10 +4230,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -4369,10 +4369,10 @@ public class CatalogsImpl implements Catalogs {
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) {
-        return ServiceCall.fromResponse(getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName), serviceCallback);
+    public ServiceFuture<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableValuedFunctionWithServiceResponseAsync(accountName, databaseName, schemaName, tableValuedFunctionName), serviceCallback);
     }
 
     /**
@@ -4468,10 +4468,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -4604,10 +4604,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -4741,10 +4741,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) {
-        return ServiceCall.fromResponse(getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName), serviceCallback);
+    public ServiceFuture<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) {
+        return ServiceFuture.fromResponse(getAssemblyWithServiceResponseAsync(accountName, databaseName, assemblyName), serviceCallback);
     }
 
     /**
@@ -4833,10 +4833,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAssembliesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -4961,10 +4961,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAssembliesSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -5092,10 +5092,10 @@ public class CatalogsImpl implements Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) {
-        return ServiceCall.fromResponse(getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName), serviceCallback);
+    public ServiceFuture<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) {
+        return ServiceFuture.fromResponse(getSchemaWithServiceResponseAsync(accountName, databaseName, schemaName), serviceCallback);
     }
 
     /**
@@ -5184,10 +5184,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSchemasSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -5312,10 +5312,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSchemasSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -5441,10 +5441,10 @@ public class CatalogsImpl implements Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) {
-        return ServiceCall.fromResponse(getDatabaseWithServiceResponseAsync(accountName, databaseName), serviceCallback);
+    public ServiceFuture<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) {
+        return ServiceFuture.fromResponse(getDatabaseWithServiceResponseAsync(accountName, databaseName), serviceCallback);
     }
 
     /**
@@ -5526,10 +5526,10 @@ public class CatalogsImpl implements Catalogs {
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDatabasesSinglePageAsync(accountName),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
@@ -5646,10 +5646,10 @@ public class CatalogsImpl implements Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDatabasesSinglePageAsync(accountName, filter, top, skip, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override
@@ -5772,12 +5772,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlCredential>> serviceFuture, final ListOperationCallback<USqlCredential> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCredentialsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
                 @Override
@@ -5876,12 +5876,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlExternalDataSource>> serviceFuture, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listExternalDataSourcesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
                 @Override
@@ -5980,12 +5980,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceFuture<List<USqlProcedure>> serviceFuture, final ListOperationCallback<USqlProcedure> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listProceduresNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
                 @Override
@@ -6084,12 +6084,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTable>> serviceFuture, final ListOperationCallback<USqlTable> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
@@ -6188,12 +6188,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableType>> serviceFuture, final ListOperationCallback<USqlTableType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
                 @Override
@@ -6292,12 +6292,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlView>> serviceFuture, final ListOperationCallback<USqlView> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listViewsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
                 @Override
@@ -6396,12 +6396,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableStatistics>> serviceFuture, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableStatisticsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
                 @Override
@@ -6500,12 +6500,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTablePartition>> serviceFuture, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTablePartitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
                 @Override
@@ -6604,12 +6604,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlType>> serviceFuture, final ListOperationCallback<USqlType> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
                 @Override
@@ -6708,12 +6708,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableValuedFunction>> serviceFuture, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listTableValuedFunctionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
                 @Override
@@ -6812,12 +6812,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlAssemblyClr>> serviceFuture, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAssembliesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
                 @Override
@@ -6916,12 +6916,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceFuture<List<USqlSchema>> serviceFuture, final ListOperationCallback<USqlSchema> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSchemasNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
                 @Override
@@ -7020,12 +7020,12 @@ public class CatalogsImpl implements Catalogs {
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlDatabase>> serviceFuture, final ListOperationCallback<USqlDatabase> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listDatabasesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
                 @Override

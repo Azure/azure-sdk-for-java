@@ -10,14 +10,14 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -117,10 +117,10 @@ public final class ServicePrincipalsInner {
      *
      * @param parameters Parameters to create a service principal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServicePrincipalInner> createAsync(ServicePrincipalCreateParametersInner parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceFuture<ServicePrincipalInner> createAsync(ServicePrincipalCreateParametersInner parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(parameters), serviceCallback);
     }
 
     /**
@@ -195,10 +195,10 @@ public final class ServicePrincipalsInner {
      * Gets a list of service principals from the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServicePrincipalInner>> listAsync(final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ServicePrincipalInner>> listAsync(final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
@@ -291,10 +291,10 @@ public final class ServicePrincipalsInner {
      *
      * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServicePrincipalInner>> listAsync(final String filter, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ServicePrincipalInner>> listAsync(final String filter, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
@@ -389,10 +389,10 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId The object ID of the service principal to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String objectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(objectId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String objectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
@@ -462,10 +462,10 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId The object ID of the service principal to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServicePrincipalInner> getAsync(String objectId, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(objectId), serviceCallback);
+    public ServiceFuture<ServicePrincipalInner> getAsync(String objectId, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
@@ -535,10 +535,10 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId The object ID of the service principal for which to get keyCredentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyCredentialInner>> listKeyCredentialsAsync(String objectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listKeyCredentialsWithServiceResponseAsync(objectId), serviceCallback);
+    public ServiceFuture<List<KeyCredentialInner>> listKeyCredentialsAsync(String objectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listKeyCredentialsWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
@@ -610,10 +610,10 @@ public final class ServicePrincipalsInner {
      * @param objectId The object ID for which to get service principal information.
      * @param value A collection of KeyCredentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateKeyCredentialsWithServiceResponseAsync(objectId, value), serviceCallback);
+    public ServiceFuture<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateKeyCredentialsWithServiceResponseAsync(objectId, value), serviceCallback);
     }
 
     /**
@@ -691,10 +691,10 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId The object ID of the service principal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String objectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listPasswordCredentialsWithServiceResponseAsync(objectId), serviceCallback);
+    public ServiceFuture<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String objectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPasswordCredentialsWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
@@ -766,10 +766,10 @@ public final class ServicePrincipalsInner {
      * @param objectId The object ID of the service principal.
      * @param value A collection of PasswordCredentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updatePasswordCredentialsWithServiceResponseAsync(objectId, value), serviceCallback);
+    public ServiceFuture<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePasswordCredentialsWithServiceResponseAsync(objectId, value), serviceCallback);
     }
 
     /**
@@ -852,12 +852,12 @@ public final class ServicePrincipalsInner {
      * Gets a list of service principals from the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServicePrincipalInner>> listNextAsync(final String nextLink, final ServiceCall<List<ServicePrincipalInner>> serviceCall, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ServicePrincipalInner>> listNextAsync(final String nextLink, final ServiceFuture<List<ServicePrincipalInner>> serviceFuture, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextLink),
             new Func1<String, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override

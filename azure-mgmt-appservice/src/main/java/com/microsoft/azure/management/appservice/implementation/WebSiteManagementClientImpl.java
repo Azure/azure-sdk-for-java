@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
@@ -21,7 +21,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -414,10 +414,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets the source controls available for Azure websites.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SourceControlInner>> listSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SourceControlInner>> listSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSourceControlsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -512,10 +512,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sourceControlType Type of source control
      * @param requestMessage Source control token information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
+    public ServiceFuture<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
     }
 
     /**
@@ -592,10 +592,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param name Resource name to verify.
      * @param type Resource type used for verification. Possible values include: 'Site', 'Slot', 'HostingEnvironment'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type), serviceCallback);
     }
 
     /**
@@ -674,10 +674,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param type Resource type used for verification. Possible values include: 'Site', 'Slot', 'HostingEnvironment'
      * @param isFqdn Is fully qualified domain name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, Boolean isFqdn, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, Boolean isFqdn, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, type, isFqdn), serviceCallback);
     }
 
     /**
@@ -764,10 +764,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listGeoRegionsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -863,10 +863,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listGeoRegionsSinglePageAsync(sku),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -969,10 +969,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * List all premier add-on offers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersAsync(final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PremierAddOnOfferInner>> listPremierAddOnOffersAsync(final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPremierAddOnOffersSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override
@@ -1066,10 +1066,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get the publishing credentials for the subscription owner.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> getPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<UserInner> getPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1136,10 +1136,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param requestMessage A request message with the new publishing credentials.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<UserInner> updatePublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.fromResponse(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
+    public ServiceFuture<UserInner> updatePublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
     }
 
     /**
@@ -1210,10 +1210,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * List all SKUs.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SkuInfosInner> listSkusAsync(final ServiceCallback<SkuInfosInner> serviceCallback) {
-        return ServiceCall.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<SkuInfosInner> listSkusAsync(final ServiceCallback<SkuInfosInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1281,10 +1281,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+    public ServiceFuture<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(moveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1363,10 +1363,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Request with the resources to validate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest, final ServiceCallback<ValidateResponseInner> serviceCallback) {
-        return ServiceCall.fromResponse(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
+    public ServiceFuture<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest, final ServiceCallback<ValidateResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(validateWithServiceResponseAsync(resourceGroupName, validateRequest), serviceCallback);
     }
 
     /**
@@ -1445,10 +1445,10 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+    public ServiceFuture<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(validateMoveWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -1530,12 +1530,12 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Gets the source controls available for Azure websites.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SourceControlInner>> listSourceControlsNextAsync(final String nextPageLink, final ServiceCall<List<SourceControlInner>> serviceCall, final ListOperationCallback<SourceControlInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<SourceControlInner>> listSourceControlsNextAsync(final String nextPageLink, final ServiceFuture<List<SourceControlInner>> serviceFuture, final ListOperationCallback<SourceControlInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSourceControlsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
@@ -1639,12 +1639,12 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GeoRegionInner>> listGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<List<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsNextAsync(final String nextPageLink, final ServiceFuture<List<GeoRegionInner>> serviceFuture, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listGeoRegionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
@@ -1748,12 +1748,12 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * List all premier add-on offers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PremierAddOnOfferInner>> listPremierAddOnOffersNextAsync(final String nextPageLink, final ServiceCall<List<PremierAddOnOfferInner>> serviceCall, final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PremierAddOnOfferInner>> listPremierAddOnOffersNextAsync(final String nextPageLink, final ServiceFuture<List<PremierAddOnOfferInner>> serviceFuture, final ListOperationCallback<PremierAddOnOfferInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listPremierAddOnOffersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PremierAddOnOfferInner>>>>() {
                 @Override

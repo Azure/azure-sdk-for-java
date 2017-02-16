@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -101,10 +101,10 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+    public ServiceFuture<Void> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
@@ -181,10 +181,10 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+    public ServiceFuture<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
@@ -262,10 +262,10 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<TagDetailsInner> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
+    public ServiceFuture<TagDetailsInner> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
@@ -339,10 +339,10 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(tagName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
@@ -418,10 +418,10 @@ public final class TagsInner {
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
@@ -519,12 +519,12 @@ public final class TagsInner {
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TagDetailsInner>> serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<TagDetailsInner>> serviceFuture, final ListOperationCallback<TagDetailsInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override

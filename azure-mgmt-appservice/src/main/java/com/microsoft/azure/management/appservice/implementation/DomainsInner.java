@@ -10,12 +10,12 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -152,10 +152,10 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -218,10 +218,10 @@ public final class DomainsInner {
      *
      * @param name Name of the object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    public ServiceFuture<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -296,10 +296,10 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listAsync(final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainInner>> listAsync(final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -393,10 +393,10 @@ public final class DomainsInner {
      * Generate a single sign-on request for the domain management portal.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
-        return ServiceCall.fromResponse(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -469,10 +469,10 @@ public final class DomainsInner {
      *
      * @param parameters Search parameters for domain name recommendations.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listRecommendationsSinglePageAsync(parameters),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -581,10 +581,10 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -688,10 +688,10 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> getAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<DomainInner> getAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -772,10 +772,10 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+    public ServiceFuture<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -845,10 +845,10 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+    public ServiceFuture<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -933,10 +933,10 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String domainName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -1010,10 +1010,10 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
     }
 
     /**
@@ -1100,10 +1100,10 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
@@ -1215,10 +1215,10 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1306,10 +1306,10 @@ public final class DomainsInner {
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1400,10 +1400,10 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+    public ServiceFuture<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1491,10 +1491,10 @@ public final class DomainsInner {
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1587,12 +1587,12 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DomainInner>> serviceFuture, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1696,12 +1696,12 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink, final ServiceCall<List<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink, final ServiceFuture<List<NameIdentifierInner>> serviceFuture, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listRecommendationsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -1805,12 +1805,12 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DomainInner>> serviceFuture, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1914,12 +1914,12 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<DomainOwnershipIdentifierInner>> serviceCall, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<DomainOwnershipIdentifierInner>> serviceFuture, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOwnershipIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override

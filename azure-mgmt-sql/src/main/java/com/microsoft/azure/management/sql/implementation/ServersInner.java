@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -127,10 +127,10 @@ public final class ServersInner {
      * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
+    public ServiceFuture<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
     }
 
     /**
@@ -218,10 +218,10 @@ public final class ServersInner {
      * @param serverName The name of the Azure SQL server.
      * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
+    public ServiceFuture<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -303,10 +303,10 @@ public final class ServersInner {
      * @param serverName The name of the Azure SQL server.
      * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceCall.fromResponse(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
+    public ServiceFuture<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -386,10 +386,10 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerFirewallRuleInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerFirewallRuleInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -461,10 +461,10 @@ public final class ServersInner {
      * Returns information about an Azure SQL server.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServerInner>> listAsync(final ServiceCallback<List<ServerInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<ServerInner>> listAsync(final ServiceCallback<List<ServerInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -532,10 +532,10 @@ public final class ServersInner {
      * @param serverName The name of the Azure SQL server.
      * @param parameters The required parameters for creating or updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters, final ServiceCallback<ServerInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    public ServiceFuture<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters, final ServiceCallback<ServerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
     }
 
     /**
@@ -616,10 +616,10 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String serverName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -694,10 +694,10 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerInner> serviceCallback) {
-        return ServiceCall.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -770,10 +770,10 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServerInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ServerInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<ServerInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ServerInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -844,10 +844,10 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerMetricInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerMetricInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -925,10 +925,10 @@ public final class ServersInner {
      * @param serverName The name of the Azure SQL server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ServiceObjectiveInner> getServiceObjectiveAsync(String resourceGroupName, String serverName, String serviceObjectiveName, final ServiceCallback<ServiceObjectiveInner> serviceCallback) {
-        return ServiceCall.fromResponse(getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName), serviceCallback);
+    public ServiceFuture<ServiceObjectiveInner> getServiceObjectiveAsync(String resourceGroupName, String serverName, String serviceObjectiveName, final ServiceCallback<ServiceObjectiveInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getServiceObjectiveWithServiceResponseAsync(resourceGroupName, serverName, serviceObjectiveName), serviceCallback);
     }
 
     /**
@@ -1008,10 +1008,10 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ServiceObjectiveInner>> listServiceObjectivesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServiceObjectiveInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceFuture<List<ServiceObjectiveInner>> listServiceObjectivesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServiceObjectiveInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listServiceObjectivesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -115,10 +115,10 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
     }
 
     /**
@@ -175,10 +175,10 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
     }
 
     /**
@@ -254,10 +254,10 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
+    public ServiceFuture<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
     }
 
     /**
@@ -328,10 +328,10 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the subnet.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand), serviceCallback);
+    public ServiceFuture<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand), serviceCallback);
     }
 
     /**
@@ -410,10 +410,10 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PublicIPAddressInner> createOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
+    public ServiceFuture<PublicIPAddressInner> createOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
     }
 
     /**
@@ -479,10 +479,10 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PublicIPAddressInner> beginCreateOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
+    public ServiceFuture<PublicIPAddressInner> beginCreateOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
     }
 
     /**
@@ -566,10 +566,10 @@ public final class PublicIPAddressesInner {
      * Gets all the public IP addresses in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PublicIPAddressInner>> listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PublicIPAddressInner>> listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
@@ -666,10 +666,10 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PublicIPAddressInner>> listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PublicIPAddressInner>> listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
@@ -771,12 +771,12 @@ public final class PublicIPAddressesInner {
      * Gets all the public IP addresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<PublicIPAddressInner>> serviceFuture, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
@@ -875,12 +875,12 @@ public final class PublicIPAddressesInner {
      * Gets all public IP addresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PublicIPAddressInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PublicIPAddressInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PublicIPAddressInner>> serviceFuture, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override

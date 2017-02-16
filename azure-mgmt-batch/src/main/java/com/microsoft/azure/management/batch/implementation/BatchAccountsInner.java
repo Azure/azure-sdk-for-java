@@ -10,14 +10,14 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.BatchAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.batch.ErrorBodyException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
@@ -139,10 +139,10 @@ public final class BatchAccountsInner {
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+    public ServiceFuture<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -210,10 +210,10 @@ public final class BatchAccountsInner {
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+    public ServiceFuture<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -299,10 +299,10 @@ public final class BatchAccountsInner {
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+    public ServiceFuture<BatchAccountInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -384,10 +384,10 @@ public final class BatchAccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -446,10 +446,10 @@ public final class BatchAccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -527,10 +527,10 @@ public final class BatchAccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountInner> getAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<BatchAccountInner> getAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -609,10 +609,10 @@ public final class BatchAccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BatchAccountInner>> listAsync(final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BatchAccountInner>> listAsync(final ListOperationCallback<BatchAccountInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -711,10 +711,10 @@ public final class BatchAccountsInner {
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BatchAccountInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BatchAccountInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<BatchAccountInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -814,10 +814,10 @@ public final class BatchAccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -896,10 +896,10 @@ public final class BatchAccountsInner {
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
-        return ServiceCall.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
+    public ServiceFuture<BatchAccountKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
     }
 
     /**
@@ -983,10 +983,10 @@ public final class BatchAccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
-        return ServiceCall.fromResponse(getKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -1066,12 +1066,12 @@ public final class BatchAccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BatchAccountInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<BatchAccountInner>> serviceCall, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BatchAccountInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<BatchAccountInner>> serviceFuture, final ListOperationCallback<BatchAccountInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override
@@ -1170,12 +1170,12 @@ public final class BatchAccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<BatchAccountInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<BatchAccountInner>> serviceCall, final ListOperationCallback<BatchAccountInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<BatchAccountInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<BatchAccountInner>> serviceFuture, final ListOperationCallback<BatchAccountInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BatchAccountInner>>>>() {
                 @Override

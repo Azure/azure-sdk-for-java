@@ -15,7 +15,7 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
@@ -80,8 +80,8 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
-        return ServiceCall.fromBody(getByServicePrincipalNameAsync(spn), callback);
+    public ServiceFuture<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
+        return ServiceFuture.fromBody(getByServicePrincipalNameAsync(spn), callback);
     }
 
     @Override

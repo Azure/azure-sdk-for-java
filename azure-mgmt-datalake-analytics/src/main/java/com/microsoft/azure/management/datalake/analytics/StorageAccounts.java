@@ -16,7 +16,7 @@ import com.microsoft.azure.management.datalake.analytics.models.StorageContainer
 import com.microsoft.azure.management.datalake.analytics.models.UpdateStorageAccountParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -44,9 +44,9 @@ public interface StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
      * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback);
+    ServiceFuture<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
@@ -84,9 +84,9 @@ public interface StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
      * @param storageAccountName The name of the Azure Storage account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
@@ -124,9 +124,9 @@ public interface StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account to modify storage accounts in
      * @param storageAccountName The Azure Storage account to modify
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key and/or suffix.
@@ -165,9 +165,9 @@ public interface StorageAccounts {
      * @param storageAccountName The Azure Storage account to modify
      * @param parameters The parameters containing the access key and suffix to update the storage account with, if any. Passing nothing results in no change.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, UpdateStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName, UpdateStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key and/or suffix.
@@ -209,9 +209,9 @@ public interface StorageAccounts {
      * @param storageAccountName The name of the Azure Storage account to add
      * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the specified Data Lake Analytics account to add an Azure Storage account.
@@ -254,9 +254,9 @@ public interface StorageAccounts {
      * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
      * @param containerName The name of the Azure storage container to retrieve
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<StorageContainer> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<StorageContainer> serviceCallback);
+    ServiceFuture<StorageContainer> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<StorageContainer> serviceCallback);
 
     /**
      * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage accounts.
@@ -297,9 +297,9 @@ public interface StorageAccounts {
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
      * @param storageAccountName The name of the Azure storage account from which to list blob containers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<StorageContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<StorageContainer> serviceCallback);
+    ServiceFuture<List<StorageContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<StorageContainer> serviceCallback);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -340,9 +340,9 @@ public interface StorageAccounts {
      * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
      * @param containerName The name of the Azure storage container for which the SAS token is being requested.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback);
+    ServiceFuture<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -381,9 +381,9 @@ public interface StorageAccounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceFuture<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -429,9 +429,9 @@ public interface StorageAccounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceFuture<List<StorageAccountInfo>> listByAccountAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -475,11 +475,11 @@ public interface StorageAccounts {
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<StorageContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceCall<List<StorageContainer>> serviceCall, final ListOperationCallback<StorageContainer> serviceCallback);
+    ServiceFuture<List<StorageContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceFuture<List<StorageContainer>> serviceFuture, final ListOperationCallback<StorageContainer> serviceCallback);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -509,11 +509,11 @@ public interface StorageAccounts {
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceCall<List<SasTokenInfo>> serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback);
+    ServiceFuture<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceFuture<List<SasTokenInfo>> serviceFuture, final ListOperationCallback<SasTokenInfo> serviceCallback);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -543,11 +543,11 @@ public interface StorageAccounts {
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<StorageAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<StorageAccountInfo>> serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceFuture<List<StorageAccountInfo>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<StorageAccountInfo>> serviceFuture, final ListOperationCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.

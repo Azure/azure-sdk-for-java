@@ -11,7 +11,7 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -97,10 +97,10 @@ public final class VirtualMachineImagesInner {
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(location, publisherName, offer, skus, version), serviceCallback);
+    public ServiceFuture<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(location, publisherName, offer, skus, version), serviceCallback);
     }
 
     /**
@@ -194,10 +194,10 @@ public final class VirtualMachineImagesInner {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus), serviceCallback);
     }
 
     /**
@@ -288,10 +288,10 @@ public final class VirtualMachineImagesInner {
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
     }
 
     /**
@@ -382,10 +382,10 @@ public final class VirtualMachineImagesInner {
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listOffersWithServiceResponseAsync(location, publisherName), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listOffersWithServiceResponseAsync(location, publisherName), serviceCallback);
     }
 
     /**
@@ -458,10 +458,10 @@ public final class VirtualMachineImagesInner {
      *
      * @param location The name of a supported Azure region.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listPublishersWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishersWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -533,10 +533,10 @@ public final class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.fromResponse(listSkusWithServiceResponseAsync(location, publisherName, offer), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSkusWithServiceResponseAsync(location, publisherName, offer), serviceCallback);
     }
 
     /**

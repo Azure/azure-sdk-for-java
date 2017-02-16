@@ -10,12 +10,12 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batch.ErrorBodyException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -107,10 +107,10 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
+    public ServiceFuture<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
     }
 
     /**
@@ -190,10 +190,10 @@ public final class ApplicationsInner {
      * @param applicationId The ID of the application.
      * @param parameters The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
+    public ServiceFuture<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
     }
 
     /**
@@ -279,10 +279,10 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
     }
 
     /**
@@ -366,10 +366,10 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationInner> getAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
+    public ServiceFuture<ApplicationInner> getAsync(String resourceGroupName, String accountName, String applicationId, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId), serviceCallback);
     }
 
     /**
@@ -454,10 +454,10 @@ public final class ApplicationsInner {
      * @param applicationId The ID of the application.
      * @param parameters The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
     }
 
     /**
@@ -551,10 +551,10 @@ public final class ApplicationsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override
@@ -663,10 +663,10 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listAsync(final String resourceGroupName, final String accountName, final Integer maxresults, final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listAsync(final String resourceGroupName, final String accountName, final Integer maxresults, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, accountName, maxresults),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override
@@ -779,12 +779,12 @@ public final class ApplicationsInner {
      * Lists all of the applications in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationInner>> serviceCall, final ListOperationCallback<ApplicationInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ApplicationInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationInner>> serviceFuture, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override

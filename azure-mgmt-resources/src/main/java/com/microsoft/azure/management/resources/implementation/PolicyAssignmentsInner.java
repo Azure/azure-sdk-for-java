@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -128,10 +128,10 @@ public final class PolicyAssignmentsInner {
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
     }
 
     /**
@@ -209,10 +209,10 @@ public final class PolicyAssignmentsInner {
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createWithServiceResponseAsync(scope, policyAssignmentName, parameters), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(scope, policyAssignmentName, parameters), serviceCallback);
     }
 
     /**
@@ -294,10 +294,10 @@ public final class PolicyAssignmentsInner {
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
     }
 
     /**
@@ -375,10 +375,10 @@ public final class PolicyAssignmentsInner {
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -479,10 +479,10 @@ public final class PolicyAssignmentsInner {
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceGroupSinglePageAsync(resourceGroupName, filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -598,10 +598,10 @@ public final class PolicyAssignmentsInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -734,10 +734,10 @@ public final class PolicyAssignmentsInner {
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -867,10 +867,10 @@ public final class PolicyAssignmentsInner {
      * Gets all the policy assignments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listAsync(final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -963,10 +963,10 @@ public final class PolicyAssignmentsInner {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listAsync(final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -1064,10 +1064,10 @@ public final class PolicyAssignmentsInner {
      *
      * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
     }
 
     /**
@@ -1140,10 +1140,10 @@ public final class PolicyAssignmentsInner {
      * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(createByIdWithServiceResponseAsync(policyAssignmentId, parameters), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createByIdWithServiceResponseAsync(policyAssignmentId, parameters), serviceCallback);
     }
 
     /**
@@ -1220,10 +1220,10 @@ public final class PolicyAssignmentsInner {
      *
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceCall.fromResponse(getByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
+    public ServiceFuture<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
     }
 
     /**
@@ -1297,12 +1297,12 @@ public final class PolicyAssignmentsInner {
      * Gets policy assignments for the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<PolicyAssignmentInner>> serviceCall, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -1401,12 +1401,12 @@ public final class PolicyAssignmentsInner {
      * Gets policy assignments for a resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink, final ServiceCall<List<PolicyAssignmentInner>> serviceCall, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listForResourceNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
@@ -1505,12 +1505,12 @@ public final class PolicyAssignmentsInner {
      * Gets all the policy assignments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PolicyAssignmentInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<PolicyAssignmentInner>> serviceCall, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<PolicyAssignmentInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override

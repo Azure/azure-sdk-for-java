@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -115,10 +115,10 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -175,10 +175,10 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -254,10 +254,10 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
+    public ServiceFuture<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -328,10 +328,10 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
+    public ServiceFuture<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
     }
 
     /**
@@ -410,10 +410,10 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+    public ServiceFuture<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -479,10 +479,10 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+    public ServiceFuture<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -566,10 +566,10 @@ public final class LoadBalancersInner {
      * Gets all the load balancers in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<LoadBalancerInner>> listAllAsync(final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<LoadBalancerInner>> listAllAsync(final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -666,10 +666,10 @@ public final class LoadBalancersInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<LoadBalancerInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<LoadBalancerInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -771,12 +771,12 @@ public final class LoadBalancersInner {
      * Gets all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<LoadBalancerInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<LoadBalancerInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<LoadBalancerInner>> serviceFuture, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
@@ -875,12 +875,12 @@ public final class LoadBalancersInner {
      * Gets all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<LoadBalancerInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<LoadBalancerInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<LoadBalancerInner>> serviceFuture, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.dns.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -114,10 +114,10 @@ public final class ZonesInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters), serviceCallback);
+    public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters), serviceCallback);
     }
 
     /**
@@ -201,10 +201,10 @@ public final class ZonesInner {
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch), serviceCallback);
     }
 
     /**
@@ -292,10 +292,10 @@ public final class ZonesInner {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
@@ -357,10 +357,10 @@ public final class ZonesInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
     }
 
     /**
@@ -422,10 +422,10 @@ public final class ZonesInner {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
@@ -498,10 +498,10 @@ public final class ZonesInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
     }
 
     /**
@@ -582,10 +582,10 @@ public final class ZonesInner {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> getAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneInner> getAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
@@ -666,10 +666,10 @@ public final class ZonesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
@@ -770,10 +770,10 @@ public final class ZonesInner {
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, top),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
@@ -879,10 +879,10 @@ public final class ZonesInner {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listAsync(final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listAsync(final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
@@ -975,10 +975,10 @@ public final class ZonesInner {
      *
      * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listAsync(final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listAsync(final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(top),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
@@ -1079,12 +1079,12 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ZoneInner>> serviceCall, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
@@ -1183,12 +1183,12 @@ public final class ZonesInner {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ZoneInner>> serviceCall, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<ZoneInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override

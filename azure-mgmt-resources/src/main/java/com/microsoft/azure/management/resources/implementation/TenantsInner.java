@@ -10,12 +10,12 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -84,10 +84,10 @@ public final class TenantsInner {
      * Gets the tenants for your account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TenantIdDescriptionInner>> listAsync(final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TenantIdDescriptionInner>> listAsync(final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
@@ -182,12 +182,12 @@ public final class TenantsInner {
      * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<TenantIdDescriptionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TenantIdDescriptionInner>> serviceCall, final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
-        return AzureServiceCall.fromPageResponse(
+    public ServiceFuture<List<TenantIdDescriptionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<TenantIdDescriptionInner>> serviceFuture, final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
