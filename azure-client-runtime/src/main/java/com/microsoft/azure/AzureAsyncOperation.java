@@ -20,7 +20,7 @@ import java.util.List;
  * status code for the failed request, and also includes error
  * information regarding the failure.
  */
-public final class AzureAsyncOperation {
+final class AzureAsyncOperation {
     /**
      * Default delay in seconds for long running operations.
      */
@@ -68,7 +68,7 @@ public final class AzureAsyncOperation {
     /**
      * @return the status of the asynchronous request
      */
-    public String status() {
+    String status() {
         return this.status;
     }
 
@@ -77,7 +77,7 @@ public final class AzureAsyncOperation {
      *
      * @param status the status of the asynchronous request.
      */
-    public void setStatus(String status) {
+    void setStatus(String status) {
         this.status = status;
     }
 
@@ -93,7 +93,7 @@ public final class AzureAsyncOperation {
      *
      * @return the cloud error.
      */
-    public CloudError getError() {
+    CloudError getError() {
         return this.error;
     }
 
@@ -102,7 +102,7 @@ public final class AzureAsyncOperation {
      *
      * @param error the cloud error.
      */
-    public void setError(CloudError error) {
+    void setError(CloudError error) {
         this.error = error;
     }
 
@@ -115,7 +115,7 @@ public final class AzureAsyncOperation {
     /**
      * @return the delay in seconds
      */
-    public int retryAfter() {
+    int retryAfter() {
         return this.retryAfter;
     }
 
@@ -124,7 +124,7 @@ public final class AzureAsyncOperation {
      *
      * @param retryAfter the delay in seconds.
      */
-    public void setRetryAfter(int retryAfter) {
+    void setRetryAfter(int retryAfter) {
         this.retryAfter = retryAfter;
     }
 }

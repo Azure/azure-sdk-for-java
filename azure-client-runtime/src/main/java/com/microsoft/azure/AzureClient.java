@@ -63,7 +63,7 @@ public final class AzureClient extends AzureServiceClient {
      *
      * @return the time in milliseconds.
      */
-    public Integer getLongRunningOperationRetryTimeout() {
+    private Integer getLongRunningOperationRetryTimeout() {
         return longRunningOperationRetryTimeout;
     }
 
@@ -72,7 +72,7 @@ public final class AzureClient extends AzureServiceClient {
      *
      * @param longRunningOperationRetryTimeout the time in milliseconds.
      */
-    public void withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout) {
+    private void withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
@@ -88,7 +88,7 @@ public final class AzureClient extends AzureServiceClient {
      * @throws InterruptedException interrupted exception
      * @throws IOException thrown by deserialization
      */
-    public <T> ServiceResponse<T> getPutOrPatchResult(Observable<Response<ResponseBody>> observable, Type resourceType) throws CloudException, InterruptedException, IOException {
+    private <T> ServiceResponse<T> getPutOrPatchResult(Observable<Response<ResponseBody>> observable, Type resourceType) throws CloudException, InterruptedException, IOException {
         Observable<ServiceResponse<T>> asyncObservable = getPutOrPatchResultAsync(observable, resourceType);
         return asyncObservable.toBlocking().last();
     }
@@ -245,7 +245,7 @@ public final class AzureClient extends AzureServiceClient {
      * @throws InterruptedException interrupted exception
      * @throws IOException thrown by deserialization
      */
-    public <T> ServiceResponse<T> getPostOrDeleteResult(Observable<Response<ResponseBody>> observable, Type resourceType) throws CloudException, InterruptedException, IOException {
+    private <T> ServiceResponse<T> getPostOrDeleteResult(Observable<Response<ResponseBody>> observable, Type resourceType) throws CloudException, InterruptedException, IOException {
         Observable<ServiceResponse<T>> asyncObservable = getPutOrPatchResultAsync(observable, resourceType);
         return asyncObservable.toBlocking().last();
     }
