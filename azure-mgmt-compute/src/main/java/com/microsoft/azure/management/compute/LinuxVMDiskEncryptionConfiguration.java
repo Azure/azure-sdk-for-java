@@ -12,8 +12,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
  * Type representing encryption settings to be applied to a Linux virtual machine.
  */
 @LangDefinition
-public class LinuxVMDiskEncryptionSettings
-        extends VirtualMachineEncryptionSettings<LinuxVMDiskEncryptionSettings> {
+public class LinuxVMDiskEncryptionConfiguration
+        extends VirtualMachineEncryptionConfiguration<LinuxVMDiskEncryptionConfiguration> {
 
     /**
      * Creates LinuxVMDiskEncryptionSettings.
@@ -22,9 +22,9 @@ public class LinuxVMDiskEncryptionSettings
      * @param aadClientId  client id of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
-    public LinuxVMDiskEncryptionSettings(String keyVaultId,
-                                         String aadClientId,
-                                         String aadSecret) {
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
+                                              String aadClientId,
+                                              String aadSecret) {
         super(keyVaultId, aadClientId, aadSecret);
     }
 
@@ -39,7 +39,7 @@ public class LinuxVMDiskEncryptionSettings
      * @param passPhrase the pass phrase
      * @return LinuxVMDiskEncryptionSettings
      */
-    public LinuxVMDiskEncryptionSettings withPassPhrase(String passPhrase) {
+    public LinuxVMDiskEncryptionConfiguration withPassPhrase(String passPhrase) {
         this.passPhrase = passPhrase;
         return this;
     }

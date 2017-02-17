@@ -7,8 +7,9 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.DiskVolumeEncryptionStatus;
-import com.microsoft.azure.management.compute.EncryptionStatuses;
+import com.microsoft.azure.management.compute.DiskVolumeEncryptionMonitor;
+import com.microsoft.azure.management.compute.EncryptionStatus;
+import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -20,21 +21,28 @@ import java.util.LinkedHashMap;
 /**
  * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine.
  */
-class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
-    private final String virtualMachineId;
+class WindowsVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
+    private final String rgName;
+    private final String vmName;
     private final ComputeManager computeManager;
     private VirtualMachineExtensionInner encryptionExtension;
     private VirtualMachineInner virtualMachine;
 
     /**
-     * Creates WindowsVolumeEncryptionStatusImpl.
+     * Creates WindowsVolumeEncryptionMonitorImpl.
      *
      * @param virtualMachineId resource id of Windows virtual machine to retrieve encryption status from
      * @param computeManager compute manager
      */
-    WindowsVolumeEncryptionStatusImpl(String virtualMachineId, ComputeManager computeManager) {
-        this.virtualMachineId = virtualMachineId;
+    WindowsVolumeEncryptionMonitorImpl(String virtualMachineId, ComputeManager computeManager) {
+        this.rgName = ResourceUtils.groupFromResourceId(virtualMachineId);
+        this.vmName = ResourceUtils.nameFromResourceId(virtualMachineId);
         this.computeManager = computeManager;
+    }
+
+    @Override
+    public OperatingSystemTypes osType() {
+        return OperatingSystemTypes.WINDOWS;
     }
 
     @Override
@@ -46,18 +54,20 @@ class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
     }
 
     @Override
-    public EncryptionStatuses osDiskStatus() {
+    public EncryptionStatus osDiskStatus() {
         if (!hasEncryptionDetails()) {
-            return EncryptionStatuses.NOT_ENCRYPTED;
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
-        if (encryptionExtension.provisioningState() == null
-                || !encryptionExtension.provisioningState().equalsIgnoreCase("Succeeded")) {
-            return EncryptionStatuses.NOT_ENCRYPTED;
+        if (encryptionExtension.provisioningState() == null) {
+            return EncryptionStatus.NOT_ENCRYPTED;
+        }
+        if (!encryptionExtension.provisioningState().equalsIgnoreCase("Succeeded")) {
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
         if (this.virtualMachine.storageProfile() == null
                 || virtualMachine.storageProfile().osDisk() == null
                 || virtualMachine.storageProfile().osDisk().encryptionSettings() == null) {
-            return EncryptionStatuses.NOT_ENCRYPTED;
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
         DiskEncryptionSettings encryptionSettings = virtualMachine
                 .storageProfile()
@@ -66,19 +76,21 @@ class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
         if (encryptionSettings.diskEncryptionKey() != null
                 && encryptionSettings.diskEncryptionKey().secretUrl() != null
                 && Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
-            return EncryptionStatuses.ENCRYPTED;
+            return EncryptionStatus.ENCRYPTED;
         }
-        return EncryptionStatuses.NOT_ENCRYPTED;
+        return EncryptionStatus.NOT_ENCRYPTED;
     }
 
     @Override
-    public EncryptionStatuses dataDiskStatus() {
+    public EncryptionStatus dataDiskStatus() {
         if (!hasEncryptionDetails()) {
-            return EncryptionStatuses.NOT_ENCRYPTED;
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
-        if (encryptionExtension.provisioningState() == null
-                || !encryptionExtension.provisioningState().equalsIgnoreCase("Succeeded")) {
-            return EncryptionStatuses.NOT_ENCRYPTED;
+        if (encryptionExtension.provisioningState() == null) {
+            return EncryptionStatus.NOT_ENCRYPTED;
+        }
+        if (!encryptionExtension.provisioningState().equalsIgnoreCase("Succeeded")) {
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
         HashMap<String, Object> publicSettings = new LinkedHashMap<>();
         if (encryptionExtension.settings() == null) {
@@ -91,25 +103,28 @@ class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
                 || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("Data")) {
             String encryptionOperation = (String) publicSettings.get("EncryptionOperation");
             if (encryptionOperation != null && encryptionOperation.equalsIgnoreCase("EnableEncryption")) {
-                return EncryptionStatuses.ENCRYPTED;
+                return EncryptionStatus.ENCRYPTED;
             }
-            return EncryptionStatuses.NOT_ENCRYPTED;
+            return EncryptionStatus.NOT_ENCRYPTED;
         }
-        return EncryptionStatuses.UNKNOWN;
+        return EncryptionStatus.UNKNOWN;
     }
 
     @Override
-    public DiskVolumeEncryptionStatus refresh() {
+    public DiskVolumeEncryptionMonitor refresh() {
         return refreshAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<DiskVolumeEncryptionStatus> refreshAsync() {
-        final WindowsVolumeEncryptionStatusImpl self = this;
-        return refreshVirtualMachineAsync()
-                .flatMap(new Func1<VirtualMachineInner, Observable<DiskVolumeEncryptionStatus>>() {
+    public Observable<DiskVolumeEncryptionMonitor> refreshAsync() {
+        final WindowsVolumeEncryptionMonitorImpl self = this;
+        // Refreshes the cached Windows virtual machine and installed encryption extension
+        //
+        return retrieveVirtualMachineAsync()
+                .flatMap(new Func1<VirtualMachineInner, Observable<DiskVolumeEncryptionMonitor>>() {
                     @Override
-                    public Observable<DiskVolumeEncryptionStatus> call(VirtualMachineInner virtualMachine) {
+                    public Observable<DiskVolumeEncryptionMonitor> call(VirtualMachineInner virtualMachine) {
+                        self.virtualMachine = virtualMachine;
                         if (virtualMachine.resources() != null) {
                             for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                                 if (extension.publisher().equalsIgnoreCase("Microsoft.Azure.Security")
@@ -119,15 +134,18 @@ class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
                                 }
                             }
                         }
-                        return Observable.<DiskVolumeEncryptionStatus>just(self);
+                        return Observable.<DiskVolumeEncryptionMonitor>just(self);
                     }
                 });
     }
 
-    private Observable<VirtualMachineInner> refreshVirtualMachineAsync() {
-        final WindowsVolumeEncryptionStatusImpl self = this;
-        final String rgName = ResourceUtils.groupFromResourceId(virtualMachineId);
-        final String vmName = ResourceUtils.nameFromResourceId(virtualMachineId);
+    /**
+     * Retrieve the virtual machine.
+     * If the virtual machine does not exists then an error observable will be returned.
+     *
+     * @return the retrieved virtual machine
+     */
+    private Observable<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return this.computeManager
                 .inner()
                 .virtualMachines()
@@ -139,7 +157,6 @@ class WindowsVolumeEncryptionStatusImpl implements DiskVolumeEncryptionStatus {
                             return Observable.error(new Exception(String.format("VM with name '%s' not found (resource group '%s')",
                                     vmName, rgName)));
                         }
-                        self.virtualMachine = virtualMachine;
                         return Observable.just(virtualMachine);
                     }
                 });

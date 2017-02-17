@@ -72,8 +72,9 @@ public interface VirtualMachine extends
 
     /**
      * @return entry point to enabling, disabling and querying disk encryption
+     * // VirtualMachineEncryption (TODO)
      */
-    VirtualMachineEncryptionOperations diskEncryption();
+    VirtualMachineEncryption diskEncryption();
 
     /**
      * Convert (migrate) the virtual machine with un-managed disks to use managed disk.

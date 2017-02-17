@@ -7,9 +7,9 @@
 package com.microsoft.azure.management.compute;
 
 /**
- * Defines values for DiskVolumeTypes.
+ * Defines values for DiskVolumeType.
  */
-public enum DiskVolumeTypes {
+public enum DiskVolumeType {
     /** Enum value OS. */
     OS("OS"),
 
@@ -22,7 +22,7 @@ public enum DiskVolumeTypes {
     /** The actual serialized value for a DiskVolumeTypes instance. */
     private String value;
 
-    DiskVolumeTypes(String value) {
+    DiskVolumeType(String value) {
         this.value = value;
     }
 

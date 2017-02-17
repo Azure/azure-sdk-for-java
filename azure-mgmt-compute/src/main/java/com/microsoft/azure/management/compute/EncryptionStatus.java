@@ -9,24 +9,24 @@ package com.microsoft.azure.management.compute;
 /**
  * Defines values for EncryptionStatuses.
  */
-public class EncryptionStatuses {
+public class EncryptionStatus {
     /** Static value Encrypted for EncryptionInProgress. */
-    public static final EncryptionStatuses ENCRYPTION_INPROGRESS = new EncryptionStatuses("EncryptionInProgress");
+    public static final EncryptionStatus ENCRYPTION_INPROGRESS = new EncryptionStatus("EncryptionInProgress");
 
     /** Static value Encrypted for EncryptionStatuses. */
-    public static final EncryptionStatuses ENCRYPTED = new EncryptionStatuses("Encrypted");
+    public static final EncryptionStatus ENCRYPTED = new EncryptionStatus("Encrypted");
 
     /** Static value NotEncrypted for EncryptionStatuses. */
-    public static final EncryptionStatuses NOT_ENCRYPTED = new EncryptionStatuses("NotEncrypted");
+    public static final EncryptionStatus NOT_ENCRYPTED = new EncryptionStatus("NotEncrypted");
 
     /** Static value VMRestartPending for EncryptionStatuses. */
-    public static final EncryptionStatuses VM_RESTART_PENDING = new EncryptionStatuses("VMRestartPending");
+    public static final EncryptionStatus VM_RESTART_PENDING = new EncryptionStatus("VMRestartPending");
 
     /** Static value NotMounted for EncryptionStatuses. */
-    public static final EncryptionStatuses NOT_MOUNTED = new EncryptionStatuses("NotMounted");
+    public static final EncryptionStatus NOT_MOUNTED = new EncryptionStatus("NotMounted");
 
     /** Static value Unknown for EncryptionStatuses. */
-    public static final EncryptionStatuses UNKNOWN = new EncryptionStatuses("Unknown");
+    public static final EncryptionStatus UNKNOWN = new EncryptionStatus("Unknown");
 
     private String value;
 
@@ -34,7 +34,7 @@ public class EncryptionStatuses {
      * Creates a custom value for EncryptionStatuses.
      * @param value the custom value
      */
-    public EncryptionStatuses(String value) {
+    public EncryptionStatus(String value) {
         this.value = value;
     }
 
@@ -50,13 +50,13 @@ public class EncryptionStatuses {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof VirtualMachineSizeTypes)) {
+        if (!(obj instanceof EncryptionStatus)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        EncryptionStatuses rhs = (EncryptionStatuses) obj;
+        EncryptionStatus rhs = (EncryptionStatus) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

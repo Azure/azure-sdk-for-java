@@ -9,23 +9,30 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 /**
- * Type representing encryption settings to be applied to a virtual machine.
+ * Type representing encryption configuration to be applied to a virtual machine.
  *
  * @param <T> type presenting Windows or Linux specific settings
  */
-public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineEncryptionSettings> {
+public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMachineEncryptionConfiguration> {
     protected final String keyVaultId;
     protected final String aadClientId;
     protected final String aadSecret;
-    protected DiskVolumeTypes volumeType = DiskVolumeTypes.ALL;
+    protected DiskVolumeType volumeType = DiskVolumeType.ALL;
     protected String keyEncryptionKeyURL;
     protected String keyEncryptionKeyVaultId;
     protected String encryptionAlgorithm = "RSA-OAEP";
     protected String passPhrase;
 
-    protected VirtualMachineEncryptionSettings(String keyVaultId,
-                                               String aadClientId,
-                                               String aadSecret) {
+    /**
+     * Creates VirtualMachineEncryptionConfiguration.
+     *
+     * @param keyVaultId resource id of the key vault to store the disk encryption key
+     * @param aadClientId AAD application client id to access the key vault
+     * @param aadSecret AAD application client secret to access the key vault
+     */
+    protected VirtualMachineEncryptionConfiguration(String keyVaultId,
+                                                    String aadClientId,
+                                                    String aadSecret) {
         this.keyVaultId = keyVaultId;
         this.aadClientId = aadClientId;
         this.aadSecret = aadSecret;
@@ -53,11 +60,11 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
     /**
      * @return type of the volume to perform encryption operation
      */
-    public DiskVolumeTypes volumeType() {
+    public DiskVolumeType volumeType() {
         if (this.volumeType != null) {
             return this.volumeType;
         }
-        return DiskVolumeTypes.ALL;
+        return DiskVolumeType.ALL;
     }
 
     /**
@@ -107,9 +114,9 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
      * Specifies the volume to encrypt.
      *
      * @param volumeType the volume type
-     * @return VirtualMachineEncryptionSettings
+     * @return VirtualMachineEncryptionConfiguration
      */
-    public T withVolumeType(DiskVolumeTypes volumeType) {
+    public T withVolumeType(DiskVolumeType volumeType) {
         this.volumeType = volumeType;
         return (T) this;
     }
@@ -117,13 +124,23 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
     /**
      * Specifies the key vault url to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyKevVaultId resource id of the keyVault storing KEK
      * @param keyEncryptionKeyURL the key (KEK) url
-     * @return VirtualMachineEncryptionSettings
+     * @return VirtualMachineEncryptionConfiguration
      */
-    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyKevVaultId, String keyEncryptionKeyURL) {
-        this.keyEncryptionKeyVaultId = keyEncryptionKeyKevVaultId;
+    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL) {
+        return withVolumeEncryptionKeyEncrypted(keyEncryptionKeyURL, null);
+    }
+
+    /**
+     * Specifies the and key vault Id and a vault url to the key for protecting or wrapping the disk-encryption key.
+     *
+     * @param keyEncryptionKeyURL the key (KEK) url
+     * @param keyEncryptionKeyKevVaultId resource id of the keyVault storing KEK
+     * @return VirtualMachineEncryptionConfiguration
+     */
+    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL, String keyEncryptionKeyKevVaultId) {
         this.keyEncryptionKeyURL = keyEncryptionKeyURL;
+        this.keyEncryptionKeyVaultId = keyEncryptionKeyKevVaultId;
         return (T) this;
     }
 
@@ -131,7 +148,7 @@ public abstract class VirtualMachineEncryptionSettings<T extends VirtualMachineE
      * Specifies the algorithm used to encrypt the disk-encryption key.
      *
      * @param encryptionAlgorithm the algorithm
-     * @return VirtualMachineEncryptionSettings
+     * @return VirtualMachineEncryptionConfiguration
      */
     public T withVolumeEncryptionKeyEncryptAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;

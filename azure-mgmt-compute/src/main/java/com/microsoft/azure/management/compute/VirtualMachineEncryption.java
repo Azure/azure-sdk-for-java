@@ -11,7 +11,7 @@ import rx.Observable;
 /**
  * Virtual machine encryption related operations.
  */
-public interface VirtualMachineEncryptionOperations {
+public interface VirtualMachineEncryption {
     /**
      * Enable encryption for virtual machine disks.
      *
@@ -21,16 +21,16 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return observable that emits current volume encryption status
      */
-    Observable<DiskVolumeEncryptionStatus> enableAsync(String keyVaultId, String aadClientId, String aadSecret);
+    Observable<DiskVolumeEncryptionMonitor> enableAsync(String keyVaultId, String aadClientId, String aadSecret);
 
     /**
      * Enable encryption for Windows virtual machine disks.
      *
      * @param encryptionSettings encryption settings for windows virtual machine
-     *
+
      * @return observable that emits current volume encryption status
      */
-    Observable<DiskVolumeEncryptionStatus> enableAsync(WindowsVMDiskEncryptionSettings encryptionSettings);
+    Observable<DiskVolumeEncryptionMonitor> enableAsync(WindowsVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
      * Enable encryption for Linux virtual machine disks.
@@ -39,20 +39,19 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return observable that emits current volume encryption status
      */
-    Observable<DiskVolumeEncryptionStatus> enableAsync(LinuxVMDiskEncryptionSettings encryptionSettings);
+    Observable<DiskVolumeEncryptionMonitor> enableAsync(LinuxVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
      * Disable encryption for virtual machine disks.
      * @param volumeType volume type to disable encryption
-     *
      * @return observable that emits current volume decryption status
      */
-    Observable<DiskVolumeEncryptionStatus> disableAsync(final DiskVolumeTypes volumeType);
+    Observable<DiskVolumeEncryptionMonitor> disableAsync(final DiskVolumeType volumeType);
 
     /**
      * @return observable that emits current volume decryption status
      */
-    Observable<DiskVolumeEncryptionStatus> getStatusAsync();
+    Observable<DiskVolumeEncryptionMonitor> getMonitorAsync();
 
     /**
      * Enable encryption for virtual machine disks.
@@ -63,7 +62,7 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return current volume decryption status
      */
-    DiskVolumeEncryptionStatus enable(String keyVaultId, String aadClientId, String aadSecret);
+    DiskVolumeEncryptionMonitor enable(String keyVaultId, String aadClientId, String aadSecret);
 
     /**
      * Enable encryption for Windows virtual machine disks.
@@ -72,7 +71,7 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return current volume encryption status
      */
-    DiskVolumeEncryptionStatus enable(WindowsVMDiskEncryptionSettings encryptionSettings);
+    DiskVolumeEncryptionMonitor enable(WindowsVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
      * Enable encryption for Linux virtual machine disks.
@@ -81,7 +80,7 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return current volume encryption status
      */
-    DiskVolumeEncryptionStatus enable(LinuxVMDiskEncryptionSettings encryptionSettings);
+    DiskVolumeEncryptionMonitor enable(LinuxVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
      * Disable encryption for virtual machine disks.
@@ -89,10 +88,10 @@ public interface VirtualMachineEncryptionOperations {
      *
      * @return current volume encryption status
      */
-    DiskVolumeEncryptionStatus disable(final DiskVolumeTypes volumeType);
+    DiskVolumeEncryptionMonitor disable(final DiskVolumeType volumeType);
 
     /**
      * @return current volume decryption status
      */
-    DiskVolumeEncryptionStatus getStatus();
+    DiskVolumeEncryptionMonitor getMonitor();
 }

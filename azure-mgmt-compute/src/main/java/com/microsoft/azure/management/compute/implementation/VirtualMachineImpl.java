@@ -38,7 +38,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineEncryptionOperations;
+import com.microsoft.azure.management.compute.VirtualMachineEncryption;
 import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
@@ -208,8 +208,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineEncryptionOperations diskEncryption() {
-        return new VirtualMachineEncryptionOperationsImpl(this);
+    public VirtualMachineEncryption diskEncryption() {
+        return new VirtualMachineEncryptionImpl(this);
     }
 
     @Override
