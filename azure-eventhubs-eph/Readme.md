@@ -73,10 +73,10 @@ pattern is not appropriate for every application.
     	}
 
     	@Override
-        public void onEvents(PartitionContext context, Iterable<EventData> event) throws Exception
+        public void onEvents(PartitionContext context, Iterable<EventData> events) throws Exception
         {
             System.out.println("SAMPLE: Partition " + context.getPartitionId() + " got message batch");
-            for (EventData data : messages)
+            for (EventData data : events)
             {
                 // Do something useful with the event here.
 
@@ -175,6 +175,12 @@ shown here is very, very conservative.
     ``` Java
     EventProcessorHost.forceExecutorShutdown(120);
     ```
+
+## Threading Notes
+
+Within IEventProcessor, the methods onOpen, onEvents, and onClose are serialized. There is no guarantee that calls to these methods
+will be on any particular thread, but there will only be one call to any of these methods at a time. This greatly simplifies the
+implementation of onEvents, in particular. The onError method does not share this guarantee. 
 
 ## Running Tests
 
