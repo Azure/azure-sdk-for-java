@@ -6,20 +6,23 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for Disks.
  */
 @LangDefinition
 class DisksImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             Disk,
             DiskImpl,
             DiskInner,
@@ -83,5 +86,15 @@ class DisksImpl
     @Override
     public Disk.DefinitionStages.Blank define(String name) {
         return this.wrapModel(name);
+    }
+
+    @Override
+    protected Observable<Page<DiskInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<DiskInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

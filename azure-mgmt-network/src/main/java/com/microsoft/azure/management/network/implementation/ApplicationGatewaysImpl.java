@@ -5,20 +5,23 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for ApplicationGateways.
  */
 @LangDefinition
 class ApplicationGatewaysImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             ApplicationGateway,
             ApplicationGatewayImpl,
             ApplicationGatewayInner,
@@ -66,5 +69,15 @@ class ApplicationGatewaysImpl
     @Override
     protected ApplicationGatewayImpl wrapModel(ApplicationGatewayInner inner) {
         return (inner == null) ? null : new ApplicationGatewayImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    protected Observable<Page<ApplicationGatewayInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<ApplicationGatewayInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

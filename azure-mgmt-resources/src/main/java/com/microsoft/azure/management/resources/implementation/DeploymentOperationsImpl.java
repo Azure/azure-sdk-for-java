@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation of {@link DeploymentOperations}.
@@ -30,6 +31,11 @@ final class DeploymentOperationsImpl
     @Override
     public PagedList<DeploymentOperation> list() {
         return wrapList(client.list(deployment.resourceGroupName(), deployment.name()));
+    }
+
+    @Override
+    public Observable<DeploymentOperation> listAsync() {
+        return convertPageToIndividualResourcesAsync(client.listAsync(deployment.resourceGroupName(), deployment.name()));
     }
 
     @Override

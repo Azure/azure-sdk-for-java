@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.appservice.AppServicePlans;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -21,7 +23,7 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateOrdersImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
         AppServiceCertificateOrder,
         AppServiceCertificateOrderImpl,
         AppServiceCertificateOrderInner,
@@ -75,5 +77,20 @@ class AppServiceCertificateOrdersImpl
                         return wrapModel(appServiceCertificateOrderInner);
                     }
                 });
+    }
+
+    @Override
+    public PagedList<AppServiceCertificateOrder> list() {
+        return wrapList(innerCollection.list());
+    }
+
+    @Override
+    protected Observable<Page<AppServiceCertificateOrderInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<AppServiceCertificateOrderInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

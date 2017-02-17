@@ -47,6 +47,11 @@ class UsersImpl
     }
 
     @Override
+    public Observable<User> listAsync() {
+        return convertPageToIndividualResourcesAsync(inner().listAsync());
+    }
+
+    @Override
     protected UserImpl wrapModel(UserInner userInner) {
         if (userInner == null) {
             return null;

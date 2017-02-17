@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
@@ -12,7 +13,9 @@ import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -21,7 +24,7 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworksImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             Network,
             NetworkImpl,
             VirtualNetworkInner,
@@ -100,5 +103,15 @@ class NetworksImpl
             return null;
         }
         return new NetworkImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    protected Observable<Page<VirtualNetworkInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<VirtualNetworkInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

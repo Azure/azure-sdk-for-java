@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
@@ -17,6 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -57,8 +60,34 @@ final class DeploymentsImpl
     }
 
     @Override
+    public Observable<Deployment> listAsync() {
+        return this.resourceManager.resourceGroups().listAsync().flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
+            @Override
+            public Observable<Deployment> call(ResourceGroup resourceGroup) {
+                return listByGroupAsync(resourceGroup.name());
+            }
+        });
+    }
+
+    @Override
     public PagedList<Deployment> listByGroup(String groupName) {
         return converter.convert(client.list(groupName));
+    }
+
+    @Override
+    public Observable<Deployment> listByGroupAsync(String resourceGroupName) {
+        return client.listAsync(resourceGroupName).flatMap(new Func1<Page<DeploymentExtendedInner>, Observable<Deployment>>() {
+            @Override
+            public Observable<Deployment> call(Page<DeploymentExtendedInner> deploymentExtendedInnerPage) {
+                return Observable.from(deploymentExtendedInnerPage.items()).map(new Func1<DeploymentExtendedInner, Deployment>() {
+
+                    @Override
+                    public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                        return createFluentModel(deploymentExtendedInner);
+                    }
+                });
+            }
+        });
     }
 
     @Override

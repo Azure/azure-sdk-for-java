@@ -6,19 +6,22 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificates;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for AppServiceCertificates.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificatesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             AppServiceCertificate,
             AppServiceCertificateImpl,
             CertificateInner,
@@ -61,5 +64,20 @@ class AppServiceCertificatesImpl
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public PagedList<AppServiceCertificate> list() {
+        return wrapList(this.innerCollection.list());
+    }
+
+    @Override
+    protected Observable<Page<CertificateInner>> listAsyncPage() {
+        return this.inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<CertificateInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return this.inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

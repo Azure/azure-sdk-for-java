@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import rx.Observable;
@@ -28,6 +29,7 @@ public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<AppServicePlan>,
+        SupportsListing<AppServicePlan>,
         SupportsGettingByGroup<AppServicePlan>,
         SupportsGettingById<AppServicePlan>,
         SupportsDeletingByGroup,

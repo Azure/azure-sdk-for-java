@@ -8,20 +8,23 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesListImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
-class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
+class TrafficManagerProfilesImpl extends ListableGroupableResourcesListImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
@@ -91,5 +94,15 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
         // Endpoints are external child resource still initializing it avoid null checks in the model impl.
         profile.inner().withEndpoints(new ArrayList<EndpointInner>());
         return profile;
+    }
+
+    @Override
+    protected Observable<List<ProfileInner>> listInnerAsync() {
+        return this.inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<List<ProfileInner>> listInnerByGroupAsync(String resourceGroupName) {
+        return this.inner().listAllInResourceGroupAsync(resourceGroupName);
     }
 }

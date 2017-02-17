@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of NSRecordSets.
@@ -39,6 +40,12 @@ class NSRecordSetsImpl
     @Override
     public PagedList<NSRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
+    }
+
+    @Override
+    public Observable<NSRecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
     }
 

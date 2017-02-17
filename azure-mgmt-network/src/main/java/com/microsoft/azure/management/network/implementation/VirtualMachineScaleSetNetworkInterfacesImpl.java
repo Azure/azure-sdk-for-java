@@ -6,10 +6,13 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for VirtualMachineScaleSetNetworkInterfaces.
@@ -64,6 +67,22 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     public PagedList<VirtualMachineScaleSetNetworkInterface> list() {
         return super.wrapList(this.inner().listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName,
                 this.scaleSetName));
+    }
+
+    @Override
+    public Observable<VirtualMachineScaleSetNetworkInterface> listAsync() {
+        return this.inner().listVirtualMachineScaleSetNetworkInterfacesAsync(this.resourceGroupName, this.scaleSetName)
+                .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<NetworkInterfaceInner>>() {
+                    @Override
+                    public Observable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> networkInterfaceInnerPage) {
+                        return Observable.from(networkInterfaceInnerPage.items());
+                    }
+                }).map(new Func1<NetworkInterfaceInner, VirtualMachineScaleSetNetworkInterface>() {
+                    @Override
+                    public VirtualMachineScaleSetNetworkInterface call(NetworkInterfaceInner networkInterfaceInner) {
+                        return wrapModel(networkInterfaceInner);
+                    }
+                });
     }
 
     @Override

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -16,6 +17,9 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -39,6 +43,11 @@ final class ResourceGroupsImpl
     @Override
     public PagedList<ResourceGroup> list() {
         return wrapList(client.list());
+    }
+
+    @Override
+    public Observable<ResourceGroup> listAsync() {
+        return client.listAsync().map(pageToList()).flatMap(listToIndividualResource());
     }
 
     @Override
@@ -109,5 +118,29 @@ final class ResourceGroupsImpl
     @Override
     public Completable deleteByIdAsync(String id) {
         return deleteByNameAsync(ResourceUtils.nameFromResourceId(id));
+    }
+
+
+    private Func1<Page<ResourceGroupInner>, List<ResourceGroupInner>> pageToList() {
+        return new Func1<Page<ResourceGroupInner>, List<ResourceGroupInner>>() {
+            @Override
+            public List<ResourceGroupInner> call(Page<ResourceGroupInner> resourceGroupInnerPage) {
+                return resourceGroupInnerPage.items();
+            }
+        };
+    }
+
+    private Func1<List<ResourceGroupInner>, Observable<ResourceGroup>> listToIndividualResource() {
+        return new Func1<List<ResourceGroupInner>, Observable<ResourceGroup>>() {
+            @Override
+            public Observable<ResourceGroup> call(List<ResourceGroupInner> resourceGroupInners) {
+                return Observable.from(resourceGroupInners).map(new Func1<ResourceGroupInner, ResourceGroup>() {
+                    @Override
+                    public ResourceGroup call(ResourceGroupInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
+            }
+        };
     }
 }

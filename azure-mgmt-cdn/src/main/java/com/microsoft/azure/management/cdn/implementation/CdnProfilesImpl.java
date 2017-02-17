@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnProfile;
@@ -15,8 +16,10 @@ import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -25,7 +28,7 @@ import java.util.List;
  */
 @LangDefinition
 class CdnProfilesImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             CdnProfile,
             CdnProfileImpl,
             ProfileInner,
@@ -134,5 +137,15 @@ class CdnProfilesImpl
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    protected Observable<Page<ProfileInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<ProfileInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

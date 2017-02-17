@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of SrvRecordSets.
@@ -39,6 +40,14 @@ class SrvRecordSetsImpl
     @Override
     public PagedList<SrvRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.SRV));
+    }
+
+    @Override
+    public Observable<SrvRecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 RecordType.SRV));

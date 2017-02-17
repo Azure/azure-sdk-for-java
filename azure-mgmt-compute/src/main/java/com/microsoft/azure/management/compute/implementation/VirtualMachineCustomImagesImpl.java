@@ -6,18 +6,21 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for VirtualMachineCustomImages.
  */
 @LangDefinition
-class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
+class VirtualMachineCustomImagesImpl extends ListableGroupableResourcesPageImpl<
         VirtualMachineCustomImage,
         VirtualMachineCustomImageImpl,
         ImageInner,
@@ -62,5 +65,15 @@ class VirtualMachineCustomImagesImpl extends GroupableResourcesImpl<
     @Override
     public PagedList<VirtualMachineCustomImage> list() {
         return wrapList(this.inner().list());
+    }
+
+    @Override
+    protected Observable<Page<ImageInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<ImageInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

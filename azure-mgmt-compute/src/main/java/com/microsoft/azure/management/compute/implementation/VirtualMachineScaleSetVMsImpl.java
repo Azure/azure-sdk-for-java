@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation for {@link VirtualMachineScaleSetVMs}.
@@ -41,6 +42,11 @@ class VirtualMachineScaleSetVMsImpl
     @Override
     public PagedList<VirtualMachineScaleSetVM> list() {
         return super.wrapList(this.client.list(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
+    }
+
+    @Override
+    public Observable<VirtualMachineScaleSetVM> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.client.listAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
     }
 
     @Override

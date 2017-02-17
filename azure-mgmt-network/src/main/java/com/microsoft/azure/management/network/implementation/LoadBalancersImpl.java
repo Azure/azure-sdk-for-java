@@ -5,19 +5,22 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for {@link LoadBalancers}.
  */
 @LangDefinition
 class LoadBalancersImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             LoadBalancer,
             LoadBalancerImpl,
             LoadBalancerInner,
@@ -74,5 +77,15 @@ class LoadBalancersImpl
                 inner.name(),
                 inner,
                 this.manager());
+    }
+
+    @Override
+    protected Observable<Page<LoadBalancerInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<LoadBalancerInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }

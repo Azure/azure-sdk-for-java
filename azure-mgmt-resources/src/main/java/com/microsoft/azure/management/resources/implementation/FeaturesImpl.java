@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation of {@link Features}.
@@ -26,6 +27,11 @@ final class FeaturesImpl
     @Override
     public PagedList<Feature> list() {
         return wrapList(client.listAll());
+    }
+
+    @Override
+    public Observable<Feature> listAsync() {
+        return convertPageToIndividualResourcesAsync(client.listAllAsync());
     }
 
     @Override

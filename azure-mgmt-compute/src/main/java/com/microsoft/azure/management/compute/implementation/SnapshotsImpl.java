@@ -6,20 +6,23 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
             Snapshot,
             SnapshotImpl,
             SnapshotInner,
@@ -82,5 +85,15 @@ class SnapshotsImpl
     @Override
     public Snapshot.DefinitionStages.Blank define(String name) {
         return this.wrapModel(name);
+    }
+
+    @Override
+    protected Observable<Page<SnapshotInner>> listAsyncPage() {
+        return this.inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<SnapshotInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return this.inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

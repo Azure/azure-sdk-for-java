@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of AaaaRecordSets.
@@ -38,6 +39,14 @@ class AaaaRecordSetsImpl
     @Override
     public PagedList<AaaaRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.AAAA));
+    }
+
+    @Override
+    public Observable<AaaaRecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 RecordType.AAAA));
     }

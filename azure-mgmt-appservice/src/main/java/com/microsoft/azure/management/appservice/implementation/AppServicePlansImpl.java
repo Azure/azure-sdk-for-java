@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePlans;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -21,7 +23,7 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlansImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
         AppServicePlan,
         AppServicePlanImpl,
         AppServicePlanInner,
@@ -77,5 +79,20 @@ class AppServicePlansImpl
                         return wrapModel(appServicePlanInner);
                     }
                 });
+    }
+
+    @Override
+    public PagedList<AppServicePlan> list() {
+        return wrapList(inner().list());
+    }
+
+    @Override
+    protected Observable<Page<AppServicePlanInner>> listAsyncPage() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<AppServicePlanInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

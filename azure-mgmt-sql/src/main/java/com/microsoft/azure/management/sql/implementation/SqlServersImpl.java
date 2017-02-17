@@ -9,17 +9,21 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesListImpl;
 import com.microsoft.azure.management.sql.ServerVersion;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlServers;
 import rx.Completable;
+import rx.Observable;
+
+import java.util.List;
 
 /**
  * Implementation for SqlServers and its parent interfaces.
  */
 @LangDefinition
 class SqlServersImpl
-        extends GroupableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+        extends ListableGroupableResourcesListImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 
     protected SqlServersImpl(SqlServerManager manager) {
@@ -65,5 +69,15 @@ class SqlServersImpl
     @Override
     public SqlServer getByGroup(String groupName, String name) {
         return wrapModel(this.inner().getByResourceGroup(groupName, name));
+    }
+
+    @Override
+    protected Observable<List<ServerInner>> listInnerAsync() {
+        return inner().listAsync();
+    }
+
+    @Override
+    protected Observable<List<ServerInner>> listInnerByGroupAsync(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

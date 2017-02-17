@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -26,6 +27,7 @@ public interface AppServiceCertificates extends
         SupportsCreating<AppServiceCertificate.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<AppServiceCertificate>,
+        SupportsListing<AppServiceCertificate>,
         SupportsGettingByGroup<AppServiceCertificate>,
         SupportsGettingById<AppServiceCertificate>,
         SupportsDeletingByGroup,

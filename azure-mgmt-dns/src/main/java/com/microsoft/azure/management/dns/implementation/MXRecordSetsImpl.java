@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.MXRecordSet;
 import com.microsoft.azure.management.dns.MXRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of MXRecordSets.
@@ -38,6 +39,12 @@ class MXRecordSetsImpl
     @Override
     public PagedList<MXRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.MX));
+    }
+
+    @Override
+    public Observable<MXRecordSet> listAsync() {
+        return convertPageToIndividualResourcesAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.parent().resourceGroupName(), this.parent().name(), RecordType.MX));
     }
 

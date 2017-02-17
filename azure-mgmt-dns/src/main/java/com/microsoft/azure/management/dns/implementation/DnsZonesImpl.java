@@ -5,18 +5,21 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Implementation of DnsZones.
  */
 @LangDefinition
-class DnsZonesImpl extends GroupableResourcesImpl<
+class DnsZonesImpl extends ListableGroupableResourcesPageImpl<
         DnsZone,
         DnsZoneImpl,
         ZoneInner,
@@ -67,5 +70,15 @@ class DnsZonesImpl extends GroupableResourcesImpl<
         // Zone location must be 'global' irrespective of region of the resource group it resides.
         dnsZone.inner().withLocation("global");
         return dnsZone;
+    }
+
+    @Override
+    protected Observable<Page<ZoneInner>> listAsyncPage() {
+        return this.inner().listAsync();
+    }
+
+    @Override
+    protected Observable<Page<ZoneInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return this.inner().listByResourceGroupAsync(resourceGroupName);
     }
 }

@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
@@ -16,8 +17,10 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableGroupableResourcesPageImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -26,7 +29,7 @@ import java.util.ArrayList;
  */
 @LangDefinition
 public class VirtualMachineScaleSetsImpl
-        extends GroupableResourcesImpl<
+        extends ListableGroupableResourcesPageImpl<
                         VirtualMachineScaleSet,
                         VirtualMachineScaleSetImpl,
                         VirtualMachineScaleSetInner,
@@ -145,5 +148,15 @@ public class VirtualMachineScaleSetsImpl
                 this.manager(),
                 this.storageManager,
                 this.networkManager);
+    }
+
+    @Override
+    protected Observable<Page<VirtualMachineScaleSetInner>> listAsyncPage() {
+        return inner().listAllAsync();
+    }
+
+    @Override
+    protected Observable<Page<VirtualMachineScaleSetInner>> listByGroupAsyncPage(String resourceGroupName) {
+        return inner().listAsync(resourceGroupName);
     }
 }
