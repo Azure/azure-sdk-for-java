@@ -18,7 +18,7 @@ public class BatchAccountRegenerateKeyParameters {
      * The type of account key to regenerate. Possible values include:
      * 'Primary', 'Secondary'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyName", required = true)
     private AccountKeyType keyName;
 
     /**

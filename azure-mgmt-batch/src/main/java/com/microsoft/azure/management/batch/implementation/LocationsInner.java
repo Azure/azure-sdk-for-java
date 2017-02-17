@@ -10,9 +10,9 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.batch.ErrorBodyException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
@@ -29,7 +29,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Locations.
  */
-public final class LocationsInner {
+public class LocationsInner {
     /** The Retrofit service to perform REST calls. */
     private LocationsService service;
     /** The service client containing this operation class. */
@@ -123,10 +123,10 @@ public final class LocationsInner {
             });
     }
 
-    private ServiceResponse<BatchLocationQuotaInner> getQuotasDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchLocationQuotaInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BatchLocationQuotaInner> getQuotasDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchLocationQuotaInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchLocationQuotaInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 

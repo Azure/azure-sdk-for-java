@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters for an ApplicationOperations.AddApplication request.
@@ -17,11 +18,13 @@ public class AddApplicationParametersInner {
      * A value indicating whether packages within the application may be
      * overwritten using the same version string.
      */
+    @JsonProperty(value = "allowUpdates")
     private Boolean allowUpdates;
 
     /**
      * The display name for the application.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**

@@ -21,12 +21,13 @@ public class BatchAccountCreateParametersInner {
     /**
      * The region in which to create the account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
      * The user specified tags associated with the account.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

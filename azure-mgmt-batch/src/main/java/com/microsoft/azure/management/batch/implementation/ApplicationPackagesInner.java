@@ -10,10 +10,10 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.batch.ActivateApplicationPackageParameters;
-import com.microsoft.azure.management.batch.ErrorBodyException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
@@ -34,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ApplicationPackages.
  */
-public final class ApplicationPackagesInner {
+public class ApplicationPackagesInner {
     /** The Retrofit service to perform REST calls. */
     private ApplicationPackagesService service;
     /** The service client containing this operation class. */
@@ -169,10 +169,10 @@ public final class ApplicationPackagesInner {
             });
     }
 
-    private ServiceResponse<Void> activateDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> activateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -263,10 +263,10 @@ public final class ApplicationPackagesInner {
             });
     }
 
-    private ServiceResponse<ApplicationPackageInner> createDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ApplicationPackageInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ApplicationPackageInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -356,10 +356,10 @@ public final class ApplicationPackagesInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -450,10 +450,10 @@ public final class ApplicationPackagesInner {
             });
     }
 
-    private ServiceResponse<ApplicationPackageInner> getDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ApplicationPackageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationPackageInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 

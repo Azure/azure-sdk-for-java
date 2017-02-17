@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters for an ApplicationOperations.UpdateApplication request.
@@ -17,17 +18,20 @@ public class UpdateApplicationParametersInner {
      * A value indicating whether packages within the application may be
      * overwritten using the same version string.
      */
+    @JsonProperty(value = "allowUpdates")
     private Boolean allowUpdates;
 
     /**
      * The package to use if a client requests the application but does not
      * specify a version.
      */
+    @JsonProperty(value = "defaultVersion")
     private String defaultVersion;
 
     /**
      * The display name for the application.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
