@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import rx.Observable;
+import rx.functions.Func1;
 
 public class GenericResourcesTests extends ResourceManagerTestBase {
     private static ResourceGroups resourceGroups;
@@ -85,5 +87,17 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         // Delete
         genericResources.deleteById(resource.id());
         Assert.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+    }
+
+    @Test
+    public void listGenericResourcesAsyncTest() {
+        genericResources.listAsync().map(new Func1<GenericResource, GenericResource>() {
+            @Override
+            public GenericResource call(GenericResource genericResource) {
+                Assert.assertNotNull(genericResource);
+                Assert.assertNotNull(genericResource.id());
+                return genericResource;
+            }
+        }).toBlocking().last();
     }
 }

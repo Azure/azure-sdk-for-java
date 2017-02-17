@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsAsyncListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -28,6 +29,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface BatchAccounts extends
         SupportsCreating<BatchAccount.DefinitionStages.Blank>,
         SupportsListing<BatchAccount>,
+        SupportsAsyncListing<BatchAccount>,
         SupportsListingByGroup<BatchAccount>,
         SupportsGettingByGroup<BatchAccount>,
         SupportsGettingById<BatchAccount>,

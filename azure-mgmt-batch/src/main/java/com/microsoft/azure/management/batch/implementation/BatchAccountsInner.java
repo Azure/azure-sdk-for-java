@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsAsyncListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -44,7 +45,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in BatchAccounts.
  */
-public final class BatchAccountsInner {
+public final class BatchAccountsInner implements SupportsAsyncListing<Page<BatchAccountInner>> {
     /** The Retrofit service to perform REST calls. */
     private BatchAccountsService service;
     /** The service client containing this operation class. */
