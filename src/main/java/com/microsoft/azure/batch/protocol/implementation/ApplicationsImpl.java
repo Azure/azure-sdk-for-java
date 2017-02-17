@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Applications;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationListHeaders;
@@ -24,8 +24,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -87,6 +87,9 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
     public PagedList<ApplicationSummary> list() {
@@ -104,10 +107,11 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
@@ -122,6 +126,7 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<Page<ApplicationSummary>> listAsync() {
@@ -138,6 +143,7 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync() {
@@ -158,6 +164,7 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync() {
@@ -193,6 +200,9 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
     public PagedList<ApplicationSummary> list(final ApplicationListOptions applicationListOptions) {
@@ -218,10 +228,11 @@ public class ApplicationsImpl implements Applications {
      *
      * @param applicationListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(applicationListOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
@@ -244,6 +255,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<Page<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions) {
@@ -261,6 +273,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync(final ApplicationListOptions applicationListOptions) {
@@ -289,6 +302,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
     ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync(final ApplicationListOptions applicationListOptions) {
@@ -345,6 +359,9 @@ public class ApplicationsImpl implements Applications {
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationSummary object if successful.
      */
     public ApplicationSummary get(String applicationId) {
@@ -356,16 +373,18 @@ public class ApplicationsImpl implements Applications {
      *
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationSummary> getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(applicationId), serviceCallback);
+    public ServiceFuture<ApplicationSummary> getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(applicationId), serviceCallback);
     }
 
     /**
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ApplicationSummary> getAsync(String applicationId) {
@@ -381,6 +400,7 @@ public class ApplicationsImpl implements Applications {
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId) {
@@ -418,6 +438,9 @@ public class ApplicationsImpl implements Applications {
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationSummary object if successful.
      */
     public ApplicationSummary get(String applicationId, ApplicationGetOptions applicationGetOptions) {
@@ -430,10 +453,11 @@ public class ApplicationsImpl implements Applications {
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(applicationId, applicationGetOptions), serviceCallback);
+    public ServiceFuture<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(applicationId, applicationGetOptions), serviceCallback);
     }
 
     /**
@@ -441,6 +465,7 @@ public class ApplicationsImpl implements Applications {
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions) {
@@ -457,6 +482,7 @@ public class ApplicationsImpl implements Applications {
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId, ApplicationGetOptions applicationGetOptions) {
@@ -513,6 +539,9 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
     public PagedList<ApplicationSummary> listNext(final String nextPageLink) {
@@ -530,12 +559,13 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationSummary>> serviceFuture, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
@@ -551,6 +581,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink) {
@@ -568,6 +599,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -589,6 +621,7 @@ public class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
@@ -624,6 +657,9 @@ public class ApplicationsImpl implements Applications {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
      */
     public PagedList<ApplicationSummary> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
@@ -642,12 +678,13 @@ public class ApplicationsImpl implements Applications {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceFuture<List<ApplicationSummary>> serviceFuture, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink, applicationListNextOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
@@ -664,6 +701,7 @@ public class ApplicationsImpl implements Applications {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
@@ -682,6 +720,7 @@ public class ApplicationsImpl implements Applications {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
@@ -704,6 +743,7 @@ public class ApplicationsImpl implements Applications {
      *
     ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {

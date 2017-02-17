@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol;
 
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudJobSchedule;
 import com.microsoft.azure.batch.protocol.models.JobScheduleAddHeaders;
 import com.microsoft.azure.batch.protocol.models.JobScheduleAddOptions;
@@ -36,9 +37,10 @@ import com.microsoft.azure.batch.protocol.models.JobScheduleUpdateParameter;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -51,6 +53,9 @@ public interface JobSchedules {
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     boolean exists(String jobScheduleId);
@@ -60,14 +65,16 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Boolean> existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback);
+    ServiceFuture<Boolean> existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback);
 
     /**
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the boolean object
      */
     Observable<Boolean> existsAsync(String jobScheduleId);
@@ -76,6 +83,7 @@ public interface JobSchedules {
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the boolean object
      */
     Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId);
@@ -84,6 +92,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     boolean exists(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
@@ -94,15 +105,17 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback);
+    ServiceFuture<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback);
 
     /**
      * Checks the specified job schedule exists.
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the boolean object
      */
     Observable<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
@@ -112,6 +125,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the boolean object
      */
     Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions);
@@ -121,6 +135,9 @@ public interface JobSchedules {
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobScheduleId);
 
@@ -130,15 +147,17 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a job schedule from the specified account.
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobScheduleId);
@@ -148,6 +167,7 @@ public interface JobSchedules {
      * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
      * @param jobScheduleId The ID of the job schedule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId);
@@ -157,6 +177,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
 
@@ -167,9 +190,10 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a job schedule from the specified account.
@@ -177,6 +201,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
@@ -187,6 +212,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions);
@@ -195,6 +221,9 @@ public interface JobSchedules {
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudJobSchedule object if successful.
      */
     CloudJobSchedule get(String jobScheduleId);
@@ -204,14 +233,16 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudJobSchedule> getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<CloudJobSchedule> getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJobSchedule object
      */
     Observable<CloudJobSchedule> getAsync(String jobScheduleId);
@@ -220,6 +251,7 @@ public interface JobSchedules {
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJobSchedule object
      */
     Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId);
@@ -228,6 +260,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudJobSchedule object if successful.
      */
     CloudJobSchedule get(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
@@ -238,15 +273,17 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Gets information about the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJobSchedule object
      */
     Observable<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
@@ -256,6 +293,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJobSchedule object
      */
     Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions);
@@ -266,6 +304,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
 
@@ -276,9 +317,10 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -286,6 +328,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
@@ -296,6 +339,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter);
@@ -306,6 +350,9 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
 
@@ -317,9 +364,10 @@ public interface JobSchedules {
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -328,6 +376,7 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
@@ -339,6 +388,7 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions);
@@ -349,6 +399,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
 
@@ -359,9 +412,10 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -369,6 +423,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
@@ -379,6 +434,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter);
@@ -389,6 +445,9 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
 
@@ -400,9 +459,10 @@ public interface JobSchedules {
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job schedule.
@@ -411,6 +471,7 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
@@ -422,6 +483,7 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions);
@@ -431,6 +493,9 @@ public interface JobSchedules {
      * No new jobs will be created until the job schedule is enabled again.
      *
      * @param jobScheduleId The ID of the job schedule to disable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void disable(String jobScheduleId);
 
@@ -440,15 +505,17 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Disables a job schedule.
      * No new jobs will be created until the job schedule is enabled again.
      *
      * @param jobScheduleId The ID of the job schedule to disable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> disableAsync(String jobScheduleId);
@@ -458,6 +525,7 @@ public interface JobSchedules {
      * No new jobs will be created until the job schedule is enabled again.
      *
      * @param jobScheduleId The ID of the job schedule to disable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId);
@@ -467,6 +535,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void disable(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
 
@@ -477,9 +548,10 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Disables a job schedule.
@@ -487,6 +559,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
@@ -497,6 +570,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions);
@@ -505,6 +579,9 @@ public interface JobSchedules {
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void enable(String jobScheduleId);
 
@@ -513,14 +590,16 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> enableAsync(String jobScheduleId);
@@ -529,6 +608,7 @@ public interface JobSchedules {
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId);
@@ -537,6 +617,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void enable(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
 
@@ -546,15 +629,17 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Enables a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
@@ -564,6 +649,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions);
@@ -572,6 +658,9 @@ public interface JobSchedules {
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobScheduleId);
 
@@ -580,14 +669,16 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobScheduleId);
@@ -596,6 +687,7 @@ public interface JobSchedules {
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId);
@@ -604,6 +696,9 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
 
@@ -613,15 +708,17 @@ public interface JobSchedules {
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates a job schedule.
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
@@ -631,6 +728,7 @@ public interface JobSchedules {
      *
      * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions);
@@ -639,6 +737,9 @@ public interface JobSchedules {
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(JobScheduleAddParameter cloudJobSchedule);
 
@@ -647,14 +748,16 @@ public interface JobSchedules {
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule);
@@ -663,6 +766,7 @@ public interface JobSchedules {
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule);
@@ -671,6 +775,9 @@ public interface JobSchedules {
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
 
@@ -680,15 +787,17 @@ public interface JobSchedules {
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
@@ -698,6 +807,7 @@ public interface JobSchedules {
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions);
@@ -705,6 +815,9 @@ public interface JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
     PagedList<CloudJobSchedule> list();
@@ -713,13 +826,15 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<Page<CloudJobSchedule>> listAsync();
@@ -727,6 +842,7 @@ public interface JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync();
@@ -734,6 +850,9 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
     PagedList<CloudJobSchedule> list(final JobScheduleListOptions jobScheduleListOptions);
@@ -743,14 +862,16 @@ public interface JobSchedules {
      *
      * @param jobScheduleListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<Page<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions);
@@ -759,6 +880,7 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync(final JobScheduleListOptions jobScheduleListOptions);
@@ -767,6 +889,9 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
     PagedList<CloudJobSchedule> listNext(final String nextPageLink);
@@ -775,16 +900,18 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJobSchedule>> serviceFuture, final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink);
@@ -793,6 +920,7 @@ public interface JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
@@ -801,6 +929,9 @@ public interface JobSchedules {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
     PagedList<CloudJobSchedule> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
@@ -810,17 +941,19 @@ public interface JobSchedules {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceFuture<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceFuture<List<CloudJobSchedule>> serviceFuture, final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
@@ -830,6 +963,7 @@ public interface JobSchedules {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);

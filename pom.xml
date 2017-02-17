@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.0-beta6-SNAPSHOT</version>
+      <version>1.0.0-rc-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -160,7 +160,7 @@
         <version>2.5.3</version>
       </plugin>
 
-     <plugin> 
+     <plugin>
        <groupId>com.googlecode.addjars-maven-plugin</groupId>
        <artifactId>addjars-maven-plugin</artifactId>
        <version>1.0.5</version>

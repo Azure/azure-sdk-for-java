@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol;
 
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeOptions;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromTaskHeaders;
@@ -30,10 +31,11 @@ import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -48,6 +50,9 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
      * @param filePath The path to the task file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void deleteFromTask(String jobId, String taskId, String filePath);
 
@@ -58,9 +63,10 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to delete.
      * @param filePath The path to the task file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified task file from the compute node where the task ran.
@@ -68,6 +74,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
      * @param filePath The path to the task file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath);
@@ -78,6 +85,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
      * @param filePath The path to the task file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> deleteFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath);
@@ -89,6 +97,9 @@ public interface Files {
      * @param filePath The path to the task file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void deleteFromTask(String jobId, String taskId, String filePath, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions);
 
@@ -101,9 +112,10 @@ public interface Files {
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified task file from the compute node where the task ran.
@@ -113,6 +125,7 @@ public interface Files {
      * @param filePath The path to the task file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteFromTaskAsync(String jobId, String taskId, String filePath, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions);
@@ -125,6 +138,7 @@ public interface Files {
      * @param filePath The path to the task file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> deleteFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions);
@@ -135,6 +149,9 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     InputStream getFromTask(String jobId, String taskId, String filePath);
@@ -146,9 +163,10 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<InputStream> serviceCallback);
+    ServiceFuture<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<InputStream> serviceCallback);
 
     /**
      * Returns the content of the specified task file.
@@ -156,6 +174,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath);
@@ -166,6 +185,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> getFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath);
@@ -176,6 +196,9 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     InputStream getFromTask(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions);
@@ -188,9 +211,10 @@ public interface Files {
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback);
+    ServiceFuture<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback);
 
     /**
      * Returns the content of the specified task file.
@@ -199,6 +223,7 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<InputStream> getFromTaskAsync(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions);
@@ -210,6 +235,7 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> getFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions);
@@ -220,6 +246,9 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void getPropertiesFromTask(String jobId, String taskId, String filePath);
 
@@ -230,9 +259,10 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Gets the properties of the specified task file.
@@ -240,6 +270,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath);
@@ -250,6 +281,7 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileGetPropertiesFromTaskHeaders>> getPropertiesFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath);
@@ -260,6 +292,9 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
      * @param fileGetPropertiesFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void getPropertiesFromTask(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions);
 
@@ -271,9 +306,10 @@ public interface Files {
      * @param filePath The path to the task file that you want to get the properties of.
      * @param fileGetPropertiesFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Gets the properties of the specified task file.
@@ -282,6 +318,7 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
      * @param fileGetPropertiesFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> getPropertiesFromTaskAsync(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions);
@@ -293,6 +330,7 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param filePath The path to the task file that you want to get the properties of.
      * @param fileGetPropertiesFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileGetPropertiesFromTaskHeaders>> getPropertiesFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions);
@@ -303,6 +341,9 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param filePath The path to the file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void deleteFromComputeNode(String poolId, String nodeId, String filePath);
 
@@ -313,9 +354,10 @@ public interface Files {
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param filePath The path to the file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified task file from the compute node.
@@ -323,6 +365,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param filePath The path to the file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath);
@@ -333,6 +376,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param filePath The path to the file that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
@@ -344,6 +388,9 @@ public interface Files {
      * @param filePath The path to the file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void deleteFromComputeNode(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
 
@@ -356,9 +403,10 @@ public interface Files {
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified task file from the compute node.
@@ -368,6 +416,7 @@ public interface Files {
      * @param filePath The path to the file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
@@ -380,6 +429,7 @@ public interface Files {
      * @param filePath The path to the file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
@@ -390,6 +440,9 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     InputStream getFromComputeNode(String poolId, String nodeId, String filePath);
@@ -401,9 +454,10 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<InputStream> serviceCallback);
+    ServiceFuture<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<InputStream> serviceCallback);
 
     /**
      * Returns the content of the specified task file.
@@ -411,6 +465,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath);
@@ -421,6 +476,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
@@ -431,6 +487,9 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     InputStream getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions);
@@ -443,9 +502,10 @@ public interface Files {
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback);
+    ServiceFuture<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback);
 
     /**
      * Returns the content of the specified task file.
@@ -454,6 +514,7 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions);
@@ -465,6 +526,7 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions);
@@ -475,6 +537,9 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void getPropertiesFromComputeNode(String poolId, String nodeId, String filePath);
 
@@ -485,9 +550,10 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Gets the properties of the specified compute node file.
@@ -495,6 +561,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath);
@@ -505,6 +572,7 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileGetPropertiesFromComputeNodeHeaders>> getPropertiesFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
@@ -515,6 +583,9 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
      * @param fileGetPropertiesFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void getPropertiesFromComputeNode(String poolId, String nodeId, String filePath, FileGetPropertiesFromComputeNodeOptions fileGetPropertiesFromComputeNodeOptions);
 
@@ -526,9 +597,10 @@ public interface Files {
      * @param filePath The path to the compute node file that you want to get the properties of.
      * @param fileGetPropertiesFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetPropertiesFromComputeNodeOptions fileGetPropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetPropertiesFromComputeNodeOptions fileGetPropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Gets the properties of the specified compute node file.
@@ -537,6 +609,7 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
      * @param fileGetPropertiesFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> getPropertiesFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetPropertiesFromComputeNodeOptions fileGetPropertiesFromComputeNodeOptions);
@@ -548,6 +621,7 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the compute node file that you want to get the properties of.
      * @param fileGetPropertiesFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileGetPropertiesFromComputeNodeHeaders>> getPropertiesFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath, FileGetPropertiesFromComputeNodeOptions fileGetPropertiesFromComputeNodeOptions);
@@ -557,6 +631,9 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromTask(final String jobId, final String taskId);
@@ -567,15 +644,17 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId);
@@ -585,6 +664,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskWithServiceResponseAsync(final String jobId, final String taskId);
@@ -595,6 +675,9 @@ public interface Files {
      * @param taskId The ID of the task whose files you want to list.
      * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromTask(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions);
@@ -607,9 +690,10 @@ public interface Files {
      * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
@@ -618,6 +702,7 @@ public interface Files {
      * @param taskId The ID of the task whose files you want to list.
      * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions);
@@ -629,6 +714,7 @@ public interface Files {
      * @param taskId The ID of the task whose files you want to list.
      * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskWithServiceResponseAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions);
@@ -638,6 +724,9 @@ public interface Files {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromComputeNode(final String poolId, final String nodeId);
@@ -648,15 +737,17 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId);
@@ -666,6 +757,7 @@ public interface Files {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeWithServiceResponseAsync(final String poolId, final String nodeId);
@@ -676,6 +768,9 @@ public interface Files {
      * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromComputeNode(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions);
@@ -688,9 +783,10 @@ public interface Files {
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
@@ -699,6 +795,7 @@ public interface Files {
      * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions);
@@ -710,6 +807,7 @@ public interface Files {
      * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeWithServiceResponseAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions);
@@ -718,6 +816,9 @@ public interface Files {
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromTaskNext(final String nextPageLink);
@@ -726,16 +827,18 @@ public interface Files {
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceFuture<List<NodeFile>> serviceFuture, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink);
@@ -744,6 +847,7 @@ public interface Files {
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextWithServiceResponseAsync(final String nextPageLink);
@@ -752,6 +856,9 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromTaskNext(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions);
@@ -761,17 +868,19 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromTaskNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceFuture<List<NodeFile>> serviceFuture, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions);
@@ -781,6 +890,7 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextWithServiceResponseAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions);
@@ -789,6 +899,9 @@ public interface Files {
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromComputeNodeNext(final String nextPageLink);
@@ -797,16 +910,18 @@ public interface Files {
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceFuture<List<NodeFile>> serviceFuture, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink);
@@ -815,6 +930,7 @@ public interface Files {
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextWithServiceResponseAsync(final String nextPageLink);
@@ -823,6 +939,9 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NodeFile&gt; object if successful.
      */
     PagedList<NodeFile> listFromComputeNodeNext(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions);
@@ -832,17 +951,19 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceFuture<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceFuture<List<NodeFile>> serviceFuture, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions);
@@ -852,6 +973,7 @@ public interface Files {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextWithServiceResponseAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions);

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol;
 
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
 import com.microsoft.azure.batch.protocol.models.TaskAddCollectionHeaders;
@@ -35,9 +36,10 @@ import com.microsoft.azure.batch.protocol.models.TaskUpdateOptions;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -51,6 +53,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(String jobId, TaskAddParameter task);
 
@@ -60,15 +65,17 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a task to the specified job.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(String jobId, TaskAddParameter task);
@@ -78,6 +85,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskAddHeaders>> addWithServiceResponseAsync(String jobId, TaskAddParameter task);
@@ -87,6 +95,9 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
 
@@ -97,9 +108,10 @@ public interface Tasks {
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a task to the specified job.
@@ -107,6 +119,7 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
@@ -117,6 +130,7 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskAddHeaders>> addWithServiceResponseAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions);
@@ -126,6 +140,9 @@ public interface Tasks {
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
     PagedList<CloudTask> list(final String jobId);
@@ -136,15 +153,17 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceFuture<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<Page<CloudTask>> listAsync(final String jobId);
@@ -154,6 +173,7 @@ public interface Tasks {
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listWithServiceResponseAsync(final String jobId);
@@ -163,6 +183,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
     PagedList<CloudTask> list(final String jobId, final TaskListOptions taskListOptions);
@@ -174,9 +197,10 @@ public interface Tasks {
      * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceFuture<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
@@ -184,6 +208,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<Page<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions);
@@ -194,6 +219,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listWithServiceResponseAsync(final String jobId, final TaskListOptions taskListOptions);
@@ -204,6 +230,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskAddCollectionResult object if successful.
      */
     TaskAddCollectionResult addCollection(String jobId, List<TaskAddParameter> value);
@@ -215,9 +244,10 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
+    ServiceFuture<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
 
     /**
      * Adds a collection of tasks to the specified job.
@@ -225,6 +255,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
     Observable<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value);
@@ -235,6 +266,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
     Observable<ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders>> addCollectionWithServiceResponseAsync(String jobId, List<TaskAddParameter> value);
@@ -245,6 +277,9 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskAddCollectionResult object if successful.
      */
     TaskAddCollectionResult addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
@@ -257,9 +292,10 @@ public interface Tasks {
      * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
+    ServiceFuture<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback);
 
     /**
      * Adds a collection of tasks to the specified job.
@@ -268,6 +304,7 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
     Observable<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
@@ -279,6 +316,7 @@ public interface Tasks {
      * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
     Observable<ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders>> addCollectionWithServiceResponseAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions);
@@ -289,6 +327,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobId, String taskId);
 
@@ -299,9 +340,10 @@ public interface Tasks {
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a task from the specified job.
@@ -309,6 +351,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobId, String taskId);
@@ -319,6 +362,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, String taskId);
@@ -329,6 +373,9 @@ public interface Tasks {
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
 
@@ -340,9 +387,10 @@ public interface Tasks {
      * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a task from the specified job.
@@ -351,6 +399,7 @@ public interface Tasks {
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
@@ -362,6 +411,7 @@ public interface Tasks {
      * @param jobId The ID of the job from which to delete the task.
      * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions);
@@ -372,6 +422,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudTask object if successful.
      */
     CloudTask get(String jobId, String taskId);
@@ -383,9 +436,10 @@ public interface Tasks {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudTask> getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback);
+    ServiceFuture<CloudTask> getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback);
 
     /**
      * Gets information about the specified task.
@@ -393,6 +447,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTask object
      */
     Observable<CloudTask> getAsync(String jobId, String taskId);
@@ -403,6 +458,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTask object
      */
     Observable<ServiceResponseWithHeaders<CloudTask, TaskGetHeaders>> getWithServiceResponseAsync(String jobId, String taskId);
@@ -413,6 +469,9 @@ public interface Tasks {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudTask object if successful.
      */
     CloudTask get(String jobId, String taskId, TaskGetOptions taskGetOptions);
@@ -425,9 +484,10 @@ public interface Tasks {
      * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback);
+    ServiceFuture<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback);
 
     /**
      * Gets information about the specified task.
@@ -436,6 +496,7 @@ public interface Tasks {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTask object
      */
     Observable<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions);
@@ -447,6 +508,7 @@ public interface Tasks {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTask object
      */
     Observable<ServiceResponseWithHeaders<CloudTask, TaskGetHeaders>> getWithServiceResponseAsync(String jobId, String taskId, TaskGetOptions taskGetOptions);
@@ -456,6 +518,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobId, String taskId);
 
@@ -465,15 +530,17 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified task.
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobId, String taskId);
@@ -483,6 +550,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskUpdateHeaders>> updateWithServiceResponseAsync(String jobId, String taskId);
@@ -493,6 +561,9 @@ public interface Tasks {
      * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
 
@@ -504,9 +575,10 @@ public interface Tasks {
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified task.
@@ -515,6 +587,7 @@ public interface Tasks {
      * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
@@ -526,6 +599,7 @@ public interface Tasks {
      * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskUpdateHeaders>> updateWithServiceResponseAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions);
@@ -536,6 +610,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudTaskListSubtasksResult object if successful.
      */
     CloudTaskListSubtasksResult listSubtasks(String jobId, String taskId);
@@ -547,9 +624,10 @@ public interface Tasks {
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
+    ServiceFuture<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
@@ -557,6 +635,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTaskListSubtasksResult object
      */
     Observable<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId);
@@ -567,6 +646,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTaskListSubtasksResult object
      */
     Observable<ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders>> listSubtasksWithServiceResponseAsync(String jobId, String taskId);
@@ -577,6 +657,9 @@ public interface Tasks {
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudTaskListSubtasksResult object if successful.
      */
     CloudTaskListSubtasksResult listSubtasks(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
@@ -589,9 +672,10 @@ public interface Tasks {
      * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
+    ServiceFuture<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback);
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
@@ -600,6 +684,7 @@ public interface Tasks {
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTaskListSubtasksResult object
      */
     Observable<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
@@ -611,6 +696,7 @@ public interface Tasks {
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudTaskListSubtasksResult object
      */
     Observable<ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders>> listSubtasksWithServiceResponseAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions);
@@ -621,6 +707,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobId, String taskId);
 
@@ -631,9 +720,10 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates the specified task.
@@ -641,6 +731,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobId, String taskId);
@@ -651,6 +742,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String taskId);
@@ -661,6 +753,9 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
 
@@ -672,9 +767,10 @@ public interface Tasks {
      * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates the specified task.
@@ -683,6 +779,7 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
@@ -694,6 +791,7 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
@@ -704,6 +802,9 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void reactivate(String jobId, String taskId);
 
@@ -714,9 +815,10 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Reactivates the specified task.
@@ -724,6 +826,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> reactivateAsync(String jobId, String taskId);
@@ -734,6 +837,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateWithServiceResponseAsync(String jobId, String taskId);
@@ -744,6 +848,9 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
 
@@ -755,9 +862,10 @@ public interface Tasks {
      * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Reactivates the specified task.
@@ -766,6 +874,7 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
@@ -777,6 +886,7 @@ public interface Tasks {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateWithServiceResponseAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
@@ -786,6 +896,9 @@ public interface Tasks {
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
     PagedList<CloudTask> listNext(final String nextPageLink);
@@ -795,17 +908,19 @@ public interface Tasks {
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceFuture<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudTask>> serviceFuture, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<Page<CloudTask>> listNextAsync(final String nextPageLink);
@@ -815,6 +930,7 @@ public interface Tasks {
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
@@ -824,6 +940,9 @@ public interface Tasks {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudTask&gt; object if successful.
      */
     PagedList<CloudTask> listNext(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
@@ -834,11 +953,12 @@ public interface Tasks {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceFuture<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceFuture<List<CloudTask>> serviceFuture, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
@@ -846,6 +966,7 @@ public interface Tasks {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<Page<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
@@ -856,6 +977,7 @@ public interface Tasks {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudTask&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);

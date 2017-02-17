@@ -6,10 +6,16 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.batch.auth.BatchCredentials;
 import com.microsoft.azure.batch.interceptor.ClientRequestIdInterceptor;
 import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.microsoft.azure.batch.protocol.implementation.BatchServiceClientImpl;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestException;
+import com.microsoft.rest.protocol.ResponseBuilder;
+import com.microsoft.rest.protocol.SerializerAdapter;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -41,7 +47,19 @@ public class BatchClient {
     }
 
     private BatchClient(BatchCredentials credentials) {
-        this.protocolLayer = new BatchServiceClientImpl(credentials.baseUrl(), credentials);
+        RestClient restClient = new RestClient.Builder()
+            .withBaseUrl(credentials.baseUrl())
+            .withCredentials(credentials)
+            .withSerializerAdapter(new AzureJacksonAdapter())
+            .withResponseBuilderFactory(new ResponseBuilder.Factory() {
+                private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
+                @Override
+                public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
+                    return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
+                }
+            })
+            .build();
+        this.protocolLayer = new BatchServiceClientImpl(restClient);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
         this.certificateOperations = new CertificateOperations(this, customBehaviors());

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol;
 
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudJob;
 import com.microsoft.azure.batch.protocol.models.DisableJobOption;
 import com.microsoft.azure.batch.protocol.models.JobAddHeaders;
@@ -45,9 +46,10 @@ import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -60,6 +62,9 @@ public interface Jobs {
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobStatistics object if successful.
      */
     JobStatistics getAllLifetimeStatistics();
@@ -69,14 +74,16 @@ public interface Jobs {
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback);
+    ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback);
 
     /**
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobStatistics object
      */
     Observable<JobStatistics> getAllLifetimeStatisticsAsync();
@@ -85,6 +92,7 @@ public interface Jobs {
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobStatistics object
      */
     Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
@@ -93,6 +101,9 @@ public interface Jobs {
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobStatistics object if successful.
      */
     JobStatistics getAllLifetimeStatistics(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
@@ -103,15 +114,17 @@ public interface Jobs {
      *
      * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions, final ServiceCallback<JobStatistics> serviceCallback);
+    ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions, final ServiceCallback<JobStatistics> serviceCallback);
 
     /**
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobStatistics object
      */
     Observable<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
@@ -121,6 +134,7 @@ public interface Jobs {
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobStatistics object
      */
     Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
@@ -130,6 +144,9 @@ public interface Jobs {
      * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
      * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobId);
 
@@ -139,15 +156,17 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a job.
      * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
      * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobId);
@@ -157,6 +176,7 @@ public interface Jobs {
      * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
      * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId);
@@ -166,6 +186,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String jobId, JobDeleteOptions jobDeleteOptions);
 
@@ -176,9 +199,10 @@ public interface Jobs {
      * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes a job.
@@ -186,6 +210,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions);
@@ -196,6 +221,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, JobDeleteOptions jobDeleteOptions);
@@ -204,6 +230,9 @@ public interface Jobs {
      * Gets information about the specified job.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudJob object if successful.
      */
     CloudJob get(String jobId);
@@ -213,14 +242,16 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudJob> getAsync(String jobId, final ServiceCallback<CloudJob> serviceCallback);
+    ServiceFuture<CloudJob> getAsync(String jobId, final ServiceCallback<CloudJob> serviceCallback);
 
     /**
      * Gets information about the specified job.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJob object
      */
     Observable<CloudJob> getAsync(String jobId);
@@ -229,6 +260,7 @@ public interface Jobs {
      * Gets information about the specified job.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJob object
      */
     Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId);
@@ -237,6 +269,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudJob object if successful.
      */
     CloudJob get(String jobId, JobGetOptions jobGetOptions);
@@ -247,15 +282,17 @@ public interface Jobs {
      * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<CloudJob> getAsync(String jobId, JobGetOptions jobGetOptions, final ServiceCallback<CloudJob> serviceCallback);
+    ServiceFuture<CloudJob> getAsync(String jobId, JobGetOptions jobGetOptions, final ServiceCallback<CloudJob> serviceCallback);
 
     /**
      * Gets information about the specified job.
      *
      * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJob object
      */
     Observable<CloudJob> getAsync(String jobId, JobGetOptions jobGetOptions);
@@ -265,6 +302,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudJob object
      */
     Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId, JobGetOptions jobGetOptions);
@@ -275,6 +313,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void patch(String jobId, JobPatchParameter jobPatchParameter);
 
@@ -285,9 +326,10 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job.
@@ -295,6 +337,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter);
@@ -305,6 +348,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter);
@@ -315,6 +359,9 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void patch(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions);
 
@@ -326,9 +373,10 @@ public interface Jobs {
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job.
@@ -337,6 +385,7 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions);
@@ -348,6 +397,7 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions);
@@ -358,6 +408,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobId, JobUpdateParameter jobUpdateParameter);
 
@@ -368,9 +421,10 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job.
@@ -378,6 +432,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter);
@@ -388,6 +443,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter);
@@ -398,6 +454,9 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void update(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions);
 
@@ -409,9 +468,10 @@ public interface Jobs {
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Updates the properties of the specified job.
@@ -420,6 +480,7 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions);
@@ -431,6 +492,7 @@ public interface Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions);
@@ -441,6 +503,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void disable(String jobId, DisableJobOption disableTasks);
 
@@ -451,9 +516,10 @@ public interface Jobs {
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> disableAsync(String jobId, DisableJobOption disableTasks, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> disableAsync(String jobId, DisableJobOption disableTasks, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Disables the specified job, preventing new tasks from running.
@@ -461,6 +527,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> disableAsync(String jobId, DisableJobOption disableTasks);
@@ -471,6 +538,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks);
@@ -481,6 +549,9 @@ public interface Jobs {
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void disable(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions);
 
@@ -492,9 +563,10 @@ public interface Jobs {
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Disables the specified job, preventing new tasks from running.
@@ -503,6 +575,7 @@ public interface Jobs {
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions);
@@ -514,6 +587,7 @@ public interface Jobs {
      * @param jobId The ID of the job to disable.
      * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions);
@@ -523,6 +597,9 @@ public interface Jobs {
      * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void enable(String jobId);
 
@@ -532,15 +609,17 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> enableAsync(String jobId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> enableAsync(String jobId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Enables the specified job, allowing new tasks to run.
      * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> enableAsync(String jobId);
@@ -550,6 +629,7 @@ public interface Jobs {
      * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId);
@@ -559,6 +639,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void enable(String jobId, JobEnableOptions jobEnableOptions);
 
@@ -569,9 +652,10 @@ public interface Jobs {
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> enableAsync(String jobId, JobEnableOptions jobEnableOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> enableAsync(String jobId, JobEnableOptions jobEnableOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Enables the specified job, allowing new tasks to run.
@@ -579,6 +663,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> enableAsync(String jobId, JobEnableOptions jobEnableOptions);
@@ -589,6 +674,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId, JobEnableOptions jobEnableOptions);
@@ -598,6 +684,9 @@ public interface Jobs {
      * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
      * @param jobId The ID of the job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobId);
 
@@ -607,15 +696,17 @@ public interface Jobs {
      *
      * @param jobId The ID of the job to terminate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates the specified job, marking it as completed.
      * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
      * @param jobId The ID of the job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobId);
@@ -625,6 +716,7 @@ public interface Jobs {
      * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
      * @param jobId The ID of the job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId);
@@ -635,6 +727,9 @@ public interface Jobs {
      * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void terminate(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions);
 
@@ -646,9 +741,10 @@ public interface Jobs {
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Terminates the specified job, marking it as completed.
@@ -657,6 +753,7 @@ public interface Jobs {
      * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions);
@@ -668,6 +765,7 @@ public interface Jobs {
      * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions);
@@ -677,6 +775,9 @@ public interface Jobs {
      * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(JobAddParameter job);
 
@@ -686,15 +787,17 @@ public interface Jobs {
      *
      * @param job The job to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(JobAddParameter job, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(JobAddParameter job, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a job to the specified account.
      * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(JobAddParameter job);
@@ -704,6 +807,7 @@ public interface Jobs {
      * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job);
@@ -713,6 +817,9 @@ public interface Jobs {
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void add(JobAddParameter job, JobAddOptions jobAddOptions);
 
@@ -723,9 +830,10 @@ public interface Jobs {
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> addAsync(JobAddParameter job, JobAddOptions jobAddOptions, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> addAsync(JobAddParameter job, JobAddOptions jobAddOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Adds a job to the specified account.
@@ -733,6 +841,7 @@ public interface Jobs {
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> addAsync(JobAddParameter job, JobAddOptions jobAddOptions);
@@ -743,6 +852,7 @@ public interface Jobs {
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job, JobAddOptions jobAddOptions);
@@ -750,6 +860,9 @@ public interface Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> list();
@@ -758,13 +871,15 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listAsync();
@@ -772,6 +887,7 @@ public interface Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listWithServiceResponseAsync();
@@ -779,6 +895,9 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> list(final JobListOptions jobListOptions);
@@ -788,14 +907,16 @@ public interface Jobs {
      *
      * @param jobListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
      *
      * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listAsync(final JobListOptions jobListOptions);
@@ -804,6 +925,7 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listWithServiceResponseAsync(final JobListOptions jobListOptions);
@@ -812,6 +934,9 @@ public interface Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listFromJobSchedule(final String jobScheduleId);
@@ -821,14 +946,16 @@ public interface Jobs {
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId);
@@ -837,6 +964,7 @@ public interface Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleWithServiceResponseAsync(final String jobScheduleId);
@@ -845,6 +973,9 @@ public interface Jobs {
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listFromJobSchedule(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions);
@@ -855,15 +986,17 @@ public interface Jobs {
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions);
@@ -873,6 +1006,7 @@ public interface Jobs {
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleWithServiceResponseAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions);
@@ -882,6 +1016,9 @@ public interface Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
     PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(final String jobId);
@@ -892,15 +1029,17 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId);
@@ -910,6 +1049,7 @@ public interface Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusWithServiceResponseAsync(final String jobId);
@@ -919,6 +1059,9 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
     PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions);
@@ -930,9 +1073,10 @@ public interface Jobs {
      * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -940,6 +1084,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions);
@@ -950,6 +1095,7 @@ public interface Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusWithServiceResponseAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions);
@@ -958,6 +1104,9 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listNext(final String nextPageLink);
@@ -966,16 +1115,18 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listNextAsync(final String nextPageLink);
@@ -984,6 +1135,7 @@ public interface Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
@@ -992,6 +1144,9 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listNext(final String nextPageLink, final JobListNextOptions jobListNextOptions);
@@ -1001,17 +1156,19 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions);
@@ -1021,6 +1178,7 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions);
@@ -1029,6 +1187,9 @@ public interface Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listFromJobScheduleNext(final String nextPageLink);
@@ -1037,16 +1198,18 @@ public interface Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink);
@@ -1055,6 +1218,7 @@ public interface Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextWithServiceResponseAsync(final String nextPageLink);
@@ -1063,6 +1227,9 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
     PagedList<CloudJob> listFromJobScheduleNext(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions);
@@ -1072,17 +1239,19 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceFuture<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions);
@@ -1092,6 +1261,7 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudJob&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextWithServiceResponseAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions);
@@ -1101,6 +1271,9 @@ public interface Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
     PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatusNext(final String nextPageLink);
@@ -1110,17 +1283,19 @@ public interface Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceFuture, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink);
@@ -1130,6 +1305,7 @@ public interface Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(final String nextPageLink);
@@ -1139,6 +1315,9 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
     PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatusNext(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions);
@@ -1149,11 +1328,12 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceFuture, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -1161,6 +1341,7 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions);
@@ -1171,6 +1352,7 @@ public interface Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions);

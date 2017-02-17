@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Pools;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudPool;
@@ -64,8 +64,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -192,6 +192,9 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
     public PagedList<PoolUsageMetrics> listUsageMetrics() {
@@ -209,10 +212,11 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PoolUsageMetrics>> listUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listUsageMetricsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
@@ -227,6 +231,7 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync() {
@@ -243,6 +248,7 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync() {
@@ -263,6 +269,7 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync() {
@@ -301,6 +308,9 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
     public PagedList<PoolUsageMetrics> listUsageMetrics(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
@@ -326,10 +336,11 @@ public class PoolsImpl implements Pools {
      *
      * @param poolListUsageMetricsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listUsageMetricsSinglePageAsync(poolListUsageMetricsOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
@@ -352,6 +363,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
@@ -369,6 +381,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
@@ -397,6 +410,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
     ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
@@ -465,6 +479,9 @@ public class PoolsImpl implements Pools {
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PoolStatistics object if successful.
      */
     public PoolStatistics getAllLifetimeStatistics() {
@@ -476,16 +493,18 @@ public class PoolsImpl implements Pools {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
      */
     public Observable<PoolStatistics> getAllLifetimeStatisticsAsync() {
@@ -501,6 +520,7 @@ public class PoolsImpl implements Pools {
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
      */
     public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync() {
@@ -535,6 +555,9 @@ public class PoolsImpl implements Pools {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PoolStatistics object if successful.
      */
     public PoolStatistics getAllLifetimeStatistics(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
@@ -547,10 +570,11 @@ public class PoolsImpl implements Pools {
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(poolGetAllLifetimeStatisticsOptions), serviceCallback);
+    public ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(poolGetAllLifetimeStatisticsOptions), serviceCallback);
     }
 
     /**
@@ -558,6 +582,7 @@ public class PoolsImpl implements Pools {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
      */
     public Observable<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
@@ -574,6 +599,7 @@ public class PoolsImpl implements Pools {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
      */
     public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
@@ -627,6 +653,9 @@ public class PoolsImpl implements Pools {
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void add(PoolAddParameter pool) {
         addWithServiceResponseAsync(pool).toBlocking().single().body();
@@ -638,10 +667,11 @@ public class PoolsImpl implements Pools {
      *
      * @param pool The pool to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(addWithServiceResponseAsync(pool), serviceCallback);
+    public ServiceFuture<Void> addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(pool), serviceCallback);
     }
 
     /**
@@ -649,6 +679,7 @@ public class PoolsImpl implements Pools {
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> addAsync(PoolAddParameter pool) {
@@ -665,6 +696,7 @@ public class PoolsImpl implements Pools {
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool) {
@@ -704,6 +736,9 @@ public class PoolsImpl implements Pools {
      *
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void add(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
         addWithServiceResponseAsync(pool, poolAddOptions).toBlocking().single().body();
@@ -716,10 +751,11 @@ public class PoolsImpl implements Pools {
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(addWithServiceResponseAsync(pool, poolAddOptions), serviceCallback);
+    public ServiceFuture<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(pool, poolAddOptions), serviceCallback);
     }
 
     /**
@@ -728,6 +764,7 @@ public class PoolsImpl implements Pools {
      *
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
@@ -745,6 +782,7 @@ public class PoolsImpl implements Pools {
      *
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
@@ -800,6 +838,9 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
     public PagedList<CloudPool> list() {
@@ -816,10 +857,11 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
@@ -833,6 +875,7 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<Page<CloudPool>> listAsync() {
@@ -848,6 +891,7 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync() {
@@ -867,6 +911,7 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync() {
@@ -904,6 +949,9 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
     public PagedList<CloudPool> list(final PoolListOptions poolListOptions) {
@@ -928,10 +976,11 @@ public class PoolsImpl implements Pools {
      *
      * @param poolListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(poolListOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
@@ -953,6 +1002,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions) {
@@ -969,6 +1019,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync(final PoolListOptions poolListOptions) {
@@ -996,6 +1047,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync(final PoolListOptions poolListOptions) {
@@ -1065,6 +1117,9 @@ public class PoolsImpl implements Pools {
      * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the pool to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String poolId) {
         deleteWithServiceResponseAsync(poolId).toBlocking().single().body();
@@ -1076,10 +1131,11 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(poolId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(poolId), serviceCallback);
     }
 
     /**
@@ -1087,6 +1143,7 @@ public class PoolsImpl implements Pools {
      * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the pool to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> deleteAsync(String poolId) {
@@ -1103,6 +1160,7 @@ public class PoolsImpl implements Pools {
      * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the pool to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId) {
@@ -1153,6 +1211,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String poolId, PoolDeleteOptions poolDeleteOptions) {
         deleteWithServiceResponseAsync(poolId, poolDeleteOptions).toBlocking().single().body();
@@ -1165,10 +1226,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(poolId, poolDeleteOptions), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(poolId, poolDeleteOptions), serviceCallback);
     }
 
     /**
@@ -1177,6 +1239,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions) {
@@ -1194,6 +1257,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId, PoolDeleteOptions poolDeleteOptions) {
@@ -1273,6 +1337,9 @@ public class PoolsImpl implements Pools {
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean exists(String poolId) {
@@ -1284,16 +1351,18 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(existsWithServiceResponseAsync(poolId), serviceCallback);
+    public ServiceFuture<Boolean> existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(poolId), serviceCallback);
     }
 
     /**
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<Boolean> existsAsync(String poolId) {
@@ -1309,6 +1378,7 @@ public class PoolsImpl implements Pools {
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId) {
@@ -1358,6 +1428,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean exists(String poolId, PoolExistsOptions poolExistsOptions) {
@@ -1370,10 +1443,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(existsWithServiceResponseAsync(poolId, poolExistsOptions), serviceCallback);
+    public ServiceFuture<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(poolId, poolExistsOptions), serviceCallback);
     }
 
     /**
@@ -1381,6 +1455,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions) {
@@ -1397,6 +1472,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId, PoolExistsOptions poolExistsOptions) {
@@ -1477,6 +1553,9 @@ public class PoolsImpl implements Pools {
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudPool object if successful.
      */
     public CloudPool get(String poolId) {
@@ -1488,16 +1567,18 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CloudPool> getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(poolId), serviceCallback);
+    public ServiceFuture<CloudPool> getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(poolId), serviceCallback);
     }
 
     /**
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudPool object
      */
     public Observable<CloudPool> getAsync(String poolId) {
@@ -1513,6 +1594,7 @@ public class PoolsImpl implements Pools {
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudPool object
      */
     public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId) {
@@ -1564,6 +1646,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CloudPool object if successful.
      */
     public CloudPool get(String poolId, PoolGetOptions poolGetOptions) {
@@ -1576,10 +1661,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(poolId, poolGetOptions), serviceCallback);
+    public ServiceFuture<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(poolId, poolGetOptions), serviceCallback);
     }
 
     /**
@@ -1587,6 +1673,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudPool object
      */
     public Observable<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions) {
@@ -1603,6 +1690,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CloudPool object
      */
     public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId, PoolGetOptions poolGetOptions) {
@@ -1692,6 +1780,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void patch(String poolId, PoolPatchParameter poolPatchParameter) {
         patchWithServiceResponseAsync(poolId, poolPatchParameter).toBlocking().single().body();
@@ -1704,10 +1795,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter), serviceCallback);
+    public ServiceFuture<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter), serviceCallback);
     }
 
     /**
@@ -1716,6 +1808,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter) {
@@ -1733,6 +1826,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter) {
@@ -1788,6 +1882,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void patch(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
         patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions).toBlocking().single().body();
@@ -1801,10 +1898,11 @@ public class PoolsImpl implements Pools {
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions), serviceCallback);
+    public ServiceFuture<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions), serviceCallback);
     }
 
     /**
@@ -1814,6 +1912,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
@@ -1832,6 +1931,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
@@ -1915,6 +2015,9 @@ public class PoolsImpl implements Pools {
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void disableAutoScale(String poolId) {
         disableAutoScaleWithServiceResponseAsync(poolId).toBlocking().single().body();
@@ -1925,16 +2028,18 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId), serviceCallback);
+    public ServiceFuture<Void> disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId), serviceCallback);
     }
 
     /**
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> disableAutoScaleAsync(String poolId) {
@@ -1950,6 +2055,7 @@ public class PoolsImpl implements Pools {
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId) {
@@ -1987,6 +2093,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void disableAutoScale(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
         disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions).toBlocking().single().body();
@@ -1998,10 +2107,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions), serviceCallback);
+    public ServiceFuture<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions), serviceCallback);
     }
 
     /**
@@ -2009,6 +2119,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
@@ -2025,6 +2136,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
@@ -2082,6 +2194,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
         enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter).toBlocking().single().body();
@@ -2094,10 +2209,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter), serviceCallback);
+    public ServiceFuture<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter), serviceCallback);
     }
 
     /**
@@ -2106,6 +2222,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
@@ -2123,6 +2240,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
@@ -2178,6 +2296,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
         enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions).toBlocking().single().body();
@@ -2191,10 +2312,11 @@ public class PoolsImpl implements Pools {
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions), serviceCallback);
+    public ServiceFuture<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions), serviceCallback);
     }
 
     /**
@@ -2204,6 +2326,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
@@ -2222,6 +2345,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
@@ -2307,6 +2431,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AutoScaleRun object if successful.
      */
     public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula) {
@@ -2320,10 +2447,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula), serviceCallback);
+    public ServiceFuture<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula), serviceCallback);
     }
 
     /**
@@ -2332,6 +2460,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
     public Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula) {
@@ -2349,6 +2478,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
     public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula) {
@@ -2393,6 +2523,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AutoScaleRun object if successful.
      */
     public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
@@ -2407,10 +2540,11 @@ public class PoolsImpl implements Pools {
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula, poolEvaluateAutoScaleOptions), serviceCallback);
+    public ServiceFuture<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula, poolEvaluateAutoScaleOptions), serviceCallback);
     }
 
     /**
@@ -2420,6 +2554,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
     public Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
@@ -2438,6 +2573,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
     public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
@@ -2500,6 +2636,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resize(String poolId, PoolResizeParameter poolResizeParameter) {
         resizeWithServiceResponseAsync(poolId, poolResizeParameter).toBlocking().single().body();
@@ -2512,10 +2651,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter), serviceCallback);
+    public ServiceFuture<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter), serviceCallback);
     }
 
     /**
@@ -2524,6 +2664,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter) {
@@ -2541,6 +2682,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter) {
@@ -2596,6 +2738,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resize(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
         resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions).toBlocking().single().body();
@@ -2609,10 +2754,11 @@ public class PoolsImpl implements Pools {
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions), serviceCallback);
+    public ServiceFuture<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions), serviceCallback);
     }
 
     /**
@@ -2622,6 +2768,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
@@ -2640,6 +2787,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
@@ -2724,6 +2872,9 @@ public class PoolsImpl implements Pools {
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stopResize(String poolId) {
         stopResizeWithServiceResponseAsync(poolId).toBlocking().single().body();
@@ -2735,10 +2886,11 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId), serviceCallback);
+    public ServiceFuture<Void> stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId), serviceCallback);
     }
 
     /**
@@ -2746,6 +2898,7 @@ public class PoolsImpl implements Pools {
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> stopResizeAsync(String poolId) {
@@ -2762,6 +2915,7 @@ public class PoolsImpl implements Pools {
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId) {
@@ -2812,6 +2966,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
         stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions).toBlocking().single().body();
@@ -2824,10 +2981,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions), serviceCallback);
+    public ServiceFuture<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions), serviceCallback);
     }
 
     /**
@@ -2836,6 +2994,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
@@ -2853,6 +3012,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
@@ -2934,6 +3094,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
         updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter).toBlocking().single().body();
@@ -2946,10 +3109,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter), serviceCallback);
+    public ServiceFuture<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter), serviceCallback);
     }
 
     /**
@@ -2958,6 +3122,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
@@ -2975,6 +3140,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
@@ -3018,6 +3184,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
         updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions).toBlocking().single().body();
@@ -3031,10 +3200,11 @@ public class PoolsImpl implements Pools {
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions), serviceCallback);
+    public ServiceFuture<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions), serviceCallback);
     }
 
     /**
@@ -3044,6 +3214,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
@@ -3062,6 +3233,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
@@ -3123,6 +3295,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void upgradeOS(String poolId, String targetOSVersion) {
         upgradeOSWithServiceResponseAsync(poolId, targetOSVersion).toBlocking().single().body();
@@ -3135,10 +3310,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion), serviceCallback);
+    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion), serviceCallback);
     }
 
     /**
@@ -3147,6 +3323,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion) {
@@ -3164,6 +3341,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion) {
@@ -3220,6 +3398,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
         upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions).toBlocking().single().body();
@@ -3233,10 +3414,11 @@ public class PoolsImpl implements Pools {
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param poolUpgradeOSOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions), serviceCallback);
+    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions), serviceCallback);
     }
 
     /**
@@ -3246,6 +3428,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
@@ -3264,6 +3447,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
@@ -3350,6 +3534,9 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter) {
         removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter).toBlocking().single().body();
@@ -3362,10 +3549,11 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter), serviceCallback);
+    public ServiceFuture<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter), serviceCallback);
     }
 
     /**
@@ -3374,6 +3562,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter) {
@@ -3391,6 +3580,7 @@ public class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter) {
@@ -3446,6 +3636,9 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
         removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions).toBlocking().single().body();
@@ -3459,10 +3652,11 @@ public class PoolsImpl implements Pools {
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions), serviceCallback);
+    public ServiceFuture<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions), serviceCallback);
     }
 
     /**
@@ -3472,6 +3666,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
@@ -3490,6 +3685,7 @@ public class PoolsImpl implements Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
@@ -3574,6 +3770,9 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
     public PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink) {
@@ -3591,12 +3790,13 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<PoolUsageMetrics>> serviceFuture, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listUsageMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
@@ -3612,6 +3812,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink) {
@@ -3629,6 +3830,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3650,6 +3852,7 @@ public class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -3685,6 +3888,9 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
     public PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
@@ -3703,12 +3909,13 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListUsageMetricsNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions, final ServiceFuture<List<PoolUsageMetrics>> serviceFuture, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
@@ -3725,6 +3932,7 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
@@ -3743,6 +3951,7 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
@@ -3765,6 +3974,7 @@ public class PoolsImpl implements Pools {
      *
     ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextSinglePageAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
@@ -3814,6 +4024,9 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
     public PagedList<CloudPool> listNext(final String nextPageLink) {
@@ -3830,12 +4043,13 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
@@ -3850,6 +4064,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<Page<CloudPool>> listNextAsync(final String nextPageLink) {
@@ -3866,6 +4081,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3886,6 +4102,7 @@ public class PoolsImpl implements Pools {
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
@@ -3920,6 +4137,9 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
     public PagedList<CloudPool> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
@@ -3937,12 +4157,13 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink, poolListNextOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
@@ -3958,6 +4179,7 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
@@ -3975,6 +4197,7 @@ public class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
@@ -3996,6 +4219,7 @@ public class PoolsImpl implements Pools {
      *
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {

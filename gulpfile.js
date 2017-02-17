@@ -22,10 +22,6 @@ gulp.task('default', function() {
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
-var isWindows = (process.platform.lastIndexOf('win') === 0);
-var isLinux= (process.platform.lastIndexOf('linux') === 0);
-var isMac = (process.platform.lastIndexOf('darwin') === 0);
-
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = 'batchService'; // default
 var autoRestVersion = '1.0.0-Nightly20170129'; // default
@@ -49,10 +45,8 @@ gulp.task('codegen', function(cb) {
             handleInput(projects, cb);
         });
     } else {
-        autoRestExe = autoRestVersion + "/" + GetAutoRestFolder() + "AutoRest.exe";
-        if (!isWindows) {
-            autoRestExe = "mono " + autoRestExe;
-        }
+        autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
+        autoRestExe = "dotnet " + autoRestExe;
         handleInput(projects, cb);
     }
 
@@ -116,16 +110,3 @@ var deleteFolderRecursive = function(path) {
         });
     }
 };
-
-function GetAutoRestFolder() {
-  if (isWindows) {
-    return "src/core/AutoRest/bin/Debug/net451/win7-x64/";
-  }
-  if( isMac ) {
-	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
-  } 
-  if( isLinux ) { 
-	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"
-  }
-   throw new Error("Unknown platform?");
-}

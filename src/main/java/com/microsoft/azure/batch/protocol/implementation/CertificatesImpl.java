@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Certificates;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
 import com.microsoft.azure.batch.protocol.models.CertificateAddHeaders;
@@ -31,8 +31,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -109,6 +109,9 @@ public class CertificatesImpl implements Certificates {
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void add(CertificateAddParameter certificate) {
         addWithServiceResponseAsync(certificate).toBlocking().single().body();
@@ -119,16 +122,18 @@ public class CertificatesImpl implements Certificates {
      *
      * @param certificate The certificate to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(addWithServiceResponseAsync(certificate), serviceCallback);
+    public ServiceFuture<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(certificate), serviceCallback);
     }
 
     /**
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> addAsync(CertificateAddParameter certificate) {
@@ -144,6 +149,7 @@ public class CertificatesImpl implements Certificates {
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate) {
@@ -182,6 +188,9 @@ public class CertificatesImpl implements Certificates {
      *
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void add(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
         addWithServiceResponseAsync(certificate, certificateAddOptions).toBlocking().single().body();
@@ -193,10 +202,11 @@ public class CertificatesImpl implements Certificates {
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(addWithServiceResponseAsync(certificate, certificateAddOptions), serviceCallback);
+    public ServiceFuture<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(certificate, certificateAddOptions), serviceCallback);
     }
 
     /**
@@ -204,6 +214,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
@@ -220,6 +231,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
@@ -275,6 +287,9 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Certificate&gt; object if successful.
      */
     public PagedList<Certificate> list() {
@@ -291,10 +306,11 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
@@ -308,6 +324,7 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<Page<Certificate>> listAsync() {
@@ -323,6 +340,7 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync() {
@@ -342,6 +360,7 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync() {
@@ -378,6 +397,9 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Certificate&gt; object if successful.
      */
     public PagedList<Certificate> list(final CertificateListOptions certificateListOptions) {
@@ -402,10 +424,11 @@ public class CertificatesImpl implements Certificates {
      *
      * @param certificateListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listSinglePageAsync(certificateListOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
@@ -427,6 +450,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions) {
@@ -443,6 +467,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync(final CertificateListOptions certificateListOptions) {
@@ -470,6 +495,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
     ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync(final CertificateListOptions certificateListOptions) {
@@ -536,6 +562,9 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void cancelDeletion(String thumbprintAlgorithm, String thumbprint) {
         cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).toBlocking().single().body();
@@ -548,10 +577,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
+    public ServiceFuture<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
     }
 
     /**
@@ -560,6 +590,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -577,6 +608,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -619,6 +651,9 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void cancelDeletion(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
         cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions).toBlocking().single().body();
@@ -632,10 +667,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions), serviceCallback);
+    public ServiceFuture<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions), serviceCallback);
     }
 
     /**
@@ -645,6 +681,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
@@ -663,6 +700,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
@@ -723,6 +761,9 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String thumbprintAlgorithm, String thumbprint) {
         deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).toBlocking().single().body();
@@ -735,10 +776,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
     }
 
     /**
@@ -747,6 +789,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -764,6 +807,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -806,6 +850,9 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
         deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions).toBlocking().single().body();
@@ -819,10 +866,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions), serviceCallback);
     }
 
     /**
@@ -832,6 +880,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
@@ -850,6 +899,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
@@ -909,6 +959,9 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Certificate object if successful.
      */
     public Certificate get(String thumbprintAlgorithm, String thumbprint) {
@@ -921,10 +974,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
+    public ServiceFuture<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
     }
 
     /**
@@ -932,6 +986,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Certificate object
      */
     public Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -948,6 +1003,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Certificate object
      */
     public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
@@ -990,6 +1046,9 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Certificate object if successful.
      */
     public Certificate get(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
@@ -1003,10 +1062,11 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) {
-        return ServiceCall.fromHeaderResponse(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateGetOptions), serviceCallback);
+    public ServiceFuture<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateGetOptions), serviceCallback);
     }
 
     /**
@@ -1015,6 +1075,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Certificate object
      */
     public Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
@@ -1032,6 +1093,7 @@ public class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Certificate object
      */
     public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
@@ -1094,6 +1156,9 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Certificate&gt; object if successful.
      */
     public PagedList<Certificate> listNext(final String nextPageLink) {
@@ -1110,12 +1175,13 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceFuture<List<Certificate>> serviceFuture, final ListOperationCallback<Certificate> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
@@ -1130,6 +1196,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<Page<Certificate>> listNextAsync(final String nextPageLink) {
@@ -1146,6 +1213,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1166,6 +1234,7 @@ public class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
@@ -1200,6 +1269,9 @@ public class CertificatesImpl implements Certificates {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param certificateListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Certificate&gt; object if successful.
      */
     public PagedList<Certificate> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
@@ -1217,12 +1289,13 @@ public class CertificatesImpl implements Certificates {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param certificateListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.fromHeaderPageResponse(
+    public ServiceFuture<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceFuture<List<Certificate>> serviceFuture, final ListOperationCallback<Certificate> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
             listNextSinglePageAsync(nextPageLink, certificateListNextOptions),
             new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
@@ -1238,6 +1311,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param certificateListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
@@ -1255,6 +1329,7 @@ public class CertificatesImpl implements Certificates {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param certificateListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Certificate&gt; object
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
@@ -1276,6 +1351,7 @@ public class CertificatesImpl implements Certificates {
      *
     ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
