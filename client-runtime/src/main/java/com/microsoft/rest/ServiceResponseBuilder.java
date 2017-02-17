@@ -42,6 +42,8 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
      */
     private final SerializerAdapter<?> serializerAdapter;
 
+    private boolean throwOnGet404;
+
     /**
      * Create a ServiceResponseBuilder instance.
      *
@@ -52,6 +54,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         this.responseTypes = new HashMap<>();
         this.exceptionType = RestException.class;
         this.responseTypes.put(0, Object.class);
+        this.throwOnGet404 = false;
     }
 
     @Override
@@ -105,7 +108,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
         } else if (response.isSuccessful() && responseTypes.size() == 1) {
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
-        } else if ("GET".equals(response.raw().request().method()) && statusCode == 404) {
+        } else if (!throwOnGet404 && "GET".equals(response.raw().request().method()) && statusCode == 404) {
             return new ServiceResponse<>(null, response);
         } else {
             try {
@@ -217,6 +220,16 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
      */
     public boolean isSuccessful(int statusCode) {
         return responseTypes != null && responseTypes.containsKey(statusCode);
+    }
+
+    /**
+     * Specifies whether to throw on 404 responses from a GET call.
+     * @param throwOnGet404 true if to throw; false to simply return null. Default is false.
+     * @return the response builder itself
+     */
+    public ServiceResponseBuilder withThrowOnGet404(boolean throwOnGet404) {
+        this.throwOnGet404 = throwOnGet404;
+        return this;
     }
 
     /**

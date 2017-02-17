@@ -92,6 +92,16 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
     }
 
     /**
+     * Specifies whether to throw on 404 responses from a GET call.
+     * @param throwOnGet404 true if to throw; false to simply return null. Default is false.
+     * @return the response builder itself
+     */
+    public AzureResponseBuilder<T, E> withThrowOnGet404(boolean throwOnGet404) {
+        baseBuilder.withThrowOnGet404(throwOnGet404);
+        return this;
+    }
+
+    /**
      * A factory to create an Azure response builder.
      */
     public static final class Factory implements ResponseBuilder.Factory {
