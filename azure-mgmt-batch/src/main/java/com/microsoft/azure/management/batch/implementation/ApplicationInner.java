@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains information about an application in a Batch account.
@@ -17,28 +18,33 @@ public class ApplicationInner {
     /**
      * A string that uniquely identifies the application within the account.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The display name for the application.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The list of packages under this application.
      */
+    @JsonProperty(value = "packages")
     private List<ApplicationPackageInner> packages;
 
     /**
      * A value indicating whether packages within the application may be
      * overwritten using the same version string.
      */
+    @JsonProperty(value = "allowUpdates")
     private Boolean allowUpdates;
 
     /**
      * The package to use if a client requests the application but does not
      * specify a version.
      */
+    @JsonProperty(value = "defaultVersion")
     private String defaultVersion;
 
     /**

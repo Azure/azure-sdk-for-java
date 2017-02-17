@@ -10,6 +10,7 @@ package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.management.batch.PackageState;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An application package which represents a particular version of an
@@ -19,38 +20,45 @@ public class ApplicationPackageInner {
     /**
      * The ID of the application.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The version of the application package.
      */
+    @JsonProperty(value = "version")
     private String version;
 
     /**
      * The current state of the application package. Possible values include:
      * 'pending', 'active', 'unmapped'.
      */
+    @JsonProperty(value = "state")
     private PackageState state;
 
     /**
      * The format of the application package, if the package is active.
      */
+    @JsonProperty(value = "format")
     private String format;
 
     /**
      * The storage URL at which the application package is stored.
      */
+    @JsonProperty(value = "storageUrl")
     private String storageUrl;
 
     /**
      * The UTC time at which the storage URL will expire.
      */
+    @JsonProperty(value = "storageUrlExpiry")
     private DateTime storageUrlExpiry;
 
     /**
      * The time at which the package was last activated, if the package is
      * active.
      */
+    @JsonProperty(value = "lastActivationTime")
     private DateTime lastActivationTime;
 
     /**

@@ -8,17 +8,18 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.BatchAccountRegenerateKeyParameters;
-import com.microsoft.azure.management.batch.ErrorBodyException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
@@ -44,7 +45,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in BatchAccounts.
  */
-public final class BatchAccountsInner {
+public class BatchAccountsInner implements InnerSupportsListing {
     /** The Retrofit service to perform REST calls. */
     private BatchAccountsService service;
     /** The service client containing this operation class. */
@@ -272,11 +273,11 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .buildWithHeaders(response, BatchAccountCreateHeadersInner.class);
     }
 
@@ -361,10 +362,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountInner> updateDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BatchAccountInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -502,11 +503,11 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .buildWithHeaders(response, BatchAccountDeleteHeadersInner.class);
     }
 
@@ -583,10 +584,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountInner> getDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BatchAccountInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -683,10 +684,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -791,10 +792,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -870,10 +871,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<Void> synchronizeAutoStorageKeysDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> synchronizeAutoStorageKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -959,10 +960,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BatchAccountKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountKeysInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1039,10 +1040,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<BatchAccountKeysInner> getKeysDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BatchAccountKeysInner> getKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BatchAccountKeysInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountKeysInner>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1066,7 +1067,7 @@ public final class BatchAccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1143,10 +1144,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1170,7 +1171,7 @@ public final class BatchAccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1247,10 +1248,10 @@ public final class BatchAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorBodyException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, ErrorBodyException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<BatchAccountInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BatchAccountInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BatchAccountInner>>() { }.getType())
-                .registerError(ErrorBodyException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 

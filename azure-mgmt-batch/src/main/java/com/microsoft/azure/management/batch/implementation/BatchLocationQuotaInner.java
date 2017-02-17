@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Quotas associated with a Batch region for a particular subscription.
@@ -17,6 +18,7 @@ public class BatchLocationQuotaInner {
      * The number of Batch accounts that may be created under the subscription
      * in the specified region.
      */
+    @JsonProperty(value = "accountQuota")
     private Integer accountQuota;
 
     /**
