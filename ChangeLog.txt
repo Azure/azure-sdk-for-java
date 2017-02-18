@@ -1,3 +1,22 @@
+1.0.0 (2017.2.17)
+  - Add AzureCliCredentials
+  - Fix RestClient.newBuilder
+  - Add more endpoints to AzureEnvironment
+  - Rename ServiceCall to ServiceFuture
+  - Allow throwing on GET 404 other than returning null
+
+1.0.0-beta5 (2017.2.3)
+  - Use slf4j for logging
+  - Use RestClient for Java code generator too
+  - Decouple response builder & serializer adapter
+  - Rename getters and setters to be consistent
+  - Skip read-only properties in Validator
+
+1.0.0-beta4.1 (2017.1.6)
+  - Default environment is Azure
+  - Ignore cases in long running operations
+  - Allow posts with body
+
 1.0.0-beta4 (2016.12.15)
   - Parallel creation graph code is moved to azure-sdk-for-java repo
   - Simplify RestClient
