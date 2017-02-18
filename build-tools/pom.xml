@@ -8,12 +8,12 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>1.0.0-rc-SNAPSHOT</version>
+    <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>autorest-build-tools</artifactId>
-  <version>1.0.0-beta6-SNAPSHOT</version>
+  <version>1.0.0-beta5</version>
   <packaging>jar</packaging>
 
   <name>Build tools for AutoRest client runtime for Java</name>
