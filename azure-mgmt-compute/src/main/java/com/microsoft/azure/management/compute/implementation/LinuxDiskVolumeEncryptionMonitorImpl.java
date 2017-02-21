@@ -176,7 +176,7 @@ class LinuxDiskVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonito
                         if (virtualMachine.resources() != null) {
                             for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                                 if (extension.publisher().equalsIgnoreCase("Microsoft.Azure.Security")
-                                        && extension.typeHandlerVersion().equalsIgnoreCase("AzureDiskEncryptionForLinux")) {
+                                        && extension.virtualMachineExtensionType().equalsIgnoreCase("AzureDiskEncryptionForLinux")) {
                                     return retrieveExtensionWithInstanceViewAsync(extension);
                                 }
                             }

@@ -24,6 +24,7 @@ import rx.functions.Func1;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 /**
  * Helper type to enable or disable virtual machine disk (OS, Data) encryption.
@@ -71,7 +72,7 @@ class VirtualMachineEncryptionHelper {
                         return retrieveEncryptionExtensionStatusStringAsync(ERROR_EXPECTED_KEY_VAULT_URL_NOT_FOUND);
                     }
                 })
-                // Update the VM's OS profile with the encryption metadata
+                // Update the VM's OS Disk (in storage profile) with the encryption metadata
                 .flatMap(new Func1<String, Observable<VirtualMachine>>() {
                     @Override
                     public Observable<VirtualMachine> call(String keyVaultSecretUrl) {
@@ -165,7 +166,7 @@ class VirtualMachineEncryptionHelper {
                     .flatMap(new Func1<DiskVolumeEncryptionMonitor, Observable<Boolean>>() {
                         @Override
                         public Observable<Boolean> call(DiskVolumeEncryptionMonitor status) {
-                            if (status.osDiskStatus() == EncryptionStatus.ENCRYPTED) {
+                            if (status.osDiskStatus().equals(EncryptionStatus.ENCRYPTED)) {
                                 return toErrorObservable(ERROR_ON_LINUX_DATA_DISK_DECRYPT_NOT_ALLOWED_IF_OS_DISK_IS_ENCRYPTED);
                             }
                             return Observable.just(true);
@@ -176,32 +177,46 @@ class VirtualMachineEncryptionHelper {
     }
 
     /**
+     * Retrieves encryption extension installed in the virtual machine, if the extension is
+     * not installed then return an empty observable.
+     *
      * @return an observable that emits the encryption extension installed in the virtual machine
      */
     private Observable<VirtualMachineExtension> getEncryptionExtensionInstalledInVMAsync() {
         return virtualMachine.getExtensionsAsync()
-                .first(new Func1<VirtualMachineExtension, Boolean>() {
+                // firstOrDefault() is used intentionally here instead of first() to ensure
+                // this method return empty observable if matching extension is not found.
+                //
+                .firstOrDefault(null, new Func1<VirtualMachineExtension, Boolean>() {
                     @Override
                     public Boolean call(final VirtualMachineExtension extension) {
                         return extension.publisherName().equalsIgnoreCase(encryptionExtensionPublisher)
                                 && extension.typeName().equalsIgnoreCase(encryptionExtensionType());
+                    }
+                }).flatMap(new Func1<VirtualMachineExtension, Observable<VirtualMachineExtension>>() {
+                    @Override
+                    public Observable<VirtualMachineExtension> call(VirtualMachineExtension extension) {
+                        if (extension == null) {
+                            return Observable.empty();
+                        }
+                        return Observable.just(extension);
                     }
                 });
     }
 
     /**
      * Updates the encryption extension in the virtual machine using provided configuration.
+     * If extension is not installed then this method return empty observable.
      *
      * @param encryptConfig the volume encryption configuration
      * @return an observable that emits updated virtual machine
      */
     private Observable<VirtualMachine> updateEncryptionExtensionAsync(final EnableDisableEncryptConfig encryptConfig) {
-        final HashMap<String, Object> publicSettings = encryptConfig.extensionPublicSettings();
         return getEncryptionExtensionInstalledInVMAsync()
                 .flatMap(new Func1<VirtualMachineExtension, Observable<VirtualMachine>>() {
                     @Override
                     public Observable<VirtualMachine> call(final VirtualMachineExtension encryptionExtension) {
-                        publicSettings.put("SequenceVersion", nextSequenceVersion(encryptionExtension));
+                        final HashMap<String, Object> publicSettings = encryptConfig.extensionPublicSettings();
                         return virtualMachine.update()
                                 .updateExtension(encryptionExtension.name())
                                     .withPublicSettings(publicSettings)
@@ -220,18 +235,18 @@ class VirtualMachineEncryptionHelper {
      */
     private Observable<VirtualMachine> installEncryptionExtensionAsync(final EnableDisableEncryptConfig encryptConfig) {
         return Observable.defer(new Func0<Observable<VirtualMachine>>() {
-            final String extensionName = encryptionExtensionType();
             @Override
             public Observable<VirtualMachine> call() {
+                final String extensionName = encryptionExtensionType();
                 return virtualMachine.update()
                         .defineNewExtension(extensionName)
-                            .withPublisher(encryptionExtensionPublisher)
-                            .withType(encryptionExtensionType())
-                            .withVersion(encryptionExtensionVersion())
-                            .withPublicSettings(encryptConfig.extensionPublicSettings())
-                            .withProtectedSettings(encryptConfig.extensionProtectedSettings())
-                            .withMinorVersionAutoUpgrade()
-                            .attach()
+                        .withPublisher(encryptionExtensionPublisher)
+                        .withType(encryptionExtensionType())
+                        .withVersion(encryptionExtensionVersion())
+                        .withPublicSettings(encryptConfig.extensionPublicSettings())
+                        .withProtectedSettings(encryptConfig.extensionProtectedSettings())
+                        .withMinorVersionAutoUpgrade()
+                        .attach()
                         .applyAsync();
             }
         });
@@ -239,6 +254,10 @@ class VirtualMachineEncryptionHelper {
 
     /**
      * Retrieves the encryption extension status from the extension instance view.
+     * An error observable will be returned if
+     *   1. extension is not installed
+     *   2. extension is not provisioned successfully
+     *   2. extension status could be retrieved (either not found or empty)
      *
      * @param statusEmptyErrorMessage the error message to emit if unable to locate the status
      * @return an observable that emits status message
@@ -330,23 +349,6 @@ class VirtualMachineEncryptionHelper {
     }
 
     /**
-     * Gets the next sequence version to be used while updating encryption extension.
-     *
-     * @param encryptionExtension the extension
-     * @return next sequence version
-     */
-    private String nextSequenceVersion(final VirtualMachineExtension encryptionExtension) {
-        String nextSequenceVersion = "1";
-        if (encryptionExtension.publicSettings().containsKey("SequenceVersion")) {
-            String currentSequenceVersion = (String) encryptionExtension
-                    .publicSettings()
-                    .get("SequenceVersion");
-            nextSequenceVersion = Integer.toString(Integer.parseInt(currentSequenceVersion) + 1);
-        }
-        return nextSequenceVersion;
-    }
-
-    /**
      * Base type representing configuration for enabling and disabling disk encryption.
      */
     private abstract class EnableDisableEncryptConfig {
@@ -404,6 +406,7 @@ class VirtualMachineEncryptionHelper {
             publicSettings.put("KeyEncryptionAlgorithm", settings.volumeEncryptionKeyEncryptAlgorithm());
             publicSettings.put("KeyVaultURL", settings.keyVaultUrl());
             publicSettings.put("VolumeType", settings.volumeType().toString());
+            publicSettings.put("SequenceVersion", UUID.randomUUID());
             if (settings.keyEncryptionKeyURL() != null) {
                 publicSettings.put("KeyEncryptionKeyURL", settings.keyEncryptionKeyURL());
             }
@@ -444,6 +447,7 @@ class VirtualMachineEncryptionHelper {
         public HashMap<String, Object> extensionPublicSettings() {
             HashMap<String, Object> publicSettings = new LinkedHashMap<>();
             publicSettings.put("EncryptionOperation", "DisableEncryption");
+            publicSettings.put("SequenceVersion", UUID.randomUUID());
             publicSettings.put("VolumeType", this.volumeType);
             return publicSettings;
         }

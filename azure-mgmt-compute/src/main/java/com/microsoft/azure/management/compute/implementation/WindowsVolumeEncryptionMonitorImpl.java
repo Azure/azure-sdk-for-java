@@ -128,7 +128,7 @@ class WindowsVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor 
                         if (virtualMachine.resources() != null) {
                             for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                                 if (extension.publisher().equalsIgnoreCase("Microsoft.Azure.Security")
-                                        && extension.typeHandlerVersion().equalsIgnoreCase("AzureDiskEncryption")) {
+                                        && extension.virtualMachineExtensionType().equalsIgnoreCase("AzureDiskEncryption")) {
                                     self.encryptionExtension = extension;
                                     break;
                                 }
