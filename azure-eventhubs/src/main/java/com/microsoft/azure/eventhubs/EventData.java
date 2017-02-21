@@ -35,7 +35,7 @@ public class EventData implements Serializable
 
 	transient private Binary bodyData;
 	
-	private Map<String, String> properties;
+	private Map<String, Object> properties;
 	private SystemProperties systemProperties;
 
 	private EventData()
@@ -54,9 +54,9 @@ public class EventData implements Serializable
 		}
 
 		final Map<Symbol, Object> messageAnnotations = amqpMessage.getMessageAnnotations().getValue();
-		final HashMap<String, Object> receiveProperties = new HashMap<String, Object>();
+		final HashMap<String, Object> receiveProperties = new HashMap<>();
 		
-		for(Map.Entry<Symbol, Object> annotation: messageAnnotations.entrySet())
+		for (Map.Entry<Symbol, Object> annotation: messageAnnotations.entrySet())
 		{
 			receiveProperties.put(annotation.getKey().toString(), annotation.getValue() != null ? annotation.getValue() : null);
 		}
@@ -80,7 +80,7 @@ public class EventData implements Serializable
 		
 		this.systemProperties = new SystemProperties(receiveProperties);	
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
-				: ((Map<String, String>)(amqpMessage.getApplicationProperties().getValue()));
+				: ((Map<String, Object>)(amqpMessage.getApplicationProperties().getValue()));
 
 		this.bodyData = amqpMessage.getBody() == null ? null : ((Data) amqpMessage.getBody()).getValue();
 
@@ -209,11 +209,11 @@ public class EventData implements Serializable
 	 * Application property bag
 	 * @return returns Application properties
 	 */
-	public Map<String, String> getProperties()
+	public Map<String, Object> getProperties()
 	{
 		if (this.properties == null)
 		{
-			this.properties = new HashMap<String, String>();
+			this.properties = new HashMap<>();
 		}
 
 		return this.properties;
@@ -225,7 +225,7 @@ public class EventData implements Serializable
 	 * @deprecated use {@link #getProperties()} and add properties to the bag.
 	 */
 	@Deprecated 
-	public void setProperties(final Map<String, String> applicationProperties)
+	public void setProperties(final Map<String, Object> applicationProperties)
 	{
 		this.properties = applicationProperties;
 	}
@@ -288,8 +288,8 @@ public class EventData implements Serializable
 					else
 					{
 						final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
-																		? new MessageAnnotations(new HashMap<Symbol, Object>()) 
-																				: amqpMessage.getMessageAnnotations();		
+                                                                                                ? new MessageAnnotations(new HashMap<>()) 
+												: amqpMessage.getMessageAnnotations();		
 						messageAnnotations.getValue().put(Symbol.getSymbol(systemProperty.getKey()), systemProperty.getValue());
 						amqpMessage.setMessageAnnotations(messageAnnotations);
 					}
@@ -310,8 +310,8 @@ public class EventData implements Serializable
 		final Message amqpMessage = this.toAmqpMessage();
 
 		final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
-				? new MessageAnnotations(new HashMap<Symbol, Object>()) 
-						: amqpMessage.getMessageAnnotations();		
+				? new MessageAnnotations(new HashMap<>()) 
+				: amqpMessage.getMessageAnnotations();		
 		messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
 		amqpMessage.setMessageAnnotations(messageAnnotations);
 

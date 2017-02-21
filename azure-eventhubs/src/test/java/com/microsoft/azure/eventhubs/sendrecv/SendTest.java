@@ -39,7 +39,7 @@ public class SendTest extends ApiTestBase
 	static EventHubClient ehClient;
 	
 	PartitionSender sender = null;
-	List<PartitionReceiver> receivers = new LinkedList<PartitionReceiver>();
+	List<PartitionReceiver> receivers = new LinkedList<>();
 
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
@@ -51,12 +51,12 @@ public class SendTest extends ApiTestBase
 	@Test
 	public void sendBatchRetainsOrderWithinBatch() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
 	{
-		LinkedList<EventData> batchEvents = new LinkedList<EventData>();
+		LinkedList<EventData> batchEvents = new LinkedList<>();
 		final int batchSize = 50;
 		for (int count = 0; count< batchSize; count++)
 		{
 			EventData event = new EventData("a".getBytes());
-			event.getProperties().put(ORDER_PROPERTY, Integer.toString(count));
+			event.getProperties().put(ORDER_PROPERTY, count);
 			batchEvents.add(event);
 		}
 		
@@ -76,7 +76,7 @@ public class SendTest extends ApiTestBase
 	{
 		final int partitionCount = TestContext.getPartitionCount();
 		final String partitionKey = UUID.randomUUID().toString();
-		CompletableFuture<Void> validateSignal = new CompletableFuture<Void>();
+		CompletableFuture<Void> validateSignal = new CompletableFuture<>();
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, 1);
 		for (int receiversCount=0; receiversCount < partitionCount; receiversCount++)
 		{
@@ -95,7 +95,7 @@ public class SendTest extends ApiTestBase
 		final int batchSize = 20;
 		final int partitionCount = TestContext.getPartitionCount();
 		final String partitionKey = UUID.randomUUID().toString();
-		CompletableFuture<Void> validateSignal = new CompletableFuture<Void>();
+		CompletableFuture<Void> validateSignal = new CompletableFuture<>();
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, batchSize);
 		for (int receiversCount = 0; receiversCount < partitionCount; receiversCount++)
 		{
@@ -104,7 +104,7 @@ public class SendTest extends ApiTestBase
 			receiver.setReceiveHandler(validator);
 		}
 		
-		List<EventData> events = new LinkedList<EventData>();
+		List<EventData> events = new LinkedList<>();
 		for(int index = 0; index < batchSize; index++)
 			events.add(new EventData("TestMessage".getBytes()));
 		
@@ -197,8 +197,8 @@ public class SendTest extends ApiTestBase
 			if (events != null)
 				for(EventData event: events)
 				{
-					final String currentEventOrder = event.getProperties().get(ORDER_PROPERTY);
-					if (Integer.parseInt(currentEventOrder) != currentCount)
+					final int currentEventOrder = (int) event.getProperties().get(ORDER_PROPERTY);
+					if (currentEventOrder != currentCount)
 						this.validateSignal.completeExceptionally(new AssertionError(String.format("expected %s, got %s", currentCount, currentEventOrder)));
 				
 					currentCount++;

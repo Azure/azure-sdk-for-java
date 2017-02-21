@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs;
 
-public final class EventHubRuntimeInformation
+final class EventHubRuntimeInformation
 {
     final String path;
     final int partitionCount;

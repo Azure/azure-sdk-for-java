@@ -109,7 +109,7 @@ public class InteropTest extends ApiTestBase
 		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEntityPath() + "/partitions/" + partitionId).get();
 		partitionEventSender = ehClient.createPartitionSenderSync(partitionId);
 		
-		final HashMap<String, String> appProperties = new HashMap<String, String>();
+		final HashMap<String, Object> appProperties = new HashMap<>();
 		appProperties.put(applicationProperty, "value1");
 		final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
 		originalMessage.setApplicationProperties(applicationProperties);
@@ -128,7 +128,7 @@ public class InteropTest extends ApiTestBase
 		originalMessage.setGroupId("gid");
 		originalMessage.setReplyToGroupId("replyToGroupId");
 		
-		originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<Symbol, Object>()));
+		originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
 		originalMessage.getMessageAnnotations().getValue().put(Symbol.getSymbol(msgAnnotation), "messageAnnotationValue");
 		
 		originalMessage.setBody(new Data(Binary.create(ByteBuffer.wrap(payload.getBytes()))));
