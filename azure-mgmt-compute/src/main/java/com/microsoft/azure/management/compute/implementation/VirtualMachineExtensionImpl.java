@@ -95,8 +95,19 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionInstanceView instanceView() {
-        return this.inner().instanceView();
+    public VirtualMachineExtensionInstanceView getInstanceView() {
+        return getInstanceViewAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionInstanceView> getInstanceViewAsync() {
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
+                .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtensionInstanceView>() {
+                    @Override
+                    public VirtualMachineExtensionInstanceView call(VirtualMachineExtensionInner virtualMachineExtensionInner) {
+                        return virtualMachineExtensionInner.instanceView();
+                    }
+                });
     }
 
     @Override

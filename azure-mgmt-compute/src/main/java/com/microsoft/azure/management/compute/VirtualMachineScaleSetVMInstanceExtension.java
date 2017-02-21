@@ -17,4 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResou
 public interface VirtualMachineScaleSetVMInstanceExtension extends
         VirtualMachineExtensionBase,
         ChildResource<VirtualMachineScaleSetVM> {
+    /**
+     * @return the instance view of the scale set virtual machine extension
+     */
+    VirtualMachineExtensionInstanceView instanceView();
 }

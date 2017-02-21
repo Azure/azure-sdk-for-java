@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
+import rx.Observable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,16 @@ import java.util.Map;
 public interface VirtualMachineExtension extends
         VirtualMachineExtensionBase,
         ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
+    /**
+     * @return observable that emits virtual machine extension instance view
+     */
+    Observable<VirtualMachineExtensionInstanceView> getInstanceViewAsync();
+
+    /**
+     * @return the instance view of the virtual machine extension
+     */
+    VirtualMachineExtensionInstanceView getInstanceView();
+
     /**
      * Grouping of virtual machine extension definition stages as a part of parent virtual machine definition.
      */
