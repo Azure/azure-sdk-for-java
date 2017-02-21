@@ -12,8 +12,8 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionStates;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Databases.
  */
-public final class DatabasesInner {
+public class DatabasesInner {
     /** The Retrofit service to perform REST calls. */
     private DatabasesService service;
     /** The service client containing this operation class. */

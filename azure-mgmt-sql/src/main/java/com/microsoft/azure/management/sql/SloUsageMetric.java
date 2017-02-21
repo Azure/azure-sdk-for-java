@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.sql;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a Slo Usage Metric.
@@ -18,16 +19,19 @@ public class SloUsageMetric {
      * The serviceLevelObjective for SLO usage metric. Possible values include:
      * 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
+    @JsonProperty(value = "serviceLevelObjective")
     private ServiceObjectiveName serviceLevelObjective;
 
     /**
      * The serviceLevelObjectiveId for SLO usage metric.
      */
+    @JsonProperty(value = "serviceLevelObjectiveId")
     private UUID serviceLevelObjectiveId;
 
     /**
      * Gets or sets inRangeTimeRatio for SLO usage metric.
      */
+    @JsonProperty(value = "inRangeTimeRatio")
     private Double inRangeTimeRatio;
 
     /**
