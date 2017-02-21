@@ -8,11 +8,13 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.Page;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -34,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Servers.
  */
-public final class ServersInner {
+public class ServersInner implements InnerSupportsListing {
     /** The Retrofit service to perform REST calls. */
     private ServersService service;
     /** The service client containing this operation class. */
@@ -472,11 +474,13 @@ public final class ServersInner {
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
-    public Observable<List<ServerInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
+    public Observable<Page<ServerInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ServerInner>>, Page<ServerInner>>() {
             @Override
-            public List<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
-                return response.body();
+            public Page<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
+                PageImpl<ServerInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -782,11 +786,13 @@ public final class ServersInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the observable to the List&lt;ServerInner&gt; object
      */
-    public Observable<List<ServerInner>> listByResourceGroupAsync(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
+    public Observable<Page<ServerInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ServerInner>>, Page<ServerInner>>() {
             @Override
-            public List<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
-                return response.body();
+            public Page<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
+                PageImpl<ServerInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }

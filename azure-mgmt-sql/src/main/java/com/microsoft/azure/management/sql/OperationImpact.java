@@ -17,25 +17,25 @@ public class OperationImpact {
     /**
      * The name of the impact dimension.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * The unit in which estimated impact to dimension is measured.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
      * The absolute impact to dimension.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "changeValueAbsolute", access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueAbsolute;
 
     /**
      * The relative impact to dimension (null if not applicable).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "changeValueRelative", access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueRelative;
 
     /**

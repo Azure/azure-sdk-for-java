@@ -11,8 +11,8 @@ package com.microsoft.azure.management.sql.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ElasticPools.
  */
-public final class ElasticPoolsInner {
+public class ElasticPoolsInner {
     /** The Retrofit service to perform REST calls. */
     private ElasticPoolsService service;
     /** The service client containing this operation class. */

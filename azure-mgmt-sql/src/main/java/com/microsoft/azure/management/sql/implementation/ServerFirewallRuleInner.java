@@ -20,13 +20,13 @@ public class ServerFirewallRuleInner extends SqlSubResource {
     /**
      * Kind of server that contains this firewall rule.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /**
      * Location of the server that contains this firewall rule.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /**
