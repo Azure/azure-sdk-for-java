@@ -72,7 +72,6 @@ public interface VirtualMachine extends
 
     /**
      * @return entry point to enabling, disabling and querying disk encryption
-     * // VirtualMachineEncryption (TODO)
      */
     VirtualMachineEncryption diskEncryption();
 
