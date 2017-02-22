@@ -178,10 +178,4 @@ public class VirtualMachineScaleSetExtensionImpl
         }
         return (LinkedHashMap<String, Object>) this.inner().protectedSettings();
     }
-
-    @Override
-    public VirtualMachineScaleSetImpl parent() {
-        nullifySettingsIfEmpty();
-        return super.parent();
-    }
 }
