@@ -46,7 +46,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @Ignore("This test uses storage data plane library - mocking storage-data-sdk is blocked")
     public void canUpdateVirtualMachineScaleSetWithExtensionProtectedSettings() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
@@ -89,14 +88,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         outputStream.close();
         // Upload the script file as block blob
         //
-        CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
-        CloudBlobClient cloudBlobClient = account.createCloudBlobClient();
-        CloudBlobContainer container = cloudBlobClient.getContainerReference("scripts");
-        container.createIfNotExists();
-        CloudBlockBlob blob = container.getBlockBlobReference("install_apache.sh");
-        blob.upload(scriptFileAsStream, fileSize);
-
-        URI fileUri = blob.getUri();
+        URI fileUri;
+        if (IS_MOCKED) {
+            fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
+        } else {
+            CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
+            CloudBlobClient cloudBlobClient = account.createCloudBlobClient();
+            CloudBlobContainer container = cloudBlobClient.getContainerReference("scripts");
+            container.createIfNotExists();
+            CloudBlockBlob blob = container.getBlockBlobReference("install_apache.sh");
+            blob.upload(scriptFileAsStream, fileSize);
+            fileUri = blob.getUri();
+        }
         List<String> fileUris = new ArrayList<>();
         fileUris.add(fileUri.toString());
 
