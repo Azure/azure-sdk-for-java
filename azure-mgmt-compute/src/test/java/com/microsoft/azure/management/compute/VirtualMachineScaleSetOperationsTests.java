@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +46,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Ignore("This test uses storage data plane library - mocking storage-data-sdk is blocked")
     public void canUpdateVirtualMachineScaleSetWithExtensionProtectedSettings() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
