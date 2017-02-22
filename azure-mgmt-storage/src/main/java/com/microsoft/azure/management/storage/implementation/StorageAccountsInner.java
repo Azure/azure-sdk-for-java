@@ -8,13 +8,15 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.StorageAccountRegenerateKeyParameters;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.Page;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -38,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in StorageAccounts.
  */
-public final class StorageAccountsInner {
+public class StorageAccountsInner implements InnerSupportsListing<StorageAccountInner> {
     /** The Retrofit service to perform REST calls. */
     private StorageAccountsService service;
     /** The service client containing this operation class. */
@@ -608,11 +610,13 @@ public final class StorageAccountsInner {
      *
      * @return the observable to the List&lt;StorageAccountInner&gt; object
      */
-    public Observable<List<StorageAccountInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
+    public Observable<Page<StorageAccountInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<StorageAccountInner>>, Page<StorageAccountInner>>() {
             @Override
-            public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
-                return response.body();
+            public Page<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
+                PageImpl<StorageAccountInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -678,11 +682,13 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @return the observable to the List&lt;StorageAccountInner&gt; object
      */
-    public Observable<List<StorageAccountInner>> listByResourceGroupAsync(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
+    public Observable<Page<StorageAccountInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<StorageAccountInner>>, Page<StorageAccountInner>>() {
             @Override
-            public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
-                return response.body();
+            public Page<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
+                PageImpl<StorageAccountInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }

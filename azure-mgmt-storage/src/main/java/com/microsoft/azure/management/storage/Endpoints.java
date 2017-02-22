@@ -18,25 +18,25 @@ public class Endpoints {
     /**
      * Gets the blob endpoint.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "blob", access = JsonProperty.Access.WRITE_ONLY)
     private String blob;
 
     /**
      * Gets the queue endpoint.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "queue", access = JsonProperty.Access.WRITE_ONLY)
     private String queue;
 
     /**
      * Gets the table endpoint.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "table", access = JsonProperty.Access.WRITE_ONLY)
     private String table;
 
     /**
      * Gets the file endpoint.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "file", access = JsonProperty.Access.WRITE_ONLY)
     private String file;
 
     /**

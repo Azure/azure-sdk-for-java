@@ -25,14 +25,14 @@ public class StorageAccountCreateParametersInner {
     /**
      * Required. Gets or sets the sku name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /**
      * Required. Indicates the type of storage account. Possible values
      * include: 'Storage', 'BlobStorage'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "kind", required = true)
     private Kind kind;
 
     /**
@@ -42,7 +42,7 @@ public class StorageAccountCreateParametersInner {
      * once it is created, but if an identical geo region is specified on
      * update, the request will succeed.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
@@ -52,6 +52,7 @@ public class StorageAccountCreateParametersInner {
      * must have a key with a length no greater than 128 characters and a value
      * with a length no greater than 256 characters.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

@@ -20,14 +20,14 @@ public class Sku {
      * Possible values include: 'Standard_LRS', 'Standard_GRS',
      * 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**
      * Gets the sku tier. This is based on the SKU name. Possible values
      * include: 'Standard', 'Premium'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /**

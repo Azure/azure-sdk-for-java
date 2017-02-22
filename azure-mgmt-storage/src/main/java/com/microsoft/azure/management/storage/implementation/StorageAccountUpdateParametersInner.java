@@ -27,6 +27,7 @@ public class StorageAccountUpdateParametersInner {
      * Standard_ZRS or Premium_LRS, nor can accounts of those sku names be
      * updated to any other value.
      */
+    @JsonProperty(value = "sku")
     private Sku sku;
 
     /**
@@ -36,6 +37,7 @@ public class StorageAccountUpdateParametersInner {
      * must have a key no greater in length than 128 characters and a value no
      * greater in length than 256 characters.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

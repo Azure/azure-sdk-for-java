@@ -17,13 +17,14 @@ public class Encryption {
     /**
      * List of services which support encryption.
      */
+    @JsonProperty(value = "services")
     private EncryptionServices services;
 
     /**
      * The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.Storage.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keySource", required = true)
     private String keySource;
 
     /**
