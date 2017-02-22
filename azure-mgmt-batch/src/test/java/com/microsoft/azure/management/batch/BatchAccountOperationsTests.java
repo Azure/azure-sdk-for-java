@@ -15,7 +15,10 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BatchAccountOperationsTests extends BatchManagementTest {
@@ -205,5 +208,43 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
         batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
         Assert.assertNull(batchAccount);
+    }
+
+    @Test
+    public void batchAccountListAsyncTest() throws Exception {
+        // Create
+        Observable<Indexable> resourceStream = batchManager.batchAccounts()
+                .define(BATCH_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .createAsync();
+
+        final List<BatchAccount> batchAccounts = new ArrayList<>();
+        final List<BatchAccount> createdBatchAccounts  = new ArrayList<>();
+        final Action1<BatchAccount> onListBatchAccount = new Action1<BatchAccount>() {
+            @Override
+            public void call(BatchAccount batchAccountInList) {
+                batchAccounts.add(batchAccountInList);
+            }
+        };
+
+        final Func1<BatchAccount, Observable<BatchAccount>> onCreateBatchAccount = new Func1<BatchAccount, Observable<BatchAccount>>() {
+            @Override
+            public Observable<BatchAccount> call(final BatchAccount createdBatchAccount) {
+                createdBatchAccounts.add(createdBatchAccount);
+                return batchManager.batchAccounts().listAsync().doOnNext(onListBatchAccount);
+            }
+        };
+
+        Utils.<BatchAccount>rootResource(resourceStream).flatMap(onCreateBatchAccount).toBlocking().last();
+        Assert.assertEquals(1, createdBatchAccounts.size());
+        boolean accountExists = false;
+        for (BatchAccount batchAccountInList: batchAccounts) {
+            if (createdBatchAccounts.get(0).id().equalsIgnoreCase(batchAccountInList.id())) {
+                accountExists = true;
+            }
+            Assert.assertNotNull(batchAccountInList.id());
+        }
+        Assert.assertTrue(accountExists);
     }
 }

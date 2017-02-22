@@ -36,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Servers.
  */
-public class ServersInner implements InnerSupportsListing {
+public class ServersInner implements InnerSupportsListing<ServerInner> {
     /** The Retrofit service to perform REST calls. */
     private ServersService service;
     /** The service client containing this operation class. */
