@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the BatchManagementClientImpl class.
  */
-public final class BatchManagementClientImpl extends AzureServiceClient {
+public class BatchManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

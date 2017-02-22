@@ -38,6 +38,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineEncryption;
 import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
@@ -207,6 +208,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineEncryption diskEncryption() {
+        return new VirtualMachineEncryptionImpl(this);
+    }
+
+    @Override
     public PagedList<VirtualMachineSize> availableSizes() {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
         page.setItems(this.manager().inner().virtualMachines().listAvailableSizes(this.resourceGroupName(), this.name()));
@@ -240,10 +246,21 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() {
-        this.virtualMachineInstanceView = this.manager().inner().virtualMachines().get(this.resourceGroupName(),
+        return refreshInstanceViewAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineInstanceView> refreshInstanceViewAsync() {
+        return this.manager().inner().virtualMachines().getAsync(this.resourceGroupName(),
                 this.name(),
-                InstanceViewTypes.INSTANCE_VIEW).instanceView();
-        return this.virtualMachineInstanceView;
+                InstanceViewTypes.INSTANCE_VIEW)
+                .map(new Func1<VirtualMachineInner, VirtualMachineInstanceView>() {
+                    @Override
+                    public VirtualMachineInstanceView call(VirtualMachineInner virtualMachineInner) {
+                        virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        return virtualMachineInstanceView;
+                    }
+                });
     }
 
     // SETTERS
@@ -1259,7 +1276,12 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> extensions() {
+    public Observable<VirtualMachineExtension> getExtensionsAsync() {
+        return this.virtualMachineExtensions.listAsync();
+    }
+
+    @Override
+    public Map<String, VirtualMachineExtension> getExtensions() {
         return this.virtualMachineExtensions.asMap();
     }
 

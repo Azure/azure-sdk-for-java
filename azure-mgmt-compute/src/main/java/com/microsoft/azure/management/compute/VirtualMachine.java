@@ -22,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Observable;
 
 import java.util.Map;
 
@@ -70,6 +71,11 @@ public interface VirtualMachine extends
     void redeploy();
 
     /**
+     * @return entry point to enabling, disabling and querying disk encryption
+     */
+    VirtualMachineEncryption diskEncryption();
+
+    /**
      * Convert (migrate) the virtual machine with un-managed disks to use managed disk.
      */
     void convertToManaged();
@@ -102,6 +108,13 @@ public interface VirtualMachine extends
      */
     @Method
     VirtualMachineInstanceView refreshInstanceView();
+
+    /**
+     * Refreshes the virtual machine instance view to sync with Azure.
+     *
+     * @return an observable that emits the instance view of the virtual machine.
+     */
+    Observable<VirtualMachineInstanceView> refreshInstanceViewAsync();
 
     // Getters
     //
@@ -196,9 +209,14 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return the extensions attached to the Azure Virtual Machine
+     * @return an observable that emits extensions attached to the virtual machine
      */
-    Map<String, VirtualMachineExtension> extensions();
+    Observable<VirtualMachineExtension> getExtensionsAsync();
+
+    /**
+     * @return the extensions attached to the Virtual Machine
+     */
+    Map<String, VirtualMachineExtension> getExtensions();
 
     /**
      * @return the plan value
@@ -1654,6 +1672,14 @@ public interface VirtualMachine extends
             UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension {
+        /**
+         * Specifies the encryption settings for the OS Disk.
+         *
+         * @param settings the encryption settings.
+         * @return the stage representing creatable VM update
+         */
+        Update withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
+
         /**
          * Specifies the default caching type for the managed data disks.
          *

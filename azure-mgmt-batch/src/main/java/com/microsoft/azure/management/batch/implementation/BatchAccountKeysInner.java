@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A set of Azure Batch account keys.
@@ -16,11 +17,13 @@ public class BatchAccountKeysInner {
     /**
      * The primary key associated with the account.
      */
+    @JsonProperty(value = "primary")
     private String primary;
 
     /**
      * The secondary key associated with the account.
      */
+    @JsonProperty(value = "secondary")
     private String secondary;
 
     /**

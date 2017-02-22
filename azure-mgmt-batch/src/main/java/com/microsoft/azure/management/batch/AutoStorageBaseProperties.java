@@ -18,7 +18,7 @@ public class AutoStorageBaseProperties {
      * The resource ID of the storage account to be used for auto storage
      * account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
     /**

@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Utility class to run commands on Linux VM via SSH.
  */
-public class SSHShell {
+public class SshShell {
     private final Session session;
     private final ChannelShell channel;
     private final Expect4j expect;
@@ -43,7 +43,7 @@ public class SSHShell {
      * @throws JSchException
      * @throws IOException
      */
-    private SSHShell(String host, int port, String userName, String password)
+    private SshShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
         Closure expectClosure = getExpectClosure();
         for (String linuxPromptPattern : new String[]{"\\>","#", "~#", "~\\$"}) {
@@ -77,9 +77,9 @@ public class SSHShell {
      * @throws JSchException
      * @throws IOException
      */
-    public static SSHShell open(String host, int port, String userName, String password)
+    public static SshShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
-        return new SSHShell(host, port, userName, password);
+        return new SshShell(host, port, userName, password);
     }
 
     /**

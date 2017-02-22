@@ -55,11 +55,6 @@ public interface VirtualMachineExtensionBase extends
     String provisioningState();
 
     /**
-     * @return the instance view of the virtual machine extension
-     */
-    VirtualMachineExtensionInstanceView instanceView();
-
-    /**
      * @return the tags for this virtual machine extension
      */
     Map<String, String> tags();

@@ -56,10 +56,10 @@ public abstract class ComputeManagementTest extends TestBase {
         if (IS_MOCKED) {
             return;
         }
-        SSHShell shell = null;
+        SshShell shell = null;
         try {
             System.out.println("Trying to de-provision");
-            shell = SSHShell.open(host, port, userName, password);
+            shell = SshShell.open(host, port, userName, password);
             List<String> deprovisionCommand = new ArrayList<>();
             deprovisionCommand.add("sudo waagent -deprovision+user --force");
             String output = shell.runCommands(deprovisionCommand);
