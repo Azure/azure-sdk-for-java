@@ -29,13 +29,13 @@ public class StorageAccountInner extends Resource {
     /**
      * Gets the SKU.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /**
      * Gets the Kind. Possible values include: 'Storage', 'BlobStorage'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private Kind kind;
 
     /**

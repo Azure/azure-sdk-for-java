@@ -19,6 +19,7 @@ public class EncryptionService {
      * A boolean indicating whether or not the service encrypts the data as it
      * is stored.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -27,7 +28,7 @@ public class EncryptionService {
      * might be some unencrypted blobs which were written after this time, as
      * it is just a rough estimate.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastEnabledTime;
 
     /**

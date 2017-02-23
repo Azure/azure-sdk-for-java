@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the StorageManagementClientImpl class.
  */
-public final class StorageManagementClientImpl extends AzureServiceClient {
+public class StorageManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

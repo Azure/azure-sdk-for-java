@@ -20,7 +20,7 @@ public class StorageAccountListKeysResultInner {
      * Gets the list of storage account keys and their properties for the
      * specified storage account.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "keys", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageAccountKey> keys;
 
     /**
