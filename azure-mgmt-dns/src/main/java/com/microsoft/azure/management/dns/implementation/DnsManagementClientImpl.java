@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the DnsManagementClientImpl class.
  */
-public final class DnsManagementClientImpl extends AzureServiceClient {
+public class DnsManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An AAAA record.
@@ -16,6 +17,7 @@ public class AaaaRecord {
     /**
      * The IPv6 address of this AAAA record.
      */
+    @JsonProperty(value = "ipv6Address")
     private String ipv6Address;
 
     /**

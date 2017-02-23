@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An SRV record.
@@ -16,21 +17,25 @@ public class SrvRecord {
     /**
      * The priority value for this SRV record.
      */
+    @JsonProperty(value = "priority")
     private Integer priority;
 
     /**
      * The weight value for this SRV record.
      */
+    @JsonProperty(value = "weight")
     private Integer weight;
 
     /**
      * The port value for this SRV record.
      */
+    @JsonProperty(value = "port")
     private Integer port;
 
     /**
      * The target domain name for this SRV record.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /**
