@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the KeyVaultManagementClientImpl class.
  */
-public final class KeyVaultManagementClientImpl extends AzureServiceClient {
+public class KeyVaultManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

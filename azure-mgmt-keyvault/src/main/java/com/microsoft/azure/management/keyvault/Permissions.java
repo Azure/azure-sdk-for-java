@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.keyvault;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Permissions the identity has for keys, secrets and certificates.
@@ -17,16 +18,19 @@ public class Permissions {
     /**
      * Permissions to keys.
      */
+    @JsonProperty(value = "keys")
     private List<KeyPermissions> keys;
 
     /**
      * Permissions to secrets.
      */
+    @JsonProperty(value = "secrets")
     private List<SecretPermissions> secrets;
 
     /**
      * Permissions to certificates.
      */
+    @JsonProperty(value = "certificates")
     private List<CertificatePermissions> certificates;
 
     /**
