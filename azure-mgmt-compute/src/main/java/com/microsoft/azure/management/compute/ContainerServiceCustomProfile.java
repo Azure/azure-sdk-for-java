@@ -17,7 +17,7 @@ public class ContainerServiceCustomProfile {
     /**
      * The name of the custom orchestrator to use.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "orchestrator", required = true)
     private String orchestrator;
 
     /**

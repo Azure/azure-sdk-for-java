@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The Resource model definition.
@@ -17,6 +18,7 @@ public class ResourceUpdate {
     /**
      * Resource tags.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

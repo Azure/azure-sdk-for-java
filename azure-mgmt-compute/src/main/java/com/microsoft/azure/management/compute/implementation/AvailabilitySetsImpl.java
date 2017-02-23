@@ -38,14 +38,14 @@ class AvailabilitySetsImpl
         return new GroupPagedList<AvailabilitySet>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) {
-                return wrapList(self.inner().list(resourceGroupName));
+                return wrapList(self.inner().listByResourceGroup(resourceGroupName));
             }
         };
     }
 
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override

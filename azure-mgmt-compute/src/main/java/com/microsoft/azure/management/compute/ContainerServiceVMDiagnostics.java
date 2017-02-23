@@ -17,13 +17,13 @@ public class ContainerServiceVMDiagnostics {
     /**
      * Whether the VM diagnostic agent is provisioned on the VM.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /**
      * The URI of the storage account where diagnostics are stored.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "storageUri", access = JsonProperty.Access.WRITE_ONLY)
     private String storageUri;
 
     /**

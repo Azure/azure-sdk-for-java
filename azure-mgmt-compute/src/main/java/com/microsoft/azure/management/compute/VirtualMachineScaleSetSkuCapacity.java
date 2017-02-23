@@ -17,26 +17,26 @@ public class VirtualMachineScaleSetSkuCapacity {
     /**
      * The minimum capacity.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Long minimum;
 
     /**
      * The maximum capacity that can be set.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximum;
 
     /**
      * The default capacity.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "defaultCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultCapacity;
 
     /**
      * The scale type applicable to the sku. Possible values include:
      * 'Automatic', 'None'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuScaleType scaleType;
 
     /**

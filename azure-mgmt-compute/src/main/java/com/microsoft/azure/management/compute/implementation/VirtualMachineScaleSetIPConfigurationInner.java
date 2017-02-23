@@ -22,7 +22,7 @@ public class VirtualMachineScaleSetIPConfigurationInner extends SubResource {
     /**
      * The IP configuration name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**

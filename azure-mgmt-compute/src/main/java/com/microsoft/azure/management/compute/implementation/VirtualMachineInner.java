@@ -30,6 +30,7 @@ public class VirtualMachineInner extends Resource {
      * The purchase plan when deploying virtual machine from VM Marketplace
      * images.
      */
+    @JsonProperty(value = "plan")
     private Plan plan;
 
     /**
@@ -100,7 +101,7 @@ public class VirtualMachineInner extends Resource {
     /**
      * The virtual machine child extension resources.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /**
