@@ -17,18 +17,19 @@ public class Identity {
     /**
      * The principal ID of resource identity.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /**
      * The tenant ID of resource.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
      * The identity type. Possible values include: 'SystemAssigned'.
      */
+    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /**

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.azure.management.resources.Sku;
 import com.microsoft.azure.management.resources.Identity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
 /**
@@ -20,31 +21,37 @@ public class GenericResourceInner extends Resource {
     /**
      * The plan of the resource.
      */
+    @JsonProperty(value = "plan")
     private Plan plan;
 
     /**
      * The resource properties.
      */
+    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
      * The kind of the resource.
      */
+    @JsonProperty(value = "kind")
     private String kind;
 
     /**
      * ID of the resource that manages this resource.
      */
+    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /**
      * The SKU of the resource.
      */
+    @JsonProperty(value = "sku")
     private Sku sku;
 
     /**
      * The identity of the resource.
      */
+    @JsonProperty(value = "identity")
     private Identity identity;
 
     /**

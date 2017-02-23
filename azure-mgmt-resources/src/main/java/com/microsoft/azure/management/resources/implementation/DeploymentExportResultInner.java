@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The deployment export result.
@@ -16,6 +17,7 @@ public class DeploymentExportResultInner {
     /**
      * The template content.
      */
+    @JsonProperty(value = "template")
     private Object template;
 
     /**

@@ -29,7 +29,7 @@ final class DeploymentOperationsImpl
 
     @Override
     public PagedList<DeploymentOperation> list() {
-        return wrapList(client.list(deployment.resourceGroupName(), deployment.name()));
+        return wrapList(client.listByResourceGroup(deployment.resourceGroupName(), deployment.name()));
     }
 
     @Override

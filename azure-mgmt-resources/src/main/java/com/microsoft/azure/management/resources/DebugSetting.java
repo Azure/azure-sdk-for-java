@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The DebugSetting model.
@@ -22,6 +23,7 @@ public class DebugSetting {
      * or response, you could potentially expose sensitive data that is
      * retrieved through the deployment operations.
      */
+    @JsonProperty(value = "detailLevel")
     private String detailLevel;
 
     /**

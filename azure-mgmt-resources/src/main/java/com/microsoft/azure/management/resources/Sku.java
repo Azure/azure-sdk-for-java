@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * SKU for the resource.
@@ -16,31 +17,37 @@ public class Sku {
     /**
      * The SKU name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The SKU tier.
      */
+    @JsonProperty(value = "tier")
     private String tier;
 
     /**
      * The SKU size.
      */
+    @JsonProperty(value = "size")
     private String size;
 
     /**
      * The SKU family.
      */
+    @JsonProperty(value = "family")
     private String family;
 
     /**
      * The SKU model.
      */
+    @JsonProperty(value = "model")
     private String model;
 
     /**
      * The SKU capacity.
      */
+    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**

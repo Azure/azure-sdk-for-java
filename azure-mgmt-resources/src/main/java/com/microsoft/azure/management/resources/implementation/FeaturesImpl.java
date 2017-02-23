@@ -25,7 +25,7 @@ final class FeaturesImpl
 
     @Override
     public PagedList<Feature> list() {
-        return wrapList(client.listAll());
+        return wrapList(client.list());
     }
 
     @Override

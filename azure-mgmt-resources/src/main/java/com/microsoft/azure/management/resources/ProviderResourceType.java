@@ -10,6 +10,7 @@ package com.microsoft.azure.management.resources;
 
 import java.util.List;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource type managed by the resource provider.
@@ -18,26 +19,31 @@ public class ProviderResourceType {
     /**
      * The resource type.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * The collection of locations where this resource type can be created.
      */
+    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /**
      * The aliases that are supported by this resource type.
      */
+    @JsonProperty(value = "aliases")
     private List<AliasType> aliases;
 
     /**
      * The API version.
      */
+    @JsonProperty(value = "apiVersions")
     private List<String> apiVersions;
 
     /**
      * The properties.
      */
+    @JsonProperty(value = "properties")
     private Map<String, String> properties;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment dependency information.
@@ -16,16 +17,19 @@ public class BasicDependency {
     /**
      * The ID of the dependency.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The dependency resource type.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * The dependency resource name.
      */
+    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /**

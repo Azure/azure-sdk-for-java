@@ -17,12 +17,13 @@ public class TemplateLink {
     /**
      * The URI of the template to deploy.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /**
      * If included, must match the ContentVersion in the template.
      */
+    @JsonProperty(value = "contentVersion")
     private String contentVersion;
 
     /**

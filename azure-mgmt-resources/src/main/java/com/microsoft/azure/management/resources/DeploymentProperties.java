@@ -20,12 +20,14 @@ public class DeploymentProperties {
      * template. It can be a JObject or well-formed JSON string. Use either the
      * templateLink property or the template property, but not both.
      */
+    @JsonProperty(value = "template")
     private Object template;
 
     /**
      * The URI of the template. Use either the templateLink property or the
      * template property, but not both.
      */
+    @JsonProperty(value = "templateLink")
     private TemplateLink templateLink;
 
     /**
@@ -35,6 +37,7 @@ public class DeploymentProperties {
      * file. Use either the parametersLink property or the parameters property,
      * but not both. It can be a JObject or a well formed JSON string.
      */
+    @JsonProperty(value = "parameters")
     private Object parameters;
 
     /**
@@ -42,6 +45,7 @@ public class DeploymentProperties {
      * parameters file. Use either the parametersLink property or the
      * parameters property, but not both.
      */
+    @JsonProperty(value = "parametersLink")
     private ParametersLink parametersLink;
 
     /**
@@ -54,12 +58,13 @@ public class DeploymentProperties {
      * unintentionally delete resources. Possible values include:
      * 'Incremental', 'Complete'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "mode", required = true)
     private DeploymentMode mode;
 
     /**
      * The debug setting of the deployment.
      */
+    @JsonProperty(value = "debugSetting")
     private DebugSetting debugSetting;
 
     /**

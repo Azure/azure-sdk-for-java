@@ -37,16 +37,19 @@ public class PolicyAssignmentInner {
     /**
      * The ID of the policy assignment.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The type of the policy assignment.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
      * The name of the policy assignment.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**

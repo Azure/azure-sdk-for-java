@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Resources.
  */
-public final class ResourcesInner {
+public class ResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private ResourcesService service;
     /** The service client containing this operation class. */
@@ -503,12 +503,7 @@ public final class ResourcesInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        Boolean body = checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
-        if (body != null) {
-            return body;
-        } else {
-            return false;
-        }
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1558,7 +1553,7 @@ public final class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

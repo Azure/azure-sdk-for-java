@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource group filter.
@@ -16,11 +17,13 @@ public class ResourceGroupFilter {
     /**
      * The tag name.
      */
+    @JsonProperty(value = "tagName")
     private String tagName;
 
     /**
      * The tag value.
      */
+    @JsonProperty(value = "tagValue")
     private String tagValue;
 
     /**

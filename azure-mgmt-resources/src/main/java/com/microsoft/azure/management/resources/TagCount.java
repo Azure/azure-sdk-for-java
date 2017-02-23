@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Tag count.
@@ -16,12 +17,14 @@ public class TagCount {
     /**
      * Type of count.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
      * Value of count.
      */
-    private String value;
+    @JsonProperty(value = "value")
+    private Integer value;
 
     /**
      * Get the type value.
@@ -48,7 +51,7 @@ public class TagCount {
      *
      * @return the value value
      */
-    public String value() {
+    public Integer value() {
         return this.value;
     }
 
@@ -58,7 +61,7 @@ public class TagCount {
      * @param value the value value to set
      * @return the TagCount object itself.
      */
-    public TagCount withValue(String value) {
+    public TagCount withValue(Integer value) {
         this.value = value;
         return this;
     }

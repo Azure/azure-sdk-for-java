@@ -20,67 +20,76 @@ public class DeploymentPropertiesExtended {
     /**
      * The state of the provisioning.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
      * The correlation ID of the deployment.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /**
      * The timestamp of the template deployment.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestamp;
 
     /**
      * Key/value pairs that represent deploymentoutput.
      */
+    @JsonProperty(value = "outputs")
     private Object outputs;
 
     /**
      * The list of resource providers needed for the deployment.
      */
+    @JsonProperty(value = "providers")
     private List<ProviderInner> providers;
 
     /**
      * The list of deployment dependencies.
      */
+    @JsonProperty(value = "dependencies")
     private List<Dependency> dependencies;
 
     /**
      * The template content. Use only one of Template or TemplateLink.
      */
+    @JsonProperty(value = "template")
     private Object template;
 
     /**
      * The URI referencing the template. Use only one of Template or
      * TemplateLink.
      */
+    @JsonProperty(value = "templateLink")
     private TemplateLink templateLink;
 
     /**
      * Deployment parameters. Use only one of Parameters or ParametersLink.
      */
+    @JsonProperty(value = "parameters")
     private Object parameters;
 
     /**
      * The URI referencing the parameters. Use only one of Parameters or
      * ParametersLink.
      */
+    @JsonProperty(value = "parametersLink")
     private ParametersLink parametersLink;
 
     /**
      * The deployment mode. Possible values are Incremental and Complete.
      * Possible values include: 'Incremental', 'Complete'.
      */
+    @JsonProperty(value = "mode")
     private DeploymentMode mode;
 
     /**
      * The debug setting of the deployment.
      */
+    @JsonProperty(value = "debugSetting")
     private DebugSetting debugSetting;
 
     /**
