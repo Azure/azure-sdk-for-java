@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.trafficmanager;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class containing endpoint monitoring settings in a Traffic Manager profile.
@@ -17,23 +18,27 @@ public class MonitorConfig {
      * Gets or sets the profile-level monitoring status of the Traffic Manager
      * profile.
      */
+    @JsonProperty(value = "profileMonitorStatus")
     private String profileMonitorStatus;
 
     /**
      * Gets or sets the protocol (HTTP or HTTPS) used to probe for endpoint
      * health.
      */
+    @JsonProperty(value = "protocol")
     private String protocol;
 
     /**
      * Gets or sets the TCP port used to probe for endpoint health.
      */
+    @JsonProperty(value = "port")
     private Long port;
 
     /**
      * Gets or sets the path relative to the endpoint domain name used to probe
      * for endpoint health.
      */
+    @JsonProperty(value = "path")
     private String path;
 
     /**
